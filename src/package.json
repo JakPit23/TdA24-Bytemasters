@@ -1,0 +1,13 @@
+{
+  "name": "tourdeapp24",
+  "version": "1.0.0-DEV",
+  "description": "Tour de App 2024",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js"
+  },
+  "keywords": [],
+  "dependencies": {
+    "express": "^4.18.2"
+  }
+}
