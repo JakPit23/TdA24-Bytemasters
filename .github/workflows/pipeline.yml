@@ -3,7 +3,8 @@ name: Build and push to TdA
 on:
   push:
     branches:
-      - faze1
+      - master
+  workflow_dispatch:
 
 jobs:
   build:
