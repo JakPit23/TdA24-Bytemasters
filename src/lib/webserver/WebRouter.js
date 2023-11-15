@@ -30,9 +30,12 @@ class WebRouter {
      * Initialize the web routes.
      */
     initRoutes() {
-        // Serve the main web page by sending the index.html file.
         this.router.get("/", (req, res) => {
             res.sendFile(path.join(__dirname, "../../views/index.html"));
+        });
+
+        this.router.get("/lecturer", (req, res) => {
+            res.sendFile(path.join(__dirname, "../../views/lecturer.html"));
         });
 
         // Handle 404 errors.

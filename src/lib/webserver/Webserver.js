@@ -29,7 +29,7 @@ class Webserver {
         this.app.use("/api", this.apiRouter.getRouter());
 
         // Serve static files from the "/public" directory.
-        this.app.use("/public", express.static(path.join(__dirname, "/frontend/public")));
+        this.app.use("/public", express.static(path.join(__dirname, "../../public")));
 
         this.webRouter = new WebRouter();
         this.app.use("/", this.webRouter.getRouter());
