@@ -37,11 +37,6 @@ class Webserver {
         // Create an HTTP server based on the Express app.
         this.webserver = http.createServer(this.app);
 
-        // Handle 404 errors.
-        this.app.get("*", (req, res) => {
-            res.status(404).send("404 - Page not found");
-        });
-
         // Start the webserver and log the port it's listening on.
         this.webserver.listen(this.port, () => {
             Logger.info(Logger.Type.Webserver, `Webserver running on port ${this.port}`);
