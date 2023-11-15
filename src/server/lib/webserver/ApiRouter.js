@@ -1,5 +1,5 @@
 const express = require("express");
-const ApiVersion1Router = require("./api/ApiVersion1Router");
+const ApiVersion1Router = require("./ApiVersion1Router");
 
 /**
  * The ApiRouter class is responsible for defining routes related to API endpoints and versions.

@@ -38,5 +38,4 @@ class ApiVersion1Router {
     }
 }
 
-// Export the ApiVersion1Router class for use in other modules.
 module.exports = ApiVersion1Router;
