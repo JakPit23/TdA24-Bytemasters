@@ -1,0 +1,39 @@
+* {
+    font-family: Open-sans;
+    font-weight: 600;
+}
+body {
+    background-color: #333333;
+    color: #FFFFFF
+}
+
+.flex {
+    display: flex;
+    flex-direction: column;
+    padding-top: 10px;
+    align-items: center;
+}
+
+
+.center-flex {
+   align-items: center;
+}
+
+.center-standart {
+    text-align: center;
+}
+
+.tags > p {
+    padding: 0 10px;
+    margin: 0 10px;
+    border-color: #00384D;
+    background-color: #00384D;
+    color: white;
+    font-family: Open-sans;
+    font-weight: 400;
+}
+
+h1 {
+    font-family: Lalezar;
+}
+
