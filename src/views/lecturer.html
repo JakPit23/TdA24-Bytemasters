@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="cs-cz">
+<html lang="cs-cz" data-theme="light">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -12,15 +12,16 @@
     <script src="https://kit.fontawesome.com/cc03af5ac0.js"></script>
     <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
     <!-- Import our styles -->
-    <link rel="stylesheet" href="../../public/style.css">
+    <link rel="stylesheet" href="../public/styles/style_generic.css">
+    <link rel="stylesheet" href="../public/styles/light.css" id="css">
 </head>
 <body>
     <!-- Header contains of logo and image-->
     <header class="inline-flex flex-wrap">
-        <img src="../public/logo.png" id="logo"/>
-        <img src="../public/ikony.png" id="icons"/>
+        <img src="../public/images/logo_light.png" id="logo"/>
+        <img src="../public/images/icons_light.png" id="icons"/>
     </header>
-
+    <button onclick="toogleTheme()">Change</button>
     <!-- First part of web is name of lecturer his/her image and role-->
     <div class="flex flex-col flex-wrap align-middle items-center ">
         <h1 class="text-3xl font-bold ">Mgr. Petra Swill Plachá MBA</h1>
@@ -51,5 +52,6 @@
         <p>Telefon: +420 722 482 974</p>
         <p>Email(y): <a href="mailto:placha@scg.cz">placha@scg.cz</a>, <a href="mailto:predseda@scg.cz">predseda@scg.cz</a></p>    
     </div>
+    <script src="../public/themeSwitcher.js"></script>
 </body>
 </html>
