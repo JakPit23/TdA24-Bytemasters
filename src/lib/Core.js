@@ -9,7 +9,7 @@ const Webserver = require("./webserver/Webserver");
  */
 class Core {
     constructor() {
-        this.config = Configuration;
+        this.config = new Configuration();
 
         // Log application startup information.
         Logger.info(Logger.Type.Core, `Starting application v${Tools.GetApplicationVersion()}`);
