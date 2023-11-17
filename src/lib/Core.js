@@ -1,5 +1,6 @@
 const Configuration = require("./Configuration");
 const Logger = require("./Logger");
+const Database = require("./database/Database");
 const Tools = require("./utils/Tools");
 const Webserver = require("./webserver/Webserver");
 
@@ -10,6 +11,7 @@ const Webserver = require("./webserver/Webserver");
 class Core {
     constructor() {
         this.config = new Configuration();
+        this.database = new Database();
 
         // Log application startup information.
         Logger.info(Logger.Type.Core, `Starting application v${Tools.GetApplicationVersion()}`);
@@ -19,6 +21,34 @@ class Core {
             config: this.config,
         });
     }
+
+    /**
+     * Gets the configuration object.
+     *
+     * @returns {Configuration} The configuration object.
+     */
+    getConfig() {
+        return this.config;
+    }
+
+    /**
+     * Gets the database object.
+     *
+     * @returns {Database} The database object.
+     */
+    getDatabase() {
+        return this.database;
+    }
+
+    /**
+     * Gets the webserver object.
+     *
+     * @returns {Webserver} The webserver object.
+     */
+    getWebserver() {
+        return this.webserver;
+    }
+
 
     /**
      * Asynchronously initiates the application shutdown process.
@@ -35,6 +65,8 @@ class Core {
             process.exit(1);
         }, 15000);
 
+        this.database.close();
+        
         // Perform the shutdown of the Webserver component.
         await this.webserver.shutdown();
 
