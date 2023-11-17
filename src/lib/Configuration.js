@@ -8,7 +8,7 @@ class Configuration {
      * @static
      * @returns {number} The Webserver port number.
      */
-    static GetWebserverPort() {
+    GetWebserverPort() {
         return process.env.WEBSERVER_PORT || 3000;
     }
 }
