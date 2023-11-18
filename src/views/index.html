@@ -28,14 +28,21 @@
         <li>Předsednictví</li>
     </div>
     <!-- List of authors will be created by JS -->
-    <div class="list">
+    <div id="list">
 
     </div>
     <!-- TODO: Mode switching-->
+    <script src="../public/components/lecturer.js"></script>
     <script src="../public/themeSwitcher.js"></script>
     <script>
         var manager = ThemeManager;
         manager.setThemeBySystem();
     </script>
+   <script src="https://unpkg.com/react@17/umd/react.development.js"></script>
+   <script src="https://unpkg.com/react-dom@17/umd/react-dom.development.js"></script>
+   <script src="../public/components/Lecturer.js"></script>
+   <script>
+     // Render the component in the #app element
+     ReactDOM.render(React.createElement(Lecturer, { fullName: 'Michaela Nějaká', firstTitle: "Mgr", secondTitle: "MBA" }), document.getElementById('list'));  </script>
 </body>
 </html>
