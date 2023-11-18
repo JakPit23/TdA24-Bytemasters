@@ -10,7 +10,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Lalezar&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
     <script src="https://kit.fontawesome.com/cc03af5ac0.js"></script>
-    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <script src="../public/components/lecturer.js"></script>
     <!-- Import our styles -->
     <link rel="stylesheet" href="../public/styles/style_generic.css">
     <link rel="stylesheet" href="../public/styles/light.css" id="css">
@@ -24,18 +24,25 @@
 
     <!-- Filters by prize, tags and location will be handled by backend -->
     <div class="filter">
-
+        <li>Dobrovolnictví</li>
+        <li>Předsednictví</li>
     </div>
     <!-- List of authors will be created by JS -->
-    <div class="list">
+    <div id="list">
 
     </div>
-
     <!-- TODO: Mode switching-->
+    <script src="../public/components/lecturer.js"></script>
     <script src="../public/themeSwitcher.js"></script>
     <script>
         var manager = ThemeManager;
         manager.setThemeBySystem();
     </script>
+   <script src="https://unpkg.com/react@17/umd/react.development.js"></script>
+   <script src="https://unpkg.com/react-dom@17/umd/react-dom.development.js"></script>
+   <script src="../public/components/Lecturer.js"></script>
+   <script>
+     // Render the component in the #app element
+     ReactDOM.render(React.createElement(Lecturer, { fullName: 'Michaela Nějaká', firstTitle: "Mgr", secondTitle: "MBA" }), document.getElementById('list'));  </script>
 </body>
 </html>
