@@ -5,9 +5,10 @@ body {
 
 header {
     background-color: #74C7D3;
+    color: #333333;
 }
 
 li {
-    background-color: #FFFFFF;
+    background-color: #333333;
     color: #FECB2E;
 }

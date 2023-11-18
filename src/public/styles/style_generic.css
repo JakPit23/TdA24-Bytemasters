@@ -15,12 +15,16 @@ header {
 
 #icons {
     height: 64px;
+    margin-right: 10%;
 }
-
 #fa {
     padding-top: 3px;
 }
 
+button {
+    left: 50px;
+    float: right;
+}
 #bio {
     padding: 0 5px;
 }
