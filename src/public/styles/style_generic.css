@@ -1,0 +1,40 @@
+/* 
+* Styles created by Jakub Pitner (JakPit23) for Tour de App 2024, nomination round
+* These styles are more about colors and padding than about positions, because I use Tailwind CSS
+*/
+
+#logo {
+    padding-left: 5px;
+    height: 64px;
+    width: 96px;
+    margin-right: 30%;
+}
+header {
+    width: 100%;
+}
+
+#icons {
+    height: 64px;
+    margin-right: 10%;
+}
+#fa {
+    padding-top: 3px;
+}
+
+button {
+    left: 50px;
+    float: right;
+}
+#bio {
+    padding: 0 5px;
+}
+
+li {
+    padding: 0 5px;
+    margin: 5px;
+    vertical-align: middle;
+}
+
+#contact {
+    padding-left: 5px;
+}
