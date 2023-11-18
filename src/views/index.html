@@ -3,15 +3,25 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="author" content="JakPit23, goodbyepavlyi">
-    <meta name="description" content="Teacher Difital Agency">
-    <!-- Link CSS for light and dark mode-->
-    <title>TDA24</title>
+    <title>Teacher Digital Agency</title>
+    <!-- Import all needed libraries such as Google fonts, Fontawesome, Tailwind CSS and Vue.JS-->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lalezar&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+    <script src="https://kit.fontawesome.com/cc03af5ac0.js"></script>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <!-- Import our styles -->
+    <link rel="stylesheet" href="../public/styles/style_generic.css">
+    <link rel="stylesheet" href="../public/styles/light.css" id="css">
 </head>
 <body>
-    <header>
-        <!-- TODO: Add header and icon -->
+    <header class="inline-flex flex-wrap">
+        <img src="../public/images/logo_light.png" id="logo"/>
+        <img src="../public/images/icons_light.png" id="icons"/>
+        <button onclick="ThemeManager.setTheme()">Theme</button>
     </header>
+
     <!-- Filters by prize, tags and location will be handled by backend -->
     <div class="filter">
 
@@ -22,5 +32,10 @@
     </div>
 
     <!-- TODO: Mode switching-->
+    <script src="../public/themeSwitcher.js"></script>
+    <script>
+        var manager = ThemeManager;
+        manager.setThemeBySystem();
+    </script>
 </body>
 </html>

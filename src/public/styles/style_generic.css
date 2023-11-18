@@ -33,6 +33,7 @@ li {
     padding: 0 5px;
     margin: 5px;
     vertical-align: middle;
+    min-width: auto;
 }
 
 #contact {
