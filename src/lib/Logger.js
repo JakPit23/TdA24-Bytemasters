@@ -22,6 +22,7 @@ class Logger {
         Core: "core",
         Watchdog: "watchdog",
         Webserver: "webserver",
+        LecturerManager: "lecturer manager",
     }
 
     /**

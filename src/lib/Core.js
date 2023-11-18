@@ -1,30 +1,22 @@
 const Configuration = require("./Configuration");
 const Logger = require("./Logger");
 const Database = require("./database/Database");
+const LecturerManager = require("./lecturer/LecturerManager");
 const Tools = require("./utils/Tools");
 const Webserver = require("./webserver/Webserver");
 
-/**
- * The Core class is responsible for managing and initializing the application core components.
- * @class
- */
 class Core {
     constructor() {
+        Logger.info(Logger.Type.Core, `Starting application v${Tools.GetApplicationVersion()}`);
+        
         this.config = new Configuration();
         this.database = new Database();
-
-        // Log application startup information.
-        Logger.info(Logger.Type.Core, `Starting application v${Tools.GetApplicationVersion()}`);
-
-        // Initialize the Webserver component with configuration.
-        this.webserver = new Webserver({
-            config: this.config,
-        });
+        this.lecturerManager = new LecturerManager(this);
+        this.webserver = new Webserver(this);
     }
 
     /**
      * Gets the configuration object.
-     *
      * @returns {Configuration} The configuration object.
      */
     getConfig() {
@@ -33,7 +25,6 @@ class Core {
 
     /**
      * Gets the database object.
-     *
      * @returns {Database} The database object.
      */
     getDatabase() {
@@ -42,21 +33,25 @@ class Core {
 
     /**
      * Gets the webserver object.
-     *
      * @returns {Webserver} The webserver object.
      */
     getWebserver() {
         return this.webserver;
     }
 
+    /**
+     * Gets the lecturer manager object.
+     * @returns {LecturerManager} The lecturer manager object.
+     */
+    getLecturerManager() {
+        return this.lecturerManager;
+    }
 
     /**
      * Asynchronously initiates the application shutdown process.
-     * @public
      * @async
      */
     async shutdown() {
-        // Log the start of the shutdown process.
         Logger.info(Logger.Type.Core, "Shutdown in progress...");
 
         // Set a timeout for a forced shutdown in case the graceful shutdown takes too long.
@@ -67,7 +62,6 @@ class Core {
 
         this.database.close();
         
-        // Perform the shutdown of the Webserver component.
         await this.webserver.shutdown();
 
         // Clear the force shutdown timeout as the shutdown was successful.

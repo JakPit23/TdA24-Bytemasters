@@ -4,6 +4,7 @@ const ApiRouter = require("./ApiRouter");
 const Logger = require("../Logger");
 const path = require("path");
 const WebRouter = require("./WebRouter");
+const Core = require("../Core");
 
 /**
  * The Webserver class is responsible for setting up and managing the application's web server.
@@ -13,11 +14,11 @@ class Webserver {
     /**
      * Create a new Webserver instance with the provided configuration options.
      * @constructor
-     * @param {object} options - Configuration options for the Webserver.
-     * @param {import("../Configuration")} options.config - The application's configuration.
+     * @param {Core} core - The application core.
      */
-    constructor(options) {
-        this.port = options.config.GetWebserverPort();
+    constructor(core) {
+        this.core = core;
+        this.port = this.core.getConfig().GetWebserverPort();
 
         this.app = express();
         this.app.use(express.json());
@@ -25,7 +26,7 @@ class Webserver {
         // Disable "x-powered-by" header for security.
         this.app.disable("x-powered-by");
 
-        this.apiRouter = new ApiRouter();
+        this.apiRouter = new ApiRouter(this.core);
         this.app.use("/api", this.apiRouter.getRouter());
 
         // Serve static files from the "/public" directory.
@@ -33,6 +34,24 @@ class Webserver {
 
         this.webRouter = new WebRouter();
         this.app.use("/", this.webRouter.getRouter());
+
+        // Error handler
+        this.app.use((error, req, res, next) => {
+            if (req.path.startsWith("/api")) {
+                if (error instanceof SyntaxError && error.status === 400 && "body" in error) {
+                    res.status(400).send({ code: 400, message: "Invalid request body" });
+                    return;
+                }
+
+                Logger.error(Logger.Type.Webserver, error.stack);
+                res.status(500).json({ code: 500, error: "Server error" });
+                return;
+            }
+            
+            Logger.error(Logger.Type.Webserver, error.stack);
+            // TODO: Make a 505 error page
+            res.status(500).send('Server error');
+        })
 
         // Create an HTTP server based on the Express app.
         this.webserver = http.createServer(this.app);
