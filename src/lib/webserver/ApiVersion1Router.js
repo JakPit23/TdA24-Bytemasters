@@ -1,4 +1,6 @@
 const express = require("express");
+const crypto = require("crypto");
+const Core = require("../Core");
 
 /**
  * The ApiVersion1Router class is responsible for defining routes related to API version 1.
@@ -8,10 +10,15 @@ class ApiVersion1Router {
     /**
      * Create a new ApiVersion1Router instance.
      * @constructor
+     * @param {Core} core - The application core.
      */
-    constructor() {
+    constructor(core) {
+        this.core = core;
+
         // Initialize an Express router for API version 1 routes.
-        this.router = express.Router({ mergeParams: true });
+        this.router = express.Router({
+            mergeParams: true
+        });
 
         // Initialize the routes defined in the class.
         this.initRoutes();
@@ -29,66 +36,133 @@ class ApiVersion1Router {
      * Initialize the API version 1 routes.
      */
     initRoutes() {
-        // Define a simple GET route that responds with JSON data.
         this.router.get("/", (req, res) => {
             res.json({
                 secret: "The cake is a lie"
             });
         });
 
-        // Define a simple GET route that responds with JSON data.
-        this.router.get("/lecturer", (req, res) => {
-            res.json({
-                "UUID": "67fda282-2bca-41ef-9caf-039cc5c8dd69",
-                "title_before": "Mgr.",
-                "first_name": "Petra",
-                "middle_name": "Swil",
-                "last_name": "Plachá",
-                "title_after": "MBA",
-                "picture_url": "https://tourdeapp.cz/storage/images/2023_02_25/412ff296a291f021bbb6de10e8d0b94863fa89308843b/big.png.webp",
-                "location": "Brno",
-                "claim": "Aktivní studentka / Předsedkyně spolku / Projektová manažerka",
-                "bio": "<p>Baví mě organizovat věci. Ať už to bylo vyvíjení mobilních aplikací ve Futured, pořádání konferencí, spolupráce na soutěžích Prezentiáda, pIšQworky, <b>Tour de App</b> a Středoškolák roku, nebo třeba dobrovolnictví, vždycky jsem skončila u projektového managementu, rozvíjení soft-skills a vzdělávání. U studentských projektů a akcí jsem si vyzkoušela snad všechno od marketingu po logistiku a moc ráda to předám dál. Momentálně studuji Pdf MUNI a FF MUNI v Brně.</p>",
-                "tags": [
-                  {
-                    "uuid": "6d348a49-d16f-4524-86ac-132dd829b429",
-                    "name": "Dobrovolnictví"
-                  },
-                  {
-                    "uuid": "8e0568c3-e235-42aa-9eaa-713a2545ff5b",
-                    "name": "Studentské spolky"
-                  },
-                  {
-                    "uuid": "996c16c8-4715-4de6-9dd0-ea010b3f64c7",
-                    "name": "Efektivní učení"
-                  },
-                  {
-                    "uuid": "c20b98dd-f37e-4fa7-aac1-73300abf086e",
-                    "name": "Prezentační dovednosti"
-                  },
-                  {
-                    "uuid": "824cfe88-8a70-4ffb-bcb8-d45670226207",
-                    "name": "Marketing pro neziskové studentské projekty"
-                  },
-                  {
-                    "uuid": "fa23bea1-489f-4cb2-b64c-7b3cd7079951",
-                    "name": "Mimoškolní aktivity"
-                  },
-                  {
-                    "uuid": "8325cacc-1a1f-4233-845e-f24acfd0287b",
-                    "name": "Projektový management, event management"
-                  },
-                  {
-                    "uuid": "ba65a665-e141-40ab-bbd2-f4b1f2b01e42",
-                    "name": "Fundraising pro neziskové studentské projekty"
-                  }
-                ],
-                "price_per_hour": 1200,
-                "contact": {
-                  "telephone_numbers": ["+420 722 482 974"],
-                  "emails": ["placha@scg.cz", "predseda@scg.cz"]
+        this.router.post("/lecturers", (req, res) => {
+            try {
+                const data = req.body;
+    
+                if (data.first_name === undefined || data.last_name === undefined || data.contact === undefined) {
+                    res.status(400).json({ code: 400, error: "Missing required fields." });
+                    return;
                 }
-              });
+    
+                if (!this.core.getLecturerManager().isValidContact(data.contact)) {
+                    res.status(400).json({ code: 400, error: "Invalid contact information." });
+                    return;
+                }
+    
+                if (data.tags && Array.isArray(data.tags)) {
+                    for (const tag of data.tags) {
+                        if (this.core.getLecturerManager().isValidTag(tag)) {
+                            continue;
+                        }
+    
+                        return res.status(400).json({ code: 400, error: "Invalid tag." });
+                    }
+                }
+                
+                const lecturer = this.core.getLecturerManager().createLecturer(this.core.getLecturerManager().generateId(), data);
+                res.status(200).json(lecturer.toJSON());
+            } catch(error) {
+                // Catch known errors, otherwise pass them to error handler.
+                if (error.message == "LECTURER_ALREADY_EXISTS") {
+                    res.status(400).json({ code: 400, error: "Lecturer already exists." });
+                    return;
+                }
+
+                throw error;
+            }
+        });
+
+        this.router.get("/lecturers", (req, res) => {
+            const lecturers = this.core.getLecturerManager().getLecturers();
+
+            if (!lecturers || lecturers.length === 0) {
+                return res.status(404).json({
+                    code: 404,
+                    message: "No lecturers found",
+                });
+            }
+
+            res.status(200).json(lecturers.map(lecturer => lecturer.toJSON()));
+        });
+
+        this.router.get("/lecturers/:lecturerId", (req, res) => {
+            const { lecturerId } = req.params;
+            const lecturer = this.core.getLecturerManager().getLecturer(lecturerId);
+
+            if (!lecturer) {
+                return res.status(404).send({
+                    code: 404,
+                    message: "Lecturer not found",
+                });
+            }
+
+            res.status(200).json(lecturer);
+        });
+
+        this.router.delete("/lecturers/:lecturerId", (req, res) => {
+            const { lecturerId } = req.params;
+            const lecturer = this.core.getLecturerManager().getLecturer(lecturerId);
+
+            if (!lecturer) {
+                return res.status(404).json({
+                    code: 404,
+                    message: "Lecturer not found",
+                });
+            }
+
+            this.core.getLecturerManager().deleteLecturer(lecturerId);
+            
+            res.status(200).json({
+                code: 200,
+                success: true,
+            });
+        });
+
+        // TODO: Check if lecturer exists before updating. etc.. and if the syntax of some values is correct.
+        this.router.put("/lecturers/:lecturerId", (req, res) => {
+            const data = req.body;
+            const lecturerId = req.params.lecturerId;
+            const lecturer = this.core.getLecturerManager().getLecturer(lecturerId);
+
+            if (!lecturer) {
+                return res.status(404).send({
+                    code: 404,
+                    message: "Lecturer not found",
+                });
+            }
+
+            if (data.contact) {
+                if (data.contact.emails && !data.contact.emails.every(email => this.core.getLecturerManager().isValidEmail(email))) {
+                    res.status(400).json({ code: 400, error: "Invalid emails." });
+                    return;
+                }
+
+                if (data.contact.telephone_numbers && !data.contact.telephone_numbers.every(telephoneNumber => this.core.getLecturerManager().isValidPhoneNumber(telephoneNumber))) {
+                    res.status(400).json({ code: 400, error: "Invalid telephone numbers." });
+                    return;
+                }
+            }
+
+
+            if (data.tags && Array.isArray(data.tags)) {
+                for (const tag of data.tags) {
+                    if (this.core.getLecturerManager().isValidTag(tag)) {
+                        continue;
+                    }
+
+                    return res.status(400).json({ code: 400, error: "Invalid tag." });
+                }
+            }
+
+            const editedLecturer = this.core.getLecturerManager().editLecturer(lecturerId, data);
+            res.status(200).json(editedLecturer);
         });
 
         this.router.get("*", (req, res) => {

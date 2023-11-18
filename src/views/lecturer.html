@@ -1,53 +1,61 @@
 <!DOCTYPE html>
-<html lang="cs-cz">
+<html lang="cs-cz" data-theme="light">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Teacher Digital Agency</title>
+    <!-- Import all needed libraries such as Google fonts, Fontawesome, Tailwind CSS and Vue.JS-->
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Lalezar&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
-<script src="https://kit.fontawesome.com/cc03af5ac0.js"></script>
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lalezar&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+    <script src="https://kit.fontawesome.com/cc03af5ac0.js"></script>
     <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
-    
-    <link rel="stylesheet" href="../../public/style.css">
+    <!-- Import our styles -->
+    <link rel="stylesheet" href="../public/styles/style_generic.css">
+    <link rel="stylesheet" href="../public/styles/light.css" id="css">
 </head>
 <body>
-    <div class="flex">
+    <!-- Header contains of logo and image-->
+    <header class="inline-flex flex-wrap">
+        <img src="../public/images/logo_light.png" id="logo"/>
+        <img src="../public/images/icons_light.png" id="icons"/>
+        <button onclick="ThemeManager.setTheme()">Theme</button>
+    </header>
+    <!-- First part of web is name of lecturer his/her image and role-->
+    <div class="flex flex-col flex-wrap align-middle items-center ">
         <h1 class="text-3xl font-bold ">Mgr. Petra Swill Plachá MBA</h1>
         <p class="center-flex">Aktivní studentka / Předsedkyně spolku / Projektová manažerka</p>
         <img class="rounded-full center-flex" src="https://tourdeapp.cz/storage/images/2023_02_25/412ff296a291f021bbb6de10e8d0b94863fa89308843b/big.png.webp" alt="Profilová fotografie"/>
     </div>
-    <div class="center-standart">
-        <i class="fa fa-map-marker"></i><p>Brno</p>
+    <!-- Location -->
+    <div class="flex flrex-row flex-wrap justify-center">
+        <i class="fa fa-map-marker" id="fa"></i>
+        <p id="location">Brno</p>
     </div>
-    <p>Baví mě organizovat věci. Ať už to bylo vyvíjení mobilních aplikací ve Futured, pořádání konferencí, spolupráce na soutěžích Prezentiáda, pIšQworky, <b>Tour de App</b> a Středoškolák roku, nebo třeba dobrovolnictví, vždycky jsem skončila u projektového managementu, rozvíjení soft-skills a vzdělávání. U studentských projektů a akcí jsem si vyzkoušela snad všechno od marketingu po logistiku a moc ráda to předám dál. Momentálně studuji Pdf MUNI a FF MUNI v Brně.</p>
-    <div class="flex flex-row whitespace-normal tags">
-        <p>Dobrovolnictví</p>
-        <p>Studentské spolky</p>
-        <p>Efektivní učení</p>
-        <p>Prezentační dovednosti</p>
-        <p>Marketing pro neziskové studentské projekty</p>
-        <p>Mimoškolní aktivity</p>
-        <p>Projektový management, event management</p>
-        <p>Fundraising pro neziskové studentské projekty</p>
+    <!-- Biography -->
+    <p id="bio">Baví mě organizovat věci. Ať už to bylo vyvíjení mobilních aplikací ve Futured, pořádání konferencí, spolupráce na soutěžích Prezentiáda, pIšQworky, <b>Tour de App</b> a Středoškolák roku, nebo třeba dobrovolnictví, vždycky jsem skončila u projektového managementu, rozvíjení soft-skills a vzdělávání. U studentských projektů a akcí jsem si vyzkoušela snad všechno od marketingu po logistiku a moc ráda to předám dál. Momentálně studuji Pdf MUNI a FF MUNI v Brně.</p>
+    <!-- Tags -->
+    <div class="flex flex-row whitespace-normal list-none place-content-evenly text-center" id="tag">
+        <li>Dobrovolnictví</li>
+        <li>Studentské spolky</li>
+        <li>Efektivní učení</li>
+        <li>Prezentační dovednosti</li>
+        <li>Marketing pro neziskové studentské projekty</li>
+        <li>Mimoškolní aktivity</li>
+        <li>Projektový management, event management</li>
+        <li>Fundraising pro neziskové studentské projekty</p>
     </div>
-    <p>Cena za hodinu: 1200 Kč</p>
-    <p>Telefon: +420 722 482 974</p>
-    <p>Email(y): <a href="mailto:placha@scg.cz">placha@scg.cz</a>, <a href="mailto:predseda@scg.cz">predseda@scg.cz</a></p>
-    
- <!--    <script>
-        const { createApp, ref } = Vue
-
-        createApp({
-            setup() {
-                const message = ref("Hello TdA24!")
-                return {
-                    message
-                }
-            }
-        }).mount('#app')
-    </script> -->
+    <!-- Contact and prize -->
+    <div id="contact">
+        <p>Cena za hodinu: <em>1200 Kč</em></p>
+        <p>Telefon: +420 722 482 974</p>
+        <p>Email(y): <a href="mailto:placha@scg.cz">placha@scg.cz</a>, <a href="mailto:predseda@scg.cz">predseda@scg.cz</a></p>    
+    </div>
+    <script src="../public/themeSwitcher.js"></script>
+    <script>
+        var manager = ThemeManager;
+        manager.setThemeBySystem();
+    </script>
 </body>
 </html>

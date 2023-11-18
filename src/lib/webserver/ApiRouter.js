@@ -9,13 +9,15 @@ class ApiRouter {
     /**
      * Create a new ApiRouter instance.
      * @constructor
+     * @param {Core} core - The application core.
      */
-    constructor() {
+    constructor(core) {
+        this.core = core;
         // Initialize an Express router for API routes.
         this.router = express.Router({ mergeParams: true });
 
         // Create an instance of the API version 1 router.
-        this.apiVersion1Router = new ApiVersion1Router();
+        this.apiVersion1Router = new ApiVersion1Router(this.core);
 
         // Initialize the routes defined in the class.
         this.initRoutes();

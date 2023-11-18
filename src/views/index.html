@@ -1,13 +1,48 @@
 <!DOCTYPE html>
-<html lang="cs-cz">
+<html lang="cs-cz" data-theme="light">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="author" content="JakPit23, goodbyepavlyi">
-    <meta name="description" content="Fáze 1">
-    <title>TDA24</title>
+    <title>Teacher Digital Agency</title>
+    <!-- Import all needed libraries such as Google fonts, Fontawesome, Tailwind CSS and Vue.JS-->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lalezar&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+    <script src="https://kit.fontawesome.com/cc03af5ac0.js"></script>
+    <script src="../public/components/lecturer.js"></script>
+    <!-- Import our styles -->
+    <link rel="stylesheet" href="../public/styles/style_generic.css">
+    <link rel="stylesheet" href="../public/styles/light.css" id="css">
 </head>
 <body>
-    <p>Hello TdA</p>
+    <header class="inline-flex flex-wrap">
+        <img src="../public/images/logo_light.png" id="logo"/>
+        <img src="../public/images/icons_light.png" id="icons"/>
+        <button onclick="ThemeManager.setTheme()">Theme</button>
+    </header>
+
+    <!-- Filters by prize, tags and location will be handled by backend -->
+    <div class="filter">
+        <li>Dobrovolnictví</li>
+        <li>Předsednictví</li>
+    </div>
+    <!-- List of authors will be created by JS -->
+    <div id="list">
+
+    </div>
+    <!-- TODO: Mode switching-->
+    <script src="../public/components/lecturer.js"></script>
+    <script src="../public/themeSwitcher.js"></script>
+    <script>
+        var manager = ThemeManager;
+        manager.setThemeBySystem();
+    </script>
+   <script src="https://unpkg.com/react@17/umd/react.development.js"></script>
+   <script src="https://unpkg.com/react-dom@17/umd/react-dom.development.js"></script>
+   <script src="../public/components/Lecturer.js"></script>
+   <script>
+     // Render the component in the #app element
+     ReactDOM.render(React.createElement(Lecturer, { fullName: 'Michaela Nějaká', firstTitle: "Mgr", secondTitle: "MBA" }), document.getElementById('list'));  </script>
 </body>
 </html>
