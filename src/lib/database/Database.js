@@ -3,7 +3,7 @@ const path = require("path");
 
 class Database extends BetterSQLite {
     constructor() {
-        super(path.join(__dirname, "../../data/database.sqlite"));
+        super(path.join(__dirname, "../data/database.sqlite"));
 
         this.createTables();
     }

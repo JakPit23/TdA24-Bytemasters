@@ -1,3 +1,5 @@
+const fs = require("fs");
+const path = require("path");
 const Configuration = require("./Configuration");
 const Logger = require("./Logger");
 const Database = require("./database/Database");
@@ -8,6 +10,10 @@ const Webserver = require("./webserver/Webserver");
 class Core {
     constructor() {
         Logger.info(Logger.Type.Core, `Starting application v${Tools.GetApplicationVersion()}`);
+        if (!fs.existsSync(path.resolve(__dirname, "./data"))) {
+            Logger.info(Logger.Type.Core, `Creating data directory`);
+            fs.mkdirSync(path.resolve(__dirname, "./data"));
+        }
         
         this.config = new Configuration();
         this.database = new Database();
