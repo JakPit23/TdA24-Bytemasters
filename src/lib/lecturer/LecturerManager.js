@@ -2,6 +2,7 @@ const crypto = require("crypto");
 const Core = require("../Core");
 const Logger = require("../Logger");
 const Lecturer = require("./Lecturer");
+const LecturerTag = require("./Tag");
 
 class LecturerManager {
     /**
@@ -19,12 +20,12 @@ class LecturerManager {
     getLecturers() {
         const lecturers = this.core.getDatabase().query("SELECT * FROM lecturers");
         return lecturers.map(({ id, tags, contact, ...data }) => {
-            // Parse JSON strings for tags and contact fields
-            const parsedTags = tags ? JSON.parse(tags) : null;
             const parsedContact = contact ? JSON.parse(contact) : null;
-    
-            // Return a new Lecturer instance with parsed tags and contact
-            return new Lecturer(id, { ...data, tags: parsedTags, contact: parsedContact });
+            const uuidTags = tags ? JSON.parse(tags) : null;
+
+            const fetchedTags = uuidTags.map(tag => this.core.getTagManager().getTagById(tag));
+
+            return new Lecturer(id, { ...data, tags: fetchedTags, contact: parsedContact });
         });
     }
 
@@ -54,6 +55,17 @@ class LecturerManager {
         try {
             const lecturer = new Lecturer(id, data);
 
+            const tags = lecturer.getTags().map(tag => {
+                const tagName = tag?.name || null;
+
+                let foundTag = this.core.getTagManager().getTagByName(tagName);
+                if (!foundTag) {
+                    foundTag = this.core.getTagManager().createTag(null, tagName);
+                }
+
+                return foundTag;
+            });
+
             this.core.getDatabase().exec("INSERT INTO lecturers (id, title_before, first_name, middle_name, last_name, title_after, picture_url, location, claim, bio, tags, price_per_hour, contact) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", [
                 lecturer.getId(),
                 lecturer.getTitleBefore(),
@@ -65,11 +77,13 @@ class LecturerManager {
                 lecturer.getLocation(),
                 lecturer.getClaim(),
                 lecturer.getBio(),
-                JSON.stringify(lecturer.getTags()),
+                JSON.stringify(tags.map(tag => tag.getId())),
                 lecturer.getPricePerHour(),
                 JSON.stringify(lecturer.getContact()),
             ]);
 
+            lecturer.setTags(tags);
+            
             return lecturer;
         } catch(error) {
             Logger.error(Logger.Type.LecturerManager, `Failed to create lecturer: ${error.message}`);

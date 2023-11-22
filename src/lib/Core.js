@@ -6,6 +6,7 @@ const Database = require("./database/Database");
 const LecturerManager = require("./lecturer/LecturerManager");
 const Tools = require("./utils/Tools");
 const Webserver = require("./webserver/Webserver");
+const TagManager = require("./lecturer/TagManager");
 
 class Core {
     constructor() {
@@ -18,6 +19,7 @@ class Core {
         this.config = new Configuration();
         this.database = new Database();
         this.lecturerManager = new LecturerManager(this);
+        this.tagManager = new TagManager(this);
         this.webserver = new Webserver(this);
     }
 
@@ -51,6 +53,14 @@ class Core {
      */
     getLecturerManager() {
         return this.lecturerManager;
+    }
+
+    /**
+     * Gets the tag manager object.
+     * @returns {TagManager} The tag manager object.
+     */
+    getTagManager() {
+        return this.tagManager;
     }
 
     /**

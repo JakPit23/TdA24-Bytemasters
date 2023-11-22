@@ -32,6 +32,7 @@ class Database extends BetterSQLite {
 
     createTables() {
         this.exec("CREATE TABLE IF NOT EXISTS lecturers (id TEXT, title_before TEXT, first_name TEXT, middle_name TEXT, last_name TEXT, title_after TEXT, picture_url TEXT, location TEXT, claim TEXT, bio TEXT, tags TEXT, price_per_hour INTEGER, contact TEXT)");
+        this.exec("CREATE TABLE IF NOT EXISTS tags (id TEXT, name TEXT)");
     }
 }
 

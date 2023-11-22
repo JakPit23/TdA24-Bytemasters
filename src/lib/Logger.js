@@ -23,6 +23,7 @@ class Logger {
         Watchdog: "watchdog",
         Webserver: "webserver",
         LecturerManager: "lecturer manager",
+        TagManager: "tag manager",
     }
 
     /**
