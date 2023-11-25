@@ -3,6 +3,17 @@
 * These styles are more about colors and padding than about positions, because I use Tailwind CSS
 */
 
+:root {
+    --primary-color: #00384d;
+    --secondary-color: #74c7d3;
+    --special-color: #333333;
+    --terciary-color: #FECB2E;
+}
+
+.light {
+    --primary-color: #74C7D3;
+    --secondary-color: #00384d;
+}
 #logo {
     padding-left: 5px;
     height: 64px;
@@ -11,6 +22,12 @@
 }
 header {
     width: 100%;
+    background-color: var(--secondary-color);
+    color: var(--special-color);
+}
+body {
+    background-color: var(--primary-color);
+    color: #FFFFFF;
 }
 
 #icons {
@@ -34,6 +51,8 @@ li {
     margin: 5px;
     vertical-align: middle;
     min-width: auto;
+    background-color: var(--special-color);
+    color: var(--terciary-color)
 }
 
 #contact {
