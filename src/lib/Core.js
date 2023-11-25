@@ -11,9 +11,9 @@ const TagManager = require("./lecturer/TagManager");
 class Core {
     constructor() {
         Logger.info(Logger.Type.Core, `Starting application v${Tools.GetApplicationVersion()}`);
-        if (!fs.existsSync(path.resolve(__dirname, "./data"))) {
+        if (!fs.existsSync(path.resolve(__dirname, "../data"))) {
             Logger.info(Logger.Type.Core, `Creating data directory`);
-            fs.mkdirSync(path.resolve(__dirname, "./data"));
+            fs.mkdirSync(path.resolve(__dirname, "../data"));
         }
         
         this.config = new Configuration();
