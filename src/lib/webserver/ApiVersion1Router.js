@@ -43,22 +43,32 @@ class ApiVersion1Router {
             });
         });
 
+        const log = [];
+        this.router.get("/log", (req, res) => {
+            res.json(log);
+        });
+
         this.router.post("/lecturers", (req, res) => {
             try {
                 const data = req.body;
     
+                log.push("Body data:" + data);
                 console.log("Body data:", data);
                 
                 const lecturer = this.core.getLecturerManager().createLecturer(this.core.getLecturerManager().generateUUID(), data);
+
                 console.log("Lecturer:", lecturer);
+                log.push("Lecturer: " + lecturer);
                 
                 if (data.tags && Array.isArray(data.tags)) {
                     for (const tag of data.tags) {
                         if (this.core.getLecturerManager().isValidTag(tag)) {
+                            log.push("Valid Tag: " + tag);
                             Logger.debug(Logger.Type.Webserver, "Valid Tag:", tag);
                             continue;
                         }
 
+                        log.push("Invalid Tag: " + tag);
                         Logger.debug(Logger.Type.Webserver, "Invalid Tag:", tag);
                         // return res.status(200).json({ code: 400, error: "Invalid tag." });
                     }
