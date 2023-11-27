@@ -10,17 +10,15 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Lalezar&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
     <script src="https://kit.fontawesome.com/cc03af5ac0.js"></script>
-    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
     <!-- Import our styles -->
-    <link rel="stylesheet" href="../public/styles/style_generic.css">
-    <link rel="stylesheet" href="../public/styles/light.css" id="css">
+    <link rel="stylesheet" href="../public/styles/style.css">
 </head>
 <body>
     <!-- Header contains of logo and image-->
     <header class="inline-flex flex-wrap">
-        <img src="../public/images/logo_light.png" id="logo"/>
-        <img src="../public/images/icons_light.png" id="icons"/>
-        <button onclick="ThemeManager.setTheme()">Theme</button>
+        <img src="../public/images/logo.png" id="logo"/>
+        <img src="../public/images/ikony.png" id="icons"/>
+        <button onclick="setTheme()">Theme</button>
     </header>
     <!-- First part of web is name of lecturer his/her image and role-->
     <div class="flex flex-col flex-wrap align-middle items-center ">
@@ -52,10 +50,6 @@
         <p>Telefon: +420 722 482 974</p>
         <p>Email(y): <a href="mailto:placha@scg.cz">placha@scg.cz</a>, <a href="mailto:predseda@scg.cz">predseda@scg.cz</a></p>    
     </div>
-    <script src="../public/themeSwitcher.js"></script>
-    <script>
-        var manager = ThemeManager;
-        manager.setThemeBySystem();
-    </script>
+    <script src="../public/theme.js"></script>
 </body>
 </html>

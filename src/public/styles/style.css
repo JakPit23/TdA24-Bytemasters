@@ -23,7 +23,7 @@
 header {
     width: 100%;
     background-color: var(--secondary-color);
-    color: var(--special-color);
+    color: #FFFFFF;
 }
 body {
     background-color: var(--primary-color);
