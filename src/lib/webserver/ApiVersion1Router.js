@@ -100,7 +100,7 @@ class ApiVersion1Router {
             }
         });
 
-        this.router.get("/lecturers", (req, res) => {
+        // this.router.get("/lecturers", (req, res) => {
             // const lecturers = this.core.getLecturerManager().getLecturers();
 
             // if (!lecturers || lecturers.length === 0) {
@@ -108,9 +108,9 @@ class ApiVersion1Router {
             // }
 
             // res.status(200).json(lecturers.map(lecturer => lecturer.toJSON()));
-        });
+        // });
 
-        this.router.get("/lecturers/:lecturerId", (req, res) => {
+        // this.router.get("/lecturers/:lecturerId", (req, res) => {
             // const { lecturerId } = req.params;
             // const lecturer = this.core.getLecturerManager().getLecturer(lecturerId);
 
@@ -122,9 +122,9 @@ class ApiVersion1Router {
             // }
 
             // res.status(200).json(lecturer);
-        });
+        // });
 
-        this.router.delete("/lecturers/:lecturerId", (req, res) => {
+        // this.router.delete("/lecturers/:lecturerId", (req, res) => {
             // const { lecturerId } = req.params;
             // const lecturer = this.core.getLecturerManager().getLecturer(lecturerId);
 
@@ -141,10 +141,10 @@ class ApiVersion1Router {
             //     code: 200,
             //     success: true,
             // });
-        });
+        // });
 
         // TODO: Check if lecturer exists before updating. etc.. and if the syntax of some values is correct.
-        this.router.put("/lecturers/:lecturerId", (req, res) => {
+        // this.router.put("/lecturers/:lecturerId", (req, res) => {
             // const data = req.body;
             // const lecturerId = req.params.lecturerId;
             // const lecturer = this.core.getLecturerManager().getLecturer(lecturerId);
@@ -181,7 +181,7 @@ class ApiVersion1Router {
 
             // const editedLecturer = this.core.getLecturerManager().editLecturer(lecturerId, data);
             // res.status(200).json(editedLecturer);
-        });
+        // });
 
         this.router.get("*", (req, res) => {
             res.json({
