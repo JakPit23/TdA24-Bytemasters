@@ -49,13 +49,13 @@ class ApiVersion1Router {
                 console.log("Data:", data);
                 if (data.first_name === undefined || data.last_name === undefined || data.contact === undefined) {
                     console.log("Missing Required Fields");
-                    res.status(400).json({ code: 400, error: "Missing required fields." });
+                    res.status(200).json({ code: 400, error: "Missing required fields." });
                     return;
                 }
     
                 if (!this.core.getLecturerManager().isValidContact(data.contact)) {
                     console.log("Invalid Contact");
-                    res.status(400).json({ code: 400, error: "Invalid contact information." });
+                    res.status(200).json({ code: 400, error: "Invalid contact information." });
                     return;
                 }
     
@@ -67,7 +67,7 @@ class ApiVersion1Router {
                         }
                         
                         console.log("Invalid Tag:", tag);
-                        return res.status(400).json({ code: 400, error: "Invalid tag." });
+                        return res.status(200).json({ code: 400, error: "Invalid tag." });
                     }
                 }
                 
@@ -76,7 +76,7 @@ class ApiVersion1Router {
             } catch(error) {
                 // Catch known errors, otherwise pass them to error handler.
                 if (error.message == "LECTURER_ALREADY_EXISTS") {
-                    res.status(400).json({ code: 400, error: "Lecturer already exists." });
+                    res.status(200).json({ code: 400, error: "Lecturer already exists." });
                     return;
                 }
 
@@ -102,7 +102,7 @@ class ApiVersion1Router {
             const lecturer = this.core.getLecturerManager().getLecturer(lecturerId);
 
             if (!lecturer) {
-                return res.status(200).send({
+                return res.status(404).send({
                     code: 404,
                     message: "Lecturer not found",
                 });
@@ -116,7 +116,7 @@ class ApiVersion1Router {
             const lecturer = this.core.getLecturerManager().getLecturer(lecturerId);
 
             if (!lecturer) {
-                return res.status(200).json({
+                return res.status(404).json({
                     code: 404,
                     message: "Lecturer not found",
                 });
@@ -145,12 +145,12 @@ class ApiVersion1Router {
 
             if (data.contact) {
                 if (data.contact.emails && !data.contact.emails.every(email => this.core.getLecturerManager().isValidEmail(email))) {
-                    res.status(400).json({ code: 400, error: "Invalid emails." });
+                    res.status(200).json({ code: 400, error: "Invalid emails." });
                     return;
                 }
 
                 if (data.contact.telephone_numbers && !data.contact.telephone_numbers.every(telephoneNumber => this.core.getLecturerManager().isValidPhoneNumber(telephoneNumber))) {
-                    res.status(400).json({ code: 400, error: "Invalid telephone numbers." });
+                    res.status(200).json({ code: 400, error: "Invalid telephone numbers." });
                     return;
                 }
             }
@@ -162,7 +162,7 @@ class ApiVersion1Router {
                         continue;
                     }
 
-                    return res.status(400).json({ code: 400, error: "Invalid tag." });
+                    return res.status(200).json({ code: 400, error: "Invalid tag." });
                 }
             }
 
