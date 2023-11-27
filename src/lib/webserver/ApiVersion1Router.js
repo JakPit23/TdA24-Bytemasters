@@ -53,13 +53,17 @@ class ApiVersion1Router {
                 log = [];
                 const data = req.body;
     
-                log.push(`Body data: ${data}`);
+                log.push([
+                    "Data:", data
+                ]);
                 console.log("Body data:", data);
                 
                 const lecturer = this.core.getLecturerManager().createLecturer(this.core.getLecturerManager().generateUUID(), data);
 
                 console.log("Lecturer:", lecturer);
-                log.push(`Lecturer: ${lecturer}`);
+                log.push([
+                    "Lecturer:", lecturer
+                ]);
                 
                 if (data.tags && Array.isArray(data.tags)) {
                     for (const tag of data.tags) {
