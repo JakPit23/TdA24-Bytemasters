@@ -40,7 +40,7 @@ class TagManager {
             throw Error("MISSING_NAME");
         }
 
-        if (this.getTagByID(id)) {
+        if (this.getTagById(id)) {
             throw Error("TAG_ALREADY_EXISTS");
         }
 
