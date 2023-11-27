@@ -46,12 +46,15 @@ class ApiVersion1Router {
             try {
                 const data = req.body;
     
+                console.log("Data:", data);
                 if (data.first_name === undefined || data.last_name === undefined || data.contact === undefined) {
+                    console.log("Missing Required Fields");
                     res.status(400).json({ code: 400, error: "Missing required fields." });
                     return;
                 }
     
                 if (!this.core.getLecturerManager().isValidContact(data.contact)) {
+                    console.log("Invalid Contact");
                     res.status(400).json({ code: 400, error: "Invalid contact information." });
                     return;
                 }
@@ -59,9 +62,11 @@ class ApiVersion1Router {
                 if (data.tags && Array.isArray(data.tags)) {
                     for (const tag of data.tags) {
                         if (this.core.getLecturerManager().isValidTag(tag)) {
+                            console.log("Valid Tag:", tag);
                             continue;
                         }
-    
+                        
+                        console.log("Invalid Tag:", tag);
                         return res.status(400).json({ code: 400, error: "Invalid tag." });
                     }
                 }
