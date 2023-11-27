@@ -55,10 +55,15 @@ class ApiVersion1Router {
     
                 if (!this.core.getLecturerManager().isValidContact(data.contact)) {
                     console.log("Invalid Contact");
-                    res.status(200).json({ code: 400, error: "Invalid contact information." });
+                    res.status(200).json({
+                        code: 400,
+                        error: "Invalid contact information.",
+                        ...data,
+                        contact: [],
+                    });
                     return;
                 }
-    
+
                 if (data.tags && Array.isArray(data.tags)) {
                     for (const tag of data.tags) {
                         if (this.core.getLecturerManager().isValidTag(tag)) {
