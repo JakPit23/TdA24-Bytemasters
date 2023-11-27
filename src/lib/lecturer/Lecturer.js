@@ -61,17 +61,17 @@ class Lecturer {
     toJSON() {
         return {
             id: this.getId(),
-            titleBefore: this.getTitleBefore(),
-            firstName: this.getFirstName(),
-            middleName: this.getMiddleName(),
-            lastName: this.getLastName(),
-            titleAfter: this.getTitleAfter(),
-            pictureUrl: this.getPictureUrl(),
+            title_before: this.getTitleBefore(),
+            first_name: this.getFirstName(),
+            middle_name: this.getMiddleName(),
+            last_name: this.getLastName(),
+            title_after: this.getTitleAfter(),
+            picture_url: this.getPictureUrl(),
             location: this.getLocation(),
             claim: this.getClaim(),
             bio: this.getBio(),
             tags: this.getTags(),
-            pricePerHour: this.getPricePerHour(),
+            price_per_hour: this.getPricePerHour(),
             contact: this.getContact()
         }
     }
