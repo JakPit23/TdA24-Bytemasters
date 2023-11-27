@@ -10,7 +10,7 @@ class Logger {
      * @constructor
      */
     constructor() {
-        this.logLevel = Logger.LogLevels["info"];
+        this.logLevel = Logger.LogLevels["debug"];
     }
 
     /**

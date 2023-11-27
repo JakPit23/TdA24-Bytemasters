@@ -1,6 +1,7 @@
 const express = require("express");
 const crypto = require("crypto");
 const Core = require("../Core");
+const Logger = require("../Logger");
 
 /**
  * The ApiVersion1Router class is responsible for defining routes related to API version 1.
@@ -46,15 +47,15 @@ class ApiVersion1Router {
             try {
                 const data = req.body;
     
-                console.log("Data:", data);
+                Logger.debug(Logger.Type.Webserver, "Body data:", data);
+
                 if (data.first_name === undefined || data.last_name === undefined || data.contact === undefined) {
-                    console.log("Missing Required Fields");
-                    res.status(200).json({ code: 400, error: "Missing required fields." });
-                    return;
+                    Logger.debug(Logger.Type.Webserver, "Responding with \"400 Missing Required Fields\"");
+                    return res.status(400).json({ code: 400, error: "Missing required fields." });
                 }
     
                 if (!this.core.getLecturerManager().isValidContact(data.contact)) {
-                    console.log("Invalid Contact");
+                    Logger.debug(Logger.Type.Webserver, "Invalid contact");
                     // res.status(200).json({
                     //     code: 400,
                     //     error: "Invalid contact information.",
@@ -70,17 +71,18 @@ class ApiVersion1Router {
                 if (data.tags && Array.isArray(data.tags)) {
                     for (const tag of data.tags) {
                         if (this.core.getLecturerManager().isValidTag(tag)) {
-                            console.log("Valid Tag:", tag);
+                            Logger.debug(Logger.Type.Webserver, "Valid Tag:", tag);
                             continue;
                         }
                         
-                        console.log("Invalid Tag:", tag);
+                        Logger.debug(Logger.Type.Webserver, "Invalid Tag:", tag);
                         // return res.status(200).json({ code: 400, error: "Invalid tag." });
                     }
                 }
                 
                 const lecturer = this.core.getLecturerManager().createLecturer(this.core.getLecturerManager().generateUUID(), data);
-                res.status(200).json(lecturer.toJSON());
+                Logger.debug(Logger.Type.Webserver, "Lecturer:", lecturer.toJSON()); 
+                return res.status(200).json(lecturer.toJSON());
             } catch(error) {
                 // Catch known errors, otherwise pass them to error handler.
                 if (error.message == "LECTURER_ALREADY_EXISTS") {
