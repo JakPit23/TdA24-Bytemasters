@@ -98,10 +98,7 @@ class ApiVersion1Router {
             const lecturers = this.core.getLecturerManager().getLecturers();
 
             if (!lecturers || lecturers.length === 0) {
-                return res.status(200).json({
-                    code: 404,
-                    message: "No lecturers found",
-                });
+                return res.status(200).json([]);
             }
 
             res.status(200).json(lecturers.map(lecturer => lecturer.toJSON()));
