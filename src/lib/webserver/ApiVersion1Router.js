@@ -49,6 +49,8 @@ class ApiVersion1Router {
     
                 Logger.debug(Logger.Type.Webserver, "Body data:", data);
 
+                return res.status(200).json(data);
+
                 // if (data.first_name === undefined || data.last_name === undefined || data.contact === undefined) {
                 //     Logger.debug(Logger.Type.Webserver, "Responding with \"400 Missing Required Fields\"");
                 //     return res.status(400).json({ code: 400, error: "Missing required fields." });
