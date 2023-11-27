@@ -59,7 +59,10 @@ class ApiVersion1Router {
                         code: 400,
                         error: "Invalid contact information.",
                         ...data,
-                        contact: [],
+                        contact: {
+                            telephone_numbers: data.telephone_numbers || [],
+                            emails: data.emails || [],
+                        },
                     });
                     return;
                 }
