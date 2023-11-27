@@ -83,7 +83,7 @@ class ApiVersion1Router {
             const lecturers = this.core.getLecturerManager().getLecturers();
 
             if (!lecturers || lecturers.length === 0) {
-                return res.status(404).json({
+                return res.status(200).json({
                     code: 404,
                     message: "No lecturers found",
                 });
@@ -97,7 +97,7 @@ class ApiVersion1Router {
             const lecturer = this.core.getLecturerManager().getLecturer(lecturerId);
 
             if (!lecturer) {
-                return res.status(404).send({
+                return res.status(200).send({
                     code: 404,
                     message: "Lecturer not found",
                 });
@@ -111,7 +111,7 @@ class ApiVersion1Router {
             const lecturer = this.core.getLecturerManager().getLecturer(lecturerId);
 
             if (!lecturer) {
-                return res.status(404).json({
+                return res.status(200).json({
                     code: 404,
                     message: "Lecturer not found",
                 });
@@ -132,7 +132,7 @@ class ApiVersion1Router {
             const lecturer = this.core.getLecturerManager().getLecturer(lecturerId);
 
             if (!lecturer) {
-                return res.status(404).send({
+                return res.status(200).send({
                     code: 404,
                     message: "Lecturer not found",
                 });
