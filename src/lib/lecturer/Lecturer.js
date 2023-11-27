@@ -39,7 +39,7 @@ class Lecturer {
      * @returns {string} The UUID of the lecturer.
      */
     getUUID() {
-        return this.uuid || null;
+        return this.uuid;
     }
 
     /**
@@ -89,7 +89,7 @@ class Lecturer {
      * @returns {string} The title before the lecturer's name.
      */
     getTitleBefore() {
-        return this.data.title_before || null;
+        return this.data.title_before;
     }
 
     /**
@@ -105,7 +105,7 @@ class Lecturer {
      * @returns {string} The first name of the lecturer.
      */
     getFirstName() {
-        return this.data.first_name || null;
+        return this.data.first_name;
     }
 
     /**
@@ -121,7 +121,7 @@ class Lecturer {
      * @returns {string} The middle name of the lecturer.
      */
     getMiddleName() {
-        return this.data.middle_name || null;
+        return this.data.middle_name;
     }
 
     /**
@@ -137,7 +137,7 @@ class Lecturer {
      * @returns {string} The last name of the lecturer.
      */
     getLastName() {
-        return this.data.last_name || null;
+        return this.data.last_name;
     }
 
     /**
@@ -153,7 +153,7 @@ class Lecturer {
      * @returns {string} The title after the lecturer's name.
      */
     getTitleAfter() {
-        return this.data.title_after || null;
+        return this.data.title_after;
     }
 
     /**
@@ -169,7 +169,7 @@ class Lecturer {
      * @returns {string} The URL of the lecturer's picture.
      */
     getPictureUrl() {
-        return this.data.picture_url || null;
+        return this.data.picture_url;
     }
 
     /**
@@ -185,7 +185,7 @@ class Lecturer {
      * @returns {string} The location of the lecturer.
      */
     getLocation() {
-        return this.data.location || null;
+        return this.data.location;
     }
 
     /**
@@ -201,7 +201,7 @@ class Lecturer {
      * @returns {string} The claim of the lecturer.
      */
     getClaim() {
-        return this.data.claim || null;
+        return this.data.claim;
     }
 
     /**
@@ -217,7 +217,7 @@ class Lecturer {
      * @returns {string} The biography of the lecturer.
      */
     getBio() {
-        return this.data.bio || null;
+        return this.data.bio;
     }
 
     /**
@@ -233,7 +233,7 @@ class Lecturer {
      * @returns {Array<{ name: string }>} The tags of the lecturer
      */
     getTags() {
-        return this.data.tags || null;
+        return this.data.tags;
     }
 
     /**
@@ -249,7 +249,7 @@ class Lecturer {
      * @returns {number} The price per hour for the lecturer's services.
      */
     getPricePerHour() {
-        return this.data.price_per_hour || null;
+        return this.data.price_per_hour;
     }
 
     /**
@@ -267,7 +267,7 @@ class Lecturer {
      * @returns {{emails: [], telephone_numbers: []}} The contact information of the lecturer.
      */
     getContact() {
-        return this.data.contact || null;
+        return this.data.contact;
     }
 }
 
