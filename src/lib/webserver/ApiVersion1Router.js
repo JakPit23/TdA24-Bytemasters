@@ -125,19 +125,25 @@ class ApiVersion1Router {
             // res.status(200).json(lecturers.map(lecturer => lecturer.toJSON()));
         // });
 
-        // this.router.get("/lecturers/:lecturerId", (req, res) => {
-            // const { lecturerId } = req.params;
-            // const lecturer = this.core.getLecturerManager().getLecturer(lecturerId);
+        this.router.get("/lecturers/:lecturerUUID", (req, res) => {
+            const { lecturerUUID } = req.params;
+            const lecturer = this.core.getLecturerManager().getLecturer(lecturerUUID);
 
-            // if (!lecturer) {
-            //     return res.status(404).send({
-            //         code: 404,
-            //         message: "Lecturer not found",
-            //     });
-            // }
+            console.log("Lecturer UUID: ", lecturerUUID);
+            console.log("Lecturer: ", lecturer);
+            log = [];
+            log.push(["Lecturer UUID: ", lecturerUUID]);
+            log.push(["Lecturer: ", lecturer]);
+    
+            if (!lecturer) {
+                return res.status(404).send({
+                    code: 404,
+                    message: "Lecturer not found",
+                });
+            }
 
-            // res.status(200).json(lecturer);
-        // });
+            res.status(200).json(lecturer);
+        });
 
         // this.router.delete("/lecturers/:lecturerId", (req, res) => {
             // const { lecturerId } = req.params;
