@@ -55,16 +55,19 @@ class LecturerManager {
         try {
             const lecturer = new Lecturer(id, data);
 
-            const tags = lecturer.getTags().map(tag => {
-                const tagName = tag?.name || null;
-
-                let foundTag = this.core.getTagManager().getTagByName(tagName);
-                if (!foundTag) {
-                    foundTag = this.core.getTagManager().createTag(null, tagName);
-                }
-
-                return foundTag;
-            });
+            let tags = [];
+            if (lecturer.getTags() != null) {
+                tags = lecturer.getTags().map(tag => {
+                    const tagName = tag?.name || null;
+                    
+                    let foundTag = this.core.getTagManager().getTagByName(tagName);
+                    if (!foundTag) {
+                        foundTag = this.core.getTagManager().createTag(null, tagName);
+                    }
+                    
+                    return foundTag;
+                });
+            }
 
             this.core.getDatabase().exec("INSERT INTO lecturers (id, title_before, first_name, middle_name, last_name, title_after, picture_url, location, claim, bio, tags, price_per_hour, contact) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", [
                 lecturer.getId(),
