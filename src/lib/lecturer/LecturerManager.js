@@ -87,7 +87,6 @@ class LecturerManager {
 
             lecturer.setTags(tags);
             
-            console.log("lecturer", lecturer);
             return lecturer;
         } catch(error) {
             Logger.error(Logger.Type.LecturerManager, `Failed to create lecturer: ${error.message}`);

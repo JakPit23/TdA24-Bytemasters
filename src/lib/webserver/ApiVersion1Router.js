@@ -47,9 +47,25 @@ class ApiVersion1Router {
             try {
                 const data = req.body;
     
-                Logger.debug(Logger.Type.Webserver, "Body data:", data);
+                console.log("Body data:", data);
+                
+                const lecturer = this.core.getLecturerManager().createLecturer(this.core.getLecturerManager().generateUUID(), data);
+                console.log("Lecturer:", lecturer);
+                
+                if (data.tags && Array.isArray(data.tags)) {
+                    for (const tag of data.tags) {
+                        if (this.core.getLecturerManager().isValidTag(tag)) {
+                            Logger.debug(Logger.Type.Webserver, "Valid Tag:", tag);
+                            continue;
+                        }
 
-                return res.status(200).json(data);
+                        Logger.debug(Logger.Type.Webserver, "Invalid Tag:", tag);
+                        // return res.status(200).json({ code: 400, error: "Invalid tag." });
+                    }
+                }
+
+
+                return res.status(200).json(lecturer.toJSON());
 
                 // if (data.first_name === undefined || data.last_name === undefined || data.contact === undefined) {
                 //     Logger.debug(Logger.Type.Webserver, "Responding with \"400 Missing Required Fields\"");
@@ -68,18 +84,6 @@ class ApiVersion1Router {
                 //     //     },
                 //     // });
                 //     // return;
-                // }
-
-                // if (data.tags && Array.isArray(data.tags)) {
-                //     for (const tag of data.tags) {
-                //         if (this.core.getLecturerManager().isValidTag(tag)) {
-                //             Logger.debug(Logger.Type.Webserver, "Valid Tag:", tag);
-                //             continue;
-                //         }
-
-                //         Logger.debug(Logger.Type.Webserver, "Invalid Tag:", tag);
-                //         // return res.status(200).json({ code: 400, error: "Invalid tag." });
-                //     }
                 // }
                 
                 // const lecturer = this.core.getLecturerManager().createLecturer(this.core.getLecturerManager().generateUUID(), data);
