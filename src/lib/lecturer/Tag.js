@@ -1,11 +1,11 @@
 class Tag {
-    constructor(id, name) {
-        this.id = id;
+    constructor(uuid, name) {
+        this.uuid = uuid;
         this.name = name;
     }
 
-    getId() {
-        return this.id;
+    getUUID() {
+        return this.uuid;
     }
 
     getName() {

@@ -76,7 +76,7 @@ class ApiVersion1Router {
                     }
                 }
                 
-                const lecturer = this.core.getLecturerManager().createLecturer(this.core.getLecturerManager().generateId(), data);
+                const lecturer = this.core.getLecturerManager().createLecturer(this.core.getLecturerManager().generateUUID(), data);
                 res.status(200).json(lecturer.toJSON());
             } catch(error) {
                 // Catch known errors, otherwise pass them to error handler.

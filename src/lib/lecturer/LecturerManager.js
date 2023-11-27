@@ -13,24 +13,24 @@ class LecturerManager {
         this.core = core;
     }
 
-    generateId() {
+    generateUUID() {
         return crypto.randomUUID();
     }
 
     getLecturers() {
         const lecturers = this.core.getDatabase().query("SELECT * FROM lecturers");
-        return lecturers.map(({ id, tags, contact, ...data }) => {
+        return lecturers.map(({ uuid, tags, contact, ...data }) => {
             const parsedContact = contact ? JSON.parse(contact) : null;
             const uuidTags = tags ? JSON.parse(tags) : null;
 
-            const fetchedTags = uuidTags.map(tag => this.core.getTagManager().getTagById(tag));
+            const fetchedTags = uuidTags.map(tag => this.core.getTagManager().getTagByUUID(tag));
 
-            return new Lecturer(id, { ...data, tags: fetchedTags, contact: parsedContact });
+            return new Lecturer(uuid, { ...data, tags: fetchedTags, contact: parsedContact });
         });
     }
 
-    getLecturer(id) {
-        const lecturer = this.getLecturers().find(lecturer => lecturer.getId() == id);
+    getLecturer(uuid) {
+        const lecturer = this.getLecturers().find(lecturer => lecturer.getUUID() == uuid);
 
         if (!lecturer) {
             return null;
@@ -39,8 +39,8 @@ class LecturerManager {
         return lecturer;
     }
 
-    createLecturer(id, data) {
-        if (!id) {
+    createLecturer(uuid, data) {
+        if (!uuid) {
             throw Error("MISSING_ID");
         }
 
@@ -48,12 +48,12 @@ class LecturerManager {
             throw Error("MISSING_DATA");
         }
 
-        if (this.getLecturer(id)) {
+        if (this.getLecturer(uuid)) {
             throw Error("LECTURER_ALREADY_EXISTS");
         }
 
         try {
-            const lecturer = new Lecturer(id, data);
+            const lecturer = new Lecturer(uuid, data);
 
             let tags = [];
             if (lecturer.getTags() != null) {
@@ -69,8 +69,8 @@ class LecturerManager {
                 });
             }
 
-            this.core.getDatabase().exec("INSERT INTO lecturers (id, title_before, first_name, middle_name, last_name, title_after, picture_url, location, claim, bio, tags, price_per_hour, contact) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", [
-                lecturer.getId(),
+            this.core.getDatabase().exec("INSERT INTO lecturers (uuid, title_before, first_name, middle_name, last_name, title_after, picture_url, location, claim, bio, tags, price_per_hour, contact) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", [
+                lecturer.getUUID(),
                 lecturer.getTitleBefore(),
                 lecturer.getFirstName(),
                 lecturer.getMiddleName(),
@@ -80,13 +80,14 @@ class LecturerManager {
                 lecturer.getLocation(),
                 lecturer.getClaim(),
                 lecturer.getBio(),
-                JSON.stringify(tags.map(tag => tag.getId())),
+                JSON.stringify(tags.map(tag => tag.getUUID())),
                 lecturer.getPricePerHour(),
                 JSON.stringify(lecturer.getContact()),
             ]);
 
             lecturer.setTags(tags);
             
+            console.log("lecturer", lecturer);
             return lecturer;
         } catch(error) {
             Logger.error(Logger.Type.LecturerManager, `Failed to create lecturer: ${error.message}`);
@@ -94,13 +95,13 @@ class LecturerManager {
         }
     }
 
-    deleteLecturer(id) {
-        if (!this.getLecturer(id)) {
+    deleteLecturer(uuid) {
+        if (!this.getLecturer(uuid)) {
             throw Error("LECTURER_NOT_FOUND");
         }
 
         try {
-            const result = this.core.getDatabase().exec("DELETE FROM lecturers WHERE id = ?", [id]);
+            const result = this.core.getDatabase().exec("DELETE FROM lecturers WHERE uuid = ?", [uuid]);
             return result;
         } catch(error) {
             Logger.error(Logger.Type.LecturerManager, `Failed to delete lecturer: ${error.message}`);
@@ -108,8 +109,8 @@ class LecturerManager {
         }
     }
 
-    editLecturer(id, data) {
-        const lecturer = this.getLecturer(id);
+    editLecturer(uuid, data) {
+        const lecturer = this.getLecturer(uuid);
 
         if (!lecturer) {
             throw Error("LECTURER_NOT_FOUND");
@@ -117,8 +118,8 @@ class LecturerManager {
 
         const editedData = { ...lecturer.getData() };
         for (const key of Object.keys(data)) {
-            // Skip if the key is "id" or not present in the original data or the new value is undefined
-            if (key === "id" || !editedData.hasOwnProperty(key) || data[key] === undefined) {
+            // Skip if the key is "uuid" or not present in the original data or the new value is undefined
+            if (key === "uuid" || !editedData.hasOwnProperty(key) || data[key] === undefined) {
                 continue;
             }
 
@@ -152,7 +153,7 @@ class LecturerManager {
                 tags = ?,
                 price_per_hour = ?,
                 contact = ?
-            WHERE id = ?
+            WHERE uuid = ?
         `, [
             editedData.title_before,
             editedData.first_name,
@@ -166,7 +167,7 @@ class LecturerManager {
             JSON.stringify(editedData.tags),
             editedData.price_per_hour,
             JSON.stringify(editedData.contact),
-            id,
+            uuid,
         ]);
 
         return editedData;

@@ -2,7 +2,7 @@ class Lecturer {
     /**
      * Creates a new instance of Lecturer.
      * @constructor
-     * @param {string} id - The ID of the lecturer.
+     * @param {string} uuid - The UUID of the lecturer.
      * @param {Object} data - The data of the lecturer.
      * @param {string} data.title_before - The title before the lecturer's name.
      * @param {string} data.first_name - The first name of the lecturer.
@@ -21,25 +21,25 @@ class Lecturer {
      * @param {string[]} data.contact.emails - The emails of the lecturer.
      * @param {string[]} data.contact.telephone_numbers - The telephone numbers of the lecturer.
      */
-    constructor(id, data) {
-        this.id = id;
+    constructor(uuid, data) {
+        this.uuid = uuid;
         this.data = data;
     }
 
     /**
-     * Sets the ID of the lecturer.
-     * @param {string} id - The ID of the lecturer.
+     * Sets the UUID of the lecturer.
+     * @param {string} uuid - The UUID of the lecturer.
      */
-    setId(id) {
-        this.id = id;
+    setUUID(uuid) {
+        this.uuid = uuid;
     }
 
     /**
-     * Gets the ID of the lecturer.
-     * @returns {string} The ID of the lecturer.
+     * Gets the UUID of the lecturer.
+     * @returns {string} The UUID of the lecturer.
      */
-    getId() {
-        return this.id || null;
+    getUUID() {
+        return this.uuid || null;
     }
 
     /**
@@ -60,7 +60,7 @@ class Lecturer {
 
     toJSON() {
         return {
-            id: this.getId(),
+            uuid: this.getUUID(),
             title_before: this.getTitleBefore(),
             first_name: this.getFirstName(),
             middle_name: this.getMiddleName(),

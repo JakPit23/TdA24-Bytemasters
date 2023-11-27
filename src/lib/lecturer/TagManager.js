@@ -18,12 +18,12 @@ class TagManager {
 
     getTags() {
         const tags = this.core.getDatabase().query("SELECT * FROM tags");
-        return tags.map((tag) => new Tag(tag.id, tag.name));
+        return tags.map((tag) => new Tag(tag.uuid, tag.name));
     }
 
-    getTagById(id) {
+    getTagByUUID(uuid) {
         const tags = this.getTags();
-        return tags.find(tag => tag.getId() == id);
+        return tags.find(tag => tag.getUUID() == uuid);
     }
 
     getTagByName(name) {
@@ -31,16 +31,16 @@ class TagManager {
         return tags.find(tag => tag.getName() == name);
     }
 
-    createTag(id, name) {
-        if (!id) {
-            id = this.generateId();
+    createTag(uuid, name) {
+        if (!uuid) {
+            uuid = this.generateId();
         }
 
         if (!name) {
             throw Error("MISSING_NAME");
         }
 
-        if (this.getTagById(id)) {
+        if (this.getTagByUUID(uuid)) {
             throw Error("TAG_ALREADY_EXISTS");
         }
 
@@ -49,10 +49,10 @@ class TagManager {
         }
 
         try {
-            const tag = new Tag(id, name);
+            const tag = new Tag(uuid, name);
 
-            this.core.getDatabase().exec("INSERT INTO tags (id, name) VALUES (?, ?)", [
-                tag.getId(),
+            this.core.getDatabase().exec("INSERT INTO tags (uuid, name) VALUES (?, ?)", [
+                tag.getUUID(),
                 tag.getName()
             ]);
 
