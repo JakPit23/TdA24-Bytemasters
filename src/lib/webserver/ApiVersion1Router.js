@@ -55,16 +55,16 @@ class ApiVersion1Router {
     
                 if (!this.core.getLecturerManager().isValidContact(data.contact)) {
                     console.log("Invalid Contact");
-                    res.status(200).json({
-                        code: 400,
-                        error: "Invalid contact information.",
-                        ...data,
-                        contact: {
-                            telephone_numbers: data.telephone_numbers || [],
-                            emails: data.emails || [],
-                        },
-                    });
-                    return;
+                    // res.status(200).json({
+                    //     code: 400,
+                    //     error: "Invalid contact information.",
+                    //     ...data,
+                    //     contact: {
+                    //         telephone_numbers: data.telephone_numbers || [],
+                    //         emails: data.emails || [],
+                    //     },
+                    // });
+                    // return;
                 }
 
                 if (data.tags && Array.isArray(data.tags)) {
@@ -75,7 +75,7 @@ class ApiVersion1Router {
                         }
                         
                         console.log("Invalid Tag:", tag);
-                        return res.status(200).json({ code: 400, error: "Invalid tag." });
+                        // return res.status(200).json({ code: 400, error: "Invalid tag." });
                     }
                 }
                 
