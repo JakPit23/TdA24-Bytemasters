@@ -43,22 +43,23 @@ class ApiVersion1Router {
             });
         });
 
-        const log = [];
+        let log = [];
         this.router.get("/log", (req, res) => {
             res.json(log);
         });
 
         this.router.post("/lecturers", (req, res) => {
             try {
+                log = [];
                 const data = req.body;
     
-                log.push("Body data:" + JSON.stringify(data));
+                log.push(`Body data: ${data}`);
                 console.log("Body data:", data);
                 
                 const lecturer = this.core.getLecturerManager().createLecturer(this.core.getLecturerManager().generateUUID(), data);
 
                 console.log("Lecturer:", lecturer);
-                log.push("Lecturer: " + JSON.stringify(lecturer));
+                log.push(`Lecturer: ${lecturer}`);
                 
                 if (data.tags && Array.isArray(data.tags)) {
                     for (const tag of data.tags) {
