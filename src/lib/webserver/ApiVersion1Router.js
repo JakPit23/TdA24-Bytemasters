@@ -49,40 +49,40 @@ class ApiVersion1Router {
     
                 Logger.debug(Logger.Type.Webserver, "Body data:", data);
 
-                if (data.first_name === undefined || data.last_name === undefined || data.contact === undefined) {
-                    Logger.debug(Logger.Type.Webserver, "Responding with \"400 Missing Required Fields\"");
-                    return res.status(400).json({ code: 400, error: "Missing required fields." });
-                }
+                // if (data.first_name === undefined || data.last_name === undefined || data.contact === undefined) {
+                //     Logger.debug(Logger.Type.Webserver, "Responding with \"400 Missing Required Fields\"");
+                //     return res.status(400).json({ code: 400, error: "Missing required fields." });
+                // }
     
-                if (!this.core.getLecturerManager().isValidContact(data.contact)) {
-                    Logger.debug(Logger.Type.Webserver, "Invalid contact");
-                    // res.status(200).json({
-                    //     code: 400,
-                    //     error: "Invalid contact information.",
-                    //     ...data,
-                    //     contact: {
-                    //         telephone_numbers: data.telephone_numbers || [],
-                    //         emails: data.emails || [],
-                    //     },
-                    // });
-                    // return;
-                }
+                // if (!this.core.getLecturerManager().isValidContact(data.contact)) {
+                //     Logger.debug(Logger.Type.Webserver, "Invalid contact");
+                //     // res.status(200).json({
+                //     //     code: 400,
+                //     //     error: "Invalid contact information.",
+                //     //     ...data,
+                //     //     contact: {
+                //     //         telephone_numbers: data.telephone_numbers || [],
+                //     //         emails: data.emails || [],
+                //     //     },
+                //     // });
+                //     // return;
+                // }
 
-                if (data.tags && Array.isArray(data.tags)) {
-                    for (const tag of data.tags) {
-                        if (this.core.getLecturerManager().isValidTag(tag)) {
-                            Logger.debug(Logger.Type.Webserver, "Valid Tag:", tag);
-                            continue;
-                        }
-                        
-                        Logger.debug(Logger.Type.Webserver, "Invalid Tag:", tag);
-                        // return res.status(200).json({ code: 400, error: "Invalid tag." });
-                    }
-                }
+                // if (data.tags && Array.isArray(data.tags)) {
+                //     for (const tag of data.tags) {
+                //         if (this.core.getLecturerManager().isValidTag(tag)) {
+                //             Logger.debug(Logger.Type.Webserver, "Valid Tag:", tag);
+                //             continue;
+                //         }
+
+                //         Logger.debug(Logger.Type.Webserver, "Invalid Tag:", tag);
+                //         // return res.status(200).json({ code: 400, error: "Invalid tag." });
+                //     }
+                // }
                 
-                const lecturer = this.core.getLecturerManager().createLecturer(this.core.getLecturerManager().generateUUID(), data);
-                Logger.debug(Logger.Type.Webserver, "Lecturer:", lecturer.toJSON()); 
-                return res.status(200).json(lecturer.toJSON());
+                // const lecturer = this.core.getLecturerManager().createLecturer(this.core.getLecturerManager().generateUUID(), data);
+                // Logger.debug(Logger.Type.Webserver, "Lecturer:", lecturer.toJSON()); 
+                // return res.status(200).json(lecturer.toJSON());
             } catch(error) {
                 // Catch known errors, otherwise pass them to error handler.
                 if (error.message == "LECTURER_ALREADY_EXISTS") {
@@ -95,86 +95,86 @@ class ApiVersion1Router {
         });
 
         this.router.get("/lecturers", (req, res) => {
-            const lecturers = this.core.getLecturerManager().getLecturers();
+            // const lecturers = this.core.getLecturerManager().getLecturers();
 
-            if (!lecturers || lecturers.length === 0) {
-                return res.status(200).json([]);
-            }
+            // if (!lecturers || lecturers.length === 0) {
+            //     return res.status(200).json([]);
+            // }
 
-            res.status(200).json(lecturers.map(lecturer => lecturer.toJSON()));
+            // res.status(200).json(lecturers.map(lecturer => lecturer.toJSON()));
         });
 
         this.router.get("/lecturers/:lecturerId", (req, res) => {
-            const { lecturerId } = req.params;
-            const lecturer = this.core.getLecturerManager().getLecturer(lecturerId);
+            // const { lecturerId } = req.params;
+            // const lecturer = this.core.getLecturerManager().getLecturer(lecturerId);
 
-            if (!lecturer) {
-                return res.status(404).send({
-                    code: 404,
-                    message: "Lecturer not found",
-                });
-            }
+            // if (!lecturer) {
+            //     return res.status(404).send({
+            //         code: 404,
+            //         message: "Lecturer not found",
+            //     });
+            // }
 
-            res.status(200).json(lecturer);
+            // res.status(200).json(lecturer);
         });
 
         this.router.delete("/lecturers/:lecturerId", (req, res) => {
-            const { lecturerId } = req.params;
-            const lecturer = this.core.getLecturerManager().getLecturer(lecturerId);
+            // const { lecturerId } = req.params;
+            // const lecturer = this.core.getLecturerManager().getLecturer(lecturerId);
 
-            if (!lecturer) {
-                return res.status(404).json({
-                    code: 404,
-                    message: "Lecturer not found",
-                });
-            }
+            // if (!lecturer) {
+            //     return res.status(404).json({
+            //         code: 404,
+            //         message: "Lecturer not found",
+            //     });
+            // }
 
-            this.core.getLecturerManager().deleteLecturer(lecturerId);
+            // this.core.getLecturerManager().deleteLecturer(lecturerId);
             
-            res.status(200).json({
-                code: 200,
-                success: true,
-            });
+            // res.status(200).json({
+            //     code: 200,
+            //     success: true,
+            // });
         });
 
         // TODO: Check if lecturer exists before updating. etc.. and if the syntax of some values is correct.
         this.router.put("/lecturers/:lecturerId", (req, res) => {
-            const data = req.body;
-            const lecturerId = req.params.lecturerId;
-            const lecturer = this.core.getLecturerManager().getLecturer(lecturerId);
+            // const data = req.body;
+            // const lecturerId = req.params.lecturerId;
+            // const lecturer = this.core.getLecturerManager().getLecturer(lecturerId);
 
-            if (!lecturer) {
-                return res.status(200).send({
-                    code: 404,
-                    message: "Lecturer not found",
-                });
-            }
+            // if (!lecturer) {
+            //     return res.status(404).send({
+            //         code: 404,
+            //         message: "Lecturer not found",
+            //     });
+            // }
 
-            if (data.contact) {
-                if (data.contact.emails && !data.contact.emails.every(email => this.core.getLecturerManager().isValidEmail(email))) {
-                    res.status(200).json({ code: 400, error: "Invalid emails." });
-                    return;
-                }
+            // if (data.contact) {
+            //     if (data.contact.emails && !data.contact.emails.every(email => this.core.getLecturerManager().isValidEmail(email))) {
+            //         res.status(200).json({ code: 400, error: "Invalid emails." });
+            //         return;
+            //     }
 
-                if (data.contact.telephone_numbers && !data.contact.telephone_numbers.every(telephoneNumber => this.core.getLecturerManager().isValidPhoneNumber(telephoneNumber))) {
-                    res.status(200).json({ code: 400, error: "Invalid telephone numbers." });
-                    return;
-                }
-            }
+            //     if (data.contact.telephone_numbers && !data.contact.telephone_numbers.every(telephoneNumber => this.core.getLecturerManager().isValidPhoneNumber(telephoneNumber))) {
+            //         res.status(200).json({ code: 400, error: "Invalid telephone numbers." });
+            //         return;
+            //     }
+            // }
 
 
-            if (data.tags && Array.isArray(data.tags)) {
-                for (const tag of data.tags) {
-                    if (this.core.getLecturerManager().isValidTag(tag)) {
-                        continue;
-                    }
+            // if (data.tags && Array.isArray(data.tags)) {
+            //     for (const tag of data.tags) {
+            //         if (this.core.getLecturerManager().isValidTag(tag)) {
+            //             continue;
+            //         }
 
-                    return res.status(200).json({ code: 400, error: "Invalid tag." });
-                }
-            }
+            //         return res.status(200).json({ code: 400, error: "Invalid tag." });
+            //     }
+            // }
 
-            const editedLecturer = this.core.getLecturerManager().editLecturer(lecturerId, data);
-            res.status(200).json(editedLecturer);
+            // const editedLecturer = this.core.getLecturerManager().editLecturer(lecturerId, data);
+            // res.status(200).json(editedLecturer);
         });
 
         this.router.get("*", (req, res) => {
