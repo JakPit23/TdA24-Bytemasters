@@ -145,24 +145,27 @@ class ApiVersion1Router {
             res.status(200).json(lecturer);
         });
 
-        // this.router.delete("/lecturers/:lecturerId", (req, res) => {
-            // const { lecturerId } = req.params;
-            // const lecturer = this.core.getLecturerManager().getLecturer(lecturerId);
+        this.router.delete("/lecturers/:lecturerUUID", (req, res) => {
+            const { lecturerUUID } = req.params;
+            const lecturer = this.core.getLecturerManager().getLecturer(lecturerUUID);
 
-            // if (!lecturer) {
-            //     return res.status(404).json({
-            //         code: 404,
-            //         message: "Lecturer not found",
-            //     });
-            // }
+            console.log("Lecturer UUID: ", lecturerUUID);
+            console.log("Lecturer: ", lecturer);
+            log = [];
+            log.push(["Lecturer UUID: ", lecturerUUID]);
+            log.push(["Lecturer: ", lecturer]);
 
-            // this.core.getLecturerManager().deleteLecturer(lecturerId);
+            if (!lecturer) {
+                return res.status(404).json({
+                    code: 404,
+                    message: "Lecturer not found",
+                });
+            }
+
+            this.core.getLecturerManager().deleteLecturer(lecturerUUID);
             
-            // res.status(200).json({
-            //     code: 200,
-            //     success: true,
-            // });
-        // });
+            res.sendStatus(200);
+        });
 
         // TODO: Check if lecturer exists before updating. etc.. and if the syntax of some values is correct.
         // this.router.put("/lecturers/:lecturerId", (req, res) => {
