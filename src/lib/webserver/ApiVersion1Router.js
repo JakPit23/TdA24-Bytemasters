@@ -57,7 +57,7 @@ class ApiVersion1Router {
                 ]);
                 console.log("Body data:", data);
                 
-                if (data.first_name === undefined || data.last_name === undefined || data.contact === undefined) {
+                if (data.first_name == undefined || data.last_name == undefined || data.contact == undefined) {
                     log.push([
                         "Responding with \"400 Missing Required Fields\""
                     ]);
