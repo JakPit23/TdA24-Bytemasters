@@ -87,7 +87,6 @@ class LecturerManager {
 
             lecturer.setTags(tags);
             
-            console.log("lecturer", lecturer);
             return lecturer;
         } catch(error) {
             Logger.error(Logger.Type.LecturerManager, `Failed to create lecturer: ${error.message}`);
@@ -132,6 +131,22 @@ class LecturerManager {
                     return contactObj;
                 }, {});
 
+                continue;
+            }
+
+            if (key === "tags" && Array.isArray(data[key])) {
+                let tags = data[key].map(tag => {
+                    const tagName = tag?.name || null;
+                    
+                    let foundTag = this.core.getTagManager().getTagByName(tagName);
+                    if (!foundTag) {
+                        foundTag = this.core.getTagManager().createTag(null, tagName);
+                    }
+                    
+                    return foundTag;
+                });
+                
+                editedData[key] = tags;
                 continue;
             }
 
