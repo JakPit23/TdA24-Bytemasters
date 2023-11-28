@@ -50,7 +50,6 @@ class ApiVersion1Router {
 
         this.router.post("/lecturers", (req, res) => {
             try {
-                log = [];
                 const data = req.body;
     
                 log.push([
@@ -127,7 +126,6 @@ class ApiVersion1Router {
             const lecturers = this.core.getLecturerManager().getLecturers();
 
             console.log("Lecturers: ", lecturers);
-            log = [];
             log.push(["Lecturers: ", lecturers]);
 
             if (!lecturers || lecturers.length === 0) {
@@ -193,7 +191,7 @@ class ApiVersion1Router {
 
             log.push(["Lecturer: ", lecturer]);
             console.log("Lecturer: ", lecturer);
-            
+
             if (!lecturer) {
                 return res.status(404).send({
                     code: 404,
