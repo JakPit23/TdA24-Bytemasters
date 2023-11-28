@@ -113,8 +113,9 @@ class ApiVersion1Router {
                 // return res.status(200).json(lecturer.toJSON());
             } catch(error) {
                 // Catch known errors, otherwise pass them to error handler.
+                log.push([ "Lecturer creation error:", error ]);
                 if (error.message == "LECTURER_ALREADY_EXISTS") {
-                    res.status(200).json({ code: 400, error: "Lecturer already exists." });
+                    res.status(400).json({ code: 400, error: "Lecturer already exists." });
                     return;
                 }
 
@@ -226,6 +227,10 @@ class ApiVersion1Router {
             }
 
             const editedLecturer = this.core.getLecturerManager().editLecturer(lecturerUUID, data);
+
+            log.push(["Edited lecturer: ", editedLecturer]);
+            console.log("Edited lecturer: ", editedLecturer);
+
             res.status(200).json(editedLecturer);
         });
 
