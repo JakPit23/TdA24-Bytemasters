@@ -58,6 +58,14 @@ class ApiVersion1Router {
                 ]);
                 console.log("Body data:", data);
                 
+                if (data.first_name === undefined || data.last_name === undefined || data.contact === undefined) {
+                    log.push([
+                        "Responding with \"400 Missing Required Fields\""
+                    ]);
+                    console.log("Responding with \"400 Missing Required Fields\"");
+                    return res.status(400).json({ code: 400, error: "Missing required fields." });
+                }
+                
                 const lecturer = this.core.getLecturerManager().createLecturer(this.core.getLecturerManager().generateUUID(), data);
 
                 console.log("Lecturer:", lecturer);
