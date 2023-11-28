@@ -180,17 +180,26 @@ class ApiVersion1Router {
         });
 
         // TODO: Check if lecturer exists before updating. etc.. and if the syntax of some values is correct.
-        // this.router.put("/lecturers/:lecturerId", (req, res) => {
-            // const data = req.body;
-            // const lecturerId = req.params.lecturerId;
-            // const lecturer = this.core.getLecturerManager().getLecturer(lecturerId);
+        this.router.put("/lecturers/:lecturerUUID", (req, res) => {
+            const { lecturerUUID } = req.params;
+            const data = req.body;
+            const lecturer = this.core.getLecturerManager().getLecturer(lecturerUUID);
 
-            // if (!lecturer) {
-            //     return res.status(404).send({
-            //         code: 404,
-            //         message: "Lecturer not found",
-            //     });
-            // }
+            log.push(["Lecturer UUID: ", lecturerUUID]);
+            console.log("Lecturer UUID: ", lecturerUUID);
+
+            log.push(["Data: ", data]);
+            console.log("Data: ", data);
+
+            log.push(["Lecturer: ", lecturer]);
+            console.log("Lecturer: ", lecturer);
+            
+            if (!lecturer) {
+                return res.status(404).send({
+                    code: 404,
+                    message: "Lecturer not found",
+                });
+            }
 
             // if (data.contact) {
             //     if (data.contact.emails && !data.contact.emails.every(email => this.core.getLecturerManager().isValidEmail(email))) {
@@ -204,20 +213,23 @@ class ApiVersion1Router {
             //     }
             // }
 
+            if (data.tags && Array.isArray(data.tags)) {
+                for (const tag of data.tags) {
+                    if (this.core.getLecturerManager().isValidTag(tag)) {
+                        log.push("Valid Tag: " + JSON.stringify(tag));
+                        Logger.debug(Logger.Type.Webserver, "Valid Tag:", tag);
+                        continue;
+                    }
 
-            // if (data.tags && Array.isArray(data.tags)) {
-            //     for (const tag of data.tags) {
-            //         if (this.core.getLecturerManager().isValidTag(tag)) {
-            //             continue;
-            //         }
+                    log.push("Invalid Tag: " + JSON.stringify(tag));
+                    Logger.debug(Logger.Type.Webserver, "Invalid Tag:", tag);
+                    // return res.status(200).json({ code: 400, error: "Invalid tag." });
+                }
+            }
 
-            //         return res.status(200).json({ code: 400, error: "Invalid tag." });
-            //     }
-            // }
-
-            // const editedLecturer = this.core.getLecturerManager().editLecturer(lecturerId, data);
-            // res.status(200).json(editedLecturer);
-        // });
+            const editedLecturer = this.core.getLecturerManager().editLecturer(lecturerUUID, data);
+            res.status(200).json(editedLecturer);
+        });
 
         this.router.get("*", (req, res) => {
             res.json({
