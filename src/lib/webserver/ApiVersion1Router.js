@@ -115,15 +115,19 @@ class ApiVersion1Router {
             }
         });
 
-        // this.router.get("/lecturers", (req, res) => {
-            // const lecturers = this.core.getLecturerManager().getLecturers();
+        this.router.get("/lecturers", (req, res) => {
+            const lecturers = this.core.getLecturerManager().getLecturers();
 
-            // if (!lecturers || lecturers.length === 0) {
-            //     return res.status(200).json([]);
-            // }
+            console.log("Lecturers: ", lecturers);
+            log = [];
+            log.push(["Lecturers: ", lecturers]);
 
-            // res.status(200).json(lecturers.map(lecturer => lecturer.toJSON()));
-        // });
+            if (!lecturers || lecturers.length === 0) {
+                return res.status(200).json([]);
+            }
+
+            res.status(200).json(lecturers.map(lecturer => lecturer.toJSON()));
+        });
 
         this.router.get("/lecturers/:lecturerUUID", (req, res) => {
             const { lecturerUUID } = req.params;
