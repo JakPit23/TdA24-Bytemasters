@@ -134,6 +134,22 @@ class LecturerManager {
                 continue;
             }
 
+            if (key === "tags" && Array.isArray(data[key])) {
+                let tags = data[key].map(tag => {
+                    const tagName = tag?.name || null;
+                    
+                    let foundTag = this.core.getTagManager().getTagByName(tagName);
+                    if (!foundTag) {
+                        foundTag = this.core.getTagManager().createTag(null, tagName);
+                    }
+                    
+                    return foundTag;
+                });
+                
+                editedData[key] = tags;
+                continue;
+            }
+
             editedData[key] = data[key];
         }
 
