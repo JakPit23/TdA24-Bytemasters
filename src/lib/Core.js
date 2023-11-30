@@ -10,13 +10,17 @@ const TagManager = require("./lecturer/TagManager");
 
 class Core {
     constructor() {
-        Logger.info(Logger.Type.Core, `Starting application v${Tools.GetApplicationVersion()}`);
+        this.config = new Configuration();
+
+        this.logger = new Logger(Logger.LogLevels.info);
+        this.logger.setLogLevel(this.config.getLogLevel());
+
+        this.logger.info(Logger.Type.Core, `Starting application v${Tools.GetApplicationVersion()}`);
         if (!fs.existsSync(path.resolve(__dirname, "../data"))) {
-            Logger.info(Logger.Type.Core, `Creating data directory`);
+            this.logger.info(Logger.Type.Core, `Creating data directory`);
             fs.mkdirSync(path.resolve(__dirname, "../data"));
         }
         
-        this.config = new Configuration();
         this.database = new Database();
         this.lecturerManager = new LecturerManager(this);
         this.tagManager = new TagManager(this);
@@ -28,6 +32,12 @@ class Core {
      * @returns {Configuration} The configuration object.
      */
     getConfig = () => this.config;
+
+    /**
+     * Gets the logger object.
+     * @returns {Logger} The logger object.
+     */
+    getLogger = () => this.logger;
 
     /**
      * Gets the database object.
@@ -58,11 +68,11 @@ class Core {
      * @async
      */
     async shutdown() {
-        Logger.info(Logger.Type.Core, "Shutdown in progress...");
+        this.getLogger().info(Logger.Type.Core, "Shutdown in progress...");
 
         // Set a timeout for a forced shutdown in case the graceful shutdown takes too long.
         const forceShutdownTimeout = setTimeout(() => {
-            Logger.warn(Logger.Type.Core, "Failed to shutdown in-time. Exiting using force");
+            this.getLogger().warn(Logger.Type.Core, "Failed to shutdown in-time. Exiting using force");
             process.exit(1);
         }, 15000);
 

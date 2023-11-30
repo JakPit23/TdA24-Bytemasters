@@ -38,12 +38,12 @@ class Webserver {
                     return;
                 }
 
-                Logger.error(Logger.Type.Webserver, error.stack);
+                this.core.getLogger().error(Logger.Type.Webserver, error.stack);
                 res.status(500).json({ code: 500, error: "Server error" });
                 return;
             }
             
-            Logger.error(Logger.Type.Webserver, error.stack);
+            this.core.getLogger().error(Logger.Type.Webserver, error.stack);
             // TODO: Make a 505 error page
             res.status(500).send('Server error');
         })
@@ -51,7 +51,7 @@ class Webserver {
         this.webserver = http.createServer(this.app);
 
         this.webserver.listen(this.port, () => {
-            Logger.info(Logger.Type.Webserver, `Webserver running on port ${this.port}`);
+            this.core.getLogger().info(Logger.Type.Webserver, `Webserver running on port ${this.port}`);
         });
     }
 
@@ -60,11 +60,11 @@ class Webserver {
      * @returns {Promise<void>}
      */
     shutdown = () => new Promise((resolve, reject) => {
-        Logger.debug("Webserver shutdown in progress...");
+        this.core.getLogger().debug(Logger.Type.Webserver, "Webserver shutdown in progress...");
 
         // Close the server to stop accepting new connections.
         this.webserver.close(() => {
-            Logger.debug("Webserver shutdown completed.");
+            this.core.getLogger().debug(Logger.Type.Webserver, "Webserver shutdown completed.");
             resolve();
         });
     });

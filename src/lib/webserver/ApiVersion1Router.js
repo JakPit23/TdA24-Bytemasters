@@ -64,12 +64,12 @@ class ApiVersion1Router {
                     for (const tag of data.tags) {
                         if (this.core.getLecturerManager().isValidTag(tag)) {
                             log.push("Valid Tag: " + JSON.stringify(tag));
-                            Logger.debug(Logger.Type.Webserver, "Valid Tag:", tag);
+                            this.core.getLogger().debug(Logger.Type.Webserver, "Valid Tag:", tag);
                             continue;
                         }
 
                         log.push("Invalid Tag: " + JSON.stringify(tag));
-                        Logger.debug(Logger.Type.Webserver, "Invalid Tag:", tag);
+                        this.core.getLogger().debug(Logger.Type.Webserver, "Invalid Tag:", tag);
                         // return res.status(200).json({ code: 400, error: "Invalid tag." });
                     }
                 }
@@ -204,12 +204,12 @@ class ApiVersion1Router {
                 for (const tag of data.tags) {
                     if (this.core.getLecturerManager().isValidTag(tag)) {
                         log.push("Valid Tag: " + JSON.stringify(tag));
-                        Logger.debug(Logger.Type.Webserver, "Valid Tag:", tag);
+                        this.core.getLogger().debug(Logger.Type.Webserver, "Valid Tag:", tag);
                         continue;
                     }
 
                     log.push("Invalid Tag: " + JSON.stringify(tag));
-                    Logger.debug(Logger.Type.Webserver, "Invalid Tag:", tag);
+                    this.core.getLogger().debug(Logger.Type.Webserver, "Invalid Tag:", tag);
                     // return res.status(200).json({ code: 400, error: "Invalid tag." });
                 }
             }

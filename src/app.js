@@ -14,7 +14,7 @@ const core = new Core();
  * @param {Promise} promise - The unhandled Promise.
  */
 process.on("unhandledRejection", (reason, promise) => {
-    Logger.error(Logger.Type.Watchdog, "unhandledRejection", {
+    core.getLogger().error(Logger.Type.Watchdog, "unhandledRejection", {
         reason: reason,
         stack: reason?.stack,
         promise: promise
@@ -39,8 +39,8 @@ async function shutdown() {
         process.exit(0);
     } catch (err) {
         // Handle errors that occur during shutdown.
-        Logger.error(Logger.Type.Watchdog, "Error occurred: ", err.name, " - ", err.message);
-        Logger.error(Logger.Type.Watchdog, err.stack);
+        core.getLogger().error(Logger.Type.Watchdog, "Error occurred: ", err.name, " - ", err.message);
+        core.getLogger().error(Logger.Type.Watchdog, err.stack);
 
         // Exit the process with a status code of 1 (error) if an error occurred during shutdown.
         process.exit(1);
@@ -66,7 +66,7 @@ process.on("SIGINT", shutdown);
  * @param {string} origin - The origin of the exception.
  */
 process.on("uncaughtException", (err, origin) => {
-    Logger.error(Logger.Type.Watchdog, "Uncaught Exception", {
+    core.getLogger().error(Logger.Type.Watchdog, "Uncaught Exception", {
         err: err,
         origin: origin
     });
@@ -84,8 +84,8 @@ process.on("uncaughtException", (err, origin) => {
  */
 process.on("exit", function(code) {
     if (code !== 0) {
-        Logger.error(Logger.Type.Watchdog, "Stack trace that led to the process exiting with code " + code + ":", new Error().stack);
+        core.getLogger().error(Logger.Type.Watchdog, "Stack trace that led to the process exiting with code " + code + ":", new Error().stack);
     } else {
-        Logger.info(Logger.Type.Watchdog, "Exiting with code " + code + "...");
+        core.getLogger().info(Logger.Type.Watchdog, "Exiting with code " + code + "...");
     }
 });

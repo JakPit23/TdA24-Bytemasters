@@ -78,7 +78,7 @@ class LecturerManager {
             
             return lecturer;
         } catch(error) {
-            Logger.error(Logger.Type.LecturerManager, `Failed to create lecturer: ${error.message}`);
+            this.core.getLogger().error(Logger.Type.LecturerManager, `Failed to create lecturer: ${error.message}`);
             throw error;
         }
     }
@@ -92,7 +92,7 @@ class LecturerManager {
             const result = this.core.getDatabase().exec("DELETE FROM lecturers WHERE uuid = ?", [uuid]);
             return result;
         } catch(error) {
-            Logger.error(Logger.Type.LecturerManager, `Failed to delete lecturer: ${error.message}`);
+            this.core.getLogger().error(Logger.Type.LecturerManager, `Failed to delete lecturer: ${error.message}`);
             throw error;
         }
     }

@@ -1,8 +1,11 @@
 const util = require("util");
 
 class Logger {
-    constructor() {
-        this.logLevel = Logger.LogLevels["debug"];
+    /**
+     * @param {LogLevels} logLevel 
+     */
+    constructor(logLevel) {
+        this.logLevel = logLevel;
     }
 
     /**
@@ -10,13 +13,30 @@ class Logger {
      * @readonly
      * @enum {string}
      */
-    Type = {
+    static Type = {
         Core: "core",
         Watchdog: "watchdog",
         Webserver: "webserver",
         LecturerManager: "lecturer manager",
         TagManager: "tag manager",
     }
+
+    /**
+     * LogLevels static property
+     * @property {Object} trace - The trace log level with level and callback.
+     * @property {Object} debug - The debug log level with level and callback.
+     * @property {Object} info - The info log level with level and callback.
+     * @property {Object} warn - The warn log level with level and callback.
+     * @property {Object} error - The error log level with level and callback.
+     * @returns {Object} The log levels.
+     */
+    static LogLevels = Object.freeze({
+        "trace": {"level": -2, "callback": console.debug},
+        "debug": {"level": -1, "callback": console.debug},
+        "info": {"level": 0, "callback": console.info},
+        "warn": {"level": 1, "callback": console.warn},
+        "error": {"level": 2, "callback": console.error},
+    });
 
     /**
      * Get the current log level.
@@ -138,24 +158,4 @@ class Logger {
     }
 }
 
-/**
- * An object that defines log levels with associated numeric levels and console callbacks.
- * @type {Object}
- */
-Logger.LogLevels = Object.freeze({
-    "trace": {"level": -2, "callback": console.debug},
-    "debug": {"level": -1, "callback": console.debug},
-    "info": {"level": 0, "callback": console.info},
-    "warn": {"level": 1, "callback": console.warn},
-    "error": {"level": 2, "callback": console.error},
-});
-
-/**
- * An object that defines options for log file handling.
- * @type {Object}
- */
-Logger.LogFileOptions = Object.freeze({
-    flags: "as"
-});
-
-module.exports = new Logger();
+module.exports = Logger;

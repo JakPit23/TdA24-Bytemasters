@@ -50,7 +50,7 @@ class TagManager {
 
             return tag;
         } catch(error) {
-            Logger.error(Logger.Type.TagManager, `Failed to create tag: ${error.message}`);
+            this.core.getLogger().error(Logger.Type.TagManager, `Failed to create tag: ${error.message}`);
             throw error;
         }
     }
