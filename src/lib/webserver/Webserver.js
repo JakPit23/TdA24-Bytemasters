@@ -14,7 +14,7 @@ class Webserver {
      */
     constructor(core) {
         this.core = core;
-        this.port = this.core.getConfig().GetWebserverPort();
+        this.port = this.core.getConfig().getWebserverPort();
 
         this.app = express();
         this.app.use(express.json());
