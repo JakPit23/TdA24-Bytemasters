@@ -2,7 +2,6 @@ const crypto = require("crypto");
 const Core = require("../Core");
 const Logger = require("../Logger");
 const Lecturer = require("./Lecturer");
-const LecturerTag = require("./Tag");
 
 class LecturerManager {
     /**
