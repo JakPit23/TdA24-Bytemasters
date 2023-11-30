@@ -4,13 +4,9 @@ class Tag {
         this.name = name;
     }
 
-    getUUID() {
-        return this.uuid;
-    }
+    getUUID = () => this.uuid;
 
-    getName() {
-        return this.name;
-    }
+    getName = () => this.name;
 }
 
 module.exports = Tag;

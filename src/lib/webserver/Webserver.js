@@ -67,17 +67,15 @@ class Webserver {
      * @public
      * @returns {Promise<void>}
      */
-    shutdown() {
-        return new Promise((resolve, reject) => {
-            Logger.debug("Webserver shutdown in progress...");
+    shutdown = () => new Promise((resolve, reject) => {
+        Logger.debug("Webserver shutdown in progress...");
 
-            // Close the server to stop accepting new connections.
-            this.webserver.close(() => {
-                Logger.debug("Webserver shutdown completed.");
-                resolve();
-            });
+        // Close the server to stop accepting new connections.
+        this.webserver.close(() => {
+            Logger.debug("Webserver shutdown completed.");
+            resolve();
         });
-    }
+    });
 }
 
 // Export the Webserver class for use in other modules.

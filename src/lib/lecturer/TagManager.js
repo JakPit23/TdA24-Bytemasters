@@ -12,24 +12,16 @@ class TagManager {
         this.core = core;
     }
 
-    generateId() {
-        return crypto.randomUUID();
-    }
+    generateId = () => crypto.randomUUID();
 
     getTags() {
         const tags = this.core.getDatabase().query("SELECT * FROM tags");
         return tags.map((tag) => new Tag(tag.uuid, tag.name));
     }
 
-    getTagByUUID(uuid) {
-        const tags = this.getTags();
-        return tags.find(tag => tag.getUUID() == uuid);
-    }
+    getTagByUUID = (uuid) => this.getTags().find(tag => tag.getUUID() == uuid);
 
-    getTagByName(name) {
-        const tags = this.getTags();
-        return tags.find(tag => tag.getName() == name);
-    }
+    getTagByName = (name) => this.getTags().find(tag => tag.getName() == name);
 
     createTag(uuid, name) {
         if (!uuid) {

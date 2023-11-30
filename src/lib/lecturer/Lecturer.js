@@ -30,227 +30,173 @@ class Lecturer {
      * Sets the UUID of the lecturer.
      * @param {string} uuid - The UUID of the lecturer.
      */
-    setUUID(uuid) {
-        this.uuid = uuid;
-    }
+    setUUID = (uuid) => this.uuid = uuid
 
     /**
      * Gets the UUID of the lecturer.
      * @returns {string} The UUID of the lecturer.
      */
-    getUUID() {
-        return this.uuid || null;
-    }
+    getUUID = () => this.uuid;
 
     /**
      * Sets the data of the lecturer.
      * @param {Object} data - The data of the lecturer.
      */
-    setData(data) {
-        this.data = data;
-    }
+    setData = (data) => this.data = data;
 
     /**
      * Gets the data of the lecturer.
      * @returns {Object} The data of the lecturer.
      */
-    getData() {
-        return this.data;
-    }
+    getData = () => this.data;
 
-    toJSON() {
-        return {
-            uuid: this.getUUID(),
-            title_before: this.getTitleBefore(),
-            first_name: this.getFirstName(),
-            middle_name: this.getMiddleName(),
-            last_name: this.getLastName(),
-            title_after: this.getTitleAfter(),
-            picture_url: this.getPictureUrl(),
-            location: this.getLocation(),
-            claim: this.getClaim(),
-            bio: this.getBio(),
-            tags: this.getTags(),
-            price_per_hour: this.getPricePerHour(),
-            contact: this.getContact()
-        }
-    }
+    toJSON = () => ({
+        uuid: this.getUUID(),
+        title_before: this.getTitleBefore(),
+        first_name: this.getFirstName(),
+        middle_name: this.getMiddleName(),
+        last_name: this.getLastName(),
+        title_after: this.getTitleAfter(),
+        picture_url: this.getPictureUrl(),
+        location: this.getLocation(),
+        claim: this.getClaim(),
+        bio: this.getBio(),
+        tags: this.getTags(),
+        price_per_hour: this.getPricePerHour(),
+        contact: this.getContact()
+    })
 
     /**
      * Sets the title before the lecturer's name.
      * @param {string} titleBefore - The title before the lecturer's name.
      */
-    setTitleBefore(titleBefore) {
-        this.data.title_before = titleBefore;
-    }
+    setTitleBefore = (titleBefore) => this.data.title_before = titleBefore;
 
     /**
      * Gets the title before the lecturer's name.
      * @returns {string} The title before the lecturer's name.
      */
-    getTitleBefore() {
-        return this.data.title_before || null;
-    }
+    getTitleBefore = () => this.data.title_before;
 
     /**
      * Sets the first name of the lecturer.
      * @param {string} firstName - The first name of the lecturer.
      */
-    setFirstName(firstName) {
-        this.data.first_name = firstName;
-    }
+    setFirstName = (firstName) => this.data.first_name = firstName;
 
     /**
      * Gets the first name of the lecturer.
      * @returns {string} The first name of the lecturer.
      */
-    getFirstName() {
-        return this.data.first_name || null;
-    }
+    getFirstName = () => this.data.first_name;
 
     /**
      * Sets the middle name of the lecturer.
      * @param {string} middleName - The middle name of the lecturer.
      */
-    setMiddleName(middleName) {
-        this.data.middle_name = middleName;
-    }
+    setMiddleName = (middleName) => this.data.middle_name = middleName;
 
     /**
      * Gets the middle name of the lecturer.
      * @returns {string} The middle name of the lecturer.
      */
-    getMiddleName() {
-        return this.data.middle_name || null;
-    }
+    getMiddleName = () => this.data.middle_name;
 
     /**
      * Sets the last name of the lecturer.
      * @param {string} lastName - The last name to set.
      */
-    setLastName(lastName) {
-        this.data.last_name = lastName;
-    }
+    setLastName = (lastName) => this.data.last_name = lastName;
 
     /**
      * Gets the last name of the lecturer.
      * @returns {string} The last name of the lecturer.
      */
-    getLastName() {
-        return this.data.last_name || null;
-    }
+    getLastName = () => this.data.last_name;
 
     /**
      * Sets the title after the lecturer's name.
      * @param {string} titleAfter - The title after the lecturer's name.
      */
-    setTitleAfter(titleAfter) {
-        this.data.title_after = titleAfter;
-    }
+    setTitleAfter = (titleAfter) => this.data.title_after = titleAfter;
 
     /**
      * Gets the title after the lecturer's name.
      * @returns {string} The title after the lecturer's name.
      */
-    getTitleAfter() {
-        return this.data.title_after || null;
-    }
+    getTitleAfter = () => this.data.title_after;
 
     /**
      * Sets the URL of the lecturer's picture.
      * @param {string} pictureUrl - The URL of the lecturer's picture.
      */
-    setPictureUrl(pictureUrl) {
-        this.data.picture_url = pictureUrl;
-    }
+    setPictureUrl = (pictureUrl) => this.data.picture_url = pictureUrl;
 
     /**
      * Gets the URL of the lecturer's picture.
      * @returns {string} The URL of the lecturer's picture.
      */
-    getPictureUrl() {
-        return this.data.picture_url || null;
-    }
+    getPictureUrl = () => this.data.picture_url;
 
     /**
      * Sets the location of the lecturer.
      * @param {string} location - The location of the lecturer.
      */
-    setLocation(location) {
-        this.data.location = location;
-    }
+    setLocation = (location) => this.data.location = location;
 
     /**
      * Gets the location of the lecturer.
      * @returns {string} The location of the lecturer.
      */
-    getLocation() {
-        return this.data.location || null;
-    }
+    getLocation = () => this.data.location;
 
     /**
      * Sets the claim of the lecturer.
      * @param {string} claim - The claim of the lecturer.
      */
-    setClaim(claim) {
-        this.data.claim = claim;
-    }
+    setClaim = (claim) => this.data.claim = claim;
 
     /**
      * Gets the claim of the lecturer.
      * @returns {string} The claim of the lecturer.
      */
-    getClaim() {
-        return this.data.claim || null;
-    }
+    getClaim = () => this.data.claim;
 
     /**
      * Sets the biography of the lecturer.
      * @param {string} bio - The biography of the lecturer.
      */
-    setBio(bio) {
-        this.data.bio = bio;
-    }
+    setBio = (bio) => this.data.bio = bio;
 
     /**
      * Gets the biography of the lecturer.
      * @returns {string} The biography of the lecturer.
      */
-    getBio() {
-        return this.data.bio || null;
-    }
+    getBio = () => this.data.bio;
 
     /**
      * Sets the tags associated with the lecturer.
      * @param {Array<{ name: string }>} tags - The tags associated with the lecturer.
      */
-    setTags(tags) {
-        this.data.tags = tags;
-    }
+    setTags = (tags) => this.data.tags = tags;
 
     /**
      * Retrieves the tags associated with the lecturer.
      * @returns {Array<{ name: string }>} The tags of the lecturer
      */
-    getTags() {
-        return this.data.tags || null;
-    }
+    getTags = () => this.data.tags;
 
     /**
      * Sets the price per hour for the lecturer's services.
      * @param {number} pricePerHour - The price per hour for the lecturer's services.
      */
-    setPricePerHour(pricePerHour) {
-        this.data.price_per_hour = pricePerHour;
-    }
+    setPricePerHour = (pricePerHour) => this.data.price_per_hour = pricePerHour;
 
     /**
      * Gets the price per hour for the lecturer's services.
      * @returns {number} The price per hour for the lecturer's services.
      */
-    getPricePerHour() {
-        return this.data.price_per_hour || null;
-    }
+    getPricePerHour = () => this.data.price_per_hour;
 
     /**
      * Sets the contact information for the lecturer.
@@ -258,17 +204,13 @@ class Lecturer {
      * @param {Array} contact.emails - An array of email addresses.
      * @param {Array} contact.telephone_numbers - An array of telephone numbers.
      */
-    setContact(contact) {
-        this.data.contact = contact;
-    }
+    setContact = (contact) => this.data.contact = contact;
 
     /**
      * Retrieves the contact information of the lecturer.
      * @returns {{emails: [], telephone_numbers: []}} The contact information of the lecturer.
      */
-    getContact() {
-        return this.data.contact || null;
-    }
+    getContact = () => this.data.contact;
 }
 
 module.exports = Lecturer;

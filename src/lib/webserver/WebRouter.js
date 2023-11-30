@@ -22,9 +22,7 @@ class WebRouter {
      * Get the Express router configured with the defined web routes.
      * @returns {express.Router} An Express router for web routes.
      */
-    getRouter() {
-        return this.router;
-    }
+    getRouter = () => this.router;
 
     /**
      * Initialize the web routes.

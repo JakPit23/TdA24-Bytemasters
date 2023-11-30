@@ -27,9 +27,7 @@ class ApiRouter {
      * Get the Express router configured with the defined API routes.
      * @returns {express.Router} An Express router for API routes.
      */
-    getRouter() {
-        return this.router;
-    }
+    getRouter = () => this.router;
 
     /**
      * Initialize the API routes.

@@ -8,9 +8,7 @@ class Configuration {
      * @static
      * @returns {number} The Webserver port number.
      */
-    GetWebserverPort() {
-        return process.env.WEBSERVER_PORT || 3000;
-    }
+    GetWebserverPort = () => process.env.WEBSERVER_PORT || 3000;
 }
 
 // Export the Configuration class for use in other modules.

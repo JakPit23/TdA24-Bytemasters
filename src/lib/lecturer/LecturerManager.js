@@ -13,9 +13,7 @@ class LecturerManager {
         this.core = core;
     }
 
-    generateUUID() {
-        return crypto.randomUUID();
-    }
+    generateUUID = () => crypto.randomUUID();
 
     getLecturers() {
         const lecturers = this.core.getDatabase().query("SELECT * FROM lecturers");
@@ -29,15 +27,7 @@ class LecturerManager {
         });
     }
 
-    getLecturer(uuid) {
-        const lecturer = this.getLecturers().find(lecturer => lecturer.getUUID() == uuid);
-
-        if (!lecturer) {
-            return null;
-        }
-
-        return lecturer;
-    }
+    getLecturer = (uuid) => this.getLecturers().find(lecturer => lecturer.getUUID() == uuid);
 
     createLecturer(uuid, data) {
         if (!uuid) {
@@ -173,11 +163,7 @@ class LecturerManager {
         return editedData;
     }
 
-    isValidTag(tag) {
-        return (
-            tag.name !== undefined
-        );
-    }
+    isValidTag = (tag) => tag.name !== undefined;
 
     isValidContact(contact) {
         return (

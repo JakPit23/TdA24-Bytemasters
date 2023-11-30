@@ -27,41 +27,31 @@ class Core {
      * Gets the configuration object.
      * @returns {Configuration} The configuration object.
      */
-    getConfig() {
-        return this.config;
-    }
+    getConfig = () => this.config;
 
     /**
      * Gets the database object.
      * @returns {Database} The database object.
      */
-    getDatabase() {
-        return this.database;
-    }
+    getDatabase = () => this.database;
 
     /**
      * Gets the webserver object.
      * @returns {Webserver} The webserver object.
      */
-    getWebserver() {
-        return this.webserver;
-    }
+    getWebserver = () => this.webserver;
 
     /**
      * Gets the lecturer manager object.
      * @returns {LecturerManager} The lecturer manager object.
      */
-    getLecturerManager() {
-        return this.lecturerManager;
-    }
+    getLecturerManager = () => this.lecturerManager;
 
     /**
      * Gets the tag manager object.
      * @returns {TagManager} The tag manager object.
      */
-    getTagManager() {
-        return this.tagManager;
-    }
+    getTagManager = () => this.tagManager;
 
     /**
      * Asynchronously initiates the application shutdown process.

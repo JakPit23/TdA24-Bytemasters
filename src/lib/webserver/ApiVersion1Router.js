@@ -28,9 +28,7 @@ class ApiVersion1Router {
      * Get the Express router configured with the defined API version 1 routes.
      * @returns {express.Router} An Express router for API version 1 routes.
      */
-    getRouter() {
-        return this.router;
-    }
+    getRouter = () => this.router;
 
     /**
      * Initialize the API version 1 routes.
