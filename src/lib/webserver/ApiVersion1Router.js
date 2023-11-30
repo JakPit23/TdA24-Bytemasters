@@ -25,17 +25,6 @@ class ApiVersion1Router {
     getRouter = () => this.router;
 
     initRoutes() {
-        this.router.get("/", (req, res) => {
-            res.json({
-                secret: "The cake is a lie"
-            });
-        });
-
-        let log = [];
-        this.router.get("/log", (req, res) => {
-            res.json(log);
-        });
-
         this.router.post("/lecturers", (req, res) => {
             try {
                 const data = req.body;

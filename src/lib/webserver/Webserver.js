@@ -1,10 +1,10 @@
 const http = require("http");
-const express = require("express");
-const ApiRouter = require("./ApiRouter");
-const Logger = require("../Logger");
+const fs = require("fs");
 const path = require("path");
-const WebRouter = require("./WebRouter");
+const express = require("express");
+const Logger = require("../Logger");
 const Core = require("../Core");
+const Router = require("./Router");
 
 class Webserver {
     /**
@@ -14,6 +14,8 @@ class Webserver {
      */
     constructor(core) {
         this.core = core;
+        this.routes = {};
+        this.middlewares = {};
         this.port = this.core.getConfig().getWebserverPort();
 
         this.app = express();
@@ -21,38 +23,84 @@ class Webserver {
 
         this.app.disable("x-powered-by");
 
-        this.apiRouter = new ApiRouter(this.core);
-        this.app.use("/api", this.apiRouter.getRouter());
-
+        this.loadRoutes();
+        this.loadMiddlewares();
+        
         // Serve static files from the "/public" directory.
         this.app.use("/public", express.static(path.join(__dirname, "../../public")));
 
-        this.webRouter = new WebRouter();
-        this.app.use("/", this.webRouter.getRouter());
-
-        // Error handler
-        this.app.use((error, req, res, next) => {
-            if (req.path.startsWith("/api")) {
-                if (error instanceof SyntaxError && error.status === 400 && "body" in error) {
-                    res.status(400).send({ code: 400, message: "Invalid request body" });
-                    return;
-                }
-
-                this.core.getLogger().error(Logger.Type.Webserver, error.stack);
-                res.status(500).json({ code: 500, error: "Server error" });
-                return;
-            }
-            
-            this.core.getLogger().error(Logger.Type.Webserver, error.stack);
-            // TODO: Make a 505 error page
-            res.status(500).send('Server error');
-        })
+        this.app.all("/api/lecturers/*", (req, res, next) => Router(this.routes["LecturersAPIRoute"], req, res, next));
+        this.app.all("/api/*", (req, res, next) => Router(this.routes["APIRoute"], req, res, next));
+        this.app.all("/*", (req, res, next) => Router(this.routes["WebRoute"], req, res, next));
+        
+        this.app.use((req, res, next) => this.middlewares["RouteNotFound"].run(req, res, next));
+        this.app.use((error, req, res, next) => this.middlewares["ServerError"].run(error, req, res, next));
 
         this.webserver = http.createServer(this.app);
-
         this.webserver.listen(this.port, () => {
             this.core.getLogger().info(Logger.Type.Webserver, `Webserver running on port ${this.port}`);
         });
+    }
+
+    async loadRoutes() {
+        this.core.getLogger().debug(Logger.Type.Webserver, "Registering routes..");
+
+        for (const filePath of fs.readdirSync(path.resolve(__dirname, "./routes")).filter(file => file.endsWith(".js"))) {
+            const route = require(`./routes/${filePath}`);
+            try {
+                const Route = new route(this.core);
+
+                const name = filePath.replace(".js", "");
+                this.routes[name] = new Map();
+
+                for (const route of Route.getRoutes()) {
+                    route.path = filePath;
+                    this.routes[name].set(`${route.route}_${route.method}`, route);
+                }
+            } catch (error) {
+                this.core.getLogger().error(Logger.Type.Webserver, `Failed to register route. Error:`, error);
+            }
+        }
+
+        this.core.getLogger().info(Logger.Type.Webserver, "Routes registered successfully.");
+    }
+
+    reloadRoutes() {
+        try {
+            this.core.getLogger().info(Logger.Type.Webserver, "Reloading routes...");
+
+            for (const route in this.routes) {
+                try {
+                    delete require.cache[require.resolve(`./routes/${route}.js`)];
+                    delete this.routes[route];
+                    this.core.getLogger().debug(Logger.Type.Webserver, `Route "${route}" cleared`);
+                } catch (error){
+                    this.core.getLogger().error(Logger.Type.Webserver, `Failed to clear route "${route}"`, error);
+                }
+            }
+        } catch (error) {
+            this.core.getLogger().error(Logger.Type.Webserver, "Failed to reload routes", error);
+        } finally {
+            this.loadRoutes();
+        }
+    }
+
+    async loadMiddlewares() {
+        this.core.getLogger().info(Logger.Type.Webserver, "Registering middlewares..");
+
+        for (const filePath of fs.readdirSync(path.resolve(__dirname, "./middlewares")).filter(file => file.endsWith(".js"))) {
+            const middleware = require(`./middlewares/${filePath}`);
+            try {
+                const Middleware = new middleware(this.core);
+
+                const name = filePath.replace(".js", "");
+                this.middlewares[name] = Middleware;
+            } catch (error) {
+                this.core.getLogger().error(Logger.Type.Webserver, `Failed to register middleware "${middleware.name}". Error: ${error.message}`);
+            }
+        }
+
+        this.core.getLogger().info(Logger.Type.Webserver, "Middlewares registered successfully.");
     }
 
     /**
