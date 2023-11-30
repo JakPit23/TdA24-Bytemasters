@@ -4,7 +4,6 @@ const Configuration = require("./Configuration");
 const Logger = require("./Logger");
 const Database = require("./database/Database");
 const LecturerManager = require("./lecturer/LecturerManager");
-const Tools = require("./utils/Tools");
 const Webserver = require("./webserver/Webserver");
 const TagManager = require("./lecturer/TagManager");
 
