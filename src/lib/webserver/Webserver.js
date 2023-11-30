@@ -6,13 +6,9 @@ const path = require("path");
 const WebRouter = require("./WebRouter");
 const Core = require("../Core");
 
-/**
- * The Webserver class is responsible for setting up and managing the application's web server.
- * @class
- */
 class Webserver {
     /**
-     * Create a new Webserver instance with the provided configuration options.
+     * Create a new Webserver instance
      * @constructor
      * @param {Core} core - The application core.
      */
@@ -23,7 +19,6 @@ class Webserver {
         this.app = express();
         this.app.use(express.json());
 
-        // Disable "x-powered-by" header for security.
         this.app.disable("x-powered-by");
 
         this.apiRouter = new ApiRouter(this.core);
@@ -53,10 +48,8 @@ class Webserver {
             res.status(500).send('Server error');
         })
 
-        // Create an HTTP server based on the Express app.
         this.webserver = http.createServer(this.app);
 
-        // Start the webserver and log the port it's listening on.
         this.webserver.listen(this.port, () => {
             Logger.info(Logger.Type.Webserver, `Webserver running on port ${this.port}`);
         });
@@ -64,7 +57,6 @@ class Webserver {
 
     /**
      * Shutdown the web server gracefully.
-     * @public
      * @returns {Promise<void>}
      */
     shutdown = () => new Promise((resolve, reject) => {
@@ -78,5 +70,4 @@ class Webserver {
     });
 }
 
-// Export the Webserver class for use in other modules.
 module.exports = Webserver;

@@ -1,14 +1,6 @@
 const util = require("util");
 
-/**
- * A simple logger class that provides logging functionality with different log levels.
- * @class
- */
 class Logger {
-    /**
-     * Creates a new Logger instance with the default log level set to "info".
-     * @constructor
-     */
     constructor() {
         this.logLevel = Logger.LogLevels["debug"];
     }
@@ -166,8 +158,4 @@ Logger.LogFileOptions = Object.freeze({
     flags: "as"
 });
 
-/**
- * Export an instance of the Logger class as a singleton.
- * @type {Logger}
- */
 module.exports = new Logger();

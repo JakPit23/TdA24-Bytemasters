@@ -75,5 +75,4 @@ class Core {
     }
 }
 
-// Export the Core class for use in other modules.
 module.exports = Core;

@@ -2,10 +2,6 @@ const express = require("express");
 const Core = require("../Core");
 const Logger = require("../Logger");
 
-/**
- * The ApiVersion1Router class is responsible for defining routes related to API version 1.
- * @class
- */
 class ApiVersion1Router {
     /**
      * Create a new ApiVersion1Router instance.
@@ -15,24 +11,19 @@ class ApiVersion1Router {
     constructor(core) {
         this.core = core;
 
-        // Initialize an Express router for API version 1 routes.
         this.router = express.Router({
             mergeParams: true
         });
 
-        // Initialize the routes defined in the class.
         this.initRoutes();
     }
 
     /**
-     * Get the Express router configured with the defined API version 1 routes.
-     * @returns {express.Router} An Express router for API version 1 routes.
+     * Get the Express router
+     * @returns {express.Router} An Express router
      */
     getRouter = () => this.router;
 
-    /**
-     * Initialize the API version 1 routes.
-     */
     initRoutes() {
         this.router.get("/", (req, res) => {
             res.json({
