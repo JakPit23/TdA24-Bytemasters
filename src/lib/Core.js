@@ -15,7 +15,7 @@ class Core {
         this.logger = new Logger(Logger.LogLevels.info);
         this.logger.setLogLevel(this.config.getLogLevel());
 
-        this.logger.info(Logger.Type.Core, `Starting application v${Tools.GetApplicationVersion()}`);
+        this.logger.info(Logger.Type.Core, `Starting application...`);
         if (!fs.existsSync(path.resolve(__dirname, "../data"))) {
             this.logger.info(Logger.Type.Core, `Creating data directory`);
             fs.mkdirSync(path.resolve(__dirname, "../data"));
