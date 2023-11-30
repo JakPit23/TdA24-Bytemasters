@@ -17,12 +17,12 @@
 <body>
     <header class="inline-flex flex-wrap">
         <img src="../public/images/logo.png" id="logo"/>
-        <img src="../public/images/icons_light.png" id="icons"/>
-        <button onclick="ThemeManager.setTheme()">Theme</button>
+        <img src="../public/images/ikony.png" id="icons"/>
+        <button onclick="setTheme()">Theme</button>
     </header>
 
     <!-- Filters by prize, tags and location will be handled by backend -->
-    <div class="filter">
+    <div class="">
         <li>Dobrovolnictví</li>
         <li>Předsednictví</li>
     </div>
@@ -32,16 +32,9 @@
     </div>
     <!-- TODO: Mode switching-->
     <script src="../public/components/lecturer.js"></script>
-    <script src="../public/themeSwitcher.js"></script>
-    <script>
-        var manager = ThemeManager;
-        manager.setThemeBySystem();
-    </script>
-   <script src="https://unpkg.com/react@17/umd/react.development.js"></script>
-   <script src="https://unpkg.com/react-dom@17/umd/react-dom.development.js"></script>
-   <script src="../public/components/Lecturer.js"></script>
-   <script>
-     // Render the component in the #app element
-     ReactDOM.render(React.createElement(Lecturer, { fullName: 'Michaela Nějaká', firstTitle: "Mgr", secondTitle: "MBA" }), document.getElementById('list'));  </script>
+    <script src="https://unpkg.com/react@17/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@17/umd/react-dom.development.js"></script>
+    <script src="../public/components/Lecturer.js"></script>
+    <script src="../public/theme.js"></script>
 </body>
 </html>
