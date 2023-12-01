@@ -10,7 +10,6 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Lalezar&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
     <script src="https://kit.fontawesome.com/cc03af5ac0.js"></script>
-    <script src="../public/components/lecturer.js"></script>
     <!-- Import our styles -->
     <link rel="stylesheet" href="../public/styles/style.css">
 </head>
@@ -22,19 +21,19 @@
     </header>
 
     <!-- Filters by prize, tags and location will be handled by backend -->
-    <div class="">
+    <div id="list">
         <li>Dobrovolnictví</li>
         <li>Předsednictví</li>
     </div>
     <!-- List of authors will be created by JS -->
-    <div id="list">
+    <div id="authors">
 
     </div>
-    <!-- TODO: Mode switching-->
-    <script src="../public/components/lecturer.js"></script>
-    <script src="https://unpkg.com/react@17/umd/react.development.js"></script>
-    <script src="https://unpkg.com/react-dom@17/umd/react-dom.development.js"></script>
-    <script src="../public/components/Lecturer.js"></script>
     <script src="../public/theme.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="../public/components/ComponentManager.js"></script>
+    <script>
+        ComponentManager.createAndAppend("h1", "Teacher Digital Agency", "authors");
+    </script>
 </body>
 </html>

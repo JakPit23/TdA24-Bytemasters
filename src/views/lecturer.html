@@ -20,35 +20,42 @@
         <img src="../public/images/ikony.png" id="icons"/>
         <button onclick="setTheme()">Theme</button>
     </header>
-    <!-- First part of web is name of lecturer his/her image and role-->
-    <div class="flex flex-col flex-wrap align-middle items-center ">
-        <h1 class="text-3xl font-bold ">Mgr. Petra Swill Plachá MBA</h1>
-        <p class="center-flex">Aktivní studentka / Předsedkyně spolku / Projektová manažerka</p>
-        <img class="rounded-full center-flex" src="https://tourdeapp.cz/storage/images/2023_02_25/412ff296a291f021bbb6de10e8d0b94863fa89308843b/big.png.webp" alt="Profilová fotografie"/>
-    </div>
-    <!-- Location -->
-    <div class="flex flrex-row flex-wrap justify-center">
-        <i class="fa fa-map-marker" id="fa"></i>
-        <p id="location">Brno</p>
-    </div>
-    <!-- Biography -->
-    <p id="bio">Baví mě organizovat věci. Ať už to bylo vyvíjení mobilních aplikací ve Futured, pořádání konferencí, spolupráce na soutěžích Prezentiáda, pIšQworky, <b>Tour de App</b> a Středoškolák roku, nebo třeba dobrovolnictví, vždycky jsem skončila u projektového managementu, rozvíjení soft-skills a vzdělávání. U studentských projektů a akcí jsem si vyzkoušela snad všechno od marketingu po logistiku a moc ráda to předám dál. Momentálně studuji Pdf MUNI a FF MUNI v Brně.</p>
-    <!-- Tags -->
-    <div class="flex-row flex-no-wrap whitespace-normal list-none justify-between text-center" id="tag">
-        <li>Dobrovolnictví</li>
-        <li>Studentské spolky</li>
-        <li>Efektivní učení</li>
-        <li>Prezentační dovednosti</li>
-        <li>Marketing pro neziskové studentské projekty</li>
-        <li>Mimoškolní aktivity</li>
-        <li>Projektový management, event management</li>
-        <li>Fundraising pro neziskové studentské projekty</p>
-    </div>
-    <!-- Contact and prize -->
-    <div id="contact">
-        <p>Cena za hodinu: <em>1200 Kč</em></p>
-        <p>Telefon: +420 722 482 974</p>
-        <p>Email(y): <a href="mailto:placha@scg.cz">placha@scg.cz</a>, <a href="mailto:predseda@scg.cz">predseda@scg.cz</a></p>    
+    <div class="container">
+        <h1 class="font-bold text-3xl text-center">Mgr. Petra Swill Plachá</h1>
+        <div class="text-center location">
+         <p class="fa-solid fa-location-dot "> B r n o</p>
+        </div>
+        <p class="text-center">Aktivní studentka / Předsedkyně spolku / Projektová manažerka</p>
+        <div class="tags flex flex-wrap justify-center font-bold">
+            <li>Dobrovolnictví</li>
+            <li>Studentské spolky</li>
+            <li>Efektivní učení</li>
+            <li>Prezentační dovednosti</li>
+            <li>Marketing pro neziskové studentské projekty</li>
+            <li>Mimoškolní aktivity</li>
+            <li>Projektový management, event management</li>
+            <li>Fundraising pro neziskové studentské projekty</li>
+        </div>
+        <img src="https://tourdeapp.cz/storage/images/2023_02_25/412ff296a291f021bbb6de10e8d0b94863fa89308843b/big.png.webp" alt="Profil" class="rounded-2xl float-right align-middle"> 
+        <p>Baví mě organizovat věci. Ať už to bylo vyvíjení mobilních aplikací ve Futured, pořádání konferencí,
+            spolupráce na soutěžích Prezentiáda, pIšQworky, <b>Tour de App</b> a 
+           Středoškolák roku, nebo třeba dobrovolnictví, vždycky jsem skončila u projektového managementu, 
+           rozvíjení soft-skills a vzdělávání. U studentských projektů a akcí jsem si vyzkoušela snad 
+           všechno od marketingu po logistiku a moc ráda to předám dál. 
+           Momentálně studuji Pdf MUNI a FF MUNI v Brně.</p>
+           <table>
+            <tr class="font-bold">
+                <td>Cena za hodinu</td>
+                <td>Telefon</td>
+                <td>Emaily</td>
+            </tr>
+            <tr>
+                <td>1200 Kč</td>
+                <td>+420 722 482 974</td>
+                <td><a href="mailto:placha@scg.cz">placha@scg.cz</a>, <a href="mailto:predseda@scg.cz">predseda@scg.cz</a></td>
+            </tr>
+           </table>
+        
     </div>
     <script src="../public/theme.js"></script>
 </body>
