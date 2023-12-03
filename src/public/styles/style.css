@@ -1,5 +1,6 @@
 * {
     overflow: hidden;
+    font-family: "Open-sans";
 }
 :root {
     --primary-color: #00384d;
@@ -53,10 +54,6 @@ body {
     margin-right: 10%;
 }
 
-#fa {
-    padding-top: 3px;
-}
-
 button {
     left: 50px;
     float: right;
@@ -84,4 +81,8 @@ li {
 
 td {
     padding: 0 15px;
+}
+
+h1, h2, h3 {
+    font-family: "Lalezar";
 }
