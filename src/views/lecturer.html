@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="cs-cz" data-theme="light">
+<html lang="cs-cz">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -15,15 +15,15 @@
 </head>
 <body>
     <!-- Header contains of logo and image-->
-    <header class="inline-flex flex-wrap">
+    <header class="inline-flex flex-wrap" id="header">
         <img src="../public/images/logo.png" id="logo"/>
         <img src="../public/images/ikony.png" id="icons"/>
         <button onclick="setTheme()">Theme</button>
     </header>
-    <div class="container">
+    <div class="container" id="container">
         <h1 class="font-bold text-3xl text-center">Mgr. Petra Swill Plachá</h1>
         <div class="text-center location">
-         <p class="fa-solid fa-location-dot "> B r n o</p>
+            <p class="fa-solid fa-location-dot "> B r n o</p>
         </div>
         <p class="text-center">Aktivní studentka / Předsedkyně spolku / Projektová manažerka</p>
         <div class="tags flex flex-wrap justify-center font-bold">
@@ -43,7 +43,7 @@
            rozvíjení soft-skills a vzdělávání. U studentských projektů a akcí jsem si vyzkoušela snad 
            všechno od marketingu po logistiku a moc ráda to předám dál. 
            Momentálně studuji Pdf MUNI a FF MUNI v Brně.</p>
-           <table>
+        <table>
             <tr class="font-bold">
                 <td>Cena za hodinu</td>
                 <td>Telefon</td>
@@ -55,7 +55,6 @@
                 <td><a href="mailto:placha@scg.cz">placha@scg.cz</a>, <a href="mailto:predseda@scg.cz">predseda@scg.cz</a></td>
             </tr>
            </table>
-        
     </div>
     <script src="../public/theme.js"></script>
 </body>

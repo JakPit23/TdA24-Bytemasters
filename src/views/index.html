@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="cs-cz" data-theme="light">
+<html lang="cs-cz">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -19,21 +19,12 @@
         <img src="../public/images/ikony.png" id="icons"/>
         <button onclick="setTheme()">Theme</button>
     </header>
+    <div id="container">
+        <div id="tags">
 
-    <!-- Filters by prize, tags and location will be handled by backend -->
-    <div id="list">
-        <li>Dobrovolnictví</li>
-        <li>Předsednictví</li>
-    </div>
-    <!-- List of authors will be created by JS -->
-    <div id="authors">
-
+        </div>
+        <div id="lecturers"></div>
     </div>
     <script src="../public/theme.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-    <script src="../public/components/ComponentManager.js"></script>
-    <script>
-        ComponentManager.createAndAppend("h1", "Teacher Digital Agency", "authors");
-    </script>
 </body>
 </html>
