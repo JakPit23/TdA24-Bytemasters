@@ -17,12 +17,8 @@ module.exports = class WebRoute {
     getRouter = () => this.router;
 
     loadRoutes = () => {
-        this.router.get("/", (req, res) => {
-            res.sendFile(path.join(__dirname, "../../../views/index.html"));
-        });
+        this.router.get("/", (req, res) => res.sendFile(path.join(__dirname, "../../../views/index.html")));
 
-        this.router.get("/lecturer", (req, res) => {
-            res.sendFile(path.join(__dirname, "../../../views/lecturer.html"));
-        });
+        this.router.get("/lecturer/:lecturerUUID", (req, res) => res.sendFile(path.join(__dirname, "../../../views/lecturer.html")));
     }
 };
