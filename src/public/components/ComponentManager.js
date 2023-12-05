@@ -19,4 +19,8 @@ class ComponentManager {
         parent = document.getElementById(appendTo);
         parent.appendChild(newTag);
     }
+
+    getUUID() {
+        return window.location.pathname().replace("/lecturer/", "");
+    }
 }
