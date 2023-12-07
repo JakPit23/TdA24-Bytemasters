@@ -16,6 +16,8 @@ RUN mv /app/node_modules /node_modules
 
 # Enables to run `npm run serve`
 RUN npm i -g nodemon
+# Compile TailwindCSS
+RUN npx tailwindcss -i /app/public/styles/style.css -o /app/public/styles/styles.css
 
 EXPOSE 3000/tcp
 
