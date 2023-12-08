@@ -1,24 +1,24 @@
 class ComponentManager {
     constructor() {
         console.log("Component Manager ready");
+        this.uuid = this.getUUID()
+        this.content = "";
         this.fillPage();
     }
 
     // Fill page with content
-    fillPage () { 
-        uuid = this.getUUID();
-        content = JSON.stringify(this.getContent(uuid));
-        console.log("Here is the content: " + content);
+    async fillPage () { 
+        this.content = await this.getContent(this.uuid); 
+
+        console.log("Here is the content: " + this.content);
     }
 
     // Send API request and get content for this page
-    getContent(uuid) {
-        axios.get("http://localhost:3000/api/lecturers/" + uuid)
+    async getContent(uuid) {
+        return axios.get("http://localhost:3000/api/lecturers/" + uuid)
         .then(function(response) {
+            console.log(response.data)
             return response.data;
-        })
-        .catch(function(error) {
-            console.error(error);
         })
     }
     
