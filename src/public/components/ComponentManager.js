@@ -11,6 +11,11 @@ class ComponentManager {
         this.content = await this.getContent(this.uuid); 
 
         console.log("Here is the content: " + this.content);
+
+        this.createAndAppend("h1", `${this.content.first_name} ${this.content.middle_name} ${this.content.last_name}`, "container", ["font-bold", "text-3xl", "text-center"]);
+        this.createAndAppend("img", "https://picsum.photos/200", "container", ["rounded-2xl", "float-right", "align-middle"]);
+        this.createAndAppend("p", "JJJJJJJ", "container")
+        console.log("Name is here");
     }
 
     // Send API request and get content for this page
@@ -23,16 +28,22 @@ class ComponentManager {
     }
     
     // Create content and append it to parent
-    createAndAppend(tag, content, appendTo) {
+    createAndAppend(tag, content, appendTo, classname = []) {
         let newTag = document.createElement(tag);
         if(tag != "img") {
             newTag.innerHTML = content;
         } else {
             newTag.src = content;
         }
+        if(classname.length != 0) {
+            newTag.className = classname;
+            newTag.className = newTag.className.replace(/,/g, ' ');
+        }
         parent = document.getElementById(appendTo);
         parent.appendChild(newTag);
+        return newTag;
     }
+
 
     // Get UUID from URL using Regex
     getUUID() {
