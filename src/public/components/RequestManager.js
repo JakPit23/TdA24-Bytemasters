@@ -6,6 +6,9 @@ class RequestManager {
             console.log(response.data)
             return response.data;
         })
+        .catch(err => {
+            console.log("Something bad happened");
+        })
     }
 
     static async delRequest(uuid) {
@@ -16,7 +19,7 @@ class RequestManager {
             return;
         })
         .catch(err => {
-            console.log("SOME ERORR IS HERE");
+            console.log("The user doesn't exists probably");
         })
     }
 }
