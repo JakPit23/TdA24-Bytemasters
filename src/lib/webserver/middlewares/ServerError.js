@@ -1,3 +1,4 @@
+const path = require("path");
 const Logger = require("../../Logger");
 
 module.exports = class ServerError {
@@ -18,7 +19,6 @@ module.exports = class ServerError {
         }
         
         this.core.getLogger().error(Logger.Type.Webserver, error.stack);
-        // TODO: Make a 505 error page
-        res.status(500).send('Server error');
+        return res.sendFile(path.join(__dirname, "../../../views/500.html"))
     }
 };

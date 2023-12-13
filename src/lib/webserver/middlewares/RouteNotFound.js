@@ -1,3 +1,5 @@
+const path = require("path");
+
 module.exports = class RouteNotFound {
     constructor(core) {
         this.core = core;
@@ -11,7 +13,6 @@ module.exports = class RouteNotFound {
             });
         }
 
-        // TODO: Make a 404 error page
-        return res.status(404).send("Not found");
+        return res.sendFile(path.join(__dirname, "../../../views/404.html"))
     }
 }
