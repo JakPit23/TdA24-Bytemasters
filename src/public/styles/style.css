@@ -12,7 +12,9 @@
     --special-color: #333333;
     --terciary-color: #FECB2E;
 }
-
+p {
+    padding-left: 15px;
+}
 .light {
     --primary-color: #74C7D3;
     --secondary-color: #00384d;
@@ -27,9 +29,6 @@
 
 .tags {
     color: var(--terciary-color);
-}
-.container > p {
-    padding-left: 1%;
 }
 
 .container > img {
