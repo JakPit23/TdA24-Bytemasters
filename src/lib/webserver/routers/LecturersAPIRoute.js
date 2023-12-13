@@ -35,21 +35,6 @@ module.exports = class WebRoute {
                 const lecturer = this.core.getLecturerManager().createLecturer(this.core.getLecturerManager().generateUUID(), data);
 
                 return res.status(200).json(lecturer.toJSON());
-    
-                // if (!this.core.getLecturerManager().isValidContact(data.contact)) {
-                //     Logger.debug(Logger.Type.Webserver, "Invalid contact");
-                //     // res.status(200).json({
-                //     //     code: 400,
-                //     //     error: "Invalid contact information.",
-                //     //     ...data,
-                //     //     contact: {
-                //     //         telephone_numbers: data.telephone_numbers || [],
-                //     //         emails: data.emails || [],
-                //     //     },
-                //     // });
-                //     // return;
-                // }
-                
             } catch(error) {
                 // Catch known errors, otherwise pass them to error handler.
                 if (error.message == "LECTURER_ALREADY_EXISTS") {
@@ -76,7 +61,7 @@ module.exports = class WebRoute {
                 const lecturer = this.core.getLecturerManager().getLecturer(lecturerUUID);
 
                 if (!lecturer) {
-                    return res.status(404).send({
+                    return res.status(200).send({
                         code: 404,
                         message: "Lecturer not found",
                     });
@@ -90,7 +75,7 @@ module.exports = class WebRoute {
             const lecturer = this.core.getLecturerManager().getLecturer(lecturerUUID);
 
             if (!lecturer) {
-                return res.status(404).json({
+                return res.status(200).json({
                     code: 404,
                     message: "Lecturer not found",
                 });
@@ -107,7 +92,7 @@ module.exports = class WebRoute {
             const lecturer = this.core.getLecturerManager().getLecturer(lecturerUUID);
 
             if (!lecturer) {
-                return res.status(404).send({
+                return res.status(200).send({
                     code: 404,
                     message: "Lecturer not found",
                 });
