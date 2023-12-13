@@ -8,7 +8,7 @@ class ComponentManager {
 
     // Fill page with content
     async fillPage () { 
-        this.content = await this.getContent(this.uuid); 
+        this.content = await RequestManager.getRequest("lecturers", this.uuid);
 
         console.log("Here is the content: " + this.content);
 
@@ -17,16 +17,6 @@ class ComponentManager {
         this.createAndAppend("p", "JJJJJJJ", "container")
         console.log("Name is here");
     }
-
-    // Send API request and get content for this page
-    async getContent(uuid) {
-        return axios.get("http://localhost:3000/api/lecturers/" + uuid)
-        .then(function(response) {
-            console.log(response.data)
-            return response.data;
-        })
-    }
-    
     // Create content and append it to parent
     createAndAppend(tag, content, appendTo, classname = []) {
         let newTag = document.createElement(tag);
@@ -43,8 +33,7 @@ class ComponentManager {
         parent.appendChild(newTag);
         return newTag;
     }
-
-
+    
     // Get UUID from URL using Regex
     getUUID() {
         const url = window.location.pathname
@@ -52,10 +41,6 @@ class ComponentManager {
         const uuidPattern = /[0-9a-f]{8}-[0-9a-f]{4}-[14][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}/i;
 
         const match = url.match(uuidPattern);
-        if (match) {
-            return match[0];
-        } else {
-            return null;
+        return match[0];
   }
-}
 }
