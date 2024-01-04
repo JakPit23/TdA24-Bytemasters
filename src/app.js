@@ -1,15 +1,13 @@
 const Logger = require("./lib/Logger");
 const Core = require("./lib/Core");
 
-const core = new Core();
-
 /**
  * Handle unhandled Promise rejections by logging the error.
  * @param {any} reason - The reason for the unhandled rejection.
  * @param {Promise} promise - The unhandled Promise.
  */
 process.on("unhandledRejection", (reason, promise) => {
-    core.getLogger().error(Logger.Type.Watchdog, "Unhandled rejection occured:", {
+    Core.getLogger().error(Logger.Type.Watchdog, "Unhandled rejection occured:", {
         reason,
         stack: reason?.stack,
         promise,
@@ -24,7 +22,7 @@ async function shutdown() {
     try {
         process.exit(0);
     } catch (error) {
-        core.getLogger().error(Logger.Type.Watchdog, "An error occured during shutdown: ", {
+        Core.getLogger().error(Logger.Type.Watchdog, "An error occured during shutdown: ", {
             name: error.name,
             stack: error.stack,
         });
@@ -45,7 +43,7 @@ process.on("SIGINT", shutdown);
  * @param {string} origin - The origin of the exception.
  */
 process.on("uncaughtException", (error, origin) => {
-    core.getLogger().error(Logger.Type.Watchdog, "Uncaught exception occured:", {
+    Core.getLogger().error(Logger.Type.Watchdog, "Uncaught exception occured:", {
         error,
         origin,
     });
@@ -60,9 +58,9 @@ process.on("uncaughtException", (error, origin) => {
  */
 process.on("exit", (code) => {
     if (code !== 0) {
-        core.getLogger().error(Logger.Type.Watchdog, "Stack trace that led to the process exiting with code " + code + ":", new Error().stack);
+        Core.getLogger().error(Logger.Type.Watchdog, "Stack trace that led to the process exiting with code " + code + ":", new Error().stack);
         return;
     }
    
-    core.getLogger().info(Logger.Type.Watchdog, "Exiting with code " + code + "...");
+    Core.getLogger().info(Logger.Type.Watchdog, "Exiting with code " + code + "...");
 });

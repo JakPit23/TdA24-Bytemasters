@@ -84,4 +84,4 @@ class Core {
     }
 }
 
-module.exports = Core;
+module.exports = new Core();
