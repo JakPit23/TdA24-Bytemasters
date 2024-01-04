@@ -33,7 +33,6 @@ module.exports = class WebRoute {
                 }
 
                 const lecturer = this.core.getLecturerManager().createLecturer(this.core.getLecturerManager().generateUUID(), data);
-
                 return res.status(200).json(lecturer.toJSON());
             } catch(error) {
                 // Catch known errors, otherwise pass them to error handler.
@@ -58,16 +57,16 @@ module.exports = class WebRoute {
 
         this.router.get("/:lecturerUUID", (req, res) => {
             const { lecturerUUID } = req.params;
-                const lecturer = this.core.getLecturerManager().getLecturer(lecturerUUID);
+            const lecturer = this.core.getLecturerManager().getLecturer(lecturerUUID);
 
-                if (!lecturer) {
-                    return res.status(200).send({
-                        code: 404,
-                        message: "Lecturer not found",
-                    });
-                }
+            if (!lecturer) {
+                return res.status(200).send({
+                    code: 404,
+                    message: "Lecturer not found",
+                });
+            }
 
-                res.status(200).json(lecturer);
+            res.status(200).json(lecturer);
         });
 
         this.router.delete("/:lecturerUUID", (req, res) => {
@@ -82,7 +81,6 @@ module.exports = class WebRoute {
             }
 
             this.core.getLecturerManager().deleteLecturer(lecturerUUID);
-            
             res.sendStatus(200);
         });
 
@@ -119,7 +117,6 @@ module.exports = class WebRoute {
             }
 
             const editedLecturer = this.core.getLecturerManager().editLecturer(lecturerUUID, data);
-
             res.status(200).json(editedLecturer);
         });
     }
