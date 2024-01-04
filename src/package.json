@@ -4,7 +4,8 @@
   "description": "Tour de App 2024",
   "main": "app.js",
   "scripts": {
-    "start": "node app.js"
+    "start": "node app.js",
+    "build:css": "npx tailwindcss -i public/styles/style.css -o public/styles/styles.css"
   },
   "keywords": [],
   "dependencies": {
