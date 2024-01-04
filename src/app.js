@@ -58,9 +58,9 @@ process.on("uncaughtException", (error, origin) => {
  */
 process.on("exit", (code) => {
     if (code !== 0) {
-        Core.getLogger().error(Logger.Type.Watchdog, "Stack trace that led to the process exiting with code " + code + ":", new Error().stack);
+        Core.getLogger().error(Logger.Type.Watchdog, `Stack trace that led to the process exiting with code ${code}:`, new Error().stack);
         return;
     }
    
-    Core.getLogger().info(Logger.Type.Watchdog, "Exiting with code " + code + "...");
+    Core.getLogger().info(Logger.Type.Watchdog, `Exiting with code ${code}...`);
 });
