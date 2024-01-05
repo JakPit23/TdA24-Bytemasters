@@ -1,12 +1,30 @@
 class Tag {
-    constructor(uuid, name) {
-        this.uuid = uuid;
-        this.name = name;
+    /**
+     * 
+     * @param {Object} data
+     * @param {string} data.uuid
+     * @param {string} data.name
+     */
+    constructor(data) {
+        this.data = data;
     }
 
-    getUUID = () => this.uuid;
+    toJSON = () => ({
+        uuid: this.getUUID(),
+        name: this.getName()
+    });
+    
+    /**
+     * 
+     * @returns {string}
+     */
+    getUUID = () => this.data?.uuid;
 
-    getName = () => this.name;
+    /**
+     * 
+     * @returns {string}
+     */
+    getName = () => this.data?.name;
 }
 
 module.exports = Tag;

@@ -10,7 +10,9 @@
   "keywords": [],
   "dependencies": {
     "better-sqlite3": "^9.2.2",
-    "express": "^4.18.2"
+    "express": "^4.18.2",
+    "sanitize-html": "^2.11.0",
+    "uuid": "^9.0.1"
   },
   "devDependencies": {
     "tailwindcss": "^3.3.6"
