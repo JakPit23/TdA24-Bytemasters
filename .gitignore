@@ -2,6 +2,6 @@
 .vscode/*
 !.vscode/launch.json
 .idea
-
+/node_modules
 .env
 /data
