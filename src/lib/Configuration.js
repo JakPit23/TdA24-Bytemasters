@@ -1,13 +1,13 @@
 class Configuration {
     /**
-     * Get the port number for the Webserver
-     * @returns {number} The Webserver port number.
+     * 
+     * @returns {number}
      */
     getWebserverPort = () => process.env.WEBSERVER_PORT || 3000;
 
     /**
-     * Get the log level for the application.
-     * @returns {string} The log level.
+     * 
+     * @returns {string}
      */
     getLogLevel = () => process.env.LOG_LEVEL || "info";
 }
