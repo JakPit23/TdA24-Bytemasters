@@ -16,10 +16,8 @@ module.exports = class WebRoute {
     getRouter = () => this.router;
 
     loadRoutes = () => {
-        this.router.get("/", (req, res) => {
-            res.json({
-                secret: "The cake is a lie",
-            });
-        });
+        this.router.get("/", (req, res) => res.json({
+            secret: "The cake is a lie"
+        }));
     }
 };
