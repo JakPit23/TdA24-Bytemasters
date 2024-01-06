@@ -1,6 +1,5 @@
 const sanitizeHtml = require("sanitize-html");
 const Core = require("../Core");
-const Logger = require("../Logger");
 const Lecturer = require("./Lecturer");
 const UUIDProcessor = require("../utils/UUIDProcessor");
 
