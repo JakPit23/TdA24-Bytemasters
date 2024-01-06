@@ -79,11 +79,7 @@ class TagManager {
             throw Error("MISSING_NAME");
         }
 
-        if (this.getTagByUUID(data.uuid)) {
-            throw Error("TAG_ALREADY_EXISTS");
-        }
-
-        if (this.getTagByName(data.name)) {
+        if (this.getTagByUUID(data.uuid) || this.getTagByName(data.name)) {
             throw Error("TAG_ALREADY_EXISTS");
         }
 
