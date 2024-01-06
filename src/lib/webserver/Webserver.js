@@ -7,9 +7,8 @@ const Core = require("../Core");
 
 class Webserver {
     /**
-     * Create a new Webserver instance
-     * @constructor
-     * @param {Core} core - The application core.
+     * 
+     * @param {Core} core
      */
     constructor(core) {
         this.core = core;
@@ -25,7 +24,6 @@ class Webserver {
         this.loadRouters();
         this.loadMiddlewares();
         
-        // Serve static files from the "/public" directory.
         this.app.use("/public", express.static(path.join(__dirname, "../../public")));
 
         this.app.use("/api/lecturers", this.routers["LecturersAPIRoute"].getRouter());
@@ -82,13 +80,12 @@ class Webserver {
     }
 
     /**
-     * Shutdown the web server gracefully.
+     * 
      * @returns {Promise<void>}
      */
     shutdown = () => new Promise((resolve, reject) => {
         this.core.getLogger().debug(Logger.Type.Webserver, "Webserver shutdown in progress...");
 
-        // Close the server to stop accepting new connections.
         this.webserver.close(() => {
             this.core.getLogger().debug(Logger.Type.Webserver, "Webserver shutdown completed.");
             resolve();
