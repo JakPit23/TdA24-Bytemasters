@@ -28,7 +28,7 @@ p {
 }
 
 .tags {
-    color: var(--terciary-color);
+    color: var(--terciary-color);   
 }
 
 .container > img {
@@ -39,12 +39,16 @@ p {
     padding-left: 5px;
     height: 6vw;
     width: 9vw;
-    margin-right: 30%;
+    margin-right: 5%;
 }
 header {
     width: 100%;
     background-color: var(--secondary-color);
     color: #FFFFFF;
+    vertical-align: middle;
+}
+#searchbox {
+    color: #333333;
 }
 body {
     background-color: var(--primary-color);
@@ -54,7 +58,7 @@ body {
 #icons {
     height: 5vw;
     width: 45vw;
-    margin-right: 10%;
+    margin-right: 5%;
 }
 
 button {

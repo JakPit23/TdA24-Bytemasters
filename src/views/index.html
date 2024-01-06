@@ -13,9 +13,9 @@
     <link rel="stylesheet" href="../public/styles/styles.css">
 </head>
 <body>
-    <header class="inline-flex flex-wrap">
-        <img src="../public/images/logo.png" id="logo"/>
-        <img src="../public/images/ikony.png" id="icons"/>
+    <header class="flex flex-wrap">
+        <img src="../public/images/logo.png" id="logo" class="flex"/>
+        <img src="../public/images/ikony.png" id="icons" class="flex"/>
         <button onclick="setTheme()">Theme</button>
     </header>
     <div id="container" class="container">
@@ -29,10 +29,15 @@
         <p>S první možností vám nepomůžeme, bohužel mývala u nás nenajdete. A kdo by se chtěl nudit? Co takhle investovat do digitálního vzdělávání? Digitální dovednosti jsou velmi ceněny, tak proč si s nimi nezačít přivydělávat? Chcete zorganizovat velkou akci, tvořit reklamu nebo pomáhat s optimalizací WWW stránek, ale nevíte jak na to? Pak jste tady správně!
             V Teacher Digital Agency pro vás tvoříme katalog zkušených lektorů, kteří vás rádi vše naučí. Stačí najít lektora, který se k vám hodí a kontaktovat ho. Poté se již můžete přestat nudit a užít si hodiny zábavy. A pokud budete nespokojeni, tak vám po domluvě seženeme jako náhradu pravého mývala.
         </p>
-        <div id="tags">
 
+        <div id="search">
+            <input type="search" name="" id="searchbox" placeholder="aHOJ">
+        </div>
+        <div id="tags">
+            <p>Lektory můžete filtrovat pomocí tagů</p>
         </div>
         <div id="lecturers">
+            <p>A nebo se můžete podívat, kdo nabízí své vědomosti</p>
         </div>
     </div>
     <script src="../public/theme.js"></script>
