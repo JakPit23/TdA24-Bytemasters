@@ -19,6 +19,9 @@ class Webserver {
         this.app = express();
         this.app.use(express.json());
 
+        this.app.set("view engine", "ejs");
+        this.app.set("views", path.join(__dirname, "../../views"));
+
         this.app.disable("x-powered-by");
 
         this.loadRouters();
