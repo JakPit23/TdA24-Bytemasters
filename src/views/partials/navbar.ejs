@@ -1,0 +1,84 @@
+<div class="h-6 block"></div>
+
+<div class="container mx-auto px-4">
+    <div class="flex items-center justify-between w-full py-4">
+        <a href="/">
+            <img src="/public/images/logo.png" class="h-12">
+        </a>
+
+        <div class="md:hidden">
+            <button data-target="navbarToggler" type="button" data-state="closed" class="flex items-center justify-center rounded-md gap-2 h-10 px-4 py-1 relative">
+                <div class="flex items-center">
+                    <svg aria-hidden="true" focusable="false" class="text-white h-6 w-6" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
+                        <path fill="currentColor" d="M0 80C0 71.16 7.164 64 16 64H432C440.8 64 448 71.16 448 80C448 88.84 440.8 96 432 96H16C7.164 96 0 88.84 0 80zM0 240C0 231.2 7.164 224 16 224H432C440.8 224 448 231.2 448 240C448 248.8 440.8 256 432 256H16C7.164 256 0 248.8 0 240zM432 416H16C7.164 416 0 408.8 0 400C0 391.2 7.164 384 16 384H432C440.8 384 448 391.2 448 400C448 408.8 440.8 416 432 416z"></path>
+                    </svg>
+                </div>
+            </button>
+
+            <div data-target="navbarBlur" style="backdrop-filter: blur(4px);" class="fixed hidden inset-0 bg-dark z-[10]"></div>
+        </div>
+
+        <div class="hidden md:flex items-center gap-4 flex-row">
+            <a class="nav-link" href="/">Home</a>
+            <a class="nav-link" href="/lecturers">Lecturers</a>
+        </div>
+    </div>
+</div>
+
+<div data-target="navbar" data-state="closed" class="hidden rounded-md max-w-xl transition_0.33s_all fixed overflow-y-auto w-[70vw] h-[100vh] top-0 right-0 z-20" tabindex="-1">
+    <div class="flex items-center justify-between gap-3 flex-col w-full h-[100vh] py-8">
+        <div class="flex items-start gap-5 flex-col w-full py-4 px-8">
+            <div class="flex items-center justify-between w-full">
+                <svg viewBox="0 0 76 30" class="h-6 text-white">
+                    <path d="M5.2074 29.7478C5.75968 29.7478 6.2074 29.3001 6.2074 28.7478V21.5118C6.2074 18.2889 6.2074 15.6562 6.2074 13.6338L11.7425 29.0851C11.8849 29.4826 12.2616 29.7478 12.6839 29.7478H17.1323C17.5522 29.7478 17.9273 29.4855 18.0715 29.0912L23.7225 13.6338C23.7225 16.0707 23.7225 17.2147 23.7225 23.5807V28.7478C23.7225 29.3001 24.1703 29.7478 24.7225 29.7478H28.9299C29.4822 29.7478 29.9299 29.3001 29.9299 28.7478V1.02634C29.9299 0.474059 29.4822 0.0263443 28.9299 0.0263443H24.325C23.9139 0.0263443 23.5446 0.278005 23.3943 0.660688L14.9057 22.2677L6.45604 0.662121C6.30609 0.278683 5.93645 0.0263443 5.52473 0.0263443H1C0.447716 0.0263443 0 0.47406 0 1.02634V28.7478C0 29.3001 0.447715 29.7478 1 29.7478H5.2074Z" fill="currentColor"></path>
+                    <path d="M35.2728 28.7478C35.2728 29.3001 35.7205 29.7478 36.2728 29.7478H40.3616C40.9138 29.7478 41.3616 29.3001 41.3616 28.7478V11.0263C41.3616 10.4741 40.9138 10.0263 40.3616 10.0263H36.2728C35.7205 10.0263 35.2728 10.4741 35.2728 11.0263V28.7478Z" fill="currentColor"></path>
+                    <path d="M51.5182 29.7478C52.0705 29.7478 52.5182 29.3001 52.5182 28.7478V25.1723C52.5182 24.9167 52.616 24.6709 52.7916 24.4852L54.8509 22.3075L58.9883 29.2593C59.1686 29.5622 59.4951 29.7478 59.8476 29.7478H64.5523C65.3292 29.7478 65.8094 28.9006 65.4102 28.2341L59.1209 17.7319L64.88 11.718C65.489 11.082 65.0383 10.0263 64.1578 10.0263H59.3118C59.0299 10.0263 58.7612 10.1453 58.5717 10.3538L52.5182 17.0157V1.02634C52.5182 0.47406 52.0705 0.0263443 51.5182 0.0263443H47.4294C46.8771 0.0263443 46.4294 0.47406 46.4294 1.02634V28.7478C46.4294 29.3001 46.8771 29.7478 47.4294 29.7478H51.5182Z" fill="currentColor"></path>
+                    <path d="M69.5554 28.7478C69.5554 29.3001 70.0031 29.7478 70.5554 29.7478H74.6442C75.1964 29.7478 75.6442 29.3001 75.6442 28.7478V11.0263C75.6442 10.4741 75.1964 10.0263 74.6442 10.0263H70.5554C70.0031 10.0263 69.5554 10.4741 69.5554 11.0263V28.7478Z" fill="currentColor"></path>
+                    <path d="M69.5 5.02634C69.5 5.57863 69.9477 6.02634 70.5 6.02634H74.5888C75.1411 6.02634 75.5888 5.57863 75.5888 5.02634V1.02634C75.5888 0.47406 75.1411 0.0263443 74.5888 0.0263443H70.5C69.9477 0.0263443 69.5 0.47406 69.5 1.02634V5.02634Z" fill="currentColor"></path>
+                    <path d="M35.2728 5C35.2728 5.55228 35.7205 6 36.2728 6H40.3616C40.9138 6 41.3616 5.55228 41.3616 5V1C41.3616 0.447715 40.9138 0 40.3616 0H36.2728C35.7205 0 35.2728 0.447715 35.2728 1V5Z" fill="currentColor"></path>
+                </svg>
+                
+                <button data-target="navbarToggler" class="rounded-md items-center justify-center flex gap-2 h-10 px-4 py-1 bg-transparent text-white relative ml-auto">
+                    <div class="flex items-center">
+                        <svg aria-hidden="true" focusable="false" class="text-white h-6 w-6 fill-white" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512">
+                            <path fill="currentColor" d="M315.3 411.3c-6.253 6.253-16.37 6.253-22.63 0L160 278.6l-132.7 132.7c-6.253 6.253-16.37 6.253-22.63 0c-6.253-6.253-6.253-16.37 0-22.63L137.4 256L4.69 123.3c-6.253-6.253-6.253-16.37 0-22.63c6.253-6.253 16.37-6.253 22.63 0L160 233.4l132.7-132.7c6.253-6.253 16.37-6.253 22.63 0c6.253 6.253 6.253 16.37 0 22.63L182.6 256l132.7 132.7C321.6 394.9 321.6 405.1 315.3 411.3z"></path>
+                        </svg>
+                    </div>
+                </button>
+            </div>
+            
+            <p class="text-white">Create an enjoyable server with Miki.</p>
+        </div>
+
+        <div class="flex items-center flex-col gap-12 w-full">
+            <button class="rounded-md items-center justify-center flex gap-2 h-10 px-4 py-1 text-white hover:bg_ui.5 relative">
+                <div class="flex items-center">
+                    <a target="_blank" href="https://discord.gg/39Xpj7K" class="text-white">Support</a>
+                </div>
+            </button>
+            
+            <button type="button" class="rounded-md items-center justify-center flex gap-2 h-10 px-4 py-1 text-white hover:bg_ui.5">
+                <p class="text_ui.100">Features</p>
+                <svg aria-hidden="true" focusable="false" class="h-3 w-3" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512">
+                    <path fill="currentColor" d="M362.7 203.9l-159.1 144c-6.125 5.469-15.31 5.469-21.44 0L21.29 203.9C14.73 197.1 14.2 187.9 20.1 181.3C26.38 174.4 36.5 174.5 42.73 180.1L192 314.5l149.3-134.4c6.594-5.877 16.69-5.361 22.62 1.188C369.8 187.9 369.3 197.1 362.7 203.9z"></path>
+                </svg>
+            </button>
+            
+            <a href="/guides">
+                <button class="rounded-md items-center justify-center flex gap-2 h-10 px-4 py-1 text-white hover:bg_ui.5 relative">
+                    <div class="d_flex items_center opacity_1">
+                        <p class="text_ui.100">Guides</p>
+                    </div>
+                </button>
+            </a>
+            
+            <a href="/invite?ref=mikiai">
+                <button class="rounded-md items-center justify-center flex gap-2 h-10 px-4 py-1 text-white hover:bg_ui.5 relative bg-yellow-600 text_uiLight.100 hover:bg-yellow-400">
+                    <div class="d_flex items_center opacity_1">Invite Miki</div>
+                </button>
+            </a>
+        </div>
+
+        <div></div>
+    </div>
+</div>

@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teachers Digital Agency</title>
+    <link rel="stylesheet" href="/public/css/app.css">
+</head>
+<body>
+    <%- include('partials/navbar') %>
+    <%- include('partials/blobs') %>
+
+    <div data-loader class="loader-page">
+        <div class="loader"></div>
+    </div>
+
+    <div class="w-full">
+        <div class="max-w-[1280px] mx-auto px-4">
+            <div class="flex flex-col items-start w-full pt-4 gap-4">
+                <div data-lecturer style="display: none;" class="lecturer"></div>
+            </div>
+        </div>
+    </div>
+
+    <script defer src="/public/js/lib/jquery-3.7.1.min.js"></script>
+    <script defer src="/public/js/pages/LecturerPage.js"></script>
+    <script defer src="/public/js/LecturerAPI.js"></script>
+    <script defer src="/public/js/Application.js"></script>
+</body>
+</html>

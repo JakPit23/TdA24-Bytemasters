@@ -19,6 +19,6 @@ module.exports = class ServerError {
         }
         
         this.core.getLogger().error(Logger.Type.Webserver, error.stack);
-        return res.status(500).sendFile(path.join(__dirname, "../../../views/500.html"))
+        return res.status(500).render("500");
     }
 };

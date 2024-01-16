@@ -3,9 +3,78 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hello World</title>
+    <title>Teachers Digital Agency</title>
+    <link rel="stylesheet" href="/public/css/app.css">
 </head>
 <body>
-    Hello world!
+    <%- include('partials/navbar') %>
+    <%- include('partials/blobs') %>
+
+    <div class="w-full">
+        <div class="max-w-[1280px] mx-auto px-4">
+            <div class="flex flex-col items-start w-full pt-32 gap-64">
+                <div class="flex flex-col items-center justify-center gap-8 w-full h-[50vh]">
+                    <h1 class="font-black text-white text-6xl">Teacher Digital Agency</h1>
+                    <p class="text-xl max-w-5xl">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p>
+                    <a class="btn !bg-sunglate-900" href="#lecturers">Find your lecturer</a>
+                </div>
+
+                <div id="lecturers" class="flex flex-col items-center justify-center gap-8 w-full">
+                    <h1 class="font-black text-white text-4xl">Najdi lektora</h1>
+                    
+                    <div class="flex flex-row w-full gap-2">
+                        <div class="flex flex-row w-full px-2 py-4 bg-neutral-900 rounded-md">
+                            <img class="h-6 w-6 mx-2" src="/public/images/icons/search.svg">
+                            <input data-searchInput class="w-full bg-transparent focus:outline-none text-white-900 font-normal" type="search" placeholder="Search for lecturer">
+                        </div>
+        
+                        <div data-filterButton class="flex flex-row min-w-fit px-2 py-4 bg-neutral-900 rounded-md cursor-pointer">
+                            <img class="h-6 w-6 mx-2" src="/public/images/icons/filter.svg">
+                            <p class="w-full font-normal pr-2">Filter</p>
+                        </div>
+                    </div>
+        
+                    <div class="flex flex-col items-center justify-center w-full">
+                        <div data-loader>
+                            <div class="loader"></div>
+                        </div>
+
+                        <p data-noResults style="display: none" class="text-white text-2xl">No results found</p>
+
+                        <div data-lecturers style="display: none" class="grid grid-cols-2 gap-4 w-full">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div data-filterBox class="modal fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-neutral-800 p-6 rounded shadow-lg z-50 hidden">
+        <div class="flex">
+            <img class="h-6 w-6 mx-2" src="/public/images/icons/filter.svg">
+            <h1>Filter</h1>
+        </div>
+
+        <div class="filter-section mt-4">
+            <label for="price" class="block text-gray-700">Price per hour:</label>
+            <input id="price" type="number" class="w-full border-b-2 border-gray-400 pb-2">
+        </div>
+    
+        <div class="filter-section mt-4">
+            <label for="location" class="block text-gray-700">Location:</label>
+            <input id="location" type="text" class="w-full border-b-2 border-gray-400 pb-2">
+        </div>
+    
+        <!-- Add more filter sections as needed -->
+    
+        <button id="applyFilterBtn" class="mt-4 text-white py-2 px-4 rounded">Apply Filters</button>
+    </div>
+    
+    
+
+    <script defer src="/public/js/lib/jquery-3.7.1.min.js"></script>
+    <script defer src="/public/js/pages/LecturersPage.js"></script>
+    <script defer src="/public/js/LecturerAPI.js"></script>
+    <script defer src="/public/js/Application.js"></script>
 </body>
 </html>
