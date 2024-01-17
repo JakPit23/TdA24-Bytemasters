@@ -57,17 +57,20 @@
 
         <div class="filter-section mt-4">
             <label for="price" class="block text-gray-700">Price per hour:</label>
-            <input id="price" type="number" class="w-full border-b-2 border-gray-400 pb-2">
+            <input data-price id="price" type="number" class="w-full border-b-2 border-gray-400 pb-2">
         </div>
     
         <div class="filter-section mt-4">
             <label for="location" class="block text-gray-700">Location:</label>
-            <input id="location" type="text" class="w-full border-b-2 border-gray-400 pb-2">
+            <input data-location id="location" type="text" class="w-full border-b-2 border-gray-400 pb-2">
         </div>
     
         <!-- Add more filter sections as needed -->
-    
-        <button id="applyFilterBtn" class="mt-4 text-white py-2 px-4 rounded">Apply Filters</button>
+        <div class="filter-section mt-4">
+            <label for="filterTags" class="block text-gray-700">Tags:</label>
+            <input data-filterTags id="filterTags" type="text" class="w-full border-b-2 border-gray-400 pb-2">
+        </div>
+        <button data-apply id="applyFilterBtn" class="mt-4 text-white py-2 px-4 rounded">Apply Filters</button>
     </div>
     
     

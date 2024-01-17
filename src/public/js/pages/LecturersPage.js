@@ -127,8 +127,13 @@ class Page {
         this.lecturersList = $('[data-lecturers]');
         this.noResults = $('[data-noResults]');
         
+        this.filterTags = $('[data-filterTags]');
+        this.filterPrice = $('[data-price]');
+        this.filterLocation = $('[data-location]');
+
         this.searchInput.on('input', this.searchLecturers);
-        this.filterButton.on('click', this.openFilterBox);
+        this.filterButton.on('click', this.openFilterBox);      
+        $('[data-apply]').on('click', this.filterLecturers); 
         this.init();
     }
 
@@ -229,6 +234,52 @@ class Page {
 
         if (data.claim) {
             $('<p>').addClass('lecturer-claim').text(data.claim).appendTo(contentDiv);
+        }
+    }
+
+    filterLecturers = (data) => {
+        // make list of lecturers that matches the filter and show them, hide the rest
+        const tags = this.filterTags.val();
+        const price = this.filterPrice.val();
+        const location = this.filterLocation.val();
+
+        let lecturers = this.lecturers;
+
+        if (tags) {
+            lecturers = lecturers.filter(lecturer => {
+                return lecturer.tags.find(tag => tag.name === tags);
+            });
+        }
+
+        if (price) {
+            lecturers = lecturers.filter(lecturer => {
+                return lecturer.price_per_hour <= price;
+            });
+        }
+
+        if (location) {
+            lecturers = lecturers.filter(lecturer => {
+                return lecturer.location === location;
+            });
+        }
+
+        if (lecturers.length <= 0) {
+            this.lecturersList.children().hide();
+            this.noResults.show();
+            return;
+        }
+
+        this.noResults.hide();
+
+        for (const element of this.lecturersList.children()) {
+            const lecturer = lecturers.find(lecturer => lecturer.uuid === $(element).data('lecturerUUID'));
+
+            if (!lecturer) {
+                $(element).hide();
+                continue;
+            }
+
+            $(element).show();
         }
     }
 }
