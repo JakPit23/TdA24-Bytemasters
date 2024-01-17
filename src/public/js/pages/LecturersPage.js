@@ -237,19 +237,19 @@ class Page {
         }
     }
 
-    filterLecturers = (data) => {
-        // make list of lecturers that matches the filter and show them, hide the rest
-        const tags = this.filterTags.val();
-        const price = this.filterPrice.val();
-        const location = this.filterLocation.val();
+    filterLecturers = () => {
+        const tags = Array.isArray(this.filterTags.val()) ? this.filterTags.val() : [];
 
         let lecturers = this.lecturers;
 
-        if (tags) {
+        if (tags.length > 0) {
             lecturers = lecturers.filter(lecturer => {
-                return lecturer.tags.find(tag => tag.name === tags);
+                return lecturer.tags.some(tag => tags.includes(tag.name));
             });
         }
+
+        const price = this.filterPrice.val();
+        const location = this.filterLocation.val();
 
         if (price) {
             lecturers = lecturers.filter(lecturer => {
@@ -265,8 +265,6 @@ class Page {
 
         if (lecturers.length <= 0) {
             this.lecturersList.children().hide();
-            this.noResults.show();
-            return;
         }
 
         this.noResults.hide();
