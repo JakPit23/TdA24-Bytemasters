@@ -60,10 +60,8 @@ class Page {
     filterByPrice() {
         const minPrice = this.filterPriceMinInput.val();
         const maxPrice = this.filterPriceMaxInput.val();
-
-        if(minPrice > maxPrice) this.filterPriceMaxInput.val(this.maxPrice);
-        if(maxPrice < minPrice) this.filterPriceMinInput.val(this.minPrice);
-
+        if(minPrice > this.maxPrice) {this.filterPriceMinInput.val(this.maxPrice);}
+        if(maxPrice < this.minPrice) {this.filterPriceMaxInput.val(this.minPrice);}
         if(minPrice < this.minPrice) {this.filterPriceMinInput.val(this.minPrice);}
         if(maxPrice > this.maxPrice) {this.filterPriceMaxInput.val(this.maxPrice);}
         const filteredLecturers = this.lecturers.filter(lecturer => minPrice <= lecturer.price_per_hour && lecturer.price_per_hour <= maxPrice);
@@ -78,6 +76,7 @@ class Page {
             $(element).show();
         }
     }
+
 
     filterByLocation() {
         const selectedLocations = this.getSelectedLocations();

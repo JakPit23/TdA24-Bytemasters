@@ -16,9 +16,10 @@ RUN mv /app/node_modules /node_modules
 
 # Enables to run `npm run serve`
 RUN npm i -g nodemon
+
+WORKDIR /app
 RUN npx tailwindcss -c /app/tailwind.config.js -i /app/public/css/src.css -o /app/public/css/app.css
 
 EXPOSE 3000/tcp
 
-WORKDIR /app
 CMD ["node", "app.js"]
