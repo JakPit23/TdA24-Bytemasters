@@ -66,33 +66,19 @@ p, span, li, input, select, textarea, button, label {
 
 /* LOADER */
 .loader-page {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-
-    width: 100vw; 
-    height: 100vh; 
-    
-    position: fixed; 
-    top: 0; left: 0; 
-    
-    background-color: theme("colors.dark.900"); 
-    z-index: 1000;
-    
-    opacity: 1;
-    transition: opacity .75s;
+    @apply flex justify-center items-center w-screen h-screen fixed top-0 left-0 bg-dark-900 z-50 opacity-100 transition-opacity duration-700;
 }
+
 .loader {
+    @apply flex items-start;
     width: 60px;
-    display: flex;
-    align-items: flex-start;
     aspect-ratio: 1;
 }
 
 .loader:before,
 .loader:after {
+    @apply flex-1;
     content: "";
-    flex: 1;
     aspect-ratio: 1;
     --g: conic-gradient(from -90deg at 10px 10px, #fff 90deg, #333 0);
     background: var(--g), var(--g), var(--g);
