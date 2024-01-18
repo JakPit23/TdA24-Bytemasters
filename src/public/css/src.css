@@ -64,7 +64,7 @@ p, span, li, input, select, textarea, button, label {
 }
 
 .btn {
-    @apply py-2 px-4 rounded-md bg-sunglate-200 text-sunglate-900 font-semibold transition-colors;
+    @apply py-2 px-4 rounded-md bg-sunglate-200 text-white-900 font-semibold transition-colors;
 }
 
 .btn:hover {
