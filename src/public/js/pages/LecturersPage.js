@@ -60,7 +60,6 @@ class Page {
         const maxPrice = this.filterPriceMaxInput.val();
 
         const filteredLecturers = this.lecturers.filter(lecturer => minPrice <= lecturer.price_per_hour && lecturer.price_per_hour <= maxPrice);
-        console.log(filteredLecturers);
         for (const element of this.lecturersList.children()) {
             const lecturer = filteredLecturers.find(lecturer => lecturer.uuid === $(element).data('lecturerUUID'));
 
