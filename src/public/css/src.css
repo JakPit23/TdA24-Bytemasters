@@ -57,36 +57,17 @@ h6 {
     color: theme("colors.white.900");
 }
 
-p {
+p, span, li, input, select, textarea, button, label {
     font-family: 'Open Sans', sans-serif;
     color: theme("colors.white.900");
 }
 
 .btn {
-    display: inline-block;
-    padding: 15px 50px;
-    background: var(--bg-secondary);
-    width: -moz-fit-content;
-    width: fit-content;
-    color: theme("colors.white.900");
-    cursor: pointer;
-    text-decoration: none;
-    text-transform: uppercase;
-    font-weight: 600;
-    border-radius: 10px;
-    margin: 0 10px;
-    font-size: 1.2rem;
-    transition: box-shadow, opacity 0.3s;
-    box-shadow: 5px 5px 20px 0 rgba(0, 0, 0, 0.5);
+    @apply py-2 px-4 rounded-md bg-sunglate-200 text-sunglate-900 font-semibold transition-colors;
 }
 
 .btn:hover {
-    box-shadow: 7px 7px 20px 0 rgba(0, 0, 0, 0.5);
-    opacity: 0.8;
-}
-
-.btn-small {
-    padding: 5px 20px;
+    @apply bg-sunglate-300;
 }
 
 @media screen and (max-width: 768px) {
@@ -310,19 +291,23 @@ nav {
 }
 
 .lecturerCard .lecturer-content {
-    @apply w-full px-4;
+    @apply flex flex-col gap-2 w-full px-4;
 }
 
 .lecturerCard .lecturer-name {
-    @apply text-2xl font-black pb-2;
+    @apply text-2xl font-black;
 }
 
 .lecturerCard .lecturer-price {
     @apply max-w-fit py-1 px-3 bg-sunglate-200 text-sunglate-900 font-bold rounded-md;
 }
 
+.lecturerCard .lecturer-location {
+    @apply max-w-fit py-1 px-3 bg-prussianblue-900 text-white-900 text-lg font-bold rounded-md;
+}
+
 .lecturerCard .lecturer-tags {
-    @apply flex flex-wrap space-y-1 my-1;
+    @apply flex flex-wrap space-y-1;
 }
 
 .lecturerCard .lecturer-tags p {
@@ -376,4 +361,181 @@ nav {
 
 .lecturer .lecturer-contact {
     @apply text-xl font-bold mb-2;
+}
+
+/* CHECKBOX */
+/* 
+.checkbox {
+    @apply block relative pl-8 mb-3 cursor-pointer text-xl select-none;
+}
+
+.checkbox input {
+    @apply absolute opacity-0 cursor-pointer z-[-1];
+}
+
+.checkbox:hover {
+    @apply bg-sunglate-300;
+}
+
+.checkbox input:checked ~ .filterCheckbox {
+    @apply bg-sunglate-500;
+}
+
+.filterCheckbox {
+    @apply py-1 px-3 mr-2 mt-1 bg-sunglate-200 text-sunglate-900 font-semibold rounded-md;
+} */
+/* .checkbox {
+    @apply block relative pl-8 mb-3 cursor-pointer text-xl select-none;
+}
+
+.checkbox input {
+    @apply absolute opacity-0 cursor-pointer z-[-1];
+}
+
+.checkbox:hover {
+    @apply bg-sunglate-300;
+}
+
+.checkbox input:checked ~ .checkbox {
+    @apply bg-sunglate-500;
+}
+
+.checkbox {
+    @apply py-1 px-3 mr-2 mt-1 bg-sunglate-200 text-sunglate-900 font-semibold rounded-md;
+} */
+
+/* .custom-checkbox {
+    display: inline-block;
+    cursor: pointer;
+}
+
+.custom-checkbox input {
+    display: none;
+}
+
+.custom-checkbox label {
+    display: inline-block;
+    padding: 0.25em 0.5em;
+}
+
+.custom-checkbox input:checked+label {
+    background-color: #2c3e50;
+    color: #ffffff;
+} */
+
+/* .custom-checkbox {
+    display: inline-block;
+    cursor: pointer;
+    background-color: #3498db;
+    padding: 0.25em 0.5em;
+    border-radius: 0.25em;
+  }
+  
+  .custom-checkbox input {
+    display: none;
+  }
+  
+  .custom-checkbox input:checked + label {
+    background-color: #2c3e50;
+  } */
+
+  /* .custom-checkbox {
+      display: inline-block;
+      cursor: pointer;
+      padding: 0.25em 0.5em;
+      border-radius: 0.25em;
+      background-color: #3498db;
+      color: #ffffff;
+  }
+
+  .custom-checkbox input {
+      display: none;
+  }
+
+  .custom-checkbox:has(input:checked) {
+      background-color: #2c3e50;
+  } */
+
+.checkbox {
+    @apply py-1 px-3 mr-2 mt-1 bg-sunglate-200 text-sunglate-900 font-semibold rounded-md transition-colors;
+}
+
+.checkbox input {
+    @apply hidden;
+}
+
+.checkbox:hover {
+    @apply bg-sunglate-100;
+}
+
+.checkbox:has(input:checked) {
+    @apply bg-sunglate-400;
+}
+
+.checkbox-skyblue {
+    @apply bg-skyblue-200 text-skyblue-900;
+}
+
+.checkbox-skyblue:hover {
+    @apply bg-skyblue-100;
+}
+
+.checkbox-skyblue:has(input:checked) {
+    @apply bg-skyblue-400;
+}
+
+.checkbox-prussianblue {
+    @apply bg-prussianblue-200 text-prussianblue-900;
+}
+
+.checkbox-prussianblue:hover {
+    @apply bg-prussianblue-100;
+}
+
+.checkbox-prussianblue:has(input:checked) {
+    @apply bg-prussianblue-400;
+}
+
+/* RANGE */
+.price-input {
+    @apply flex justify-between;
+}
+
+.price-field {
+    @apply flex items-center;
+}
+
+.price-field span {
+    @apply mr-2;
+}
+
+.price-field input {
+    @apply bg-sunglate-900 text-white-900 font-bold py-1 px-2 rounded-md w-24;
+}
+
+.price-slider-container {
+    @apply w-full;
+}
+
+.price-slider-container {
+    @apply relative bg-white-900 rounded-md;
+    height: 6px;
+}
+
+.price-slider-container .price-slider {
+    @apply bg-sunglate-900 h-full left-0 right-0 absolute rounded-md;
+}
+
+.range-input {
+    @apply relative;
+}
+
+.range-input input {
+    @apply absolute w-full h-[5px] top-[-5px] pointer-events-auto cursor-pointer appearance-none;
+    background: none;
+}
+
+input[type="range"]::-webkit-slider-thumb {
+    @apply bg-dark-900 h-4 w-4 pointer-events-auto appearance-none;
+    border-radius: 70%;
 }
