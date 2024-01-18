@@ -40,7 +40,7 @@ class Page {
 
         const locations = [...new Set(this.lecturers.map(lecturer => lecturer.location).filter(location => location !== null))];
         locations.forEach(location => {
-            const label = $('<label>').addClass('checkbox').appendTo(this.filterLocation);
+            const label = $('<label>').addClass('checkbox checkbox-prussianblue').appendTo(this.filterLocation);
             $('<input>').attr('type', 'checkbox').appendTo(label);
             $('<span>').text(location).appendTo(label);
         });
@@ -65,7 +65,7 @@ class Page {
         if(minPrice < this.minPrice) {this.filterPriceMinInput.val(this.minPrice);}
         if(maxPrice > this.maxPrice) {this.filterPriceMaxInput.val(this.maxPrice);}
         const filteredLecturers = this.lecturers.filter(lecturer => minPrice <= lecturer.price_per_hour && lecturer.price_per_hour <= maxPrice);
-        for (const element of this.lecturersList.children()) {
+            for (const element of this.lecturersList.children()) {
             const lecturer = filteredLecturers.find(lecturer => lecturer.uuid === $(element).data('lecturerUUID'));
 
             if (!lecturer) {

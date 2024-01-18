@@ -38,6 +38,11 @@
     scroll-behavior: smooth;
 }
 
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    @apply m-0 appearance-none;
+}
+
 body {
     @apply bg-dark-900
 }
@@ -497,11 +502,11 @@ nav {
 }
 
 .checkbox-prussianblue:hover {
-    @apply bg-prussianblue-100;
+    @apply bg-prussianblue-900;
 }
 
 .checkbox-prussianblue:has(input:checked) {
-    @apply bg-prussianblue-400;
+    @apply bg-prussianblue-600;
 }
 
 /* RANGE */
@@ -513,32 +518,10 @@ nav {
     @apply flex items-center;
 }
 
-.price-field span {
+.price-field p {
     @apply mr-2;
 }
 
 .price-field input {
-    @apply bg-sunglate-900 text-white-900 font-bold py-1 px-2 rounded-md w-24;
-}
-
-.price-slider-container {
-    @apply w-full;
-}
-
-.price-slider-container {
-    @apply relative bg-white-900 rounded-md;
-    height: 6px;
-}
-
-.price-slider-container .price-slider {
-    @apply bg-sunglate-900 h-full left-0 right-0 absolute rounded-md;
-}
-
-.range-input {
-    @apply relative;
-}
-
-.range-input input {
-    @apply absolute w-full h-[5px] top-[-5px] pointer-events-auto cursor-pointer appearance-none;
-    background: none;
+    @apply bg-sunglate-200 text-sunglate-900 font-bold py-1 px-2 rounded-md w-24 focus:outline-none focus:bg-sunglate-400;
 }
