@@ -864,6 +864,10 @@ video {
   border-width: 1px;
 }
 
+.\!bg-sunglate-700 {
+  background-color: rgba(254, 203, 46, 0.8) !important;
+}
+
 .\!bg-sunglate-900 {
   background-color: rgba(254, 203, 46, 1) !important;
 }
@@ -931,6 +935,10 @@ video {
 
 .pt-4 {
   padding-top: 1rem;
+}
+
+.text-center {
+  text-align: center;
 }
 
 .align-middle {
@@ -1040,7 +1048,6 @@ h5,
 h6 {
   font-family: 'Lalezar', system-ui;
   color: rgba(255, 255, 255, 1);
-  text-align: center;
 }
 
 p, span, li, input, select, textarea, button, label {
@@ -1060,6 +1067,16 @@ p, span, li, input, select, textarea, button, label {
   transition-property: color, background-color, border-color, text-decoration-color, fill, stroke;
   transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
   transition-duration: 150ms;
+}
+
+.btn-big {
+  padding-top: 0.75rem;
+  padding-bottom: 0.75rem;
+  padding-left: 1.5rem;
+  padding-right: 1.5rem;
+  font-size: 1.5rem;
+  line-height: 2rem;
+  font-weight: 700;
 }
 
 .btn:hover {

@@ -66,6 +66,10 @@ p, span, li, input, select, textarea, button, label {
     @apply py-2 px-4 rounded-md bg-sunglate-200 text-white-900 font-semibold transition-colors;
 }
 
+.btn-big {
+    @apply text-2xl font-bold py-3 px-6;
+
+}
 .btn:hover {
     @apply bg-sunglate-300;
 }
