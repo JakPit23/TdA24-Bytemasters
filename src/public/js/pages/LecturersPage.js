@@ -8,14 +8,14 @@ class Page {
         this.lecturersList = $('[data-lecturers]');
         this.noResults = $('[data-noResults]');
         
-        this.filterPriceFill = $('[data-filterPrice-fill]');
-        this.filterPriceMinSlider = $('[data-filterPrice-minSlider]');
-        this.filterPriceMaxSlider = $('[data-filterPrice-maxSlider]');
         this.filterPriceMinInput = $('[data-filterPrice-minInput]');
         this.filterPriceMaxInput = $('[data-filterPrice-maxInput]');
 
         this.filterTags = $('[data-filterTags]');
         this.filterLocation = $('[data-filterLocations]');
+
+        this.filterPriceMinInput.on('input', this.filterByPrice.bind(this));
+        this.filterPriceMaxInput.on('input', this.filterByPrice.bind(this));    
 
         this.init();
     }
@@ -53,27 +53,24 @@ class Page {
 
         this.minPrice = Math.min(...this.lecturers.map(lecturer => lecturer.price_per_hour));
         this.maxPrice = Math.max(...this.lecturers.map(lecturer => lecturer.price_per_hour));
+    }
 
-        this.filterPriceMinInput
-        rangeInputs.forEach((input) => {
-            input.addEventListener("input", (e) => {
-                let minVal = parseInt(rangeInputs[0].value);
-                let maxVal = parseInt(rangeInputs[1].value);
+    filterByPrice() { 
+        const minPrice = this.filterPriceMinInput.val();
+        const maxPrice = this.filterPriceMaxInput.val();
 
-                if (maxVal - minVal < priceGap) {
-                    if (e.target.className === "min-range") {
-                        rangeInputs[0].value = maxVal - priceGap;
-                    } else {
-                        rangeInputs[1].value = minVal + priceGap;
-                    }
-                } else {
-                    priceInputs[0].value = minVal;
-                    priceInputs[1].value = maxVal;
-                    range.style.left = (minVal / rangeInputs[0].max) * 100 + "%";
-                    range.style.right = 100 - (maxVal / rangeInputs[1].max) * 100 + "%";
-                }
-            });
-        });
+        const filteredLecturers = this.lecturers.filter(lecturer => minPrice <= lecturer.price_per_hour && lecturer.price_per_hour <= maxPrice);
+        console.log(filteredLecturers);
+        for (const element of this.lecturersList.children()) {
+            const lecturer = filteredLecturers.find(lecturer => lecturer.uuid === $(element).data('lecturerUUID'));
+
+            if (!lecturer) {
+                $(element).hide();
+                continue;
+            }
+
+            $(element).show();
+        }
     }
 
     filterByLocation() {
