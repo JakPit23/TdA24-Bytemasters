@@ -291,7 +291,7 @@ nav {
 
 /* LECTURER CARD */
 .lecturerCard {
-    @apply flex flex-row bg-neutral-900 rounded-md py-4 px-4 cursor-pointer;
+    @apply flex flex-row bg-dark-700 shadow-lg rounded-md py-4 px-4 cursor-pointer;
 }
 
 .lecturerCard .lecturer-profileImage {
@@ -328,7 +328,7 @@ nav {
 
 /* LECTURER */
 .lecturer {
-    @apply flex flex-row bg-neutral-900 rounded-md p-6 w-full;
+    @apply flex flex-row bg-dark-700 shadow-lg rounded-md p-6 w-full;
 }
 
 .lecturer .lecturer-profileImage {
@@ -541,9 +541,4 @@ nav {
 .range-input input {
     @apply absolute w-full h-[5px] top-[-5px] pointer-events-auto cursor-pointer appearance-none;
     background: none;
-}
-
-input[type="range"]::-webkit-slider-thumb {
-    @apply bg-dark-900 h-4 w-4 pointer-events-auto appearance-none;
-    border-radius: 70%;
 }
