@@ -54,30 +54,6 @@ class Page {
         this.minPrice = Math.min(...this.lecturers.map(lecturer => lecturer.price_per_hour));
         this.maxPrice = Math.max(...this.lecturers.map(lecturer => lecturer.price_per_hour));
 
-        // this.filterPriceMinInput.val(this.minPrice);
-        // this.filterPriceMaxInput.val(this.maxPrice);
-
-        // this.filterPriceMinSlider.attr('min', this.minPrice).attr('max', this.maxPrice).val(this.minPrice);
-        // this.filterPriceMaxSlider.attr('min', this.minPrice).attr('max', this.maxPrice).val(this.maxPrice);
-
-
-        // priceInputs.forEach((input) => {
-        // input.addEventListener("input", (e) => {
-        //     let minPrice = parseInt(priceInputs[0].value);
-        //     let maxPrice = parseInt(priceInputs[1].value);
-
-        //     if (maxPrice - minPrice >= priceGap && maxPrice <= rangeInputs[1].max) {
-        //     if (e.target.className === "min-input") {
-        //         rangeInputs[0].value = minPrice;
-        //         range.style.left = (minPrice / rangeInputs[0].max) * 100 + "%";
-        //     } else {
-        //         rangeInputs[1].value = maxPrice;
-        //         range.style.right = 100 - (maxPrice / rangeInputs[1].max) * 100 + "%";
-        //     }
-        //     }
-        // });
-        // });
-
         this.filterPriceMinInput
         rangeInputs.forEach((input) => {
             input.addEventListener("input", (e) => {
@@ -151,47 +127,6 @@ class Page {
             return $(this).parent().data('uuid')
         }).get();
     }
-    
-    // updatePriceSlider() {
-        
-    // }
-
-    // updatePriceSliderFromInput() {
-    //     let minPrice = Number.parseInt(this.filterPriceMinInput.val());
-    //     let maxPrice = Number.parseInt(this.filterPriceMaxInput.val());
-    
-    //     console.log("minPrice:", minPrice, "maxPrice:", maxPrice);
-
-    //     if (minPrice < this.minPrice) {
-    //         minPrice = this.minPrice;
-    //         this.filterPriceMinInput.val(minPrice);
-    //         return;
-    //     }
-
-    //     if (maxPrice > this.maxPrice) {
-    //         maxPrice = this.maxPrice;
-    //         this.filterPriceMaxInput.val(maxPrice);
-    //         return;
-    //     }
-
-    //     if (minPrice >= maxPrice) {
-    //         console.log("minPrice > maxPrice")
-    //         this.filterPriceMaxInput.val(maxPrice+1);
-    //         this.filterPriceMinInput.val(minPrice-1);
-    //         return;
-    //     }
-        
-    //     if (maxPrice <= minPrice) {
-    //         console.log("maxPrice <= minPrice")
-    //         this.filterPriceMaxInput.val(this.minPrice);
-    //         this.filterPriceMinInput.val(this.minPrice);
-    //         return;
-    //     }
-    
-    //     // Update the slider based on the new values
-    //     // this.updatePriceSlider();
-    // }
-    
 
     openFilterBox = () => this.filterBox.toggleClass("!hidden");
 
@@ -278,53 +213,5 @@ class Page {
         if (data.claim) {
             $('<p>').addClass('lecturer-claim').text(data.claim).appendTo(contentDiv);
         }
-    }
-
-    filterLecturers = () => {
-        // const minPrice = this.filterPriceMin.val();
-        // const maxPrice = this.filterPriceMax.val();
-        // const tags = this.filterTags.val();
-        // const location = this.filterLocation.val();
-
-        // const lecturers = this.lecturers.filter(lecturer => {
-        //     if (minPrice && lecturer.price_per_hour < minPrice) {
-        //         return false;
-        //     }
-
-        //     if (maxPrice && lecturer.price_per_hour > maxPrice) {
-        //         return false;
-        //     }
-
-        //     // if (tags && !lecturer.tags.some(tag => tags.includes(tag.name))) {
-        //     //     return false;
-        //     // }
-
-        //     // if (location && lecturer.location !== location) {
-        //     //     return false;
-        //     // }
-
-        //     return true;
-        // });
-
-        // console.log(lecturers);
-
-        // if (lecturers.length <= 0) {
-        //     this.lecturersList.children().hide();
-        //     this.noResults.show();
-        //     return;
-        // }
-
-        // this.noResults.hide();
-
-        // for (const element of this.lecturersList.children()) {
-        //     const lecturer = lecturers.find(lecturer => lecturer.uuid === $(element).data('lecturerUUID'));
-
-        //     if (!lecturer) {
-        //         $(element).hide();
-        //         continue;
-        //     }
-
-        //     $(element).show();
-        // }
     }
 }
