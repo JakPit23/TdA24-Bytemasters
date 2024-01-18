@@ -55,7 +55,6 @@ h5,
 h6 {
     font-family: 'Lalezar', system-ui;
     color: theme("colors.white.900");
-    text-align: center;
 }
 
 p, span, li, input, select, textarea, button, label {
