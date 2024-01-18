@@ -53,12 +53,16 @@ class Page {
 
         this.minPrice = Math.min(...this.lecturers.map(lecturer => lecturer.price_per_hour));
         this.maxPrice = Math.max(...this.lecturers.map(lecturer => lecturer.price_per_hour));
+        this.filterPriceMinInput.val(this.minPrice);
+        this.filterPriceMaxInput.val(this.maxPrice);
     }
 
-    filterByPrice() { 
+    filterByPrice() {
         const minPrice = this.filterPriceMinInput.val();
         const maxPrice = this.filterPriceMaxInput.val();
 
+        if(minPrice < this.minPrice) {this.filterPriceMinInput.val(this.minPrice);}
+        if(maxPrice > this.maxPrice) {this.filterPriceMaxInput.val(this.maxPrice);}
         const filteredLecturers = this.lecturers.filter(lecturer => minPrice <= lecturer.price_per_hour && lecturer.price_per_hour <= maxPrice);
         for (const element of this.lecturersList.children()) {
             const lecturer = filteredLecturers.find(lecturer => lecturer.uuid === $(element).data('lecturerUUID'));
