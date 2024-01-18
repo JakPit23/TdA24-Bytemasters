@@ -525,3 +525,35 @@ nav {
 .price-field input {
     @apply bg-sunglate-200 text-sunglate-900 font-bold py-1 px-2 rounded-md w-24 focus:outline-none focus:bg-sunglate-400;
 }
+
+/* SHOWCASE */
+.showcase {
+    @apply grid grid-cols-[1fr] md:grid-cols-[1fr_1fr] gap-16 items-center w-full;
+    grid-template-areas: "img text"
+}
+
+.showcase .showcase-content {
+    @apply flex flex-col justify-center items-center gap-4;
+    grid-area: text;
+}
+
+.showcase .showcase-content h1 {
+    @apply text-4xl font-black;
+}
+
+.showcase .showcase-content p {
+    @apply text-lg font-medium;
+}
+
+.showcase .showcase-image {
+    @apply flex items-center justify-center;
+    grid-area: "img";
+}
+
+.showcase .showcase-image img {
+    @apply h-32 w-32 rounded-md;
+}
+
+.showcase:nth-child(2n) {
+    grid-template-areas: "text img";
+}
