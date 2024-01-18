@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Teachers Digital Agency</title>
     <link rel="stylesheet" href="/public/css/app.css">
+    <link rel="shortcut icon" href="../public/images/favicon.ico" type="image/x-icon">
 </head>
 <body>
     <%- include('partials/navbar') %>
@@ -15,22 +16,52 @@
             <div class="flex flex-col items-start w-full pt-32 gap-64">
                 <div class="flex flex-col items-center justify-center gap-8 w-full h-[50vh]">
                     <h1 class="font-black text-white text-6xl">Teacher Digital Agency</h1>
-                    <p class="text-xl max-w-5xl">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p>
-                    <a class="btn !bg-sunglate-900" href="#lecturers">Find your lecturer</a>
+                    <p class="text-xl max-w-5xl">Existuje mnoho stránek, které zprostředkovávají lektory. Tak proč zrovna Teacher Digital Agency? Existuje mnoho dobrých důvodů, ale my se podíváme na ty nejdůležitější:</p>   
+                    <!-- <table>
+                        <tr class="text-2xl">
+                            <td class="py-2 px-4">Hrajeme s vámi fér</td>
+                            <td class="py-2 px-4">Jen kvalifikovaní lektoři</td>
+                            <td class="py-2 px-4">Lektoři z mnoha různých oborů</td>
+                            <td class="py-2 px-4">Vždy aktuální</td>
+                            <td class="py-2 px-4">Z pohodlí domova i osobně</td>
+                        </tr>
+                        <tr>
+                            <td class="py-2 px-4">V ničem vás nepodvádíme. Vše co zaplatíte jde lektorům.</td>
+                            <td class="py-2 px-4">Všichni lektoři jsou vysoce kvalifikovaní ve svém oboru.</td>
+                            <td class="py-2 px-4">Zajímají vás moderní technologie nebo jak vyšívat? Máme lektory na všechno.</td>
+                            <td class="py-2 px-4">Pokud se něco změní, dozvíte se o tom prakticky okamžitě</td>
+                            <td class="py-2 px-4">Máte na výběr zda se s lektorem sejdete online nebo na domluveném místě</td>
+                        </tr>
+                    </table> -->
+                    <a class="btn !bg-sunglate-900" href="#lecturers">To chci!</a>
                 </div>
-
+                <div class="flex flex-col items-center justify-center">
+                    <!-- Grid -->
+                    <div class="grid grid-cols-2 w-full">
+                        <img src="../public/images/TdA_ikony_nastaveni_white.svg" class="w-20 h-20 mb-2">
+                        <p class="inline-block align-middle">V ničem vás nepodvádíme. Vše co zaplatíte jde lektorům.</p>
+                        <img src="../public/images/TdA_ikony_napad_white.svg" class="w-20 h-20 mb-2">
+                        <p>Všichni lektoři jsou vysoce kvalifikování ve svém oboru</p>
+                        <img src="../public/images/TdA_ikony_studium_white.svg" class="w-20 h-20 mb-2">
+                        <p>Zajímají vás moderní technologie nebo jak vyšívat? Máme lektory na všechno.</p>
+                        <img src="../public/images/TdA_ikony_konverzace_white.svg" class="w-20 h-20 mb-2">
+                        <p>Pokud se něco změní, dozvíte se o tom prakticky okamžitě</p>
+                        <img src="../public/images/TdA_ikony_pocitac_white.svg" class="w-20 h-20 mb-2">
+                        <p>Máte na výběr zda se s lektorem sejdete online nebo na domluveném místě</p>
+                    </div>
+                </div>
                 <div id="lecturers" class="flex flex-col items-center justify-center gap-8 w-full">
                     <h1 class="font-black text-white text-4xl">Najdi lektora</h1>
                     
                     <div class="flex flex-row w-full gap-2">
                         <div class="flex flex-row w-full px-2 py-4 bg-neutral-900 rounded-md">
                             <img class="h-6 w-6 mx-2" src="/public/images/icons/search.svg">
-                            <input data-searchInput class="w-full bg-transparent focus:outline-none text-white-900 font-normal" type="search" placeholder="Search for lecturer">
+                            <input data-searchInput class="w-full bg-transparent focus:outline-none text-white-900 font-normal" type="search" placeholder="Najděte svého lektora">
                         </div>
         
                         <div data-filterButton class="flex flex-row min-w-fit px-2 py-4 bg-neutral-900 rounded-md cursor-pointer">
                             <img class="h-6 w-6 mx-2" src="/public/images/icons/filter.svg">
-                            <p class="w-full font-normal pr-2">Filter</p>
+                            <p class="w-full font-normal pr-2">Filtry</p>
                         </div>
                     </div>
         
@@ -39,7 +70,7 @@
                             <div class="loader"></div>
                         </div>
 
-                        <p data-noResults style="display: none" class="text-white text-2xl">No results found</p>
+                        <p data-noResults style="display: none" class="text-white text-2xl">Nenašli jsme vám žádné lektory :(</p>
 
                         <div data-lecturers style="display: none" class="grid grid-cols-2 gap-4 w-full">
                         </div>
@@ -57,18 +88,18 @@
 
         <div class="filter-section mt-4">
             <label for="price" class="block text-gray-700">Price per hour:</label>
-            <input data-price id="price" type="number" class="w-full border-b-2 border-gray-400 pb-2">
+            <input data-price id="price" type="number" class="w-full-2 border-gray-400 pb-2">
         </div>
     
         <div class="filter-section mt-4">
             <label for="location" class="block text-gray-700">Location:</label>
-            <input data-location id="location" type="text" class="w-full border-b-2 border-gray-400 pb-2">
+            <input data-location id="location" type="text" class="w-full-2 border-gray-400 pb-2">
         </div>
     
         <!-- Add more filter sections as needed -->
         <div class="filter-section mt-4">
             <label for="filterTags" class="block text-gray-700">Tags:</label>
-            <input data-filterTags id="filterTags" type="text" class="w-full border-b-2 border-gray-400 pb-2">
+            <input data-filterTags id="filterTags" type="text" class="w-full-2 border-gray-400 pb-2">
         </div>
         <button data-apply id="applyFilterBtn" class="mt-4 text-white py-2 px-4 rounded">Apply Filters</button>
     </div>

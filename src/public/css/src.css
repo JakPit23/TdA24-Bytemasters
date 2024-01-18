@@ -55,6 +55,7 @@ h5,
 h6 {
     font-family: 'Lalezar', system-ui;
     color: theme("colors.white.900");
+    text-align: center;
 }
 
 p {
@@ -93,6 +94,11 @@ p {
     .btn-container {
         flex-wrap: wrap;
     }
+}
+
+/* GRID */
+.grid > p {
+    vertical-align: middle;
 }
 
 /* .background-blobs {
