@@ -237,7 +237,6 @@ p {
 }
 
 .price-field input {
-<<<<<<< HEAD
     @apply bg-sunglate-200 text-sunglate-900 font-bold py-1 px-2 rounded-md w-24 focus:outline-none focus:bg-sunglate-400;
 }
 
@@ -275,7 +274,4 @@ p {
 
 [data-filterBox] .checkbox span {
     @apply dark:text-white-900;
-=======
-    @apply bg-sunglate-200 text-white-900 font-bold py-1 px-2 rounded-md w-24 focus:outline-none focus:bg-sunglate-400;
->>>>>>> 770c694f510e01d885c67732d9aaee6943ff71c3
 }
