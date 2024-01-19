@@ -20,6 +20,6 @@ RUN npm i -g nodemon
 WORKDIR /app
 RUN npx tailwindcss -c /app/tailwind.config.js -i /app/public/css/src.css -o /app/public/css/app.css
 
+VOLUME /app/data
 EXPOSE 3000/tcp
-
 CMD ["node", "app.js"]
