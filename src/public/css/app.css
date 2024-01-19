@@ -1573,12 +1573,20 @@ p {
 }
 
 @media (min-width: 768px) {
+  .md\:ml-auto {
+    margin-left: auto;
+  }
+
   .md\:block {
     display: block;
   }
 
   .md\:grid-cols-2 {
     grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .md\:flex-row {
+    flex-direction: row;
   }
 
   .md\:items-center {

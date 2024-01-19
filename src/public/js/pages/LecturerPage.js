@@ -43,7 +43,7 @@ class Page {
         }
         
         const lecturerContent = $('<div>').addClass('lecturer-content flex flex-col').appendTo(this.lecturerElement);
-        const profile = $('<div>').addClass('flex').appendTo(lecturerContent);
+        const profile = $('<div>').addClass('flex flex-col md:flex-row').appendTo(lecturerContent);
         const profileInfo = $('<div>').appendTo(profile);
         
         const name = [ data.title_before, data.first_name, data.middle_name, data.last_name, data.title_after ].filter(part => part !== "").join(' ');
@@ -60,7 +60,7 @@ class Page {
 
         if (data.location || data.price_per_hour) {
             const rowBox = $('<div>').addClass('flex flex-row space-x-2').appendTo(
-                $('<div>').addClass('min-w-fit ml-auto').appendTo(profile)
+                $('<div>').addClass('min-w-fit md:ml-auto').appendTo(profile)
             );
 
             if (data.location) {
