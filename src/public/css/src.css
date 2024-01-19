@@ -80,8 +80,8 @@ p {
     @apply flex-1;
     content: "";
     aspect-ratio: 1;
-    --g: conic-gradient(from -90deg at 10px 10px, #fff 90deg, #333 0);
-    background: var(--g), var(--g), var(--g);
+    --g: conic-gradient(from -90deg at 10px 10px, #fff 90deg, #3330 0);
+    background: var(--g), var(--g), var(--g);   
     filter: drop-shadow(30px 30px 0 #fff);
     animation: l20 1s infinite;
 }
@@ -147,7 +147,7 @@ p {
 
 /* LECTURER */
 .lecturer {
-    @apply flex flex-row dark:bg-dark-700 shadow-lg rounded-md p-6 w-full;
+    @apply flex flex-col items-center md:flex-row gap-4 dark:bg-dark-700 shadow-lg rounded-md p-6 w-full;
 }
 
 .lecturer .lecturer-profileImage {
@@ -155,7 +155,7 @@ p {
 }
 
 .lecturer .lecturer-content {
-    @apply w-full px-4;
+    @apply w-full;
 }
 
 .lecturer .lecturer-name {
@@ -225,30 +225,16 @@ p {
 
 /* PRICE INPUT */
 .price-input {
-    @apply flex justify-between;
-}
-
-.price-field {
-    @apply flex items-center;
-}
-
-.price-field p {
-    @apply mr-2;
-}
-
-.price-field input {
     @apply bg-sunglate-200 text-sunglate-900 font-bold py-1 px-2 rounded-md w-24 focus:outline-none focus:bg-sunglate-400;
 }
 
 /* SHOWCASE */
 .showcase {
-    @apply grid grid-cols-[1fr] md:grid-cols-[1fr_1fr] gap-16 items-center w-full;
-    grid-template-areas: "img text"
+    @apply flex flex-col md:flex-row gap-16 items-center w-full;
 }
 
 .showcase .showcase-content {
-    @apply flex flex-col justify-center items-center gap-4;
-    grid-area: text;
+    @apply flex flex-col justify-center md:items-center gap-4 w-full md:w-3/4;
 }
 
 .showcase .showcase-content h1 {
@@ -260,16 +246,15 @@ p {
 }
 
 .showcase .showcase-image {
-    @apply flex items-center justify-center;
-    grid-area: img;
+    @apply flex items-center justify-center w-full md:w-1/4;
 }
 
 .showcase .showcase-image img {
     @apply h-32 w-32 rounded-md invert dark:invert-0;
 }
 
-.showcase:nth-child(2n) {
-    grid-template-areas: "text img";
+.showcase:nth-child(even) {
+    @apply md:flex-row-reverse;
 }
 
 [data-filterBox] .checkbox span {

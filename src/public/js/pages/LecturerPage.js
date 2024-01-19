@@ -3,8 +3,6 @@ class Page {
         this.app = app;
         this.lecturerAPI = new LecturerAPI();
         this.lecturerElement = $('[data-lecturer]');
-        
-        this.init();
     }
 
     init = async () => {

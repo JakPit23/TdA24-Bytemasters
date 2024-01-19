@@ -15,8 +15,6 @@ class Page {
         this.filterLocation = $('[data-filterLocations]');
         this.filterPriceMinInput.on('input', this.filterByPrice.bind(this));
         this.filterPriceMaxInput.on('input', this.filterByPrice.bind(this));
-
-        this.init();
     }
 
     init = async () => {
@@ -184,7 +182,7 @@ class Page {
         lecturers.forEach(lecturer => this.renderLecturer(lecturer));
 
         this.lecturersList.show();
-        this.app.hideLoader();
+        this.app.hideLoader('[data-loaderLecturers]');
     }
 
     renderLecturer = async (data) => {

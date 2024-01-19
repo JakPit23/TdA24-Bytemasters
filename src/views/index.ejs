@@ -7,20 +7,25 @@
     <link rel="stylesheet" href="/public/lib/fontawesome/css/fontawesome.css">
     <link rel="stylesheet" href="/public/lib/fontawesome/css/solid.css">
     <link rel="stylesheet" href="/public/css/app.css">
-    <link rel="shortcut icon" href="../public/images/favicon.ico" type="image/x-icon">
+    <link rel="shortcut icon" href="/public/images/favicon.ico" type="image/x-icon">
 </head>
 <body>
     <%- include('partials/navbar') %>
     <%- include('partials/blobs') %>
 
+    <div data-loaderPage class="loader-page">
+        <div class="loader"></div>
+    </div>
+    
     <div class="w-full">
         <div class="max-w-[1280px] mx-auto px-4">
             <div class="flex flex-col items-center w-full pt-32 pb-16 gap-64">
-                <div class="flex flex-col items-center justify-center gap-8 w-full h-[50vh]">
-                    <h1 class="font-black text-4xl md:text-6xl">Teacher Digital Agency</h1>
-                    <p class="text-lg md:text-xl text-center max-w-5xl">Otevřete si dveře do nové éry vzdělávání 21. století. Bojíte se učení? Vzomínáte na svá školní léta, kdy jste nestíhali tempo vyučujícího a báli se jakou známku dostanete? Nyní už nemusíte! V Teacher Digital Agency sdružujeme experty ze všech oborů, kteří se přizpůsobí vašemu tempu a se vším vám rádi pomohou. </p>   
-                    <p class="text-lg md:text-xl text-center max-w-5xl">Našim cílem je spojit klienty s vhodnými učiteli. S naší databází expertů najde každý to co potřebuje. Takže si vyberte svého lektora a kontaktujte ho. A vše ostatní nechte na nás. Garantujeme vám, že vás budou vzdělávat jen odborníci. Vaše vzdělání je naše priorita.</p>
-                    <a class="btn btn-big !bg-sunglate-700" href="#lecturers">To chci!</a>
+                <div class="flex flex-col items-left md:items-center justify-center gap-8 w-full h-[50vh]">
+                    <h1 class="font-black text-6xl uppercase text-left">Teacher Digital Agency</h1>
+                    <p class="text-lg md:text-xl text-left md:text-center max-w-5xl">Našim cílem je spojit klienty s vhodnými učiteli. S naší databází expertů najde každý to co potřebuje. Takže si vyberte svého lektora a kontaktujte ho. A vše ostatní nechte na nás. Garantujeme vám, že vás budou vzdělávat jen odborníci. Vaše vzdělání je naše priorita.</p>
+                    <div>
+                        <a class="btn btn-big !bg-sunglate-700" href="#lecturers">To chci!</a>
+                    </div>
                 </div>
                 
                 <div class="showcase-container flex flex-col items-start gap-48 w-3/4">
@@ -101,22 +106,12 @@
                             <h1 class="text-2xl font-bold">Filtry</h1>
                         </div>
                    
-                        <div class="flex flex-col gap-2">
+                        <div class="flex flex-row gap-2">
                             <h1 class="text-xl font-bold">Cena za hodinu:</h1>
                         
-                            <div class="flex flex-col gap-2 w-1/2">
-                                <div class="price-input">
-                                    <div class="price-field">
-                                        <p>Minimálně:</p>
-                                        <input data-filterPrice-minInput type="number" value="">
-                                    </div>
-                                    
-                                    <div class="price-field">
-                                        <p>Maximálně:</p>
-                                        <input data-filterPrice-maxInput type="number" value="">
-                                    </div>
-                                </div>
-                            </div>
+                            <input data-filterPrice-minInput class="price-input" type="number" value="">
+                            <p class="text-xl font-bold">-</p>
+                            <input data-filterPrice-maxInput class="price-input" type="number" value="">
                         </div>
                         
                         <div>
@@ -133,13 +128,13 @@
                     </div>
         
                     <div id="lecturers" class="flex flex-col items-center justify-center w-full">
-                        <div data-loader>
+                        <div data-loaderLecturers>
                             <div class="loader"></div>
                         </div>
 
                         <p data-noResults style="display: none" class="text-white text-2xl">Nenašli jsme vám žádné lektory :(</p>
 
-                        <div data-lecturers style="display: none" class="grid grid-cols-2 gap-4 w-full mb-4"></div>
+                        <div data-lecturers style="display: none" class="grid md:grid-cols-2 gap-4 w-full mb-4"></div>
                     </div>
                 </div>
             </div>

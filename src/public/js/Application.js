@@ -6,7 +6,14 @@ class Application {
         this.themeSwitcherLightIcon = $('[data-themeSwitcher-icon="light"]');
 
         this.themeSwitcher.on('click', () => this.toggleTheme());
+        this.init();
+    }
+
+    init = async () => {
         this.initTheme();
+        await this.page.init();
+
+        this.hideLoader('[data-loaderPage]');
     }
 
     initTheme = () => {
@@ -36,9 +43,9 @@ class Application {
         this.themeSwitcherLightIcon.hide();
     }
 
-    hideLoader() {
-        $('[data-loader]').css("opacity", 0);
-        $('[data-loader]').remove();
+    hideLoader(id = "[data-loaderPage]") {
+        $(id).css("opacity", 0);
+        $(id).remove();
     }
 }
 

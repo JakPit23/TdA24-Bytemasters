@@ -7,25 +7,30 @@
     <link rel="stylesheet" href="/public/lib/fontawesome/css/fontawesome.css">
     <link rel="stylesheet" href="/public/lib/fontawesome/css/solid.css">
     <link rel="stylesheet" href="/public/css/app.css">
-    <link rel="shortcut icon" href="../public/images/favicon.ico" type="image/x-icon">
+    <link rel="shortcut icon" href="/public/images/favicon.ico" type="image/x-icon">
 </head>
 <body>
     <%- include('partials/navbar') %>
     <%- include('partials/blobs') %>
 
+    <div data-loaderPage class="loader-page">
+        <div class="loader"></div>
+    </div>
+
     <div class="w-full">
         <div class="max-w-[1280px] mx-auto px-4">
             <div class="flex flex-col items-start w-full pt-32 gap-64">
-                <div class="flex flex-col items-center justify-center gap-8 w-full h-[50vh]">
-                    <h1 class="font-black text-white text-4xl">Chybička se vloudila</h1>
-                    <p class="text-xl max-w-5xl">Chyba není na vašem přijímači. Tým kočiček pracuje na opravě. Mezitím si můžete prohlédnout naše lektory.</p>
-                    <a class="btn !bg-sunglate-900" href="/#lecturers">Najdi svého lektora!</a>
+                <div class="flex flex-col items-left md:items-center justify-center gap-8 w-full h-[50vh]">
+                    <h1 class="font-black text-6xl uppercase text-left">Chybička se vloudila</h1>
+                    <p class="text-lg md:text-xl text-left md:text-center max-w-5xl">Chyba není na vašem přijímači. Tým kočiček pracuje na opravě. Mezitím si můžete prohlédnout naše lektory.</p>
+                    <div><a class="btn btn-big !bg-sunglate-700" href="#lecturers">Najdi svého lektora!</a></div>
                 </div>
             </div>
         </div>
     </div>
 
     <script defer src="/public/js/lib/jquery-3.7.1.min.js"></script>
+    <script defer src="/public/js/pages/Page.js"></script>
     <script defer src="/public/js/Application.js"></script>
 </body>
 </html>
