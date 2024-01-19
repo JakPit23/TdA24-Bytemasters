@@ -523,5 +523,5 @@ nav {
 }
 
 .price-field input {
-    @apply bg-sunglate-200 text-sunglate-900 font-bold py-1 px-2 rounded-md w-24 focus:outline-none focus:bg-sunglate-400;
+    @apply bg-sunglate-200 text-white-900 font-bold py-1 px-2 rounded-md w-24 focus:outline-none focus:bg-sunglate-400;
 }
