@@ -11,12 +11,12 @@ class Application {
 
     initTheme = () => {
         if (localStorage.theme === 'light' || (!(localStorage.theme) && window.matchMedia('(prefers-color-scheme: light)').matches)) {
-            this.themeSwitcherDarkIcon.hide();
+            this.themeSwitcherLightIcon.hide();
             return;
         }
-     
+        
         $('html').addClass('dark');
-        this.themeSwitcherLightIcon.hide();
+        this.themeSwitcherDarkIcon.hide();
     }
 
     toggleTheme = () => {
