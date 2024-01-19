@@ -73,7 +73,7 @@ class Page {
         }
 
         if (data.contact && (data.contact.emails || data.contact.telephone_numbers)) {
-            const contactBox = $('<div>').addClass('flex flex-wrap space-x-4 my-4').appendTo(lecturerContent);
+            const contactBox = $('<div>').addClass('flex flex-wrap gap-4 my-4').appendTo(lecturerContent);
 
             if (data.contact.emails) {
                 const info = $('<div>').addClass('lecturer-rowBox').appendTo(contactBox).append($('<h1>').text('Emails'));
