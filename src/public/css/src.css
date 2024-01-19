@@ -260,3 +260,14 @@ p {
 [data-filterBox] .checkbox span {
     @apply dark:text-white-900;
 }
+
+/* NAVBAR */
+.nav-link {
+    @apply h-10 gap-2 text-base font-bold px-4 py-2 text-white-900 rounded-md;
+    transition: all 0.2s;
+}
+
+.nav-link:hover {
+    @apply bg-white-50;
+    background: theme("colors.white.50");
+}

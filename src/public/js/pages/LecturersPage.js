@@ -18,8 +18,9 @@ class Page {
     }
 
     init = async () => {
-        this.lecturers = await this.lecturerAPI.getLecturers();
+        $('[data-navbarLinks]').addClass("md:block");
 
+        this.lecturers = await this.lecturerAPI.getLecturers();
         if (!this.lecturers) {
             this.noResults.show();
             return;
