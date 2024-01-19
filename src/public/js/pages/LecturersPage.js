@@ -13,12 +13,8 @@ class Page {
 
         this.filterTags = $('[data-filterTags]');
         this.filterLocation = $('[data-filterLocations]');
-
-        this.submitButton = $('[data-submit]');
-        this.submitButton.on('click', this.filterByPrice.bind(this));
-
-        /* this.filterPriceMinInput.on('input', this.validatePrice.bind(this));
-        this.filterPriceMaxInput.on('input', this.validatePrice.bind(this));  */  
+        this.filterPriceMinInput.on('input', this.filterByPrice.bind(this));
+        this.filterPriceMaxInput.on('input', this.filterByPrice.bind(this));
 
         this.init();
     }
@@ -64,9 +60,15 @@ class Page {
         const minPrice = this.filterPriceMinInput.val();
         const maxPrice = this.filterPriceMaxInput.val();
         
+        minPrice.replace(/^0+/, '').replace('-', '');
+        maxPrice.replace(/^0+/, '').replace('-', '');
+        if (isNaN(minPrice) || isNaN(maxPrice))  {return};
         // check for real min and max
-        if (minPrice < this.minPrice) { this.filterPriceMinInput.val(this.minPrice); }
-        if (maxPrice > this.maxPrice) { this.filterPriceMaxInput.val(this.maxPrice); }
+        if (maxPrice > this.maxPrice) { maxPrice = this.maxPrice; }
+        if(minPrice > maxPrice) { minPrice = maxPrice;}
+
+        this.filterPriceMinInput.val(minPrice);
+        this.filterPriceMaxInput.val(maxPrice);
 
         this.getLecturersByPrice(minPrice, maxPrice);
     }
