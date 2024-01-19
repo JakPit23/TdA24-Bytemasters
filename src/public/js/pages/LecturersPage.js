@@ -43,7 +43,7 @@ class Page {
             $('<span>').text(location).appendTo(label);
         });
         
-        this.searchInput.on('input', this.searchLecturers.bind(this));
+        this.searchInput.on('input', this.filterBySearch.bind(this));
         this.filterButton.on('click', this.openFilterBox.bind(this));
 
         this.filterLocation.find('input[type="checkbox"]').on('change', this.filterByLocation.bind(this));
@@ -59,8 +59,6 @@ class Page {
     }
 
     filterLecturers = () => {
-        console.log("this.filters", this.filters);
-
         const filteredLecturers = this.lecturers.filter(lecturer => {
             if (this.filters.price) {
                 if (this.filters.price.min && lecturer.price_per_hour < this.filters.price.min) {
@@ -80,9 +78,22 @@ class Page {
             if (this.filters.tags && this.filters.tags.length > 0 && !lecturer.tags.some(tag => this.filters.tags.includes(tag.uuid))) {
                 return false;
             }
+
+            if (this.filters.search) {
+                const name = [ lecturer.title_before, lecturer.first_name, lecturer.middle_name, lecturer.last_name, lecturer.title_after ].filter(part => part !== "").join(' ');
+                return name.toLowerCase().includes(this.filters.search.toLowerCase());
+            }
     
             return true;
         });
+
+        if (filteredLecturers.length <= 0) {
+            this.lecturersList.children().hide();
+            this.noResults.show();
+            return;
+        }
+
+        this.noResults.hide();
 
         for (const element of this.lecturersList.children()) {
             const lecturer = filteredLecturers.find(lecturer => lecturer.uuid === $(element).data('lecturerUUID'));
@@ -136,40 +147,14 @@ class Page {
         this.filterLecturers();
     }
 
-    openFilterBox = () => this.filterBox.toggleClass("!hidden");
-
-    searchLecturers = async () => {
+    filterBySearch = () => {
         const query = this.searchInput.val();
-        if (!query) {
-            this.lecturersList.children().show();
-            return;
-        }
 
-        const lecturers = this.lecturers.filter(lecturer => {
-            const name = [ lecturer.title_before, lecturer.first_name, lecturer.middle_name, lecturer.last_name, lecturer.title_after ].filter(part => part !== "").join(' ');
-            
-            return name.toLowerCase().includes(query.toLowerCase());
-        });
-        
-        if (lecturers.length <= 0) {
-            this.lecturersList.children().hide();
-            this.noResults.show();
-            return;
-        }
-
-        this.noResults.hide();
-
-        for (const element of this.lecturersList.children()) {
-            const lecturer = lecturers.find(lecturer => lecturer.uuid === $(element).data('lecturerUUID'));
-
-            if (!lecturer) {
-                $(element).hide();
-                continue;
-            }
-
-            $(element).show();
-        }
+        this.filters.search = query;
+        this.filterLecturers();
     }
+
+    openFilterBox = () => this.filterBox.toggleClass("!hidden");
 
     loadLecturers = async (lecturers) => {
         if (!lecturers) {
