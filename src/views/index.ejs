@@ -22,28 +22,15 @@
             <div class="flex flex-col items-center w-full pt-32 pb-16 gap-64">
                 <div class="flex flex-col items-left md:items-center justify-center gap-8 w-full h-[50vh]">
                     <h1 class="font-black text-6xl uppercase text-left">Teacher Digital Agency</h1>
-                    <p class="text-lg md:text-xl text-left md:text-center max-w-5xl">Našim cílem je spojit klienty s vhodnými učiteli. S naší databází expertů najde každý to co potřebuje. Takže si vyberte svého lektora a kontaktujte ho. A vše ostatní nechte na nás. Garantujeme vám, že vás budou vzdělávat jen odborníci. Vaše vzdělání je naše priorita.</p>
-                    <div>
-                        <a class="btn btn-big !bg-sunglate-700" href="#lecturers">To chci!</a>
-                    </div>
+                    <p class="text-lg md:text-xl text-left md:text-center max-w-3xl">Naší snahou je propojit klienty s příslušnými učiteli. V naší databázi odborníků může každý najít to, co potřebuje. Vaše vzdělání je pro nás na prvním místě.</p>
+                    <div><a class="btn btn-big !bg-sunglate-700" href="#lecturers">To chci!</a></div>
                 </div>
                 
                 <div class="showcase-container flex flex-col items-start gap-48 w-3/4">
                     <div class="showcase">
                         <div class="showcase-content">
-                            <h1>Spolehlivost</h1>
-                            <p>Veškeří lektoři prochází přes složitý přijímací systém, abychom zajistili, že se k vám dostanou jen ti nejlepší. Kromě toho si od vás nebereme žádné skryté poplatky, vše co zaplatíte jde lektorům.                            </p>
-                        </div>
-
-                        <div class="showcase-image">
-                            <img src="/public/images/icons/management.svg">
-                        </div>
-                    </div>
-
-                    <div class="showcase">
-                        <div class="showcase-content">
                             <h1>Zkušenost</h1>
-                            <p>Všichni lektoři jsou experti ve svém oboru. Jsou to zušení profesionálové, kteří vás do svého oboru kvalitně zasvětí</p>
+                            <p>Setkejte se s vysoce kvalifikovanými lektory, kteří přinesou bohaté zkušenosti do vašeho vzdělávacího prostoru.</p>
                         </div>
 
                         <div class="showcase-image">
@@ -53,21 +40,10 @@
 
                     <div class="showcase">
                         <div class="showcase-content">
-                            <h1>Kvalifikace</h1>
-                            <p>Hledáte někoho, kdo by vás naučil programovat nebo spíše potřrebujete vylepšit své znalosti cizích jazyků? U nás najdete experty na všechno</p>
-                        </div>
-
-                        <div class="showcase-image">
-                            <img src="/public/images/icons/studium.svg">
-                        </div>
-                    </div>
-
-                    <div class="showcase">
-                        <div class="showcase-content">
                             <h1>Rychlost</h1>
-                            <p>Garantujeme vám, že pokud některý z lektorů ukončí své působení, budete o tom věfět téměř okamžitě. To samé platí i v případě změny ceny či jiných parametrů</p>
+                            <p>Garantujeme rychlé informace o změnách v lektorském týmu a dalších důležitých parametrech. S námi budete vždy v obraze.</p>
                         </div>
-                        
+                    
                         <div class="showcase-image">
                             <img src="/public/images/icons/conversation.svg">
                         </div>
@@ -86,12 +62,12 @@
                 </div>
 
                 <div  class="flex flex-col items-center justify-center gap-8 w-full">
-                    <h1 class="font-black text-4xl">Najdi lektora</h1>
+                    <h1 class="font-black text-4xl">Najděte svého lektora</h1>
                     
                     <div class="flex flex-row w-full gap-2">
                         <div class="flex flex-row w-full px-2 py-4 dark:bg-dark-700 shadow-lg rounded-md">
                             <i class="fa-solid fa-search h-6 mx-2 text-xl dark:text-white-900"></i>
-                            <input data-searchInput class="w-full bg-transparent focus:outline-none dark:text-white-900 font-normal" type="search" placeholder="Najděte svého lektora">
+                            <input data-searchInput class="w-full bg-transparent focus:outline-none dark:text-white-900 font-normal" type="search" placeholder="Zadejte jméno lektora">
                         </div>
         
                         <div data-filterButton class="flex flex-row min-w-fit px-2 py-4 dark:bg-dark-700 shadow-lg rounded-md cursor-pointer">
@@ -132,8 +108,7 @@
                             <div class="loader"></div>
                         </div>
 
-                        <p data-noResults style="display: none" class="text-white text-2xl">Nenašli jsme vám žádné lektory :(</p>
-
+                        <p data-noResults style="display: none" class="text-white text-2xl">Nenašli jsme žádné lektory</p>
                         <div data-lecturers style="display: none" class="grid md:grid-cols-2 gap-4 w-full mb-4"></div>
                     </div>
                 </div>

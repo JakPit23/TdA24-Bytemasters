@@ -13,12 +13,12 @@ class Page {
 
         this.filterTags = $('[data-filterTags]');
         this.filterLocation = $('[data-filterLocations]');
-        this.filterPriceMinInput.on('input', this.filterByPrice.bind(this));
-        this.filterPriceMaxInput.on('input', this.filterByPrice.bind(this));
     }
 
     init = async () => {
         $('[data-navbarLinks]').addClass("md:block");
+
+        this.filters = {};
 
         this.lecturers = await this.lecturerAPI.getLecturers();
         if (!this.lecturers) {
@@ -52,8 +52,48 @@ class Page {
         this.minPrice = Math.min(...this.lecturers.filter(lecturer => typeof lecturer.price_per_hour === 'number').map(lecturer => lecturer.price_per_hour));
         this.maxPrice = Math.max(...this.lecturers.filter(lecturer => typeof lecturer.price_per_hour === 'number').map(lecturer => lecturer.price_per_hour));
 
+        this.filterPriceMinInput.on('input', this.filterByPrice.bind(this));
+        this.filterPriceMaxInput.on('input', this.filterByPrice.bind(this));
         this.filterPriceMinInput.val(this.minPrice);
         this.filterPriceMaxInput.val(this.maxPrice);
+    }
+
+    filterLecturers = () => {
+        console.log("this.filters", this.filters);
+
+        const filteredLecturers = this.lecturers.filter(lecturer => {
+            if (this.filters.price) {
+                if (this.filters.price.min && lecturer.price_per_hour < this.filters.price.min) {
+                    return false;
+                }
+
+                if (this.filters.price.max && lecturer.price_per_hour > this.filters.price.max) {
+                    return false;
+                }
+            }
+
+            // janky solution wrote 7 minutes before deadline :D
+            if (this.filters.locations && this.filters.locations.length > 0 && !this.filters.locations.includes(lecturer.location)) {
+                return false;
+            }
+
+            if (this.filters.tags && this.filters.tags.length > 0 && !lecturer.tags.some(tag => this.filters.tags.includes(tag.uuid))) {
+                return false;
+            }
+    
+            return true;
+        });
+
+        for (const element of this.lecturersList.children()) {
+            const lecturer = filteredLecturers.find(lecturer => lecturer.uuid === $(element).data('lecturerUUID'));
+
+            if (!lecturer) {
+                $(element).hide();
+                continue;
+            }
+
+            $(element).show();
+        }
     }
 
     filterByPrice() {
@@ -71,75 +111,29 @@ class Page {
         if (maxPrice < 0) {
             this.filterPriceMaxInput.val(0);
         }
-        
-        this.getLecturersByPrice(minPrice, maxPrice);
-    }
 
-    getLecturersByPrice(minPrice, maxPrice) {
-        const filteredLecturers = this.lecturers.filter(lecturer => minPrice <= lecturer.price_per_hour && lecturer.price_per_hour <= maxPrice);
-        for (const element of this.lecturersList.children()) {
-            const lecturer = filteredLecturers.find(lecturer => lecturer.uuid === $(element).data('lecturerUUID'));
+        (this.filters.price ??= {})["min"] = minPrice;
+        (this.filters.price ??= {})["max"] = maxPrice;
 
-            if (!lecturer) {
-                $(element).hide();
-                continue;
-            }
-
-            $(element).show();
-        }
-    }
-
-
-    filterByLocation() {
-        const selectedLocations = this.getSelectedLocations();
-        if (selectedLocations.length === 0) {
-            this.lecturersList.children().show();
-            return;
-        }
-
-        const filteredLecturers = this.lecturers.filter(lecturer => selectedLocations.includes(lecturer.location));
-        for (const element of this.lecturersList.children()) {
-            const lecturer = filteredLecturers.find(lecturer => lecturer.uuid === $(element).data('lecturerUUID'));
-
-            if (!lecturer) {
-                $(element).hide();
-                continue;
-            }
-
-            $(element).show();
-        }
-    }
-
-    filterByTags() {
-        const selectedTags = this.getSelectedTags();
-        if (selectedTags.length === 0) {
-            this.lecturersList.children().show();
-            return;
-        }
-
-        const filteredLecturers = this.lecturers.filter(lecturer => lecturer.tags.some(tag => selectedTags.includes(tag.uuid)));
-        for (const element of this.lecturersList.children()) {
-            const lecturer = filteredLecturers.find(lecturer => lecturer.uuid === $(element).data('lecturerUUID'));
-
-            if (!lecturer) {
-                $(element).hide();
-                continue;
-            }
-
-            $(element).show();
-        }
+        this.filterLecturers();
     }
     
-    getSelectedLocations() {
-        return this.filterLocation.find('input[type="checkbox"]:checked').map(function() {
+    filterByLocation() {
+        const locations = this.filterLocation.find('input[type="checkbox"]:checked').map(function() {
             return $(this).siblings('span').text();
         }).get();
+
+        this.filters.locations = locations;
+        this.filterLecturers();
     }
     
-    getSelectedTags() {
-        return this.filterTags.find('input[type="checkbox"]:checked').map(function() {
+    filterByTags() {
+        const tags = this.filterTags.find('input[type="checkbox"]:checked').map(function() {
             return $(this).parent().data('uuid')
         }).get();
+
+        this.filters.tags = tags;
+        this.filterLecturers();
     }
 
     openFilterBox = () => this.filterBox.toggleClass("!hidden");
