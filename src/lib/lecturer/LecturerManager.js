@@ -62,13 +62,13 @@ class LecturerManager {
                 throw Error("MISSING_REQUIRED_FIELD");
             }
 
-            if (typeof lecturer[key] != "string" || typeof lecturer[key] != "number") {
+            if (typeof lecturer[key] != "string" && typeof lecturer[key] != "number") {
                 continue;
             }
-
+            
             json[key] = this.sanitize(lecturer[key]);
         }
-
+        
         if (lecturer.bio) {
             json.bio = this.sanitize(lecturer.bio, ["b", "i", "s"]);
         }
