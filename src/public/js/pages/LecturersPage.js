@@ -14,8 +14,11 @@ class Page {
         this.filterTags = $('[data-filterTags]');
         this.filterLocation = $('[data-filterLocations]');
 
-        this.filterPriceMinInput.on('input', this.filterByPrice.bind(this));
-        this.filterPriceMaxInput.on('input', this.filterByPrice.bind(this));    
+        this.submitButton = $('[data-submit]');
+        this.submitButton.on('click', this.filterByPrice.bind(this));
+
+        /* this.filterPriceMinInput.on('input', this.validatePrice.bind(this));
+        this.filterPriceMaxInput.on('input', this.validatePrice.bind(this));  */  
 
         this.init();
     }
@@ -60,12 +63,17 @@ class Page {
     filterByPrice() {
         const minPrice = this.filterPriceMinInput.val();
         const maxPrice = this.filterPriceMaxInput.val();
-        if(minPrice > this.maxPrice) {this.filterPriceMinInput.val(this.maxPrice);}
-        if(maxPrice < this.minPrice) {this.filterPriceMaxInput.val(this.minPrice);}
-        if(minPrice < this.minPrice) {this.filterPriceMinInput.val(this.minPrice);}
-        if(maxPrice > this.maxPrice) {this.filterPriceMaxInput.val(this.maxPrice);}
+        
+        // check for real min and max
+        if (minPrice < this.minPrice) { this.filterPriceMinInput.val(this.minPrice); }
+        if (maxPrice > this.maxPrice) { this.filterPriceMaxInput.val(this.maxPrice); }
+
+        this.getLecturersByPrice(minPrice, maxPrice);
+    }
+
+    getLecturersByPrice(minPrice, maxPrice) {
         const filteredLecturers = this.lecturers.filter(lecturer => minPrice <= lecturer.price_per_hour && lecturer.price_per_hour <= maxPrice);
-            for (const element of this.lecturersList.children()) {
+        for (const element of this.lecturersList.children()) {
             const lecturer = filteredLecturers.find(lecturer => lecturer.uuid === $(element).data('lecturerUUID'));
 
             if (!lecturer) {

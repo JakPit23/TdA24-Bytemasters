@@ -625,8 +625,8 @@ video {
   margin-bottom: 1rem;
 }
 
-.mb-2 {
-  margin-bottom: 0.5rem;
+.mb-4 {
+  margin-bottom: 1rem;
 }
 
 .ml-auto {
@@ -1453,7 +1453,7 @@ p {
   padding-left: 0.5rem;
   padding-right: 0.5rem;
   font-weight: 700;
-  color: rgba(254, 203, 46, 1);
+  color: rgba(255, 255, 255, 1);
 }
 
 .price-field input:focus {
