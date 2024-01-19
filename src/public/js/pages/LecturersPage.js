@@ -57,8 +57,8 @@ class Page {
     }
 
     filterByPrice() {
-        const minPrice = this.filterPriceMinInput.val();
-        const maxPrice = this.filterPriceMaxInput.val();
+        let minPrice = this.filterPriceMinInput.val();
+        let maxPrice = this.filterPriceMaxInput.val();
         
         minPrice.replace(/^0+/, '').replace('-', '');
         maxPrice.replace(/^0+/, '').replace('-', '');
