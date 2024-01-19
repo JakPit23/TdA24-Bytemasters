@@ -48,8 +48,9 @@ class Page {
         this.filterLocation.find('input[type="checkbox"]').on('change', this.filterByLocation.bind(this));
         this.filterTags.find('input[type="checkbox"]').on('change', this.filterByTags.bind(this));
 
-        this.minPrice = Math.min(...this.lecturers.map(lecturer => lecturer.price_per_hour));
-        this.maxPrice = Math.max(...this.lecturers.map(lecturer => lecturer.price_per_hour));
+        this.minPrice = Math.min(...this.lecturers.filter(lecturer => typeof lecturer.price_per_hour === 'number').map(lecturer => lecturer.price_per_hour));
+        this.maxPrice = Math.max(...this.lecturers.filter(lecturer => typeof lecturer.price_per_hour === 'number').map(lecturer => lecturer.price_per_hour));
+
         this.filterPriceMinInput.val(this.minPrice);
         this.filterPriceMaxInput.val(this.maxPrice);
     }
@@ -57,17 +58,19 @@ class Page {
     filterByPrice() {
         let minPrice = this.filterPriceMinInput.val();
         let maxPrice = this.filterPriceMaxInput.val();
+
+        if (isNaN(minPrice) || isNaN(maxPrice)) {
+            return;
+        }
+
+        if (minPrice < 0) {
+            this.filterPriceMinInput.val(0);
+        }
+
+        if (maxPrice < 0) {
+            this.filterPriceMaxInput.val(0);
+        }
         
-        minPrice.replace(/^0+/, '').replace('-', '');
-        maxPrice.replace(/^0+/, '').replace('-', '');
-        if (isNaN(minPrice) || isNaN(maxPrice))  {return};
-        // check for real min and max
-        if (maxPrice > this.maxPrice) { maxPrice = this.maxPrice; }
-        if(minPrice > maxPrice) { minPrice = maxPrice;}
-
-        this.filterPriceMinInput.val(minPrice);
-        this.filterPriceMaxInput.val(maxPrice);
-
         this.getLecturersByPrice(minPrice, maxPrice);
     }
 
