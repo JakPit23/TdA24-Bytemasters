@@ -28,7 +28,15 @@ class Page {
 
         this.loadLecturers(this.lecturers);
 
-        const tags = [...new Set(this.lecturers.map(lecturer => lecturer.tags).flat().map(tag => JSON.stringify(tag)))].map(tag => JSON.parse(tag));
+        const tags = this.lecturers.flatMap(lecturer => lecturer.tags)
+            .filter(tag => tag && typeof tag == "object")
+            .reduce((uniqueTags, currentTag) => {
+                if (!uniqueTags.some(tag => tag.uuid == currentTag.uuid)) {
+                    uniqueTags.push({ uuid: currentTag.uuid, name: currentTag.name });
+                }
+                
+                return uniqueTags;
+            }, []);
 
         tags.forEach(tag => {
             const label = $('<label>').addClass('checkbox checkbox-skyblue').data("uuid", tag.uuid).appendTo(this.filterTags);
@@ -36,7 +44,16 @@ class Page {
             $('<span>').text(tag.name).appendTo(label);
         });
 
-        const locations = [...new Set(this.lecturers.map(lecturer => lecturer.location).filter(location => location !== null))];
+        const locations = this.lecturers.flatMap(lecturer => lecturer.location)
+            .filter(location => location !== null)
+            .reduce((uniqueLocations, currentLocation) => {
+                if (!uniqueLocations.includes(currentLocation)) {
+                    uniqueLocations.push(currentLocation);
+                }
+
+                return uniqueLocations;
+            }, []);
+        
         locations.forEach(location => {
             const label = $('<label>').addClass('checkbox checkbox-prussianblue').appendTo(this.filterLocation);
             $('<input>').attr('type', 'checkbox').appendTo(label);
@@ -75,7 +92,7 @@ class Page {
                 return false;
             }
 
-            if (this.filters.tags && this.filters.tags.length > 0 && !lecturer.tags.some(tag => this.filters.tags.includes(tag.uuid))) {
+            if (this.filters.tags && this.filters.tags.length > 0 && lecturer.tags && !lecturer.tags.some(tag => this.filters.tags.includes(tag.uuid))) {
                 return false;
             }
 
@@ -157,7 +174,8 @@ class Page {
     openFilterBox = () => this.filterBox.toggleClass("!hidden");
 
     loadLecturers = async (lecturers) => {
-        if (!lecturers) {
+        if (lecturers.length <= 0) {
+            this.app.hideLoader('[data-loaderLecturers]');
             this.noResults.show();
             return;
         }
@@ -173,16 +191,7 @@ class Page {
         lecturerDiv.on("click", () => $(location).attr('href', `/lecturer/${data.uuid}`));
 
         if (data.picture_url) {
-            const loadImage = (url) => {
-                return new Promise((resolve) => {
-                    const profilePicture = new Image();
-                    profilePicture.onload = () => resolve(profilePicture);
-                    profilePicture.src = url;
-                });
-            };
-
-            const profilePicture = await loadImage(data.picture_url);
-            $(profilePicture).addClass('lecturer-profileImage').appendTo(lecturerDiv);
+            $('<img>').addClass('lecturer-profileImage').attr('src', data.picture_url).appendTo(lecturerDiv);
         }
     
         const contentDiv = $('<div>').addClass('lecturer-content').appendTo(lecturerDiv);

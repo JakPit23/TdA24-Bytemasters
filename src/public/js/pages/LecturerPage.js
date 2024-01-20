@@ -30,16 +30,7 @@ class Page {
 
     renderLecturer = async (data) => {
         if (data.picture_url) {
-            const loadImage = (url) => {
-                return new Promise((resolve) => {
-                    const profilePicture = new Image();
-                    profilePicture.onload = () => resolve(profilePicture);
-                    profilePicture.src = url;
-                });
-            };
-
-            const profilePicture = await loadImage(data.picture_url);
-            $(profilePicture).addClass('lecturer-profileImage').appendTo(this.lecturerElement);
+            $('<img>').addClass('lecturer-profileImage').attr('src', data.picture_url).appendTo(this.lecturerElement);
         }
         
         const lecturerContent = $('<div>').addClass('lecturer-content flex flex-col').appendTo(this.lecturerElement);

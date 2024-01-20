@@ -132,7 +132,10 @@ class LecturerManager {
 
         if (Object.keys(contact).length > 0) {
             json.contact = contact;
+        } else if (!combination) {
+            throw Error("MISSING_REQUIRED_FIELD");
         }
+
         if (combination) {
             Object.entries(json).forEach(([key, value]) => (combination[key]) = value);
             return combination;
