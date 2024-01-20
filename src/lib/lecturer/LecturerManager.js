@@ -58,7 +58,7 @@ class LecturerManager {
         ];
 
         for (const { key, required } of allowedKeys) {
-            if (!lecturer[key] && required) {
+            if (!lecturer[key] && required && !combination) {
                 throw Error("MISSING_REQUIRED_FIELD");
             }
 
@@ -132,10 +132,7 @@ class LecturerManager {
 
         if (Object.keys(contact).length > 0) {
             json.contact = contact;
-        } else {
-            throw Error("MISSING_REQUIRED_FIELD");
         }
-
         if (combination) {
             Object.entries(json).forEach(([key, value]) => (combination[key]) = value);
             return combination;
