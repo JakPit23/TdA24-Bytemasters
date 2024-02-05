@@ -18,7 +18,7 @@ module.exports = class WebRoute {
 
     loadRoutes = () => {
         this.router.get("/", (req, res) => res.render("index"));
-
+        this.router.get("/gdpr", (req, res) => res.render("gdpr"));
         this.router.get("/lecturer/:lecturerUUID", (req, res) => res.render("lecturer"));
     }
 };
