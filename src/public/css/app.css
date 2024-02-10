@@ -610,6 +610,10 @@ video {
   z-index: -3;
 }
 
+.m-auto {
+  margin: auto;
+}
+
 .mx-2 {
   margin-left: 0.5rem;
   margin-right: 0.5rem;
@@ -623,6 +627,11 @@ video {
 .my-4 {
   margin-top: 1rem;
   margin-bottom: 1rem;
+}
+
+.my-auto {
+  margin-top: auto;
+  margin-bottom: auto;
 }
 
 .mb-4 {
@@ -691,6 +700,10 @@ video {
   height: max-content;
 }
 
+.h-16 {
+  height: 4rem;
+}
+
 .min-h-\[100vh\] {
   min-height: 100vh;
 }
@@ -709,6 +722,15 @@ video {
 
 .w-full {
   width: 100%;
+}
+
+.w-max {
+  width: -moz-max-content;
+  width: max-content;
+}
+
+.w-16 {
+  width: 4rem;
 }
 
 .min-w-fit {
@@ -821,6 +843,20 @@ video {
   background-color: transparent;
 }
 
+.bg-black {
+  --tw-bg-opacity: 1;
+  background-color: rgb(0 0 0 / var(--tw-bg-opacity));
+}
+
+.bg-dark-700 {
+  background-color: rgba(51, 51, 51, 0.8);
+}
+
+.bg-neutral-900 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(23 23 23 / var(--tw-bg-opacity));
+}
+
 .object-cover {
   -o-object-fit: cover;
      object-fit: cover;
@@ -853,6 +889,11 @@ video {
 .py-4 {
   padding-top: 1rem;
   padding-bottom: 1rem;
+}
+
+.py-8 {
+  padding-top: 2rem;
+  padding-bottom: 2rem;
 }
 
 .pb-16 {
@@ -932,6 +973,14 @@ video {
 
 .text-white-900 {
   color: rgba(255, 255, 255, 1);
+}
+
+.text-white-50 {
+  color: rgba(255, 255, 255, 0.1);
+}
+
+.text-white-200 {
+  color: rgba(255, 255, 255, 0.3);
 }
 
 .shadow-lg {
@@ -1585,6 +1634,10 @@ p {
   background-color: rgb(82 82 82 / var(--tw-bg-opacity));
 }
 
+.hover\:underline:hover {
+  text-decoration-line: underline;
+}
+
 .focus\:outline-none:focus {
   outline: 2px solid transparent;
   outline-offset: 2px;
@@ -1610,8 +1663,20 @@ p {
   background-color: rgba(255, 255, 255, 0.1);
 }
 
+:is(.dark .dark\:bg-white-900) {
+  background-color: rgba(255, 255, 255, 1);
+}
+
 :is(.dark .dark\:text-white-900) {
   color: rgba(255, 255, 255, 1);
+}
+
+:is(.dark .dark\:text-white-50) {
+  color: rgba(255, 255, 255, 0.1);
+}
+
+:is(.dark .dark\:text-white-200) {
+  color: rgba(255, 255, 255, 0.3);
 }
 
 :is(.dark .dark\:hover\:bg-white-100:hover) {
