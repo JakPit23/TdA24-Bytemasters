@@ -186,8 +186,14 @@ class Page {
         this.app.hideLoader('[data-loaderLecturers]');
     }
 
+    lecturerHover = () => {
+        $('[data-lecturerCard]').hover(function() {
+            $(this).toggleClass('shadow-md');
+        });
+    }
+
     renderLecturer = async (data) => {
-        const lecturerDiv = $('<div>').addClass('lecturerCard').data('lecturerUUID', data.uuid).appendTo(this.lecturersList);
+        const lecturerDiv = $('<div>').addClass('lecturerCard').data('lecturerUUID', data.uuid).appendTo(this.lecturersList).hover(this.lecturerHover.bind(this));
         lecturerDiv.on("click", () => $(location).attr('href', `/lecturer/${data.uuid}`));
 
         if (data.picture_url) {

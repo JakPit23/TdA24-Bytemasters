@@ -110,7 +110,13 @@ p {
 
 /* LECTURER CARD */
 .lecturerCard {
-    @apply flex flex-row dark:bg-dark-700 shadow-lg rounded-md py-4 px-4 cursor-pointer;
+    @apply flex flex-row dark:bg-dark-900 shadow-lg rounded-md py-4 px-4 cursor-pointer;
+    box-shadow: 5px 5px 10px #fff;
+}
+
+.lecturerCard:hover {
+    /* use transition and do the color transparent on hover */
+    @apply bg-sunglate-300;
 }
 
 .lecturerCard .lecturer-profileImage {
