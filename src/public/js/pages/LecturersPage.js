@@ -185,15 +185,8 @@ class Page {
         this.lecturersList.show();
         this.app.hideLoader('[data-loaderLecturers]');
     }
-
-    lecturerHover = () => {
-        $('[data-lecturerCard]').hover(function() {
-            $(this).toggleClass('shadow-md');
-        });
-    }
-
     renderLecturer = async (data) => {
-        const lecturerDiv = $('<div>').addClass('lecturerCard').data('lecturerUUID', data.uuid).appendTo(this.lecturersList).hover(this.lecturerHover.bind(this));
+        const lecturerDiv = $('<div>').addClass('lecturerCard').data('lecturerUUID', data.uuid).appendTo(this.lecturersList);
         lecturerDiv.on("click", () => $(location).attr('href', `/lecturer/${data.uuid}`));
 
         if (data.picture_url) {
