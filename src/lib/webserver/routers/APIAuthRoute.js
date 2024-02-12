@@ -12,8 +12,6 @@ module.exports = class APIAuthRoute {
         this.loadRoutes();
     }
 
-    getRouter = () => this.router;
-
     loadRoutes = () => {
         this.router.post("/register", async (req, res, next) => {
             try {

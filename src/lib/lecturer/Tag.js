@@ -1,3 +1,4 @@
+// TODO: cely todle predelat na zpusob User
 class Tag {
     /**
      * 

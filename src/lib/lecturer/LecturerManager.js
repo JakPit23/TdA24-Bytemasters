@@ -1,25 +1,24 @@
+// TODO: tbh nebudu tady davat ani nic prepisovat cely to pak predelam (soon tm)
+
 const sanitizeHtml = require("sanitize-html");
-const Core = require("../Core");
 const Lecturer = require("./Lecturer");
 const UUIDProcessor = require("../utils/UUIDProcessor");
 
 class LecturerManager {
     /**
-     * 
-     * @param {Core} core 
+     * @param {import("../Core")} core 
      */
     constructor(core) {
         this.core = core;
+        // TODO: tky tady udelat cache
     }
 
     /**
-     * 
      * @returns {Lecturer[]}
      */
     getLecturers = () => this.core.getDatabase().query("SELECT * FROM lecturers").map(data => this.readLecturer(data));
 
     /**
-     * 
      * @param {string} uuid
      * @returns {Lecturer}
      */

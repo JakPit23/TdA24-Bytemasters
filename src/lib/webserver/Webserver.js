@@ -4,13 +4,11 @@ const path = require("path");
 const express = require("express");
 const expressSession = require("express-session");
 const Logger = require("../Logger");
-const Core = require("../Core");
 const Config = require("../Config");
 
 class Webserver {
     /**
-     * 
-     * @param {Core} core
+     * @param {import("../Core")} core
      */
     constructor(core) {
         this.core = core;
@@ -36,20 +34,18 @@ class Webserver {
         this.app.use((req, res, next) => this.middlewares["RequestLog"].run(req, res, next));
 
         this.app.use("/public", express.static(path.join(__dirname, "../../public")));
-        this.app.use("/", this.routers["WebRoute"].getRouter());
+        this.app.use("/", this.routers["WebRoute"].router);
 
         this.app.use("/api", express.json());
-        this.app.use("/api", this.routers["APIRoute"].getRouter());
-        this.app.use("/api/lecturers", this.routers["LecturersAPIRoute"].getRouter());
-        this.app.use("/api/auth", this.routers["APIAuthRoute"].getRouter());
+        this.app.use("/api", this.routers["APIRoute"].router);
+        this.app.use("/api/lecturers", this.routers["LecturersAPIRoute"].router);
+        this.app.use("/api/auth", this.routers["APIAuthRoute"].router);
         
         this.app.use((req, res, next) => this.middlewares["RouteNotFound"].run(req, res, next));
         this.app.use((error, req, res, next) => this.middlewares["ServerError"].run(error, req, res, next));
 
         this.webserver = http.createServer(this.app);
-        this.webserver.listen(this.port, () => {
-            Logger.info(Logger.Type.Webserver, `Webserver running on port ${this.port}`);
-        });
+        this.webserver.listen(this.port, () => Logger.info(Logger.Type.Webserver, `Webserver running on port ${this.port}`));
     }
 
     async loadRouters() {
@@ -68,8 +64,7 @@ class Webserver {
         }
 
         if (Object.keys(this.routers).length === 0) {
-            Logger.warn(Logger.Type.Webserver, 'No routers loaded');
-            return;
+            return Logger.warn(Logger.Type.Webserver, "No routers loaded");
         }
         
         Logger.info(Logger.Type.Webserver, `${Logger.Colors.Fg.Magenta}${Object.keys(this.routers).length}${Logger.Colors.Reset} routers loaded`);
@@ -91,8 +86,7 @@ class Webserver {
         }
 
         if (Object.keys(this.middlewares).length === 0) {
-            Logger.warn(Logger.Type.Webserver, 'No middlewares loaded');
-            return;
+            return Logger.warn(Logger.Type.Webserver, "No middlewares loaded");
         }
         
         Logger.info(Logger.Type.Webserver, `${Logger.Colors.Fg.Magenta}${Object.keys(this.middlewares).length}${Logger.Colors.Reset} middlewares loaded`);

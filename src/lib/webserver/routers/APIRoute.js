@@ -1,10 +1,9 @@
 const express = require("express");
-const Core = require("../../Core");
 
 module.exports = class WebRoute {
     /**
      * 
-     * @param {Core} core 
+     * @param {import("../../Core")} core 
      */
     constructor(core) {
         this.core = core;
@@ -12,8 +11,6 @@ module.exports = class WebRoute {
 
         this.loadRoutes();
     }
-
-    getRouter = () => this.router;
 
     loadRoutes = () => {
         this.router.get("/", (req, res) => res.json({

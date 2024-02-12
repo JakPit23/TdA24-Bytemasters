@@ -23,36 +23,12 @@ class Core {
         this.webserver = new Webserver(this);
     }
 
-    /**
-     * Gets the database object.
-     * @returns {Database} The database object.
-     */
     getDatabase = () => this.database;
-
-    /**
-     * Gets the webserver object.
-     * @returns {Webserver} The webserver object.
-     */
     getWebserver = () => this.webserver;
-
-    /**
-     * Gets the lecturer manager object.
-     * @returns {LecturerManager} The lecturer manager object.
-     */
     getLecturerManager = () => this.lecturerManager;
-
-    /**
-     * Gets the tag manager object.
-     * @returns {TagManager} The tag manager object.
-     */
     getTagManager = () => this.tagManager;
-
     getUserManager = () => this.userManager;
 
-    /**
-     * Asynchronously initiates the application shutdown process.
-     * @async
-     */
     async shutdown() {
         Logger.info(Logger.Type.Core, "Shutdown in progress...");
 
