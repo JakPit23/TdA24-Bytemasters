@@ -57,6 +57,8 @@ module.exports = class UserManager {
      */
     getUsers = async () => {
         const users = await this.core.getDatabase().query("SELECT * FROM `users`");
+        Logger.debug(Logger.Type.UserManager, `Loaded ${users.length} users from database`);
+
         return users.map(userData => new User(userData));
     }
 
@@ -70,16 +72,19 @@ module.exports = class UserManager {
     getUser = async (options = {}) => {
         const { uuid, email, username } = options;
         let user = this._cache.find(user => user.uuid == uuid || user.email == email || user.username == username);
+        Logger.debug(Logger.Type.UserManager, `Cache hit for user ${user ? user.uuid : "null"}`);
 
         if (!user) {
             const userData = await this.core.getDatabase().query("SELECT * FROM `users` WHERE `uuid` = ? OR `email` = ? OR `username` = ?", [ uuid, email, username ]);
 
             if (!Array.isArray(userData) || userData.length == 0) {
+                Logger.debug(Logger.Type.UserManager, `No user found for ${uuid || email || username}`);
                 return null;
             }
 
             user = new User(userData[0]);
             this._cache.push(user);
+            Logger.debug(Logger.Type.UserManager, `Loaded user ${userData[0].uuid} from database, caching...`);
         }
 
         return user;
@@ -94,9 +99,11 @@ module.exports = class UserManager {
      */
     createUser = (uuid, email, password, username) => new Promise(async (resolve, reject) => {
         if (!UUIDProcessor.validateUUID(uuid)) {
+            Logger.debug(Logger.Type.UserManager, `Invalid UUID provided, generating new one...`);
             uuid = UUIDProcessor.newUUID();
 
             while (this.getUser({ uuid })) { uuid = UUIDProcessor.newUUID(); }
+            Logger.debug(Logger.Type.UserManager, `Generated new UUID: ${uuid}`);
         }
 
         if (!(email && password && username)) {
@@ -124,6 +131,13 @@ module.exports = class UserManager {
         this.core.getDatabase().exec("INSERT INTO `users` (`uuid`, `username`, `email`, `password`, `createdAt`) VALUES (?, ?, ?, ?, ?)", [
             user.uuid, user.username, user.email, user.password, user.createdAt
         ]);
+        this._cache.push(user);
+        
+        Logger.debug(Logger.Type.UserManager, "Created new user", {
+            uuid: user.uuid,
+            email: user.email,
+            username: user.username
+        });
 
         return resolve(user);
     })

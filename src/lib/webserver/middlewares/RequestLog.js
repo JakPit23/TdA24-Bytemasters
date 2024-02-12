@@ -6,7 +6,10 @@ module.exports = class ServerError {
     }
 
     run = (req, res, next) => {
-        Logger.info(Logger.Type.Webserver, `${req.headers['x-forwarded-for'] || req.ip} - "${req.method} ${req.url}" ${req.headers['user-agent']}`);
+        if (process.env.NODE_ENV === 'production') {
+            Logger.info(Logger.Type.Webserver, `${req.headers['x-forwarded-for'] || req.ip} - "${req.method} ${req.url}" ${req.headers['user-agent']}`);
+        }
+        
         return next();
     }
 };

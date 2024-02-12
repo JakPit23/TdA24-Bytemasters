@@ -51,8 +51,11 @@ class TagManager {
         }
 
         if (!UUIDProcessor.validateUUID(json.uuid)) {
+            Logger.debug(Logger.Type.UserManager, `Invalid UUID provided, generating new one...`);
             json.uuid = UUIDProcessor.newUUID();
             while (this.getTagByUUID(json.uuid)) json.uuid = UUIDProcessor.newUUID();
+
+            Logger.debug(Logger.Type.UserManager, `Generated new UUID: ${json.uuid}`);
         }
 
         return json;
@@ -91,10 +94,11 @@ class TagManager {
                 tag.getUUID(),
                 tag.getName()
             ]);
-
+            Logger.debug(Logger.Type.UserManager, "Created new tag", { uuid: tag.getUUID(), name: tag.getName() });
+            
             return tag;
-        } catch(error) {
-            Logger.error(Logger.Type.TagManager, `Failed to create tag: ${error.message}`);
+        } catch (error) {
+            Logger.error(Logger.Type.TagManager, "An unknown error occured while creating tag:", error);
             throw error;
         }
     }

@@ -49,6 +49,7 @@ class Logger {
      */
     static Type = {
         Core: `${Logger.Colors.Fg.Magenta}CORE${Logger.Colors.Reset}`,
+        Database: `${Logger.Colors.Fg.Cyan}DATABASE${Logger.Colors.Reset}`,
         Watchdog: `${Logger.Colors.Fg.Red}WATCHDOG${Logger.Colors.Reset}`,
         Webserver: `${Logger.Colors.Fg.Green}WEBSERVER${Logger.Colors.Reset}`,
         TagManager: `${Logger.Colors.Fg.Blue}TAG MANAGER${Logger.Colors.Reset}`

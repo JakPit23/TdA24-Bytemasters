@@ -13,7 +13,7 @@ module.exports = class WebRoute {
 
         this.loadRoutes();
     }
-
+    
     getRouter = () => this.router;
 
     loadRoutes = () => {

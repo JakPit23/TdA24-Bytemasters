@@ -10,6 +10,7 @@ const UserManager = require("./user/UserManager");
 class Core {
     constructor() {
         Logger.info(Logger.Type.Core, `Starting application...`);
+
         if (!fs.existsSync(path.resolve(__dirname, "../data"))) {
             Logger.info(Logger.Type.Core, `Creating data directory`);
             fs.mkdirSync(path.resolve(__dirname, "../data"));
@@ -62,7 +63,6 @@ class Core {
         }, 15000);
 
         this.database.close();
-        
         await this.webserver.shutdown();
 
         // Clear the force shutdown timeout as the shutdown was successful.

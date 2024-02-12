@@ -11,11 +11,11 @@ module.exports = class ServerError {
                 return res.status(400).send({ code: 400, message: "Invalid request body" });
             }
 
-            Logger.error(Logger.Type.Webserver, error);
+            Logger.error(Logger.Type.Webserver, "An error occured while processing the request:", error);
             return res.status(500).json({ code: 500, error: "Server error" });
         }
         
-        Logger.error(Logger.Type.Webserver, error);
+        Logger.error(Logger.Type.Webserver, "An error occured while processing the request:", error);
         return res.status(500).render("500");
     }
 };
