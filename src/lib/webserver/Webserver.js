@@ -2,6 +2,7 @@ const http = require("http");
 const fs = require("fs");
 const path = require("path");
 const express = require("express");
+const expressSession = require("express-session");
 const Logger = require("../Logger");
 const Core = require("../Core");
 
@@ -17,21 +18,29 @@ class Webserver {
         this.port = this.core.getConfig().getWebserverPort();
 
         this.app = express();
-        this.app.use(express.json());
 
         this.app.set("view engine", "ejs");
         this.app.set("views", path.join(__dirname, "../../views"));
 
         this.app.disable("x-powered-by");
+        this.app.use(expressSession({
+            secret: this.core.getConfig().getSecretKey(),
+            resave: false,
+            saveUninitialized: false
+        }));
 
         this.loadRouters();
         this.loadMiddlewares();
         
-        this.app.use("/public", express.static(path.join(__dirname, "../../public")));
+        this.app.use((req, res, next) => this.middlewares["RequestLog"].run(req, res, next));
 
-        this.app.use("/api/lecturers", this.routers["LecturersAPIRoute"].getRouter());
-        this.app.use("/api", this.routers["APIRoute"].getRouter());
+        this.app.use("/public", express.static(path.join(__dirname, "../../public")));
         this.app.use("/", this.routers["WebRoute"].getRouter());
+
+        this.app.use("/api", express.json());
+        this.app.use("/api", this.routers["APIRoute"].getRouter());
+        this.app.use("/api/lecturers", this.routers["LecturersAPIRoute"].getRouter());
+        this.app.use("/api/auth", this.routers["APIAuthRoute"].getRouter());
         
         this.app.use((req, res, next) => this.middlewares["RouteNotFound"].run(req, res, next));
         this.app.use((error, req, res, next) => this.middlewares["ServerError"].run(error, req, res, next));

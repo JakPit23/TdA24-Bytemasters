@@ -6,6 +6,7 @@ const Database = require("./database/Database");
 const LecturerManager = require("./lecturer/LecturerManager");
 const Webserver = require("./webserver/Webserver");
 const TagManager = require("./lecturer/TagManager");
+const UserManager = require("./user/UserManager");
 
 class Core {
     constructor() {
@@ -23,6 +24,7 @@ class Core {
         this.database = new Database();
         this.lecturerManager = new LecturerManager(this);
         this.tagManager = new TagManager(this);
+        this.userManager = new UserManager(this);
         this.webserver = new Webserver(this);
     }
 
@@ -61,6 +63,8 @@ class Core {
      * @returns {TagManager} The tag manager object.
      */
     getTagManager = () => this.tagManager;
+
+    getUserManager = () => this.userManager;
 
     /**
      * Asynchronously initiates the application shutdown process.
