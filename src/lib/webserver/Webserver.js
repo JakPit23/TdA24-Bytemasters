@@ -5,6 +5,7 @@ const express = require("express");
 const expressSession = require("express-session");
 const Logger = require("../Logger");
 const Core = require("../Core");
+const Config = require("../Config");
 
 class Webserver {
     /**
@@ -15,7 +16,7 @@ class Webserver {
         this.core = core;
         this.routers = {};
         this.middlewares = {};
-        this.port = this.core.getConfig().getWebserverPort();
+        this.port = Config.getWebserverPort();
 
         this.app = express();
 
@@ -24,7 +25,7 @@ class Webserver {
 
         this.app.disable("x-powered-by");
         this.app.use(expressSession({
-            secret: this.core.getConfig().getSecretKey(),
+            secret: Config.getSecretKey(),
             resave: false,
             saveUninitialized: false
         }));
@@ -47,12 +48,12 @@ class Webserver {
 
         this.webserver = http.createServer(this.app);
         this.webserver.listen(this.port, () => {
-            this.core.getLogger().info(Logger.Type.Webserver, `Webserver running on port ${this.port}`);
+            Logger.info(Logger.Type.Webserver, `Webserver running on port ${this.port}`);
         });
     }
 
     async loadRouters() {
-        this.core.getLogger().debug(Logger.Type.Webserver, "Registering routers..");
+        Logger.debug(Logger.Type.Webserver, "Registering routers..");
 
         for (const filePath of fs.readdirSync(path.resolve(__dirname, "./routers")).filter(file => file.endsWith(".js"))) {
             const router = require(`./routers/${filePath}`);
@@ -62,17 +63,17 @@ class Webserver {
 
                 const name = filePath.replace(".js", "");
                 this.routers[name] = Router;
-                this.core.getLogger().debug(Logger.Type.Webserver, `Router "${name}" registered successfully.`);
+                Logger.debug(Logger.Type.Webserver, `Router "${name}" registered successfully.`);
             } catch (error) {
-                this.core.getLogger().error(Logger.Type.Webserver, `Failed to register router. Error:`, error);
+                Logger.error(Logger.Type.Webserver, `Failed to register router. Error:`, error);
             }
         }
 
-        this.core.getLogger().info(Logger.Type.Webserver, "Routers registered successfully.");
+        Logger.info(Logger.Type.Webserver, "Routers registered successfully.");
     }
 
     async loadMiddlewares() {
-        this.core.getLogger().info(Logger.Type.Webserver, "Registering middlewares..");
+        Logger.info(Logger.Type.Webserver, "Registering middlewares..");
 
         for (const filePath of fs.readdirSync(path.resolve(__dirname, "./middlewares")).filter(file => file.endsWith(".js"))) {
             const middleware = require(`./middlewares/${filePath}`);
@@ -82,13 +83,13 @@ class Webserver {
 
                 const name = filePath.replace(".js", "");
                 this.middlewares[name] = Middleware;
-                this.core.getLogger().debug(Logger.Type.Webserver, `Middleware "${name}" registered successfully.`);
+                Logger.debug(Logger.Type.Webserver, `Middleware "${name}" registered successfully.`);
             } catch (error) {
-                this.core.getLogger().error(Logger.Type.Webserver, `Failed to register middleware "${middleware.name}". Error: ${error.message}`);
+                Logger.error(Logger.Type.Webserver, `Failed to register middleware "${middleware.name}". Error: ${error.message}`);
             }
         }
 
-        this.core.getLogger().info(Logger.Type.Webserver, "Middlewares registered successfully.");
+        Logger.info(Logger.Type.Webserver, "Middlewares registered successfully.");
     }
 
     /**
@@ -96,10 +97,10 @@ class Webserver {
      * @returns {Promise<void>}
      */
     shutdown = () => new Promise((resolve, reject) => {
-        this.core.getLogger().debug(Logger.Type.Webserver, "Webserver shutdown in progress...");
+        Logger.debug(Logger.Type.Webserver, "Webserver shutdown in progress...");
 
         this.webserver.close(() => {
-            this.core.getLogger().debug(Logger.Type.Webserver, "Webserver shutdown completed.");
+            Logger.debug(Logger.Type.Webserver, "Webserver shutdown completed.");
             resolve();
         });
     });

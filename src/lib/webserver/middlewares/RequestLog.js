@@ -6,7 +6,7 @@ module.exports = class ServerError {
     }
 
     run = (req, res, next) => {
-        this.core.getLogger().info(Logger.Type.Webserver, `${req.headers['x-forwarded-for'] || req.ip} - "${req.method} ${req.url}" ${req.headers['user-agent']}`);
+        Logger.info(Logger.Type.Webserver, `${req.headers['x-forwarded-for'] || req.ip} - "${req.method} ${req.url}" ${req.headers['user-agent']}`);
         return next();
     }
 };

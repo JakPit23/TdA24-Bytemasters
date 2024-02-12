@@ -1,6 +1,5 @@
 const fs = require("fs");
 const path = require("path");
-const Configuration = require("./Configuration");
 const Logger = require("./Logger");
 const Database = require("./database/Database");
 const LecturerManager = require("./lecturer/LecturerManager");
@@ -10,14 +9,9 @@ const UserManager = require("./user/UserManager");
 
 class Core {
     constructor() {
-        this.config = new Configuration();
-
-        this.logger = new Logger(Logger.LogLevels.info);
-        this.logger.setLogLevel(this.config.getLogLevel());
-
-        this.logger.info(Logger.Type.Core, `Starting application...`);
+        Logger.info(Logger.Type.Core, `Starting application...`);
         if (!fs.existsSync(path.resolve(__dirname, "../data"))) {
-            this.logger.info(Logger.Type.Core, `Creating data directory`);
+            Logger.info(Logger.Type.Core, `Creating data directory`);
             fs.mkdirSync(path.resolve(__dirname, "../data"));
         }
         
@@ -27,18 +21,6 @@ class Core {
         this.userManager = new UserManager(this);
         this.webserver = new Webserver(this);
     }
-
-    /**
-     * Gets the configuration object.
-     * @returns {Configuration} The configuration object.
-     */
-    getConfig = () => this.config;
-
-    /**
-     * Gets the logger object.
-     * @returns {Logger} The logger object.
-     */
-    getLogger = () => this.logger;
 
     /**
      * Gets the database object.
@@ -71,11 +53,11 @@ class Core {
      * @async
      */
     async shutdown() {
-        this.getLogger().info(Logger.Type.Core, "Shutdown in progress...");
+        Logger.info(Logger.Type.Core, "Shutdown in progress...");
 
         // Set a timeout for a forced shutdown in case the graceful shutdown takes too long.
         const forceShutdownTimeout = setTimeout(() => {
-            this.getLogger().warn(Logger.Type.Core, "Failed to shutdown in-time. Exiting using force");
+            Logger.warn(Logger.Type.Core, "Failed to shutdown in-time. Exiting using force");
             process.exit(1);
         }, 15000);
 

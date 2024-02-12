@@ -3,6 +3,7 @@ const jwt = require("jsonwebtoken");
 const UUIDProcessor = require("../utils/UUIDProcessor");
 const User = require("./types/User");
 const { UserAuthError } = require("../Errors");
+const Config = require("../Config");
 
 module.exports = class UserManager {
     EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -37,7 +38,7 @@ module.exports = class UserManager {
      * @param {User} user
      * @returns {string}
      */
-    generateToken = (user) => jwt.sign({ uuid: user.uuid }, this.core.getConfig().getSecretKey(), { expiresIn: "24h"});
+    generateToken = (user) => jwt.sign({ uuid: user.uuid }, Config.getSecretKey(), { expiresIn: "24h"});
 
     /**
      * @param {string} token
@@ -45,7 +46,7 @@ module.exports = class UserManager {
      */
     verifyToken = (token) => {
         try {
-            return jwt.verify(token, this.core.getConfig().getSecretKey());
+            return jwt.verify(token, Config.getSecretKey());
         } catch (error) {
             return null;
         }
