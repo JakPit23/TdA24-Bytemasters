@@ -2,95 +2,104 @@ const http = require("http");
 const fs = require("fs");
 const path = require("path");
 const express = require("express");
+const expressSession = require("express-session");
 const Logger = require("../Logger");
-const Core = require("../Core");
+const Config = require("../Config");
 
 class Webserver {
     /**
-     * 
-     * @param {Core} core
+     * @param {import("../Core")} core
      */
     constructor(core) {
         this.core = core;
         this.routers = {};
         this.middlewares = {};
-        this.port = this.core.getConfig().getWebserverPort();
+        this.port = Config.getWebserverPort();
 
         this.app = express();
-        this.app.use(express.json());
 
         this.app.set("view engine", "ejs");
         this.app.set("views", path.join(__dirname, "../../views"));
 
         this.app.disable("x-powered-by");
+        this.app.use(expressSession({
+            secret: Config.getSecretKey(),
+            resave: false,
+            saveUninitialized: false
+        }));
 
-        this.loadRouters();
         this.loadMiddlewares();
+        this.loadRouters();
         
-        this.app.use("/public", express.static(path.join(__dirname, "../../public")));
+        this.app.use((req, res, next) => this.middlewares["RequestLog"].run(req, res, next));
 
-        this.app.use("/api/lecturers", this.routers["LecturersAPIRoute"].getRouter());
-        this.app.use("/api", this.routers["APIRoute"].getRouter());
-        this.app.use("/", this.routers["WebRoute"].getRouter());
+        this.app.use("/public", express.static(path.join(__dirname, "../../public")));
+        this.app.use("/", this.routers["WebRoute"].router);
+
+        this.app.use("/api", express.json());
+        this.app.use("/api", this.routers["APIRoute"].router);
+        this.app.use("/api/lecturers", this.routers["LecturersAPIRoute"].router);
+        this.app.use("/api/auth", this.routers["APIAuthRoute"].router);
         
         this.app.use((req, res, next) => this.middlewares["RouteNotFound"].run(req, res, next));
         this.app.use((error, req, res, next) => this.middlewares["ServerError"].run(error, req, res, next));
 
         this.webserver = http.createServer(this.app);
-        this.webserver.listen(this.port, () => {
-            this.core.getLogger().info(Logger.Type.Webserver, `Webserver running on port ${this.port}`);
-        });
+        this.webserver.listen(this.port, () => Logger.info(Logger.Type.Webserver, `Webserver running on port ${this.port}`));
     }
 
     async loadRouters() {
-        this.core.getLogger().debug(Logger.Type.Webserver, "Registering routers..");
+        Logger.info(Logger.Type.Webserver, "Loading routers...");
 
         for (const filePath of fs.readdirSync(path.resolve(__dirname, "./routers")).filter(file => file.endsWith(".js"))) {
-            const router = require(`./routers/${filePath}`);
-
             try {
-                const Router = new router(this.core);
+                const router = new (require(`./routers/${filePath}`))(this.core);
+                const fileName = path.parse(filePath).name;
 
-                const name = filePath.replace(".js", "");
-                this.routers[name] = Router;
-                this.core.getLogger().debug(Logger.Type.Webserver, `Router "${name}" registered successfully.`);
+                this.routers[fileName] = router;
+                Logger.debug(Logger.Type.Webserver, `Loaded router ${Logger.Colors.Fg.Magenta}${fileName}${Logger.Colors.Reset}`);
             } catch (error) {
-                this.core.getLogger().error(Logger.Type.Webserver, `Failed to register router. Error:`, error);
+                Logger.error(Logger.Type.Webserver, `An unknown error occured while loading router "${filePath}":`, error);
             }
         }
 
-        this.core.getLogger().info(Logger.Type.Webserver, "Routers registered successfully.");
+        if (Object.keys(this.routers).length === 0) {
+            return Logger.warn(Logger.Type.Webserver, "No routers loaded");
+        }
+        
+        Logger.info(Logger.Type.Webserver, `${Logger.Colors.Fg.Magenta}${Object.keys(this.routers).length}${Logger.Colors.Reset} routers loaded`);
     }
 
     async loadMiddlewares() {
-        this.core.getLogger().info(Logger.Type.Webserver, "Registering middlewares..");
+        Logger.info(Logger.Type.Webserver, "Loading middlewares...");
 
         for (const filePath of fs.readdirSync(path.resolve(__dirname, "./middlewares")).filter(file => file.endsWith(".js"))) {
-            const middleware = require(`./middlewares/${filePath}`);
-
             try {
-                const Middleware = new middleware(this.core);
+                const middleware = new (require(`./middlewares/${filePath}`))(this.core);
+                const fileName = path.parse(filePath).name;
 
-                const name = filePath.replace(".js", "");
-                this.middlewares[name] = Middleware;
-                this.core.getLogger().debug(Logger.Type.Webserver, `Middleware "${name}" registered successfully.`);
+                this.middlewares[fileName] = middleware;
+                Logger.debug(Logger.Type.Webserver, `Loaded middleware ${Logger.Colors.Fg.Magenta}${fileName}${Logger.Colors.Reset}`);
             } catch (error) {
-                this.core.getLogger().error(Logger.Type.Webserver, `Failed to register middleware "${middleware.name}". Error: ${error.message}`);
+                Logger.error(Logger.Type.Webserver, `An unknown error occured while loading middleware "${filePath}":`, error);
             }
         }
 
-        this.core.getLogger().info(Logger.Type.Webserver, "Middlewares registered successfully.");
+        if (Object.keys(this.middlewares).length === 0) {
+            return Logger.warn(Logger.Type.Webserver, "No middlewares loaded");
+        }
+        
+        Logger.info(Logger.Type.Webserver, `${Logger.Colors.Fg.Magenta}${Object.keys(this.middlewares).length}${Logger.Colors.Reset} middlewares loaded`);
     }
 
     /**
-     * 
      * @returns {Promise<void>}
      */
     shutdown = () => new Promise((resolve, reject) => {
-        this.core.getLogger().debug(Logger.Type.Webserver, "Webserver shutdown in progress...");
+        Logger.info(Logger.Type.Webserver, "Webserver shutting down...");
 
         this.webserver.close(() => {
-            this.core.getLogger().debug(Logger.Type.Webserver, "Webserver shutdown completed.");
+            Logger.debug(Logger.Type.Webserver, "Webserver shutdown completed");
             resolve();
         });
     });

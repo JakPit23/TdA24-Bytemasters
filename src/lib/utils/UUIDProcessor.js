@@ -3,14 +3,11 @@ const { v4, validate, version } = require("uuid");
 class UUIDProcessor {
     /**
      * @param {string} uuid 
+     * @returns {boolean}
      */
-    validateUUID(uuid) {
-        return validate(uuid) && version(uuid) === 4;
-    }
+    validateUUID = (uuid) => validate(uuid) && version(uuid) === 4;
 
-    newUUID() {
-        return v4();
-    }
+    newUUID = () => v4();
 }
 
 module.exports = new UUIDProcessor();

@@ -1,16 +1,15 @@
 const sanitizeHtml = require("sanitize-html");
-const Core = require("../Core");
 const Logger = require("../Logger");
 const UUIDProcessor = require("../utils/UUIDProcessor");
 const Tag = require("./Tag");
 
 class TagManager {
     /**
-     * 
-     * @param {Core} core 
+     * @param {import("../Core")} core 
      */
     constructor(core) {
         this.core = core;
+        // TODO: udelat cache
     }
 
     /**
@@ -19,13 +18,13 @@ class TagManager {
     getTags = () => this.core.getDatabase().query("SELECT * FROM tags").map(data => new Tag(data));
 
     /**
-     * @param {*} uuid
+     * @param {string} uuid
      * @returns {Tag}
      */
     getTagByUUID = (uuid) => this.getTags().find(tag => tag.getUUID() == uuid);
 
     /**
-     * @param {*} name
+     * @param {string} name
      * @returns {Tag}
      */
     getTagByName = (name) => this.getTags().find(tag => tag.getName() == name);
@@ -51,8 +50,12 @@ class TagManager {
         }
 
         if (!UUIDProcessor.validateUUID(json.uuid)) {
+            Logger.debug(Logger.Type.UserManager, `Invalid UUID provided, generating new one...`);
+
             json.uuid = UUIDProcessor.newUUID();
             while (this.getTagByUUID(json.uuid)) json.uuid = UUIDProcessor.newUUID();
+
+            Logger.debug(Logger.Type.UserManager, `Generated new UUID: ${json.uuid}`);
         }
 
         return json;
@@ -60,8 +63,6 @@ class TagManager {
 
     /**
      * @private
-     * @param {*} dirty
-     * @param {*} allowedTags
      * @returns {string}
      */
     sanitize = (dirty, allowedTags) => sanitizeHtml(dirty, { allowedTags });
@@ -71,11 +72,12 @@ class TagManager {
      * @returns {Tag}
      */
     createTag(data) {
-        if (data == undefined) {
+        // TODO: udelat custom error classu
+        if (!data) {
             throw Error("MISSING_DATA");
         }
 
-        if (data.name == undefined) {
+        if (!data.name) {
             throw Error("MISSING_NAME");
         }
 
@@ -84,6 +86,7 @@ class TagManager {
         }
 
         try {
+            // TODO: vylepsit todle
             const processedData = this.processTag(data);
             const tag = new Tag(processedData);
 
@@ -91,10 +94,11 @@ class TagManager {
                 tag.getUUID(),
                 tag.getName()
             ]);
-
+            Logger.debug(Logger.Type.UserManager, "Created new tag", { uuid: tag.getUUID(), name: tag.getName() });
+            
             return tag;
-        } catch(error) {
-            this.core.getLogger().error(Logger.Type.TagManager, `Failed to create tag: ${error.message}`);
+        } catch (error) {
+            Logger.error(Logger.Type.TagManager, "An unknown error occured while creating tag:", error);
             throw error;
         }
     }
