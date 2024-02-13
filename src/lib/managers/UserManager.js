@@ -73,7 +73,7 @@ module.exports = class UserManager {
     getUser = async (options = {}) => {
         const { uuid, email, username } = options;
         let user = this._cache.find(user => user.uuid == uuid || user.email == email || user.username == username);
-        // Logger.debug(Logger.Type.UserManager, `Cache hit for user ${user ? user.uuid : "null"}`);
+        Logger.debug(Logger.Type.UserManager, `Cache hit for user ${user ? user.uuid : "null"}`);
 
         if (!user) {
             const userData = await this.core.getDatabase().query("SELECT * FROM `users` WHERE `uuid` = ? OR `email` = ? OR `username` = ?", [ uuid, email, username ]);
@@ -99,18 +99,10 @@ module.exports = class UserManager {
      * @returns {Promise<User>}
      */
     createUser = (uuid, email, password, username) => new Promise(async (resolve, reject) => {
-        if (!UUIDProcessor.validateUUID(uuid)) {
-            Logger.debug(Logger.Type.UserManager, `Invalid UUID provided, generating new one...`);
-            uuid = UUIDProcessor.newUUID();
-
-            while (this.getUser({ uuid })) { uuid = UUIDProcessor.newUUID(); }
-            Logger.debug(Logger.Type.UserManager, `Generated new UUID: ${uuid}`);
-        }
-
         if (!(email && password && username)) {
             return reject(UserAuthError.MISSING_REQUIRED_PARAMETERS);
         }
-
+        
         if (username.length < 2) {
             return reject(UserAuthError.USERNAME_DOESNT_MEET_MINIMAL_REQUIREMENTS);
         }
@@ -126,6 +118,14 @@ module.exports = class UserManager {
         const userExists = await this.getUser({ email, username })
         if (userExists) {
             return reject(UserAuthError.USER_ALREADY_EXISTS);
+        }
+
+        if (!UUIDProcessor.validateUUID(uuid)) {
+            Logger.debug(Logger.Type.UserManager, `Invalid UUID provided, generating new one...`);
+            uuid = UUIDProcessor.newUUID();
+
+            while (await this.getUser({ uuid })) { uuid = UUIDProcessor.newUUID(); }
+            Logger.debug(Logger.Type.UserManager, `Generated new UUID: ${uuid}`);
         }
       
         const user = new User({ uuid, email, password: await this._hashPassword(password), username, createdAt: Math.floor(Date.now() / 1000) });
