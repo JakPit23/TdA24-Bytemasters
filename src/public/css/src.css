@@ -277,3 +277,7 @@ p {
     @apply bg-white-50;
     background: theme("colors.white.50");
 }
+
+.register-form {
+    box-shadow: 5px 5px 10px #fff;
+}

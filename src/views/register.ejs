@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="cs-cz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registrace - Teacher Digital Agency</title>
+    <link rel="stylesheet" href="/public/lib/fontawesome/css/fontawesome.css">
+    <link rel="stylesheet" href="/public/lib/fontawesome/css/solid.css">
+    <link rel="stylesheet" href="../public/css/app.css">
+</head>
+<body>
+    <%- include('partials/navbar') %>
+    <%- include('partials/blobs') %>
+
+    <div class="w-full">
+        <!-- register form -->
+        <div class="container mx-auto">
+            <div class="flex justify-center items-center h-screen">
+                <div class="w-full max-w-md">
+                    <form class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4" action="/register" method="POST">
+                        <div class="mb-4">
+                            <label class="block text-white-700 text-sm font-bold mb-2" for="username">
+                                Uživatelské jméno
+                            </label>
+                            <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="username" type="text" name="username" placeholder="Uživatelské jméno" required>
+                        </div>
+                        <div class="mb-4">
+                            <label class="block text-white-700 text-sm font-bold mb-2" for="email">
+                                Email
+                            </label>
+                            <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="email" type="email" name="email" placeholder="Email" required>
+                        </div>
+                        <div class="mb-6">
+                            <label class="block text-white-700 text-sm font-bold mb-2" for="password">
+                                Heslo
+                            </label>
+                            <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="password" type="password" name="password" placeholder="Heslo" required>
+                        </div>
+                        <div class="flex items    
+    </div>
+
+    <%- include('partials/footer') %>
+    <script defer src="/public/js/lib/jquery-3.7.1.min.js"></script>
+    <script defer src="/public/js/Application.js"></script>
+    <script>class Page{}</script>
+</body>
+</html>
