@@ -1,5 +1,6 @@
 class Authentication {
     constructor() {
+        // get control elements
         this.btn = $('[data-registerBtn]');
         this.loginBtn = $('[data-loginBtn]');
         this.loginBtn.on('click', (event) => this.login(event));
@@ -9,9 +10,11 @@ class Authentication {
 
     async register(event) {
         event.preventDefault();
+        // get values from input fields
         this.email = $('[data-email]').val();
         this.username = $('[data-username]').val();
         this.password = $('[data-password]').val();
+        // API Request
         const response = await fetch('/api/auth/register', {
             method: 'POST',
             headers: {
@@ -23,16 +26,6 @@ class Authentication {
                 username: this.username,
             }),
         });
-
-        if(response.status === 200) {
-            alert("Registered successfully, you can now login");
-        } else {
-            alert("Error while registering. Try it again or later");
-        }
-
-        // write error property to console
-        const data = await response.json();
-        console.log(data);
     }
 
     async login(event) {
