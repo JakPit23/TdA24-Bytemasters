@@ -6,6 +6,7 @@
  * @property {string} username - The username of the user.
  * @property {Date} createdAt - The date the user was created.
  */
+
 module.exports = class User {
     /**
      * @param {UserData} userData 

@@ -4,6 +4,7 @@ const UUIDProcessor = require("../utils/UUIDProcessor");
 const User = require("./types/User");
 const { UserAuthError } = require("../Errors");
 const Config = require("../Config");
+const Logger = require("../Logger");
 
 module.exports = class UserManager {
     EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -72,7 +73,7 @@ module.exports = class UserManager {
     getUser = async (options = {}) => {
         const { uuid, email, username } = options;
         let user = this._cache.find(user => user.uuid == uuid || user.email == email || user.username == username);
-        Logger.debug(Logger.Type.UserManager, `Cache hit for user ${user ? user.uuid : "null"}`);
+        // Logger.debug(Logger.Type.UserManager, `Cache hit for user ${user ? user.uuid : "null"}`);
 
         if (!user) {
             const userData = await this.core.getDatabase().query("SELECT * FROM `users` WHERE `uuid` = ? OR `email` = ? OR `username` = ?", [ uuid, email, username ]);

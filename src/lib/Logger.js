@@ -52,6 +52,8 @@ class Logger {
         Database: `${Logger.Colors.Fg.Cyan}DATABASE${Logger.Colors.Reset}`,
         Watchdog: `${Logger.Colors.Fg.Red}WATCHDOG${Logger.Colors.Reset}`,
         Webserver: `${Logger.Colors.Fg.Green}WEBSERVER${Logger.Colors.Reset}`,
+        UserManager: `${Logger.Colors.Fg.Bright}${Logger.Colors.Fg.Blue}USER MANAGER${Logger.Colors.Reset}`,
+        LecturerManager: `${Logger.Colors.Fg.Bright}${Logger.Colors.Fg.Yellow}LECTURER MANAGER${Logger.Colors.Reset}`,
         TagManager: `${Logger.Colors.Fg.Blue}TAG MANAGER${Logger.Colors.Reset}`
     }
 

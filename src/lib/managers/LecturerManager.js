@@ -1,8 +1,9 @@
 // TODO: tbh nebudu tady davat ani nic prepisovat cely to pak predelam (soon tm)
 
 const sanitizeHtml = require("sanitize-html");
-const Lecturer = require("./Lecturer");
+const Lecturer = require("./types/Lecturer");
 const UUIDProcessor = require("../utils/UUIDProcessor");
+const Logger = require("../Logger");
 
 class LecturerManager {
     /**
@@ -10,20 +11,52 @@ class LecturerManager {
      */
     constructor(core) {
         this.core = core;
-        // TODO: tky tady udelat cache
+
+        /**
+         * @private
+         * @type {Lecturer[]}
+         */
+        this._cache = [];
     }
 
     /**
-     * @returns {Lecturer[]}
+     * @returns {Promise<Lecturer[]>}
      */
-    getLecturers = () => this.core.getDatabase().query("SELECT * FROM lecturers").map(data => this.readLecturer(data));
+    getLecturers = async () => {
+        const lecturers = await this.core.getDatabase().query("SELECT * FROM `lecturers`");
+        Logger.debug(Logger.Type.LecturerManager, `Loaded ${lecturers.length} lecturers from database`);
+
+        return lecturers.map(data => {
+            // TODO: add user to cache
+
+            return new Lecturer(data);
+        });
+    }
 
     /**
-     * @param {string} uuid
-     * @returns {Lecturer}
+     * @param {import("./types/Lecturer").LecturerData.uuid} uuid
+     * @returns {Promise<Lecturer | null>}
      */
-    getLecturer = (uuid) => this.getLecturers().find(lecturer => lecturer.getUUID() == uuid);
+    getLecturer = async (uuid) => {
+        let lecturer = this._cache.find(data => data.uuid == uuid);
+        Logger.debug(Logger.Type.LecturerManager, `Cache hit for lecturer ${lecturer ? lecturer.uuid : "null"}`);
 
+        if (!lecturer) {
+            const data = await this.core.getDatabase().query("SELECT * FROM `lecturers` WHERE `uuid` = ?", [ uuid ]);
+
+            if (!Array.isArray(data) || data.length == 0) {
+                Logger.debug(Logger.Type.LecturerManager, `No lecturer found for ${uuid}`);
+                return null;
+            }
+
+            lecturer = new Lecturer(data[0]);
+            this._cache.push(lecturer);
+            Logger.debug(Logger.Type.LecturerManager, `Loaded lecturer ${data[0].uuid} from database, caching...`);
+        }
+
+        return lecturer;
+    }
+    
     /**
      * 
      * @private
@@ -175,9 +208,9 @@ class LecturerManager {
     /**
      * 
      * @private
-     * @param {object} lecturer 
+     * @param {import("./types/Lecturer").} lecturer 
      */
-    saveLecturer = (lecturer) => {
+    createLecturer = (lecturer) => {
         let emails;
         if (lecturer.getEmails() && Array.isArray(lecturer.getEmails())) {
             emails = lecturer.getEmails().join(",");
@@ -249,7 +282,7 @@ class LecturerManager {
     createLecturer(data) {
         try {
             const lecturer = new Lecturer(this.processLecturer(data));
-            this.saveLecturer(lecturer);
+            this.createLecturer(lecturer);
             return lecturer;
         } catch (error) {
             throw error;
@@ -282,7 +315,7 @@ class LecturerManager {
         }
 
         const editedLecturer = new Lecturer(this.processLecturer(data, lecturer.getData()));
-        this.saveLecturer(editedLecturer);
+        this.createLecturer(editedLecturer);
         return editedLecturer;
     }
 

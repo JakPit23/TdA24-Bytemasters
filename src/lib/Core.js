@@ -2,10 +2,10 @@ const fs = require("fs");
 const path = require("path");
 const Logger = require("./Logger");
 const Database = require("./database/Database");
-const LecturerManager = require("./lecturer/LecturerManager");
+const LecturerManager = require("./managers/LecturerManager");
 const Webserver = require("./webserver/Webserver");
-const TagManager = require("./lecturer/TagManager");
-const UserManager = require("./user/UserManager");
+const TagManager = require("./managers/TagManager");
+const UserManager = require("./managers/UserManager");
 
 class Core {
     constructor() {
