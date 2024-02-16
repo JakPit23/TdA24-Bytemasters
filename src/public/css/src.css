@@ -53,7 +53,7 @@ p {
 }
 
 .btn {
-    @apply py-2 px-4 rounded-md bg-sunglate-200 text-white-900 font-semibold transition-colors;
+    @apply py-2 px-4 rounded-md bg-sunglate-900 text-white-900 font-semibold transition-colors;
 }
 
 .btn-big {
@@ -269,7 +269,7 @@ p {
 
 /* NAVBAR */
 .nav-link {
-    @apply h-10 gap-2 text-base font-bold px-4 py-2 text-white-900 rounded-md;
+    @apply h-10 gap-2 text-base font-bold px-4 py-2 text-dark-900 dark:text-white-900 rounded-md;
     transition: all 0.2s;
 }
 
@@ -281,3 +281,9 @@ p {
 .register-form {
     box-shadow: 5px 5px 10px #fff;
 }
+
+/* CALENDAR */
+.fc  {
+    max-width: 80%;
+    margin: auto;
+  }

@@ -1,0 +1,41 @@
+[2024/02/16 16:13:42] [INFO] [CORE] Starting application...
+[2024/02/16 16:13:42] [DEBUG] [DATABASE] Creating tables...
+[2024/02/16 16:13:42] [INFO] [WEBSERVER] Loading middlewares...
+[2024/02/16 16:13:42] [DEBUG] [WEBSERVER] Loaded middleware RequestLog
+[2024/02/16 16:13:42] [DEBUG] [WEBSERVER] Loaded middleware RouteNotFound
+[2024/02/16 16:13:42] [DEBUG] [WEBSERVER] Loaded middleware ServerError
+[2024/02/16 16:13:42] [INFO] [WEBSERVER] 3 middlewares loaded
+[2024/02/16 16:13:42] [INFO] [WEBSERVER] Loading routers...
+[2024/02/16 16:13:42] [DEBUG] [WEBSERVER] Loaded router APIAuthRoute
+[2024/02/16 16:13:42] [DEBUG] [WEBSERVER] Loaded router APIRoute
+[2024/02/16 16:13:42] [DEBUG] [WEBSERVER] Loaded router LecturersAPIRoute
+[2024/02/16 16:13:42] [DEBUG] [WEBSERVER] Loaded router WebRoute
+[2024/02/16 16:13:42] [INFO] [WEBSERVER] 4 routers loaded
+[2024/02/16 16:13:43] [INFO] [WEBSERVER] Webserver running on port 3000
+[2024/02/16 16:13:54] [ERROR] [WEBSERVER] An error occured while processing the request: 
+TypeError: lecturers.map is not a function
+    at C:\Users\jakub\Documents\TdA24-Bytemasters\src\lib\webserver\routers\LecturersAPIRoute.js:45:44
+    at Layer.handle [as handle_request] (C:\Users\jakub\Documents\TdA24-Bytemasters\src\node_modules\express\lib\router\layer.js:95:5)
+    at next (C:\Users\jakub\Documents\TdA24-Bytemasters\src\node_modules\express\lib\router\route.js:144:13)
+    at Route.dispatch (C:\Users\jakub\Documents\TdA24-Bytemasters\src\node_modules\express\lib\router\route.js:114:3)
+    at Layer.handle [as handle_request] (C:\Users\jakub\Documents\TdA24-Bytemasters\src\node_modules\express\lib\router\layer.js:95:5)
+    at C:\Users\jakub\Documents\TdA24-Bytemasters\src\node_modules\express\lib\router\index.js:284:15
+    at Function.process_params (C:\Users\jakub\Documents\TdA24-Bytemasters\src\node_modules\express\lib\router\index.js:346:12)
+    at next (C:\Users\jakub\Documents\TdA24-Bytemasters\src\node_modules\express\lib\router\index.js:280:10)
+    at Function.handle (C:\Users\jakub\Documents\TdA24-Bytemasters\src\node_modules\express\lib\router\index.js:175:3)
+    at router (C:\Users\jakub\Documents\TdA24-Bytemasters\src\node_modules\express\lib\router\index.js:47:12)
+[2024/02/16 16:13:54] [DEBUG] [LECTURER MANAGER] Loaded 0 lecturers from database
+[2024/02/16 16:14:09] [ERROR] [WEBSERVER] An error occured while processing the request: 
+TypeError: lecturers.map is not a function
+    at C:\Users\jakub\Documents\TdA24-Bytemasters\src\lib\webserver\routers\LecturersAPIRoute.js:45:44
+    at Layer.handle [as handle_request] (C:\Users\jakub\Documents\TdA24-Bytemasters\src\node_modules\express\lib\router\layer.js:95:5)
+    at next (C:\Users\jakub\Documents\TdA24-Bytemasters\src\node_modules\express\lib\router\route.js:144:13)
+    at Route.dispatch (C:\Users\jakub\Documents\TdA24-Bytemasters\src\node_modules\express\lib\router\route.js:114:3)
+    at Layer.handle [as handle_request] (C:\Users\jakub\Documents\TdA24-Bytemasters\src\node_modules\express\lib\router\layer.js:95:5)
+    at C:\Users\jakub\Documents\TdA24-Bytemasters\src\node_modules\express\lib\router\index.js:284:15
+    at Function.process_params (C:\Users\jakub\Documents\TdA24-Bytemasters\src\node_modules\express\lib\router\index.js:346:12)
+    at next (C:\Users\jakub\Documents\TdA24-Bytemasters\src\node_modules\express\lib\router\index.js:280:10)
+    at Function.handle (C:\Users\jakub\Documents\TdA24-Bytemasters\src\node_modules\express\lib\router\index.js:175:3)
+    at router (C:\Users\jakub\Documents\TdA24-Bytemasters\src\node_modules\express\lib\router\index.js:47:12)
+[2024/02/16 16:14:09] [DEBUG] [LECTURER MANAGER] Loaded 0 lecturers from database
+[2024/02/16 16:14:22] [INFO] [CORE] Shutdown in progress...

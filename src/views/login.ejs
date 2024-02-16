@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Přihlášení - Teacher Digital Agency</title>
+    <title>Registrace - Teacher Digital Agency</title>
     <link rel="stylesheet" href="/public/lib/fontawesome/css/fontawesome.css">
     <link rel="stylesheet" href="/public/lib/fontawesome/css/solid.css">
     <link rel="stylesheet" href="/public/css/app.css">
@@ -14,26 +14,27 @@
     <%- include('partials/blobs') %>
 
     <div class="w-full">
-        <div class="container mx-auto">
-            <div class="flex justify-center items-center h-screen">
+        <!-- register form -->
+        <div class="container mx-auto mb-6">
+            <div class="flex justify-center items-center h-max">
                 <div class="w-full max-w-md">
-                    <form class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4" action="/api/auth/login" method="POST">
-                        <h1 class="text-3xl font-semibold text-center mb-4">Přidejte se k nám!</h1>
+                    <form class="bg-dark-900 shadow-lg rounded px-8 pt-6 pb-8 mb-4">
+                        <h1 class="text-3xl font-semibold text-center mb-4 text-white-700">Přidejte se k nám!</h1>
                         <div class="mb-4">
                             <label class="block text-white-700 text-sm font-bold mb-2" for="username">
                                 Uživatelské jméno
                             </label>
-                            <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="username" type="text" name="username" placeholder="Uživatelské jméno" required>
+                            <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="username" type="text" data-email placeholder="SuperCat345" required>
                         </div>
                         <div class="mb-6">
                             <label class="block text-white-700 text-sm font-bold mb-2" for="password">
                                 Heslo
                             </label>
-                            <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="password" type="password" name="password" placeholder="Heslo" required>
+                            <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="password" type="password" data-password placeholder="SecretPass" required>
                         </div>
                         <!-- button -->
                         <div class="flex items-center justify-between">
-                            <button class="btn" type="submit">
+                            <button data-loginBtn class="btn btn-big" type="submit">
                                 Přihlásit se
                             </button>
                             <a class="inline-block align-baseline font-bold text-sm text-blue-500 hover:text-blue-800" href="/register">
@@ -43,10 +44,9 @@
                     </form>
                 </div>
     </div>
-
-    <%- include('partials/footer') %>
     <script defer src="/public/js/lib/jquery-3.7.1.min.js"></script>
     <script defer src="/public/js/Application.js"></script>
+    <script defer src="/public/js/Authentication.js"></script>
     <script>class Page{}</script>
 </body>
 </html>
