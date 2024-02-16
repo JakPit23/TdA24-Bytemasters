@@ -281,3 +281,9 @@ p {
 .register-form {
     box-shadow: 5px 5px 10px #fff;
 }
+
+/* CALENDAR */
+.fc  {
+    max-width: 80%;
+    margin: auto;
+  }

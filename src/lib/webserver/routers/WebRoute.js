@@ -17,6 +17,7 @@ module.exports = class WebRoute {
         this.router.get("/contact", (req, res) => res.render("contact"));
         this.router.get("/register", (req, res) => res.render("register"));
         this.router.get("/login", (req, res) => res.render("login"));
+        this.router.get("/dashboard", (req, res) => res.render("dashboard"));
         this.router.get("/lecturer/:lecturerUUID", (req, res) => res.render("lecturer"));
     }
 };

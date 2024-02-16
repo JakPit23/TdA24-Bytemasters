@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="cs-cz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teacher Digital Agency</title>
+    <link rel="stylesheet" href="/public/lib/fontawesome/css/fontawesome.css">
+    <link rel="stylesheet" href="/public/lib/fontawesome/css/solid.css">
+    <link rel="stylesheet" href="/public/css/app.css">
+    <link rel="shortcut icon" href="/public/images/favicon.ico" type="image/x-icon">
+</head>
+<body>
+    <%- include('partials/navbar') %>
+    <%- include('partials/blobs') %>
+
+    <div class="w-full">
+        <div class="bg-dark-900">
+            <div class="text-left pl-12">
+                <h1 class="font-bold text-3xl">Ahoj Lektore</h1>
+                <p class="text-lg">Tvá nejbližší schůzka je: {undefined}</p>
+            </div>
+            <div id="calendar" class=""></div>
+        </div>
+
+    </div>
+
+    <%- include('partials/footer') %>
+    <script defer src="/public/js/lib/jquery-3.7.1.min.js"></script>
+    <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.10/index.global.min.js'></script>
+    <script defer src="/public/js/Application.js"></script>
+    <script defer src="/public/js/pages/Dashboard.js"></script>
+    <!-- <script>
+        document.addEventListener('DOMContentLoaded', function() {
+        var calendarEl = document.getElementById('calendar');
+        var calendar = new FullCalendar.Calendar(calendarEl, {
+          initialView: 'dayGridMonth',
+          locale: 'eu',
+          firstDay: 1,
+          buttonText: {
+            today: 'Dnes',
+            month: 'Měsíc',
+            week: 'Týden',
+            day: 'Den',
+            list: 'Seznam'
+          },
+        });
+        calendar.render();
+      });
+
+    </script> -->
+    <script>class Page{}</script>
+</body>
+</html>
