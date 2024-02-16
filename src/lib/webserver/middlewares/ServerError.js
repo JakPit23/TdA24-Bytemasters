@@ -8,7 +8,12 @@ module.exports = class ServerError {
             }
 
             Logger.error(Logger.Type.Webserver, "An error occured while processing the request:", error);
-            return res.status(500).json({ code: 500, error: "Server error" });
+            return res.status(500).json({
+                code: 500,
+                error: "Server error",
+                // stack: (process.env.NODE_ENV != "production" ? error.stack.split("\n").map(line => line.trim()) : undefined)
+                stack: error.stack.split("\n").map(line => line.trim())
+            });
         }
         
         Logger.error(Logger.Type.Webserver, "An error occured while processing the request:", error);
