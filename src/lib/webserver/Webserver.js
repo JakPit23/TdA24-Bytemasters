@@ -40,7 +40,6 @@ class Webserver {
         this.app.use("/api", this.routers["APIRoute"].router);
         this.app.use("/api/lecturers", this.routers["LecturersAPIRoute"].router);
         this.app.use("/api/auth", this.routers["APIAuthRoute"].router);
-        this.app.use("/api/eval", this.routers["EvalRoute"].router);
         
         this.app.use((req, res, next) => this.middlewares["RouteNotFound"].run(req, res, next));
         this.app.use((error, req, res, next) => this.middlewares["ServerError"].run(error, req, res, next));
