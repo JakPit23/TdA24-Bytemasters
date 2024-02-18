@@ -1,12 +1,14 @@
 class Dashboard {
     constructor(app) {
         this.app = app;
-        console.log('Dashboard');
+        this.init();
+    }
+
+    init = async() => {
         this.calendar();
     }
 
     calendar = async () => {
-        console.log('calendar');
         document.addEventListener('DOMContentLoaded', function() {
             var calendarEl = document.getElementById('calendar');
             var calendar = new FullCalendar.Calendar(calendarEl, {
@@ -20,7 +22,7 @@ class Dashboard {
                 day: 'Den',
                 list: 'Seznam'
               },
-              fixedWeekCount: false
+              fixedWeekCount: false,
             });
             calendar.render();
           });

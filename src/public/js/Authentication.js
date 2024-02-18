@@ -8,26 +8,6 @@ class Authentication {
         this.messagebox = $('data-errorbox');
     }
 
-    async register(event) {
-        event.preventDefault();
-        // get values from input fields
-        this.email = $('[data-email]').val();
-        this.username = $('[data-username]').val();
-        this.password = $('[data-password]').val();
-        // API Request
-        const response = await fetch('/api/auth/register', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                email: this.email,
-                password: this.password,
-                username: this.username,
-            }),
-        });
-    }
-
     async login(event) {
         event.preventDefault();
         this.email = $('[data-email]').val();
