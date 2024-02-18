@@ -260,7 +260,7 @@ class Logger {
     static error = (type, ...args) => Logger._log(type, "error", ...args);
 }
 
-Logger.setLogLevel(Config.getLogLevel());
+Logger.setLogLevel(process.argv.includes("--dev") ? "debug" : Config.getLogLevel());
 Logger.createLogFile();
 
 module.exports = Logger;
