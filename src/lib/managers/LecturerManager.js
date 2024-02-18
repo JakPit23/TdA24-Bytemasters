@@ -16,6 +16,7 @@
 */
 
 const sanitizeHtml = require("sanitize-html");
+const bcryptjs = require("bcryptjs");
 const Lecturer = require("./types/Lecturer");
 const UUIDProcessor = require("../utils/UUIDProcessor");
 const Logger = require("../Logger");
@@ -33,6 +34,16 @@ class LecturerManager {
          * @type {import("./types/Lecturer")[]}
          */
         this._cache = [];
+    }
+
+    /**
+     * @private
+     * @param {string} password
+     * @returns {Promise<string>}
+     */
+    _hashPassword = async (password) => {
+        const salt = await bcryptjs.genSalt(10);
+        return await bcryptjs.hash(password, salt);
     }
 
     /**
@@ -158,7 +169,7 @@ class LecturerManager {
         const json = {};
         const allowedKeys = [
             { key: "username", required: true },
-            { key: "password", required: true, dontSanitize: true },
+            { key: "password", required: true },
             { key: "title_before" },
             { key: "first_name", required: true },
             { key: "middle_name" },
@@ -171,10 +182,20 @@ class LecturerManager {
             { key: "contact", required: true }
         ];
 
-        for (const { key, required, dontSanitize } of allowedKeys) {
+        for (const { key, required } of allowedKeys) {
             if (!data[key] && required && !combination) {
                 Logger.debug(Logger.Type.LecturerManager, `Missing required value "${key}"`);
                 throw APIError.MISSING_REQUIRED_VALUES;
+            }
+
+            if (key == "username" && data[key].length < 2) {
+                Logger.debug(Logger.Type.LecturerManager, `Username "${data[key]}" doesn't meet minimal requirements`);
+                throw APIError.USERNAME_DOESNT_MEET_MINIMAL_REQUIREMENTS;
+            }
+
+            if (key == "username" && data[key].length > 32) {
+                Logger.debug(Logger.Type.LecturerManager, `Username "${data[key]}" doesn't meet maximal requirements`);
+                throw APIError.USERNAME_DOESNT_MEET_MAXIMAL_REQUIREMENTS;
             }
 
             if (typeof data[key] == "object") {
@@ -187,9 +208,9 @@ class LecturerManager {
                 continue;
             }
 
-            if (dontSanitize) {
-                Logger.debug(Logger.Type.LecturerManager, `Key "${key}" has dontSanitize flag, skipping from sanitization...`);
-                json[key] = data[key];
+            if (key == "password") {
+                Logger.debug(Logger.Type.LecturerManager, `Key "${key}" is a password, hashing...`);
+                json[key] = await this._hashPassword(data[key]);
                 continue;
             }
             
