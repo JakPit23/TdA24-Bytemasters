@@ -38,8 +38,9 @@ class LecturerManager {
     /**
      * @private
      * @param {import("./types/Lecturer")} lecturer 
+     * @param {boolean} edit
      */
-    _saveLecturer = async (lecturer) => {
+    _saveLecturer = async (lecturer, edit = false) => {
         let emails = null;
         let telephoneNumbers = null;
         if (lecturer.contact) {
@@ -57,10 +58,16 @@ class LecturerManager {
             tags = lecturer.tags.map(tag => tag.uuid).join(",");
         }
 
-        if (await this.getLecturer(lecturer.uuid)) {
+        if (await this.getLecturer({ uuid: lecturer.uuid, username: lecturer.username }) && !edit) {
+            Logger.debug(Logger.Type.LecturerManager, `Not saving lecturer ${lecturer.uuid} because it already exists in database and it's not an edit operation...`);
+            throw APIError.LECTURER_ALREADY_EXISTS;
+        }
+
+        if (edit) {
             Logger.debug(Logger.Type.LecturerManager, `Updating lecturer ${lecturer.uuid} in database...`);
 
-            this.core.getDatabase().exec("UPDATE lecturers SET title_before = ?, first_name = ?, middle_name = ?, last_name = ?, title_after = ?, picture_url = ?, location = ?, claim = ?, bio = ?, tags = ?, price_per_hour = ?, emails = ?, telephone_numbers = ? WHERE uuid = ?", [
+            this.core.getDatabase().exec("UPDATE lecturers SET password = ?, title_before = ?, first_name = ?, middle_name = ?, last_name = ?, title_after = ?, picture_url = ?, location = ?, claim = ?, bio = ?, tags = ?, price_per_hour = ?, emails = ?, telephone_numbers = ? WHERE uuid = ?", [
+                lecturer.password,
                 lecturer.title_before,
                 lecturer.first_name,
                 lecturer.middle_name,
@@ -79,8 +86,10 @@ class LecturerManager {
         } else {
             Logger.debug(Logger.Type.LecturerManager, `Creating lecturer ${lecturer.uuid} in database...`);
 
-            this.core.getDatabase().exec("INSERT INTO lecturers (uuid, title_before, first_name, middle_name, last_name, title_after, picture_url, location, claim, bio, tags, price_per_hour, emails, telephone_numbers) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", [
+            this.core.getDatabase().exec("INSERT INTO lecturers (uuid, username, password, title_before, first_name, middle_name, last_name, title_after, picture_url, location, claim, bio, tags, price_per_hour, emails, telephone_numbers) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", [
                 lecturer.uuid,
+                lecturer.username,
+                lecturer.password,
                 lecturer.title_before,
                 lecturer.first_name,
                 lecturer.middle_name,
@@ -147,30 +156,22 @@ class LecturerManager {
      */
     async _processLecturer(data, combination) {
         const json = {};
-
         const allowedKeys = [
+            { key: "username", required: true },
+            { key: "password", required: true, dontSanitize: true },
             { key: "title_before" },
-            {
-                key: "first_name",
-                required: true
-            },
+            { key: "first_name", required: true },
             { key: "middle_name" },
-            {
-                key: "last_name",
-                required: true
-            },
+            { key: "last_name", required: true },
             { key: "title_after" },
             { key: "picture_url" },
             { key: "location" },
             { key: "claim" },
             { key: "price_per_hour" },
-            {
-                key: "contact",
-                required: true
-            }
+            { key: "contact", required: true }
         ];
 
-        for (const { key, required } of allowedKeys) {
+        for (const { key, required, dontSanitize } of allowedKeys) {
             if (!data[key] && required && !combination) {
                 Logger.debug(Logger.Type.LecturerManager, `Missing required value "${key}"`);
                 throw APIError.MISSING_REQUIRED_VALUES;
@@ -183,6 +184,12 @@ class LecturerManager {
 
             if (!data[key]) {
                 Logger.debug(Logger.Type.LecturerManager, `Key "${key}" is empty, skipping from sanitization...`);
+                continue;
+            }
+
+            if (dontSanitize) {
+                Logger.debug(Logger.Type.LecturerManager, `Key "${key}" has dontSanitize flag, skipping from sanitization...`);
+                json[key] = data[key];
                 continue;
             }
             
@@ -256,12 +263,19 @@ class LecturerManager {
         }
 
         if (combination) {
-            Object.entries(json).forEach(([key, value]) => (combination[key]) = value);
+            Object.entries(json).forEach(([key, value]) => {
+                if (key == "username") {
+                    Logger.debug(Logger.Type.LecturerManager, `Skipping username update...`);
+                    return;
+                }
+
+                (combination[key]) = value;
+            });
             return combination;
         }
 
         json.uuid = UUIDProcessor.newUUID();
-        while (await this.getLecturer(json.uuid)) { json.uuid = UUIDProcessor.newUUID() }
+        while (await this.getLecturer({ uuid: json.uuid })) { json.uuid = UUIDProcessor.newUUID() }
 
         return json;
     }
@@ -279,17 +293,20 @@ class LecturerManager {
     }
 
     /**
-     * @param {string} uuid
+     * @param {object} options
+     * @param {object} options.uuid
+     * @param {object} options.username
      * @returns {Promise<Lecturer | null>}
      */
-    getLecturer = async (uuid) => {
-        let lecturer = this._cache.find(data => data.uuid == uuid);
+    getLecturer = async (options = {}) => {
+        const { uuid, username } = options;
+        let lecturer = this._cache.find(data => data.uuid == uuid || data.username == username);
 
         if (!lecturer) {
-            const data = await this.core.getDatabase().query("SELECT * FROM `lecturers` WHERE `uuid` = ?", [ uuid ]);
+            const data = await this.core.getDatabase().query("SELECT * FROM `lecturers` WHERE `uuid` = ? OR `username` = ?", [ uuid, username ]);
 
             if (!Array.isArray(data) || data.length == 0) {
-                Logger.debug(Logger.Type.LecturerManager, `Lecturer "${uuid}" not found`);
+                Logger.debug(Logger.Type.LecturerManager, `Lecturer "${uuid || username}" not found`);
                 return null;
             }
 
@@ -318,7 +335,7 @@ class LecturerManager {
      * @returns {Promise<boolean>}
      */
     async deleteLecturer(uuid) {
-        if (!(await this.getLecturer(uuid))) {
+        if (!(await this.getLecturer({ uuid }))) {
             throw Error("LECTURER_NOT_FOUND");
         }
 
@@ -340,13 +357,13 @@ class LecturerManager {
      * @returns {Promise<Lecturer>}
      */
     async editLecturer(uuid, data) {
-        const originalData = await this.getLecturer(uuid);
+        const originalData = await this.getLecturer({ uuid });
         if (!originalData) {
             throw Error("LECTURER_NOT_FOUND");
         }
 
         const result = await this._processLecturer(data, originalData);
-        await this._saveLecturer(result);
+        await this._saveLecturer(result, true);
         return result;
     }
 

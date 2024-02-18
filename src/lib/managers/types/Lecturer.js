@@ -6,6 +6,18 @@ class Lecturer {
          */
         this.uuid = data.uuid;
 
+        /**
+         * @type {string}
+         * @description The username of the lecturer.
+         */
+        this.username = data.username;
+
+        /**
+         * @type {string}
+         * @description The password of the lecturer.
+         */
+        this.password = data.password;
+
         /** 
          * @type {string} 
          * @description The title before the lecturer's name.
@@ -77,6 +89,11 @@ class Lecturer {
          * @description The contact information of the lecturer.
          */
         this.contact = data.contact;
+    }
+
+    toJSON() {
+        const { username, password, ...data } = this;
+        return data;
     }
 }
 

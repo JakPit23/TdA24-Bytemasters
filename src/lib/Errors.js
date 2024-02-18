@@ -21,6 +21,7 @@ class APIError extends Error {
     }
 
     static MISSING_REQUIRED_VALUES = new APIError("MISSING_REQUIRED_VALUES");
+    static LECTURER_ALREADY_EXISTS = new APIError("LECTURER_ALREADY_EXISTS");
 }
 
 module.exports = {
