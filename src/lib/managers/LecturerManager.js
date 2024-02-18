@@ -17,10 +17,12 @@
 
 const sanitizeHtml = require("sanitize-html");
 const bcryptjs = require("bcryptjs");
+const jwt = require("jsonwebtoken");
 const Lecturer = require("./types/Lecturer");
 const UUIDProcessor = require("../utils/UUIDProcessor");
 const Logger = require("../Logger");
 const { APIError } = require("../Errors");
+const Config = require("../Config");
 
 class LecturerManager {
     /**
@@ -46,6 +48,30 @@ class LecturerManager {
         return await bcryptjs.hash(password, salt);
     }
 
+    /**
+     * @param {string} hashedPassword
+     * @param {string} clearPassword
+     * @returns {Promise<boolean>}
+     */
+    _comparePassword = async (hashedPassword, clearPassword) => await bcryptjs.compare(clearPassword, hashedPassword);
+
+    /**
+     * @param {import("./types/Lecturer")} lecturer
+     * @returns {string}
+     */
+    generateJWTToken = (lecturer) => jwt.sign({ uuid: lecturer.uuid }, Config.getSecretKey(), { expiresIn: "24h"});
+
+    /**
+     * @param {string} token
+     * @returns {string}
+     */
+    verifyToken = (token) => {
+        try {
+            return jwt.verify(token, Config.getSecretKey());
+        } catch (error) {
+            return null;
+        }
+    }
     /**
      * @private
      * @param {import("./types/Lecturer")} lecturer 
