@@ -1,8 +1,8 @@
 const express = require("express");
+const { APIError } = require("../../Errors");
 
-module.exports = class WebRoute {
+module.exports = class LecturersAPIRoute {
     /**
-     * 
      * @param {import("../../Core")} core 
      */
     constructor(core) {
@@ -13,81 +13,86 @@ module.exports = class WebRoute {
     }
 
     loadRoutes = () => {
-        this.router.post("/", (req, res) => {
+        this.router.post("/", async (req, res, next) => {
             try {
                 const data = req.body;
 
-                const lecturer = this.core.getLecturerManager().createLecturer(data);
-                return res.status(200).json(lecturer.toJSON());
-            } catch(error) {
-                // Catch known errors, otherwise pass them to error handler.
-                if (error.message == "LECTURER_ALREADY_EXISTS") {
-                    res.status(400).json({ code: 400, error: "Lecturer already exists." });
-                    return;
+                const lecturer = await this.core.getLecturerManager().createLecturer(data);
+                return res.status(200).json(lecturer);
+            } catch (error) {
+                if (error instanceof APIError) {
+                    if (error == APIError.MISSING_REQUIRED_VALUES) {
+                        return res.status(400).json({ code: 400, error: "Missing required values" });
+                    }
                 }
 
-                if (error.message == "MISSING_REQUIRED_FIELD") {
-                    res.status(400).json({ code: 400, error: "Missing required fields." });
-                    return;
+                return next(error);
+            }
+        });
+
+        this.router.get("/", async (req, res, next) => {
+            try {
+                const lecturers = await this.core.getLecturerManager().getLecturers();
+
+                if (!lecturers || lecturers.length == 0) {
+                    return res.status(200).json([]);
                 }
-
-                throw error;
+    
+                return res.status(200).json(lecturers);
+            } catch (error) {
+                return next(error);
             }
         });
 
-        this.router.get("/", (req, res) => {
-            const lecturers = this.core.getLecturerManager().getLecturers();
-
-            if (!lecturers || lecturers.length === 0) {
-                return res.status(200).json([]);
+        this.router.get("/:lecturerUUID", async (req, res, next) => {
+            try {
+                const { lecturerUUID } = req.params;
+                const lecturer = await this.core.getLecturerManager().getLecturer(lecturerUUID);
+    
+                if (!lecturer) {
+                    return res.status(200).send({ code: 404, message: "Lecturer not found" });
+                }
+    
+                return res.status(200).json(lecturer);
+            } catch (error) {
+                return next(error);
             }
-
-            res.status(200).json(lecturers.map(lecturer => lecturer.toJSON()));
         });
 
-        this.router.get("/:lecturerUUID", (req, res) => {
-            const { lecturerUUID } = req.params;
-            const lecturer = this.core.getLecturerManager().getLecturer(lecturerUUID);
+        this.router.delete("/:lecturerUUID", async (req, res, next) => {
+            try {
+                const { lecturerUUID } = req.params;
+                const lecturer = await this.core.getLecturerManager().getLecturer(lecturerUUID);
 
-            if (!lecturer) {
-                return res.status(200).send({
-                    code: 404,
-                    message: "Lecturer not found",
-                });
+                if (!lecturer) {
+                    return res.status(200).json({
+                        code: 404,
+                        message: "Lecturer not found",
+                    });
+                }
+    
+                await this.core.getLecturerManager().deleteLecturer(lecturerUUID);
+                return res.sendStatus(200);
+            } catch (error) {
+                return next(error);
             }
-
-            res.status(200).json(lecturer);
         });
 
-        this.router.delete("/:lecturerUUID", (req, res) => {
-            const { lecturerUUID } = req.params;
-            const lecturer = this.core.getLecturerManager().getLecturer(lecturerUUID);
-
-            if (!lecturer) {
-                return res.status(200).json({
-                    code: 404,
-                    message: "Lecturer not found",
-                });
+        this.router.put("/:lecturerUUID", async (req, res, next) => {
+            try {
+                const { lecturerUUID } = req.params;
+                const data = req.body;
+                const lecturer = await this.core.getLecturerManager().getLecturer(lecturerUUID);
+    
+                if (!lecturer) {
+                    return res.status(200).send({ code: 404, message: "Lecturer not found" });
+                }
+    
+                const editedLecturer = await this.core.getLecturerManager().editLecturer(lecturerUUID, data);
+                return res.status(200).json(editedLecturer);
+            } catch (error) {
+                return next(error);
             }
-
-            this.core.getLecturerManager().deleteLecturer(lecturerUUID);
-            res.sendStatus(200);
-        });
-
-        this.router.put("/:lecturerUUID", (req, res) => {
-            const { lecturerUUID } = req.params;
-            const data = req.body;
-            const lecturer = this.core.getLecturerManager().getLecturer(lecturerUUID);
-
-            if (!lecturer) {
-                return res.status(200).send({
-                    code: 404,
-                    message: "Lecturer not found",
-                });
-            }
-
-            const editedLecturer = this.core.getLecturerManager().editLecturer(lecturerUUID, data);
-            res.status(200).json(editedLecturer);
         });
     }
 };

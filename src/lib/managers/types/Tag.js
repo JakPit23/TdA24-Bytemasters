@@ -1,15 +1,16 @@
-/**
- * @typedef {Object} TagData
- * @property {string} uuid - The UUID of the tag.
- * @property {string} name - The name of the tag.
- */
-
 class Tag {
-    /**
-     * @param {TagData} data
-     */
     constructor(data) {
+        /**
+         * @type {string}
+         * @description The UUID of the tag.
+         * @example "f7b3e3e0-3e3e-4e3e-8e3e-3e3e3e3e3e3e"
+         */
         this.uuid = data.uuid;
+
+        /**
+         * @type {string}
+         * @description The name of the tag.
+         */
         this.name = data.name;
     }
 }

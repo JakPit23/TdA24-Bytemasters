@@ -14,6 +14,16 @@ class UserAuthError extends Error {
     static USER_ALREADY_EXISTS = new UserAuthError("USER_ALREADY_EXISTS");
 }
 
+class APIError extends Error {
+    constructor(message) {
+        super(message);
+        this.name = "APIError";
+    }
+
+    static MISSING_REQUIRED_VALUES = new APIError("MISSING_REQUIRED_VALUES");
+}
+
 module.exports = {
-    UserAuthError
+    UserAuthError,
+    APIError
 }
