@@ -4,6 +4,10 @@ const Config = require("./Config");
 
 class Logger {
     static logLevel = null;
+    /**
+     * @type {fs.WriteStream}
+     */
+    static logFile = null;
 
     /**
      * @readonly
@@ -260,7 +264,7 @@ class Logger {
     static error = (type, ...args) => Logger._log(type, "error", ...args);
 }
 
-Logger.setLogLevel(process.argv.includes("--dev") ? "debug" : Config.getLogLevel());
+Logger.setLogLevel(Config.getLogLevel());
 Logger.createLogFile();
 
 module.exports = Logger;

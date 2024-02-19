@@ -16,10 +16,13 @@
 */
 
 const sanitizeHtml = require("sanitize-html");
+const bcryptjs = require("bcryptjs");
+const jwt = require("jsonwebtoken");
 const Lecturer = require("./types/Lecturer");
 const UUIDProcessor = require("../utils/UUIDProcessor");
 const Logger = require("../Logger");
 const { APIError } = require("../Errors");
+const Config = require("../Config");
 
 class LecturerManager {
     /**
@@ -37,9 +40,51 @@ class LecturerManager {
 
     /**
      * @private
-     * @param {import("./types/Lecturer")} lecturer 
+     * @param {string} data
+     * @returns {string}
      */
-    _saveLecturer = async (lecturer) => {
+    _sanitize = (data) => sanitizeHtml(data, { allowedTags: [] });
+
+    /**
+     * @private
+     * @param {string} password
+     * @returns {Promise<string>}
+     */
+    _hashPassword = async (password) => {
+        const salt = await bcryptjs.genSalt(10);
+        return await bcryptjs.hash(password, salt);
+    }
+
+    /**
+     * @param {string} hashedPassword
+     * @param {string} clearPassword
+     * @returns {Promise<boolean>}
+     */
+    _comparePassword = async (hashedPassword, clearPassword) => await bcryptjs.compare(clearPassword, hashedPassword);
+
+    /**
+     * @param {import("./types/Lecturer")} lecturer
+     * @returns {string}
+     */
+    generateJWTToken = (lecturer) => jwt.sign({ uuid: lecturer.uuid }, Config.getSecretKey(), { expiresIn: "24h"});
+
+    /**
+     * @param {string} token
+     * @returns {string}
+     */
+    verifyToken = (token) => {
+        try {
+            return jwt.verify(token, Config.getSecretKey());
+        } catch (error) {
+            return null;
+        }
+    }
+    /**
+     * @private
+     * @param {import("./types/Lecturer")} lecturer 
+     * @param {boolean} edit
+     */
+    _saveLecturer = async (lecturer, edit = false) => {
         let emails = null;
         let telephoneNumbers = null;
         if (lecturer.contact) {
@@ -57,10 +102,16 @@ class LecturerManager {
             tags = lecturer.tags.map(tag => tag.uuid).join(",");
         }
 
-        if (await this.getLecturer(lecturer.uuid)) {
+        if (await this.getLecturer({ uuid: lecturer.uuid, username: lecturer.username }) && !edit) {
+            Logger.debug(Logger.Type.LecturerManager, `Not saving lecturer ${lecturer.uuid} because it already exists in database and it's not an edit operation...`);
+            throw APIError.LECTURER_ALREADY_EXISTS;
+        }
+
+        if (edit) {
             Logger.debug(Logger.Type.LecturerManager, `Updating lecturer ${lecturer.uuid} in database...`);
 
-            this.core.getDatabase().exec("UPDATE lecturers SET title_before = ?, first_name = ?, middle_name = ?, last_name = ?, title_after = ?, picture_url = ?, location = ?, claim = ?, bio = ?, tags = ?, price_per_hour = ?, emails = ?, telephone_numbers = ? WHERE uuid = ?", [
+            this.core.getDatabase().exec("UPDATE lecturers SET password = ?, title_before = ?, first_name = ?, middle_name = ?, last_name = ?, title_after = ?, picture_url = ?, location = ?, claim = ?, bio = ?, tags = ?, price_per_hour = ?, emails = ?, telephone_numbers = ? WHERE uuid = ?", [
+                lecturer.password,
                 lecturer.title_before,
                 lecturer.first_name,
                 lecturer.middle_name,
@@ -79,8 +130,10 @@ class LecturerManager {
         } else {
             Logger.debug(Logger.Type.LecturerManager, `Creating lecturer ${lecturer.uuid} in database...`);
 
-            this.core.getDatabase().exec("INSERT INTO lecturers (uuid, title_before, first_name, middle_name, last_name, title_after, picture_url, location, claim, bio, tags, price_per_hour, emails, telephone_numbers) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", [
+            this.core.getDatabase().exec("INSERT INTO lecturers (uuid, username, password, title_before, first_name, middle_name, last_name, title_after, picture_url, location, claim, bio, tags, price_per_hour, emails, telephone_numbers) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", [
                 lecturer.uuid,
+                lecturer.username,
+                lecturer.password,
                 lecturer.title_before,
                 lecturer.first_name,
                 lecturer.middle_name,
@@ -147,33 +200,35 @@ class LecturerManager {
      */
     async _processLecturer(data, combination) {
         const json = {};
-
         const allowedKeys = [
+            { key: "username", required: true },
+            { key: "password", required: true },
             { key: "title_before" },
-            {
-                key: "first_name",
-                required: true
-            },
+            { key: "first_name", required: true },
             { key: "middle_name" },
-            {
-                key: "last_name",
-                required: true
-            },
+            { key: "last_name", required: true },
             { key: "title_after" },
             { key: "picture_url" },
             { key: "location" },
             { key: "claim" },
             { key: "price_per_hour" },
-            {
-                key: "contact",
-                required: true
-            }
+            { key: "contact", required: true }
         ];
 
         for (const { key, required } of allowedKeys) {
             if (!data[key] && required && !combination) {
                 Logger.debug(Logger.Type.LecturerManager, `Missing required value "${key}"`);
                 throw APIError.MISSING_REQUIRED_VALUES;
+            }
+
+            if (key == "username" && data[key].length < 2) {
+                Logger.debug(Logger.Type.LecturerManager, `Username "${data[key]}" doesn't meet minimal requirements`);
+                throw APIError.USERNAME_DOESNT_MEET_MINIMAL_REQUIREMENTS;
+            }
+
+            if (key == "username" && data[key].length > 32) {
+                Logger.debug(Logger.Type.LecturerManager, `Username "${data[key]}" doesn't meet maximal requirements`);
+                throw APIError.USERNAME_DOESNT_MEET_MAXIMAL_REQUIREMENTS;
             }
 
             if (typeof data[key] == "object") {
@@ -185,14 +240,20 @@ class LecturerManager {
                 Logger.debug(Logger.Type.LecturerManager, `Key "${key}" is empty, skipping from sanitization...`);
                 continue;
             }
+
+            if (key == "password") {
+                Logger.debug(Logger.Type.LecturerManager, `Key "${key}" is a password, hashing...`);
+                json[key] = await this._hashPassword(data[key]);
+                continue;
+            }
             
             Logger.debug(Logger.Type.LecturerManager, `Sanitizing key "${key}"...`);
-            json[key] = sanitizeHtml(data[key]);
+            json[key] = this._sanitize(data[key]);
         }
         
         if (data.bio) {
             Logger.debug(Logger.Type.LecturerManager, `Sanitizing key "bio"...`);
-            json.bio = sanitizeHtml(data.bio);
+            json.bio = this._sanitize(data.bio);
         }
 
         let filteredTags = [];
@@ -225,11 +286,15 @@ class LecturerManager {
 
         if (data.contact) {
             if (data.contact.telephone_numbers && Array.isArray(data.contact.telephone_numbers)) {
-                filteredNumbers = [...new Set(data.contact.telephone_numbers.filter(number => this._isValidPhoneNumber(number)))];
+                filteredNumbers = [...new Set(
+                    data.contact.telephone_numbers.filter(number => this._isValidPhoneNumber(number)).map(number => this._sanitize(number))
+                )];
             }
         
             if (data.contact.emails && Array.isArray(data.contact.emails)) {
-                filteredEmails = [...new Set(data.contact.emails.filter(email => this._isValidEmail(email)))];
+                filteredEmails = [...new Set(
+                    data.contact.emails.filter(email => this._isValidEmail(email)).map(email => this._sanitize(email))
+                )];
             }
         }
 
@@ -256,12 +321,19 @@ class LecturerManager {
         }
 
         if (combination) {
-            Object.entries(json).forEach(([key, value]) => (combination[key]) = value);
+            Object.entries(json).forEach(([key, value]) => {
+                if (key == "username") {
+                    Logger.debug(Logger.Type.LecturerManager, `Skipping username update...`);
+                    return;
+                }
+
+                (combination[key]) = value;
+            });
             return combination;
         }
 
         json.uuid = UUIDProcessor.newUUID();
-        while (await this.getLecturer(json.uuid)) { json.uuid = UUIDProcessor.newUUID() }
+        while (await this.getLecturer({ uuid: json.uuid })) { json.uuid = UUIDProcessor.newUUID() }
 
         return json;
     }
@@ -279,17 +351,20 @@ class LecturerManager {
     }
 
     /**
-     * @param {string} uuid
+     * @param {object} options
+     * @param {object} options.uuid
+     * @param {object} options.username
      * @returns {Promise<Lecturer | null>}
      */
-    getLecturer = async (uuid) => {
-        let lecturer = this._cache.find(data => data.uuid == uuid);
+    getLecturer = async (options = {}) => {
+        const { uuid, username } = options;
+        let lecturer = this._cache.find(data => data.uuid == uuid || data.username == username);
 
         if (!lecturer) {
-            const data = await this.core.getDatabase().query("SELECT * FROM `lecturers` WHERE `uuid` = ?", [ uuid ]);
+            const data = await this.core.getDatabase().query("SELECT * FROM `lecturers` WHERE `uuid` = ? OR `username` = ?", [ uuid, username ]);
 
             if (!Array.isArray(data) || data.length == 0) {
-                Logger.debug(Logger.Type.LecturerManager, `Lecturer "${uuid}" not found`);
+                Logger.debug(Logger.Type.LecturerManager, `Lecturer "${uuid || username}" not found`);
                 return null;
             }
 
@@ -318,7 +393,7 @@ class LecturerManager {
      * @returns {Promise<boolean>}
      */
     async deleteLecturer(uuid) {
-        if (!(await this.getLecturer(uuid))) {
+        if (!(await this.getLecturer({ uuid }))) {
             throw Error("LECTURER_NOT_FOUND");
         }
 
@@ -340,13 +415,13 @@ class LecturerManager {
      * @returns {Promise<Lecturer>}
      */
     async editLecturer(uuid, data) {
-        const originalData = await this.getLecturer(uuid);
+        const originalData = await this.getLecturer({ uuid });
         if (!originalData) {
             throw Error("LECTURER_NOT_FOUND");
         }
 
         const result = await this._processLecturer(data, originalData);
-        await this._saveLecturer(result);
+        await this._saveLecturer(result, true);
         return result;
     }
 

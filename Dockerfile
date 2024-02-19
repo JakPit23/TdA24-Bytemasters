@@ -18,6 +18,7 @@ WORKDIR /app
 RUN npx tailwindcss -c /app/tailwind.config.js -i /app/public/css/src.css -o /app/public/css/app.css
 
 ENV NODE_ENV=production
+ENV LOG_LEVEL=debug
 
 VOLUME /app/data
 EXPOSE 3000/tcp

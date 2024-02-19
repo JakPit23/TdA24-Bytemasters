@@ -9,7 +9,7 @@ class Config {
     /**
      * @returns {string}
      */
-    getLogLevel = () => process.env.LOG_LEVEL || "info";
+    getLogLevel = () => process.argv.includes("--dev") ? "debug" : (process.env.LOG_LEVEL || "info");
 
     /**
      * @returns {string}
