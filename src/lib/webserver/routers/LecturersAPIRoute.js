@@ -26,7 +26,7 @@ module.exports = class LecturersAPIRoute {
                     }
                     
                     if (error == APIError.LECTURER_ALREADY_EXISTS) {
-                        return res.status(400).json({ code: 400, error: "LECTURER_ALREADY_EXISTS" });
+                        return res.status(200).json({ code: 400, error: "LECTURER_ALREADY_EXISTS" });
                     }
                 }
 
