@@ -637,6 +637,14 @@ video {
   margin-bottom: 1.5rem;
 }
 
+.mr-2 {
+  margin-right: 0.5rem;
+}
+
+.mr-4 {
+  margin-right: 1rem;
+}
+
 .block {
   display: block;
 }
@@ -772,6 +780,10 @@ video {
 
 .items-center {
   align-items: center;
+}
+
+.justify-end {
+  justify-content: flex-end;
 }
 
 .justify-center {
@@ -1676,9 +1688,12 @@ p {
 
 /* CALENDAR */
 
-.fc  {
-  max-width: 80%;
-  margin: auto;
+#calendar {
+  height: -moz-max-content;
+  height: max-content;
+  width: 100%;
+  padding-left: 1rem;
+  padding-right: 1rem;
 }
 
 .hover\:bg-neutral-600:hover {

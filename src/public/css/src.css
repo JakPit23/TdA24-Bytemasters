@@ -283,7 +283,6 @@ p {
 }
 
 /* CALENDAR */
-.fc  {
-    max-width: 80%;
-    margin: auto;
-  }
+#calendar  {
+    @apply w-full h-max px-4;
+}
