@@ -1,6 +1,12 @@
 const Logger = require("../../Logger");
 
 module.exports = class ServerError {
+    /**
+     * @param {*} error 
+     * @param {import("express").Request} req 
+     * @param {import("express").Response} res 
+     * @param {import("express").NextFunction} next 
+     */
     run = (error, req, res, next) => {
         if (req.path.startsWith("/api")) {
             if (error instanceof SyntaxError && error.status === 400 && "body" in error) {
