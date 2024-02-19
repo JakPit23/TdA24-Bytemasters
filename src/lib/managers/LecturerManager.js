@@ -40,6 +40,13 @@ class LecturerManager {
 
     /**
      * @private
+     * @param {string} data
+     * @returns {string}
+     */
+    _sanitize = (data) => sanitizeHtml(data, { allowedTags: [] });
+
+    /**
+     * @private
      * @param {string} password
      * @returns {Promise<string>}
      */
@@ -241,12 +248,12 @@ class LecturerManager {
             }
             
             Logger.debug(Logger.Type.LecturerManager, `Sanitizing key "${key}"...`);
-            json[key] = sanitizeHtml(data[key]);
+            json[key] = this._sanitize(data[key]);
         }
         
         if (data.bio) {
             Logger.debug(Logger.Type.LecturerManager, `Sanitizing key "bio"...`);
-            json.bio = sanitizeHtml(data.bio);
+            json.bio = this._sanitize(data.bio);
         }
 
         let filteredTags = [];
