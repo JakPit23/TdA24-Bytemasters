@@ -4,6 +4,10 @@ const Config = require("./Config");
 
 class Logger {
     static logLevel = null;
+    /**
+     * @type {fs.WriteStream}
+     */
+    static logFile = null;
 
     /**
      * @readonly
