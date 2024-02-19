@@ -286,11 +286,15 @@ class LecturerManager {
 
         if (data.contact) {
             if (data.contact.telephone_numbers && Array.isArray(data.contact.telephone_numbers)) {
-                filteredNumbers = [...new Set(data.contact.telephone_numbers.filter(number => this._isValidPhoneNumber(number)))];
+                filteredNumbers = [...new Set(
+                    data.contact.telephone_numbers.filter(number => this._isValidPhoneNumber(number)).map(number => this._sanitize(number))
+                )];
             }
         
             if (data.contact.emails && Array.isArray(data.contact.emails)) {
-                filteredEmails = [...new Set(data.contact.emails.filter(email => this._isValidEmail(email)))];
+                filteredEmails = [...new Set(
+                    data.contact.emails.filter(email => this._isValidEmail(email)).map(email => this._sanitize(email))
+                )];
             }
         }
 

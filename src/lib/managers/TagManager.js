@@ -19,6 +19,14 @@ class TagManager {
 
     /**
      * @private
+     * @param {string} data
+     * @returns {string}
+     */
+    _sanitize = (data) => sanitizeHtml(data, { allowedTags: [] });
+
+
+    /**
+     * @private
      * @param {object} data
      * @returns {object}
      */
@@ -26,7 +34,7 @@ class TagManager {
         const json = {};
 
         if (data.name) {
-            json.name = sanitizeHtml(data.name);
+            json.name = this._sanitize(data.name);
         }
 
         if (!UUIDProcessor.validateUUID(data.uuid)) {
