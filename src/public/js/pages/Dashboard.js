@@ -61,9 +61,6 @@ class Dashboard {
           saturday: {color: '#fff'},
           today: {color: '#fff', backgroundColor: 'rgba(254, 203, 46, 1)'}
         },
-        week: {
-          nowIndicatorBullet: {backgroundColor: 'rgba(254, 203, 46, 1)'}
-        }
       }) 
 
   }}
