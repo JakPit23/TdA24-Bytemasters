@@ -8,6 +8,8 @@ class Dashboard {
     
     createCalendar(calendarElement) {
       let calendar = new this.Calendar(calendarElement, {
+        locale: 'cs',
+        firstDay: 1,
         editable: true,
         droppable: true,
         dayMaxEvents: true,
