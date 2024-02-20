@@ -10,6 +10,12 @@ class Dashboard {
       let calendar = new this.Calendar(calendarElement, {
         editable: true,
         droppable: true,
+        dayMaxEvents: true,
+        views: {
+          dayGrid: {
+            dayMaxEventRows: 1
+          }
+        }
       });
 
       this.calendar = calendar;

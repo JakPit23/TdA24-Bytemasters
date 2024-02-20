@@ -283,6 +283,14 @@ p {
 }
 
 /* CALENDAR */
-#calendar  {
+.calendar  {
     @apply w-full h-max px-4;
+}
+
+.fc-popover {
+    @apply bg-dark-900 dark:bg-dark-900;
+}
+
+.fc-event-main-frame {
+    @apply bg-sunglate-900 dark:bg-sunglate-900 border-none;
 }

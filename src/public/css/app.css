@@ -594,6 +594,10 @@ video {
   position: relative;
 }
 
+.end-1 {
+  inset-inline-end: 0.25rem;
+}
+
 .left-0 {
   left: 0px;
 }
@@ -673,6 +677,10 @@ video {
   display: contents;
 }
 
+.list-item {
+  display: list-item;
+}
+
 .\!hidden {
   display: none !important;
 }
@@ -746,6 +754,14 @@ video {
 
 .max-w-md {
   max-width: 28rem;
+}
+
+.shrink {
+  flex-shrink: 1;
+}
+
+.transform {
+  transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
 }
 
 .cursor-pointer {
@@ -994,6 +1010,10 @@ video {
   text-transform: uppercase;
 }
 
+.lowercase {
+  text-transform: lowercase;
+}
+
 .leading-tight {
   line-height: 1.25;
 }
@@ -1029,6 +1049,14 @@ video {
   color: rgba(255, 255, 255, 1);
 }
 
+.underline {
+  text-decoration-line: underline;
+}
+
+.overline {
+  text-decoration-line: overline;
+}
+
 .shadow {
   --tw-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
   --tw-shadow-colored: 0 1px 3px 0 var(--tw-shadow-color), 0 1px 2px -1px var(--tw-shadow-color);
@@ -1048,6 +1076,14 @@ video {
 
 .filter {
   filter: var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow);
+}
+
+.transition {
+  transition-property: color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter, -webkit-backdrop-filter;
+  transition-property: color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter, backdrop-filter;
+  transition-property: color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter, backdrop-filter, -webkit-backdrop-filter;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 150ms;
 }
 
 .transition-colors {
@@ -1688,12 +1724,29 @@ p {
 
 /* CALENDAR */
 
-#calendar {
+.calendar {
   height: -moz-max-content;
   height: max-content;
   width: 100%;
   padding-left: 1rem;
   padding-right: 1rem;
+}
+
+.fc-popover {
+  background-color: rgba(51, 51, 51, 1);
+}
+
+:is(.dark .fc-popover) {
+  background-color: rgba(51, 51, 51, 1);
+}
+
+.fc-event-main-frame {
+  border-style: none;
+  background-color: rgba(254, 203, 46, 1);
+}
+
+:is(.dark .fc-event-main-frame) {
+  background-color: rgba(254, 203, 46, 1);
 }
 
 .hover\:bg-neutral-600:hover {
