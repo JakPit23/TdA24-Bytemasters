@@ -2,6 +2,8 @@ class CalendarModule {
     constructor() {
         this.Calendar = FullCalendar.Calendar;
         this.Draggable = FullCalendar.Draggable;
+        this.calendarEl = $('[data-calendar]')[0];
+        this.draggableEl = $('[data-draggable]')[0];
         this.test();
     }
 
@@ -43,10 +45,10 @@ class CalendarModule {
     }
 
     test() {
-        this.createCalendar(document.getElementById('calendar'));
+        this.createCalendar(this.calendarEl);
         this.renderCalendar();
         this.createAllDayEvent('test', '2024-02-21');
-        this.createDraggable(document.getElementById('external-events'));
+        this.createDraggable(this.draggableEl);
     }
 
     getEvents = () => {
