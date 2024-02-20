@@ -6,7 +6,7 @@ class Page {
     }
 
     init = async () => {
-        const lecturerUUID = window.location.pathname.match(/[0-9a-f]{8}-[0-9a-f]{4}-[14][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}/i);
+        const lecturerUUID = this.app.getUUID();
         if (!(lecturerUUID && lecturerUUID[0])) {
             $(location).attr('href', '/404');
             return;

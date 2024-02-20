@@ -6,8 +6,6 @@
     <title>Teacher Digital Agency</title>
     <link rel="stylesheet" href="/public/lib/fontawesome/css/fontawesome.css">
     <link rel="stylesheet" href="/public/lib/fontawesome/css/solid.css">
-    <link rel="stylesheet" href="https://uicdn.toast.com/calendar/latest/toastui-calendar.min.css">
-    <script src="https://uicdn.toast.com/calendar/latest/toastui-calendar.min.js"></script>
     <link rel="stylesheet" href="/public/css/app.css">
     <link rel="shortcut icon" href="/public/images/favicon.ico" type="image/x-icon">
 </head>
@@ -25,12 +23,14 @@
               <button id="prev" class="btn mr-2">Previous</button>
               <button id="next" class="btn">Next</button>
             </div>
-            <div id="calendar" style="height: 800px;"></div>
+            <div id="external-events">AHOJ</div>
+            <div id="calendar"></div>
         </div>
 
     </div>
 
     <%- include('partials/footer') %>
+    <script defer src='/public/js/lib/fullcalendar-6.1.10.min.js'></script>
     <script defer src="/public/js/lib/jquery-3.7.1.min.js"></script>
     <script defer src="/public/js/Application.js"></script>
     <script defer src="/public/js/pages/Dashboard.js"></script>
