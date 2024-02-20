@@ -1,4 +1,4 @@
-class Dashboard {
+class DashboardPage {
     constructor(app) {
         this.app = app;
         this.Calendar = FullCalendar.Calendar;
@@ -13,11 +13,6 @@ class Dashboard {
         editable: true,
         droppable: true,
         dayMaxEvents: true,
-        views: {
-          dayGrid: {
-            dayMaxEventRows: 1
-          }
-        }
       });
 
       this.calendar = calendar;
@@ -56,4 +51,4 @@ class Dashboard {
     }
 }
 
-new Dashboard();
+new DashboardPage();

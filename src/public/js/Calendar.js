@@ -1,8 +1,11 @@
 class Calendar {
     exportCalendar() {
-        console.log(document.getElementById('calendar'));   
+        return document.getElementById('calendar');   
+    }
+
+    exportEvents() {
+        return document.getElementById('external-events');
     }
 }
 
 this.exporter = new Calendar();
-this.exporter.exportCalendar();
