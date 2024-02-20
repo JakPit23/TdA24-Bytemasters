@@ -19,23 +19,20 @@
                 <h1 class="font-bold text-3xl">Ahoj Lektore</h1>
                 <p class="text-lg">Tvá nejbližší schůzka je: {undefined}</p>
             </div>
-            <div class="flex justify-end mr-4 mb-2">
-              <button id="prev" class="btn mr-2">Previous</button>
-              <button id="next" class="btn">Next</button>
-            </div>
-            <div id="external-events">AHOJ</div>
-            <div id="calendar"></div>
+            <div data-draggable>AHOJ</div>
+            <div data-calendar></div>
         </div>
 
     </div>
 
     <%- include('partials/footer') %>
     <script defer src='/public/js/lib/fullcalendar-6.1.10.min.js'></script>
-    <script defer src="/public/js/Calendar.js"></script>
     <script defer src="/public/js/lib/jquery-3.7.1.min.js"></script>
     <script defer src="/public/js/Application.js"></script>
     <script defer src="/public/js/modules/CalendarModule.js"></script>
     <script defer src="/public/js/pages/DashboardPage.js"></script>
+    <script defer src="/public/js/Exporter.js"></script>
+    <script defer src="/public/js/Application.js"></script>
     <script>class Page{}</script>
 </body>
 </html>

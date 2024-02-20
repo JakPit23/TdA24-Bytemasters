@@ -6,11 +6,11 @@ class DashboardPage {
     }
     
     test() {
-      this.createCalendar(document.getElementById('calendar'));
+      this.createCalendar(this.calendarElement[0]);
       this.renderCalendar();
       this.createAllDayEvent('test', '2024-02-21');
-      this.createDraggable(document.getElementById('external-events'));
+      this.createDraggable(this.draggableElement[0]);
     }
 }
 
-new DashboardPage();
+this.dash = new DashboardPage(this.app);
