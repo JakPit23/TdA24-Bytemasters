@@ -12,11 +12,11 @@ module.exports = class RequestLog {
             Logger.info(Logger.Type.Webserver, `${req.headers['x-forwarded-for'] || req.ip} - "${req.method} ${req.url}" ${req.headers['user-agent']}`);
         }
 
-        if (Config.getLogLevel() == "debug") {
+        if (Config.getLogLevel() == "debug" && !req.path.startsWith("/api")) {
             if (req.body) {
                 Logger.debug(Logger.Type.Webserver, `Request body:`, req.body);
             }
-
+            
             // absolutne ale jako fakt absolutne nechapu jak to dela brm brm (z casti)
             const oldWrite = res.write, oldEnd = res.end;
             let chunks = [];
