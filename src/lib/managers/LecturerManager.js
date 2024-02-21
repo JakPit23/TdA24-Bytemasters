@@ -23,6 +23,7 @@ const UUIDProcessor = require("../utils/UUIDProcessor");
 const Logger = require("../Logger");
 const { APIError } = require("../Errors");
 const Config = require("../Config");
+const Event = require("./types/Event");
 
 class LecturerManager {
     /**
@@ -212,7 +213,8 @@ class LecturerManager {
             { key: "location" },
             { key: "claim" },
             { key: "price_per_hour" },
-            { key: "contact", required: true }
+            { key: "contact", required: true },
+            { key: "events" }
         ];
 
         for (const { key, required } of allowedKeys) {
@@ -295,6 +297,19 @@ class LecturerManager {
                 filteredEmails = [...new Set(
                     data.contact.emails.filter(email => this._isValidEmail(email)).map(email => this._sanitize(email))
                 )];
+            }
+        }
+
+        if (data.events && Array.isArray(data.events)) {
+            Logger.debug(Logger.Type.LecturerManager, "Lecturer events:", data.events);
+
+            for (const event of data.events) {
+                if (!(event.name && event.startDate && event.endDate)) {
+                    Logger.debug(Logger.Type.LecturerManager, `Invalid event: ${JSON.stringify(event)}`);
+                    continue;
+                }
+
+                (json.events ??= []).push(new Event(event));
             }
         }
 
