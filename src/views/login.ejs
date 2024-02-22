@@ -20,6 +20,9 @@
                 <div class="w-full max-w-md">
                     <form class="bg-dark-900 shadow-lg rounded px-8 pt-6 pb-8 mb-4">
                         <h1 class="text-3xl font-semibold text-center mb-4 text-white-700">Přidejte se k nám!</h1>
+                        <div data-error class="bg-sunglate-900 text-xl rounded">
+                        
+                        </div>
                         <div class="mb-4">
                             <label class="block text-white-700 text-sm font-bold mb-2" for="username">
                                 Uživatelské jméno
@@ -33,13 +36,10 @@
                             <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="password" type="password" data-password placeholder="SecretPass" required>
                         </div>
                         <!-- button -->
-                        <div class="flex items-center justify-between">
+                        <div class="flex items-center justify-center">
                             <button data-loginBtn class="btn btn-big" type="submit">
                                 Přihlásit se
                             </button>
-                            <a class="inline-block align-baseline font-bold text-sm text-blue-500 hover:text-blue-800" href="/register">
-                                Ještě nemáte účet?
-                            </a>
                         </div>
                     </form>
                 </div>

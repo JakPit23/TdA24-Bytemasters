@@ -1,16 +1,15 @@
 class Authentication {
     constructor() {
         // get control elements
-        this.btn = $('[data-registerBtn]');
         this.loginBtn = $('[data-loginBtn]');
+        this.messagebox = $('[data-error]');
         this.loginBtn.on('click', (event) => this.login(event));
-        this.btn.on('click', (event) => this.register(event));
-        this.messagebox = $('data-errorbox');
     }
 
     async login(event) {
         event.preventDefault();
-        this.username = $('[data-email]').val();
+        this.messagebox.empty();
+        this.username = $('[data-username]').val();
         this.password = $('[data-password]').val();
 
         const response = await fetch('/api/auth/login', {
@@ -23,6 +22,20 @@ class Authentication {
                 password: this.password,
             }),
         });
+        const body = await response.json();
+        if(response.status !== 200) {
+            var text = ""
+            if(body.error == "Invalid credentials") {
+                console.log("ERROR")
+                text = $("<p></p>").text("Špatné uživatelské jméno nebo heslo");
+            } else if(body.error == "Missing required values") {
+                text = $("<p></p>").text("Nezadali jste veškeré údaje");
+            }
+            this.messagebox.append(text);
+            this.messagebox.addClass('mt-3');
+        return;
+        }
+        window.location.href = "/dashboard";
     }
 }
 
