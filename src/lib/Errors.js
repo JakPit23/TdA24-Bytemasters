@@ -1,19 +1,3 @@
-// TODO: vylepsit to asi?
-
-class UserAuthError extends Error {
-    constructor(message) {
-        super(message);
-        this.name = "AuthError";
-    }
-
-    static MISSING_REQUIRED_PARAMETERS = new UserAuthError("MISSING_REQUIRED_PARAMETERS");
-    static INVALID_PASSWORD = new UserAuthError("INVALID_PASSWORD");
-    static INVALID_EMAIL = new UserAuthError("INVALID_EMAIL");
-    static USERNAME_DOESNT_MEET_MINIMAL_REQUIREMENTS = new UserAuthError("USERNAME_DOESNT_MEET_MINIMAL_REQUIREMENTS");
-    static USERNAME_DOESNT_MEET_MAXIMAL_REQUIREMENTS = new UserAuthError("USERNAME_DOESNT_MEET_MAXIMAL_REQUIREMENTS");
-    static USER_ALREADY_EXISTS = new UserAuthError("USER_ALREADY_EXISTS");
-}
-
 class APIError extends Error {
     constructor(message) {
         super(message);
@@ -25,9 +9,13 @@ class APIError extends Error {
     static USERNAME_DOESNT_MEET_MINIMAL_REQUIREMENTS = new APIError("USERNAME_DOESNT_MEET_MINIMAL_REQUIREMENTS");
     static USERNAME_DOESNT_MEET_MAXIMAL_REQUIREMENTS = new APIError("USERNAME_DOESNT_MEET_MAXIMAL_REQUIREMENTS");
     static INVALID_CREDENTIALS = new APIError("INVALID_CREDENTIALS");
+    static INVALID_EVENT_NAME = new APIError("INVALID_EVENT_NAME");
+    static INVALID_EVENT_START_DATE = new APIError("INVALID_EVENT_START_DATE");
+    static INVALID_EVENT_END_DATE = new APIError("INVALID_EVENT_END_DATE");
+    static INVALID_EVENT_DATES = new APIError("INVALID_EVENT_DATES");
+    
 }
 
 module.exports = {
-    UserAuthError,
     APIError
 }

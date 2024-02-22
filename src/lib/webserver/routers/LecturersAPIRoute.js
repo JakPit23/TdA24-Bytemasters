@@ -22,11 +22,27 @@ module.exports = class LecturersAPIRoute {
             } catch (error) {
                 if (error instanceof APIError) {
                     if (error == APIError.MISSING_REQUIRED_VALUES) {
-                        return res.status(400).json({ code: 400, error: "Missing required values" });
+                        return res.status(400).json({ code: 400, error: "MISSING_REQUIRED_VALUES" });
                     }
                     
                     if (error == APIError.LECTURER_ALREADY_EXISTS) {
                         return res.status(200).json({ code: 400, error: "LECTURER_ALREADY_EXISTS" });
+                    }
+
+                    if (error == APIError.INVALID_EVENT_NAME) {
+                        return res.status(200).json({ code: 400, error: "INVALID_EVENT_NAME" });
+                    }
+
+                    if (error == APIError.INVALID_EVENT_START_DATE) {
+                        return res.status(200).json({ code: 400, error: "INVALID_EVENT_START_DATE" });
+                    }
+
+                    if (error == APIError.INVALID_EVENT_END_DATE) {
+                        return res.status(200).json({ code: 400, error: "INVALID_EVENT_END_DATE" });
+                    }
+
+                    if (error == APIError.INVALID_EVENT_DATES) {
+                        return res.status(200).json({ code: 400, error: "INVALID_EVENT_DATES" });
                     }
                 }
 

@@ -85,6 +85,12 @@ class Lecturer {
         this.tags = data.tags;
 
         /** 
+         * @type {Array<import("./Event")>} 
+         * @description The events of the lecturer.
+         */
+        this.events = data.events;
+
+        /** 
          * @type {Object} 
          * @description The contact information of the lecturer.
          */
