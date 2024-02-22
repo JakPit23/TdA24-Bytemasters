@@ -3,10 +3,10 @@ const { APIError } = require("../../Errors");
 
 module.exports = class LecturersAPIRoute {
     /**
-     * @param {import("../../Core")} core 
+     * @param {import("../Webserver")} webserver 
      */
-    constructor(core) {
-        this.core = core;
+    constructor(webserver) {
+        this.webserver = webserver;
         this.router = express.Router();
 
         this.loadRoutes();
@@ -17,7 +17,7 @@ module.exports = class LecturersAPIRoute {
             try {
                 const data = req.body;
 
-                const lecturer = await this.core.getLecturerManager().createLecturer(data);
+                const lecturer = await this.webserver.getCore().getLecturerManager().createLecturer(data);
                 return res.status(200).json(lecturer);
             } catch (error) {
                 if (error instanceof APIError) {
@@ -52,7 +52,7 @@ module.exports = class LecturersAPIRoute {
 
         this.router.get("/", async (req, res, next) => {
             try {
-                const lecturers = await this.core.getLecturerManager().getLecturers();
+                const lecturers = await this.webserver.getCore().getLecturerManager().getLecturers();
 
                 if (!lecturers || lecturers.length == 0) {
                     return res.status(200).json([]);
@@ -67,7 +67,7 @@ module.exports = class LecturersAPIRoute {
         this.router.get("/:uuid", async (req, res, next) => {
             try {
                 const { uuid } = req.params;
-                const lecturer = await this.core.getLecturerManager().getLecturer({ uuid });
+                const lecturer = await this.webserver.getCore().getLecturerManager().getLecturer({ uuid });
     
                 if (!lecturer) {
                     return res.status(200).send({ code: 404, message: "Lecturer not found" });
@@ -82,7 +82,7 @@ module.exports = class LecturersAPIRoute {
         this.router.delete("/:uuid", async (req, res, next) => {
             try {
                 const { uuid } = req.params;
-                const lecturer = await this.core.getLecturerManager().getLecturer({ uuid });
+                const lecturer = await this.webserver.getCore().getLecturerManager().getLecturer({ uuid });
 
                 if (!lecturer) {
                     return res.status(200).json({
@@ -91,7 +91,7 @@ module.exports = class LecturersAPIRoute {
                     });
                 }
     
-                await this.core.getLecturerManager().deleteLecturer(uuid);
+                await this.webserver.getCore().getLecturerManager().deleteLecturer(uuid);
                 return res.sendStatus(200);
             } catch (error) {
                 return next(error);
@@ -102,13 +102,13 @@ module.exports = class LecturersAPIRoute {
             try {
                 const { uuid } = req.params;
                 const data = req.body;
-                const lecturer = await this.core.getLecturerManager().getLecturer({ uuid });
+                const lecturer = await this.webserver.getCore().getLecturerManager().getLecturer({ uuid });
     
                 if (!lecturer) {
                     return res.status(200).send({ code: 404, message: "Lecturer not found" });
                 }
     
-                const editedLecturer = await this.core.getLecturerManager().editLecturer(uuid, data);
+                const editedLecturer = await this.webserver.getCore().getLecturerManager().editLecturer(uuid, data);
                 return res.status(200).json(editedLecturer);
             } catch (error) {
                 return next(error);

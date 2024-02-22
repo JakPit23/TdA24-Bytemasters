@@ -3,10 +3,10 @@ const { APIError } = require("../../Errors");
 
 module.exports = class APIAuthRoute {
     /**
-     * @param {import('../../Core')} core 
+     * @param {import('../Webserver')} webserver 
      */
-    constructor(core) {
-        this.core = core;
+    constructor(webserver) {
+        this.webserver = webserver;
         this.router = express.Router();
 
         this.loadRoutes();
@@ -20,16 +20,16 @@ module.exports = class APIAuthRoute {
                     throw APIError.MISSING_REQUIRED_VALUES;
                 }
 
-                const lecturer = await this.core.getLecturerManager().getLecturer({ username });
+                const lecturer = await this.webserver.getCore().getLecturerManager().getLecturer({ username });
                 if (!lecturer) {
                     throw APIError.INVALID_CREDENTIALS;
                 }
 
-                if (!await this.core.getLecturerManager()._comparePassword(lecturer.password, password)) {
+                if (!await this.webserver.getCore().getLecturerManager()._comparePassword(lecturer.password, password)) {
                     throw APIError.INVALID_CREDENTIALS;
                 }
 
-                req.session.token = this.core.getLecturerManager().generateJWTToken(lecturer);
+                req.session.token = this.webserver.getCore().getLecturerManager().generateJWTToken(lecturer);
                 
                 // TODO: udelat nejakou ApiResponse classu
                 return res.status(200).json({ code: 200 });
