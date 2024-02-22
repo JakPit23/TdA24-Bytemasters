@@ -13,7 +13,7 @@ module.exports = class LecturersAPIRoute {
     }
 
     loadRoutes = () => {
-        this.router.post("/", async (req, res, next) => {
+        this.router.post("/", this.webserver.middlewares["APIAuthMiddleware"].run, async (req, res, next) => {
             try {
                 const data = req.body;
 
@@ -79,7 +79,7 @@ module.exports = class LecturersAPIRoute {
             }
         });
 
-        this.router.delete("/:uuid", async (req, res, next) => {
+        this.router.delete("/:uuid", this.webserver.middlewares["APIAuthMiddleware"].run, async (req, res, next) => {
             try {
                 const { uuid } = req.params;
                 const lecturer = await this.webserver.getCore().getLecturerManager().getLecturer({ uuid });
@@ -98,7 +98,7 @@ module.exports = class LecturersAPIRoute {
             }
         });
 
-        this.router.put("/:uuid", async (req, res, next) => {
+        this.router.put("/:uuid", this.webserver.middlewares["APIAuthMiddleware"].run, async (req, res, next) => {
             try {
                 const { uuid } = req.params;
                 const data = req.body;

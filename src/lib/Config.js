@@ -15,6 +15,16 @@ class Config {
      * @returns {string}
      */
     getSecretKey = () => process.env.SECRET_KEY || UUIDProcessor.newUUID();
+
+    /**
+     * @returns {string}
+     */
+    getAPIUsername = () => process.env.API_USERNAME || "TdA";
+
+    /**
+     * @returns {string}
+     */
+    getAPIPassword = () => process.env.API_PASSWORD || "d8Ef6!dGG_pv";
 }
 
 module.exports = new Config();
