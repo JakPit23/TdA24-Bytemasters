@@ -10,7 +10,7 @@ class Authentication {
 
     async login(event) {
         event.preventDefault();
-        this.email = $('[data-email]').val();
+        this.username = $('[data-email]').val();
         this.password = $('[data-password]').val();
 
         const response = await fetch('/api/auth/login', {
@@ -19,16 +19,10 @@ class Authentication {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({
-                email: this.email,
+                username: this.username,
                 password: this.password,
             }),
         });
-
-        console.log(response);
-        if(response.status === 200) {
-            console.log('logged in');
-            window.location.href = '/gdpr';
-        }
     }
 }
 
