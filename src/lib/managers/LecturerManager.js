@@ -111,7 +111,7 @@ class LecturerManager {
         if (edit) {
             Logger.debug(Logger.Type.LecturerManager, `Updating lecturer ${lecturer.uuid} in database...`);
 
-            this.core.getDatabase().exec("UPDATE lecturers SET password = ?, title_before = ?, first_name = ?, middle_name = ?, last_name = ?, title_after = ?, picture_url = ?, location = ?, claim = ?, bio = ?, tags = ?, price_per_hour = ?, emails = ?, telephone_numbers = ? WHERE uuid = ?", [
+            this.core.getDatabase().exec("UPDATE lecturers SET password = ?, title_before = ?, first_name = ?, middle_name = ?, last_name = ?, title_after = ?, picture_url = ?, location = ?, claim = ?, bio = ?, tags = ?, price_per_hour = ?, events = ?, emails = ?, telephone_numbers = ? WHERE uuid = ?", [
                 lecturer.password,
                 lecturer.title_before,
                 lecturer.first_name,
@@ -124,6 +124,7 @@ class LecturerManager {
                 lecturer.bio,
                 tags,
                 lecturer.price_per_hour,
+                JSON.stringify(lecturer.events),  // je to fakt debilni reseni, ale nechce se mi to resit jinak
                 emails,
                 telephoneNumbers,
                 lecturer.uuid,
@@ -131,7 +132,7 @@ class LecturerManager {
         } else {
             Logger.debug(Logger.Type.LecturerManager, `Creating lecturer ${lecturer.uuid} in database...`);
 
-            this.core.getDatabase().exec("INSERT INTO lecturers (uuid, username, password, title_before, first_name, middle_name, last_name, title_after, picture_url, location, claim, bio, tags, price_per_hour, emails, telephone_numbers) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", [
+            this.core.getDatabase().exec("INSERT INTO lecturers (uuid, username, password, title_before, first_name, middle_name, last_name, title_after, picture_url, location, claim, bio, tags, price_per_hour, events, emails, telephone_numbers) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", [
                 lecturer.uuid,
                 lecturer.username,
                 lecturer.password,
@@ -146,6 +147,7 @@ class LecturerManager {
                 lecturer.bio,
                 tags,
                 lecturer.price_per_hour,
+                JSON.stringify(lecturer.events), // je to fakt debilni reseni, ale nechce se mi to resit jinak
                 emails,
                 telephoneNumbers,
             ]);
@@ -166,7 +168,7 @@ class LecturerManager {
      * @returns {Promise<Lecturer>}
      */
     _readLecturer = async (_data) => {
-        const { tags, emails, telephone_numbers, ...data } = _data;
+        const { tags, emails, telephone_numbers, events, ...data } = _data;
         const json = { ...data };
 
         const contact = {};
@@ -187,6 +189,10 @@ class LecturerManager {
                 const tag = await this.core.getTagManager().getTag({ uuid: tagUUID });
                 (json.tags ??= []).push(tag);
             }
+        }
+
+        if (events) {
+            json.events = JSON.parse(events).map(event => new Event(event));
         }
 
         return new Lecturer(json);
