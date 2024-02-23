@@ -34,6 +34,7 @@ class Page {
         }
         
         const lecturerContent = $('<div>').addClass('lecturer-content flex flex-col').appendTo(this.lecturerElement);
+        const signupForm = $('<div>').addClass('flex flex-column').appendTo(lecturerContent);
         const profile = $('<div>').addClass('flex flex-col md:flex-row').appendTo(lecturerContent);
         const profileInfo = $('<div>').appendTo(profile);
         
@@ -84,6 +85,16 @@ class Page {
         if (data.bio) {
             $('<p>').addClass('lecturer-bio').text(data.bio).appendTo(lecturerContent);
         }
+
+        $('<h2>').addClass('text-2xl font-semibold').text('Chceš si zarezervovat hodinu?').appendTo(lecturerContent);
+        const form = $('<form>').addClass('flex flex-col gap-4 bg-dark-900 text-white').appendTo(lecturerContent);
+        $('<input>').attr('type', 'text').attr('placeholder', 'Jméno').appendTo(form);
+        $('<input>').attr('type', 'text').attr('placeholder', 'Příjmení').appendTo(form);
+        $('<input>').attr('type', 'date').appendTo(form);
+        $('<input>').attr('type', 'time').appendTo(form);
+        $('<textarea>').attr('placeholder', 'Zpráva').appendTo(form);
+        $('<button>').addClass("btn").text('Odeslat').appendTo(form);   
+
 
         $('title').text(`${name} | ${$('title').text()}`);
         this.lecturerElement.show();

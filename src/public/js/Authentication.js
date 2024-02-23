@@ -27,7 +27,7 @@ class Authentication {
             var text = ""
             if(body.error == "Invalid credentials") {
                 console.log("ERROR")
-                text = $("<p></p>").text("Špatné uživatelské jméno nebo heslo");
+                text = $("<p></p>").text("Špatné uživatelské jméno nebo heslo").addClass('mx-auto p-4');
             } else if(body.error == "Missing required values") {
                 text = $("<p></p>").text("Nezadali jste veškeré údaje");
             }
