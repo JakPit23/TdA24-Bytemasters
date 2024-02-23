@@ -48,12 +48,17 @@ class Webserver {
         this.webserver.listen(this.port, () => Logger.info(Logger.Type.Webserver, `Webserver running on port ${this.port}`));
     }
 
+    /**
+     * @returns {import("../Core")}
+     */
+    getCore = () => this.core;
+
     async loadRouters() {
         Logger.info(Logger.Type.Webserver, "Loading routers...");
 
         for (const filePath of fs.readdirSync(path.resolve(__dirname, "./routers")).filter(file => file.endsWith(".js"))) {
             try {
-                const router = new (require(`./routers/${filePath}`))(this.core);
+                const router = new (require(`./routers/${filePath}`))(this);
                 const fileName = path.parse(filePath).name;
 
                 this.routers[fileName] = router;
@@ -75,7 +80,7 @@ class Webserver {
 
         for (const filePath of fs.readdirSync(path.resolve(__dirname, "./middlewares")).filter(file => file.endsWith(".js"))) {
             try {
-                const middleware = new (require(`./middlewares/${filePath}`))(this.core);
+                const middleware = new (require(`./middlewares/${filePath}`))(this);
                 const fileName = path.parse(filePath).name;
 
                 this.middlewares[fileName] = middleware;

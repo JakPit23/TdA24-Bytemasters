@@ -29,7 +29,7 @@ class Database extends BetterSQLite {
             Logger.debug(Logger.Type.Database, "Creating tables...");
             this.exec("CREATE TABLE IF NOT EXISTS users (uuid VARCHAR(36), email TEXT, password VARCHAR(255), username VARCHAR(32), createdAt NUMBER)");
 
-            this.exec("CREATE TABLE IF NOT EXISTS lecturers (uuid VARCHAR(36), username TEXT, password TEXT, title_before TEXT, first_name TEXT, middle_name TEXT, last_name TEXT, title_after TEXT, picture_url TEXT, location TEXT, claim TEXT, bio TEXT, tags TEXT, price_per_hour INTEGER, emails TEXT, telephone_numbers TEXT)");
+            this.exec("CREATE TABLE IF NOT EXISTS lecturers (uuid VARCHAR(36), username TEXT, password TEXT, title_before TEXT, first_name TEXT, middle_name TEXT, last_name TEXT, title_after TEXT, picture_url TEXT, location TEXT, claim TEXT, bio TEXT, tags TEXT, price_per_hour INTEGER, events TEXT, emails TEXT, telephone_numbers TEXT)");
             this.exec("CREATE TABLE IF NOT EXISTS tags (uuid VARCHAR(36), name TEXT)");
         } catch (error) {
             return Logger.error(Logger.Type.Database, "An unknown error occured while creating tables:", error);

@@ -2,10 +2,10 @@ const express = require("express");
 
 module.exports = class WebRoute {
     /**
-     * @param {import("../Core")} core 
+     * @param {import("../Webserver")} webserver 
      */
-    constructor(core) {
-        this.core = core;
+    constructor(webserver) {
+        this.core = webserver;
         this.router = express.Router();
 
         this.loadRoutes();

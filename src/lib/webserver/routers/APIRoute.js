@@ -5,10 +5,10 @@ const Logger = require("../../Logger");
 module.exports = class WebRoute {
     /**
      * 
-     * @param {import("../../Core")} core 
+     * @param {import("../Webserver")} webserver 
      */
-    constructor(core) {
-        this.core = core;
+    constructor(webserver) {
+        this.webserver = webserver;
         this.router = express.Router();
 
         this.loadRoutes();
