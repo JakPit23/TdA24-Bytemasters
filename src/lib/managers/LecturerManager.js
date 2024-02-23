@@ -229,6 +229,11 @@ class LecturerManager {
                 throw APIError.MISSING_REQUIRED_VALUES;
             }
 
+            if (!data[key]) {
+                Logger.debug(Logger.Type.LecturerManager, `Key "${key}" is empty, skipping from sanitization...`);
+                continue;
+            }
+
             if (key == "username" && data[key].length < 2) {
                 Logger.debug(Logger.Type.LecturerManager, `Username "${data[key]}" doesn't meet minimal requirements`);
                 throw APIError.USERNAME_DOESNT_MEET_MINIMAL_REQUIREMENTS;
@@ -241,11 +246,6 @@ class LecturerManager {
 
             if (typeof data[key] == "object") {
                 Logger.debug(Logger.Type.LecturerManager, `Key "${key}" is an object, skipping from sanitization...`);
-                continue;
-            }
-
-            if (!data[key]) {
-                Logger.debug(Logger.Type.LecturerManager, `Key "${key}" is empty, skipping from sanitization...`);
                 continue;
             }
 
@@ -311,8 +311,7 @@ class LecturerManager {
 
             for (const event of data.events) {
                 if (!(event.name && event.startDate && event.endDate)) {
-                    Logger.debug(Logger.Type.LecturerManager, `Invalid event: ${JSON.stringify(event)}`);
-                    continue;
+                    Logger.debug(Logger.Type.LecturerManager, "Invalid event:", event);
                 }
 
                 (json.events ??= []).push(new Event(event));

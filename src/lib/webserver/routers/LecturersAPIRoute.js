@@ -114,5 +114,46 @@ module.exports = class LecturersAPIRoute {
                 return next(error);
             }
         });
+
+        this.router.post("/:uuid/event", async (req, res, next) => {
+            try {
+                const { uuid } = req.params;
+                const data = req.body;
+
+                if (!Array.isArray(data)) {
+                    return res.status(200).json({ code: 400, error: "MISSING_REQUIRED_VALUES" });
+                }
+    
+                const lecturer = await this.webserver.getCore().getLecturerManager().getLecturer({ uuid });
+                if (!lecturer) {
+                    return res.status(200).send({ code: 404, message: "Lecturer not found" });
+                }
+
+                const editedLecturer = await this.webserver.getCore().getLecturerManager().editLecturer(uuid, { events: data });
+                return res.status(200).json(editedLecturer);
+            } catch (error) {
+                if (error == APIError.MISSING_REQUIRED_VALUES) {
+                    return res.status(400).json({ code: 400, error: "MISSING_REQUIRED_VALUES" });
+                }
+
+                if (error == APIError.INVALID_EVENT_NAME) {
+                    return res.status(200).json({ code: 400, error: "INVALID_EVENT_NAME" });
+                }
+
+                if (error == APIError.INVALID_EVENT_START_DATE) {
+                    return res.status(200).json({ code: 400, error: "INVALID_EVENT_START_DATE" });
+                }
+
+                if (error == APIError.INVALID_EVENT_END_DATE) {
+                    return res.status(200).json({ code: 400, error: "INVALID_EVENT_END_DATE" });
+                }
+
+                if (error == APIError.INVALID_EVENT_DATES) {
+                    return res.status(200).json({ code: 400, error: "INVALID_EVENT_DATES" });
+                }
+
+                return next(error);
+            }
+        });
     }
 };
