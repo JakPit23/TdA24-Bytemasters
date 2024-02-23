@@ -1,5 +1,7 @@
 const express = require("express");
+const ics = require("ics");
 const { APIError } = require("../../Errors");
+const Logger = require("../../Logger");
 
 module.exports = class LecturersAPIRoute {
     /**
@@ -105,7 +107,7 @@ module.exports = class LecturersAPIRoute {
                 const lecturer = await this.webserver.getCore().getLecturerManager().getLecturer({ uuid });
     
                 if (!lecturer) {
-                    return res.status(200).send({ code: 404, message: "Lecturer not found" });
+                    return res.status(200).json({ code: 404, message: "Lecturer not found" });
                 }
     
                 const editedLecturer = await this.webserver.getCore().getLecturerManager().editLecturer(uuid, data);
@@ -126,9 +128,10 @@ module.exports = class LecturersAPIRoute {
     
                 const lecturer = await this.webserver.getCore().getLecturerManager().getLecturer({ uuid });
                 if (!lecturer) {
-                    return res.status(200).send({ code: 404, message: "Lecturer not found" });
+                    return res.status(200).json({ code: 404, message: "Lecturer not found" });
                 }
 
+                // TODO: ig ze poslat email lektorovi a tomu typkovi ze yoo dobra prace you did it
                 const editedLecturer = await this.webserver.getCore().getLecturerManager().editLecturer(uuid, { events: data });
                 return res.status(200).json(editedLecturer);
             } catch (error) {
@@ -152,6 +155,36 @@ module.exports = class LecturersAPIRoute {
                     return res.status(200).json({ code: 400, error: "INVALID_EVENT_DATES" });
                 }
 
+                return next(error);
+            }
+        });
+
+        this.router.get("/:uuid/event", async (req, res, next) => {
+            try {
+                const { uuid } = req.params;
+
+                const lecturer = await this.webserver.getCore().getLecturerManager().getLecturer({ uuid });
+                if (!lecturer) {
+                    return res.status(200).json({ code: 404, message: "Lecturer not found" });
+                }
+
+                if (!lecturer.events || lecturer.events.length == 0) {
+                    Logger.debug(Logger.Type.LecturerManager, `No events found for lecturer ${uuid}`);
+                    return res.status(204);
+                }
+
+                ics.createEvents(lecturer.events.map(event => event.toICSFormat()), (error, value) => {
+                    if (error) {
+                        Logger.error(Logger.Type.LecturerManager, `Failed to generate ics file for lecturer ${uuid}`, error);
+                        return res.status(500).json({ code: 500, error: "INTERNAL_SERVER_ERROR" });
+                    }
+
+                    return res.status(200)
+                        .set("Content-Type", "text/calendar")
+                        .set("Content-Disposition", "attachment; filename=events.ics")
+                        .send(value);
+                });
+            } catch (error) {
                 return next(error);
             }
         });

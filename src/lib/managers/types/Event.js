@@ -26,6 +26,17 @@ class Event {
          */
         this.endDate = data.endDate;
     }
+
+    toICSFormat = () => {
+        const startDate = new Date(this.startDate * 1000);
+        const endDate = new Date(this.endDate * 1000);
+
+        return {
+            title: this.name,
+            start: [ startDate.getFullYear(), startDate.getMonth() + 1, startDate.getDate(), startDate.getHours(), startDate.getMinutes() ],
+            end: [ endDate.getFullYear(), endDate.getMonth() + 1, endDate.getDate(), endDate.getHours(), endDate.getMinutes() ],
+        };
+    }
 }
 
 module.exports = Event;
