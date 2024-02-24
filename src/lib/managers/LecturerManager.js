@@ -220,8 +220,7 @@ class LecturerManager {
             { key: "location" },
             { key: "claim" },
             { key: "price_per_hour" },
-            { key: "contact", required: true },
-            { key: "events" }
+            { key: "contact", required: true }
         ];
 
         for (const { key, required } of allowedKeys) {
@@ -313,18 +312,6 @@ class LecturerManager {
             }
         }
 
-        if (data.events && Array.isArray(data.events)) {
-            Logger.debug(Logger.Type.LecturerManager, "Lecturer events:", data.events);
-
-            for (const event of data.events) {
-                if (!(event.name && event.start && event.end)) {
-                    Logger.debug(Logger.Type.LecturerManager, "Invalid event:", event);
-                }
-
-                (json.events ??= []).push(new Event(event));
-            }
-        }
-
         if (filteredTags.length > 0) {
             Logger.debug(Logger.Type.LecturerManager, `Lecturer tags: ${filteredTags.map(tag => tag.uuid).join(", ")}`);
             json.tags = filteredTags;
@@ -356,6 +343,7 @@ class LecturerManager {
 
                 (combination[key]) = value;
             });
+
             return combination;
         }
 
