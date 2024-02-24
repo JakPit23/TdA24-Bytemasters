@@ -125,6 +125,14 @@ module.exports = class LecturersAPIRoute {
                     return APIResponse.MISSING_REQUIRED_VALUES.send(res);
                 }
 
+                if (error == APIError.INVALID_EVENT_FIRST_NAME) {
+                    return APIResponse.INVALID_EVENT_FIRST_NAME.send(res);
+                }
+
+                if (error == APIError.INVALID_EVENT_LAST_NAME) {
+                    return APIResponse.INVALID_EVENT_LAST_NAME.send(res);
+                }
+
                 if (error == APIError.INVALID_EMAIL) {
                     return APIResponse.INVALID_EMAIL.send(res);
                 }

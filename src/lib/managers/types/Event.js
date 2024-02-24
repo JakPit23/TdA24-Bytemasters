@@ -6,12 +6,12 @@ class Event {
     constructor(data) {
         if (typeof data.firstName !== "string") {
             Logger.debug(Logger.Type.LecturerManager, "Invalid first name for adding event to lecturer");
-            throw APIError.INVALID_FIRST_NAME;
+            throw APIError.INVALID_EVENT_FIRST_NAME;
         }
 
         if (typeof data.lastName !== "string") {
             Logger.debug(Logger.Type.LecturerManager, "Invalid last name for adding event to lecturer");
-            throw APIError.INVALID_LAST_NAME;
+            throw APIError.INVALID_EVENT_LAST_NAME;
         }
 
         if (!Utils.validateEmail(data.email)) {
