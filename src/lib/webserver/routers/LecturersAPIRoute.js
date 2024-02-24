@@ -84,18 +84,14 @@ module.exports = class LecturersAPIRoute {
         this.router.delete("/:uuid", this.webserver.middlewares["APIAuthMiddleware"].run, async (req, res, next) => {
             try {
                 const { uuid } = req.params;
-                const lecturer = await this.webserver.getCore().getLecturerManager().getLecturer({ uuid });
-
-                if (!lecturer) {
-                    return res.status(200).json({
-                        code: 404,
-                        message: "Lecturer not found",
-                    });
-                }
-    
+                
                 await this.webserver.getCore().getLecturerManager().deleteLecturer(uuid);
-                return res.sendStatus(200);
+                return res.status(200).json({ code: 200, message: "OK" });
             } catch (error) {
+                if (error == APIError.LECTURER_NOT_FOUND) {
+                    return res.status(200).json({ code: 404, message: "Lecturer not found" });
+                }
+
                 return next(error);
             }
         });
@@ -104,15 +100,14 @@ module.exports = class LecturersAPIRoute {
             try {
                 const { uuid } = req.params;
                 const data = req.body;
-                const lecturer = await this.webserver.getCore().getLecturerManager().getLecturer({ uuid });
-    
-                if (!lecturer) {
+                
+                const lecturer = await this.webserver.getCore().getLecturerManager().editLecturer(uuid, data);
+                return res.status(200).json(lecturer);
+            } catch (error) {
+                if (error == APIError.LECTURER_NOT_FOUND) {
                     return res.status(200).json({ code: 404, message: "Lecturer not found" });
                 }
-    
-                const editedLecturer = await this.webserver.getCore().getLecturerManager().editLecturer(uuid, data);
-                return res.status(200).json(editedLecturer);
-            } catch (error) {
+
                 return next(error);
             }
         });

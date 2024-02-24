@@ -421,7 +421,7 @@ class LecturerManager {
      */
     async deleteLecturer(uuid) {
         if (!(await this.getLecturer({ uuid }))) {
-            throw Error("LECTURER_NOT_FOUND");
+            throw APIError.LECTURER_NOT_FOUND;
         }
 
         const result = this.core.getDatabase().exec("DELETE FROM lecturers WHERE uuid = ?", [uuid]);
@@ -444,7 +444,7 @@ class LecturerManager {
     async editLecturer(uuid, data) {
         const originalData = await this.getLecturer({ uuid });
         if (!originalData) {
-            throw Error("LECTURER_NOT_FOUND");
+            throw APIError.LECTURER_NOT_FOUND;
         }
 
         const result = await this._processLecturer(data, originalData);
