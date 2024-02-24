@@ -1,10 +1,9 @@
 class CalendarModule {
-    constructor() {
+    constructor(app) {
+        this.app = app;
         this.Calendar = FullCalendar.Calendar;
         this.Draggable = FullCalendar.Draggable;
         this.calendarEl = $('[data-calendar]')[0];
-        this.exportBtn = $('[data-export]') ;
-        this.exportBtn.on('click', this.exportCalendar());
         this.draggableEl = $('[data-draggable]')[0];
         this.test();
     }
@@ -56,10 +55,27 @@ class CalendarModule {
         })        
     }
 
-    exportCalendar() {
+    exportCalendar = async() => {
+        const uuid = this.app.getUUID()[0];
+        console.log(uuid);
         console.log("exporting events...");
-        console.log(this.getEvents());
-        const ics = fetch('/api/lecturers/')
+        const upload = await fetch(`/api/lecturers/${uuid}/event`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                events: [
+                    {
+                        title: "AHOJDA",
+                        start: "2024-02-24T07:30:00.000Z",
+                        end: "2024-02-25T12:45:00.000Z"
+                    }
+                ]
+            })
+        })
+        const response = await fetch(`/api/lecturers/${uuid}/event`);
+        console.log(response);  
     }
 
     test() {
@@ -68,6 +84,7 @@ class CalendarModule {
         this.createEvent("AHOJDA", "2024-02-24T07:30:00.000Z", "2024-02-25T12:45:00.000Z");
         this.createAllDayEvent('test', '2024-02-21');
         this.createDraggable(this.draggableEl);
+        this.exportCalendar();
     }
 
     getEvents = () => {

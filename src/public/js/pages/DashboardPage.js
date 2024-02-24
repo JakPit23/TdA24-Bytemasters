@@ -1,7 +1,8 @@
 class DashboardPage {
     constructor(app) {
         this.app = app;
-        this.calendar = new CalendarModule();
+        this.uuid = this.app.getUUID()[0];
+        this.calendar = new CalendarModule(this.app);
     }
 }
 
