@@ -118,7 +118,6 @@ class Event {
      * @returns {import("ics").EventAttributes}
      */
     toICSFormat = () => ({
-        duration: { hours: this.endDate.getHours() - this.startDate.getHours(), minutes: this.endDate.getMinutes() - this.startDate.getMinutes() },
         attendees: [ { name: `${this.firstName} ${this.lastName}`, email: this.email } ], 
         location: this.location,
         title: this.name,
