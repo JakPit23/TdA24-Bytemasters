@@ -3,6 +3,8 @@ class CalendarModule {
         this.Calendar = FullCalendar.Calendar;
         this.Draggable = FullCalendar.Draggable;
         this.calendarEl = $('[data-calendar]')[0];
+        this.exportBtn = $('[data-export]') ;
+        this.exportBtn.on('click', this.exportCalendar());
         this.draggableEl = $('[data-draggable]')[0];
         this.test();
     }
@@ -52,6 +54,12 @@ class CalendarModule {
             start: start,
             end: end
         })        
+    }
+
+    exportCalendar() {
+        console.log("exporting events...");
+        console.log(this.getEvents());
+        const ics = fetch('/api/lecturers/')
     }
 
     test() {
