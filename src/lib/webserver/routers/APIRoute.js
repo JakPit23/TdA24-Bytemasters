@@ -1,6 +1,7 @@
 const fs = require("fs");
 const express = require("express");
 const Logger = require("../../Logger");
+const APIResponse = require("../APIResponse");
 
 module.exports = class WebRoute {
     /**
@@ -15,9 +16,7 @@ module.exports = class WebRoute {
     }
 
     loadRoutes = () => {
-        this.router.get("/", (req, res) => res.json({
-            secret: "The cake is a lie"
-        }));
+        this.router.get("/", (req, res) => APIResponse.OK.send(res, { secret: "The cake is a lie" }));
 
         this.router.get("/log", (req, res, next) => {
             try {

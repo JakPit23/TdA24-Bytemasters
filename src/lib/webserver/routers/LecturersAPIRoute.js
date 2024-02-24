@@ -2,6 +2,7 @@ const express = require("express");
 const ics = require("ics");
 const { APIError } = require("../../Errors");
 const Logger = require("../../Logger");
+const APIResponse = require("../APIResponse");
 
 module.exports = class LecturersAPIRoute {
     /**
@@ -20,31 +21,23 @@ module.exports = class LecturersAPIRoute {
                 const data = req.body;
 
                 const lecturer = await this.webserver.getCore().getLecturerManager().createLecturer(data);
-                return res.status(200).json(lecturer);
+                return APIResponse.OK.send(res, lecturer.toJSON());
             } catch (error) {
                 if (error instanceof APIError) {
                     if (error == APIError.MISSING_REQUIRED_VALUES) {
-                        return res.status(400).json({ code: 400, error: "MISSING_REQUIRED_VALUES" });
+                        return APIResponse.MISSING_REQUIRED_VALUES.send(res);
                     }
                     
                     if (error == APIError.LECTURER_ALREADY_EXISTS) {
-                        return res.status(200).json({ code: 400, error: "LECTURER_ALREADY_EXISTS" });
+                        return APIResponse.LECTURER_ALREADY_EXISTS.send(res);
                     }
 
-                    if (error == APIError.INVALID_EVENT_NAME) {
-                        return res.status(200).json({ code: 400, error: "INVALID_EVENT_NAME" });
+                    if (error == APIError.USERNAME_DOESNT_MEET_MINIMAL_REQUIREMENTS) {
+                        return APIResponse.USERNAME_DOESNT_MEET_MINIMAL_REQUIREMENTS.send(res);
                     }
 
-                    if (error == APIError.INVALID_EVENT_START_DATE) {
-                        return res.status(200).json({ code: 400, error: "INVALID_EVENT_START_DATE" });
-                    }
-
-                    if (error == APIError.INVALID_EVENT_END_DATE) {
-                        return res.status(200).json({ code: 400, error: "INVALID_EVENT_END_DATE" });
-                    }
-
-                    if (error == APIError.INVALID_EVENT_DATES) {
-                        return res.status(200).json({ code: 400, error: "INVALID_EVENT_DATES" });
+                    if (error == APIError.USERNAME_DOESNT_MEET_MAXIMAL_REQUIREMENTS) {
+                        return APIResponse.USERNAME_DOESNT_MEET_MAXIMAL_REQUIREMENTS.send(res);
                     }
                 }
 
@@ -72,10 +65,10 @@ module.exports = class LecturersAPIRoute {
                 const lecturer = await this.webserver.getCore().getLecturerManager().getLecturer({ uuid });
     
                 if (!lecturer) {
-                    return res.status(200).send({ code: 404, message: "Lecturer not found" });
+                    return APIResponse.LECTURER_NOT_FOUND.send(res);
                 }
     
-                return res.status(200).json(lecturer);
+                return APIResponse.OK.send(res, lecturer.toJSON());
             } catch (error) {
                 return next(error);
             }
@@ -86,10 +79,10 @@ module.exports = class LecturersAPIRoute {
                 const { uuid } = req.params;
                 
                 await this.webserver.getCore().getLecturerManager().deleteLecturer(uuid);
-                return res.status(200).json({ code: 200, message: "OK" });
+                return APIResponse.OK.send(res);
             } catch (error) {
                 if (error == APIError.LECTURER_NOT_FOUND) {
-                    return res.status(200).json({ code: 404, message: "Lecturer not found" });
+                    return APIResponse.LECTURER_NOT_FOUND.send(res);
                 }
 
                 return next(error);
@@ -102,10 +95,10 @@ module.exports = class LecturersAPIRoute {
                 const data = req.body;
                 
                 const lecturer = await this.webserver.getCore().getLecturerManager().editLecturer(uuid, data);
-                return res.status(200).json(lecturer);
+                return APIResponse.OK.send(res, lecturer.toJSON()); 
             } catch (error) {
                 if (error == APIError.LECTURER_NOT_FOUND) {
-                    return res.status(200).json({ code: 404, message: "Lecturer not found" });
+                    return APIResponse.LECTURER_NOT_FOUND.send(res); 
                 }
 
                 return next(error);
@@ -119,41 +112,41 @@ module.exports = class LecturersAPIRoute {
 
                 const lecturer = await this.webserver.getCore().getLecturerManager().getLecturer({ uuid });
                 if (!lecturer) {
-                    return res.status(200).json({ code: 404, message: "Lecturer not found" });
+                    return APIResponse.LECTURER_NOT_FOUND.send(res);
                 }
 
                 // TODO: ig ze poslat email lektorovi a tomu typkovi ze yoo dobra prace you did it
                 lecturer.addEvent(data);
                 this.webserver.getCore().getLecturerManager()._saveLecturer(lecturer, true);
 
-                return res.status(200).json({ code: 200, message: "OK" });
+                return APIResponse.OK.send(res); 
             } catch (error) {
                 if (error == APIError.MISSING_REQUIRED_VALUES) {
-                    return res.status(400).json({ code: 400, error: "MISSING_REQUIRED_VALUES" });
+                    return APIResponse.MISSING_REQUIRED_VALUES.send(res);
                 }
 
                 if (error == APIError.INVALID_EMAIL) {
-                    return res.status(200).json({ code: 400, error: "INVALID_EMAIL" });
+                    return APIResponse.INVALID_EMAIL.send(res);
                 }
 
                 if (error == APIError.INVALID_PHONE_NUMBER) {
-                    return res.status(200).json({ code: 400, error: "INVALID_PHONE_NUMBER" });
+                    return APIResponse.INVALID_PHONE_NUMBER.send(res);
                 }
 
                 if (error == APIError.INVALID_EVENT_START_DATE) {
-                    return res.status(200).json({ code: 400, error: "INVALID_EVENT_START_DATE" });
+                    return APIResponse.INVALID_EVENT_START_DATE.send(res);
                 }
 
                 if (error == APIError.INVALID_EVENT_END_DATE) {
-                    return res.status(200).json({ code: 400, error: "INVALID_EVENT_END_DATE" });
+                    return APIResponse.INVALID_EVENT_END_DATE.send(res);
                 }
 
                 if (error == APIError.INVALID_EVENT_DATES) {
-                    return res.status(200).json({ code: 400, error: "INVALID_EVENT_DATES" });
+                    return APIResponse.INVALID_EVENT_DATES.send(res);
                 }
 
                 if (error == APIError.EVENT_CONFLICTS_WITH_EXISTING_EVENT) {
-                    return res.status(200).json({ code: 400, error: "EVENT_CONFLICTS_WITH_EXISTING_EVENT" });
+                    return APIResponse.EVENT_CONFLICTS_WITH_EXISTING_EVENT.send(res);
                 }
 
                 return next(error);
@@ -166,18 +159,18 @@ module.exports = class LecturersAPIRoute {
 
                 const lecturer = await this.webserver.getCore().getLecturerManager().getLecturer({ uuid });
                 if (!lecturer) {
-                    return res.status(200).json({ code: 404, message: "Lecturer not found" });
+                    return APIResponse.LECTURER_NOT_FOUND.send(res);
                 }
 
                 if (!lecturer.events || lecturer.events.length == 0) {
                     Logger.debug(Logger.Type.LecturerManager, `No events found for lecturer ${uuid}`);
-                    return res.status(204).send({ code: 204, message: "Lecturer has no events" });
+                    return res.sendStatus(204);
                 }
 
                 ics.createEvents(lecturer.events.map(event => event.toICSFormat()), (error, value) => {
                     if (error) {
                         Logger.error(Logger.Type.LecturerManager, `Failed to generate ics file for lecturer ${uuid}`, error);
-                        return res.status(500).json({ code: 500, error: "INTERNAL_SERVER_ERROR" });
+                        return next(error);
                     }
 
                     return res.status(200)

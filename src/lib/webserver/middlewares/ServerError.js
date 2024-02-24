@@ -1,4 +1,5 @@
 const Logger = require("../../Logger");
+const APIResponse = require("../APIResponse");
 
 module.exports = class ServerError {
     /**
@@ -10,15 +11,12 @@ module.exports = class ServerError {
     run = (error, req, res, next) => {
         if (req.path.startsWith("/api")) {
             if (error instanceof SyntaxError && error.status === 400 && "body" in error) {
-                return res.status(400).send({ code: 400, message: "Invalid request body" });
+                return APIResponse.INVALID_REQUEST_BODY.send(res);
             }
 
             Logger.error(Logger.Type.Webserver, "An error occured while processing the request:", error);
-            return res.status(500).json({
-                code: 500,
-                error: "Server error",
-                // stack: (process.env.NODE_ENV != "production" ? error.stack.split("\n").map(line => line.trim()) : undefined)
-                stack: error.stack.split("\n").map(line => line.trim())
+            return APIResponse.INTERNAL_SERVER_ERROR.send(res, {
+                stack: (process.env.NODE_ENV != "production" || process.argv.includes("--dev") ? error.stack.split("\n").map(line => line.trim()) : undefined)
             });
         }
         

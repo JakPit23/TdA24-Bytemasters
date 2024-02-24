@@ -1,3 +1,5 @@
+const APIResponse = require("../APIResponse");
+
 module.exports = class RouteNotFound {
     /**
      * @param {import("express").Request} req 
@@ -6,10 +8,7 @@ module.exports = class RouteNotFound {
      */
     run = (req, res, next) => {
         if (req.path.startsWith("/api")) {
-            return res.status(404).json({
-                code: 404,
-                message: "Not found",
-            });
+            return APIResponse.ROUTE_NOT_FOUND.send(res);
         }
 
         return res.status(404).render("404");

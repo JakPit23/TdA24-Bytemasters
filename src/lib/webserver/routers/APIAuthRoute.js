@@ -1,5 +1,6 @@
 const express = require("express");
 const { APIError } = require("../../Errors");
+const APIResponse = require("../APIResponse");
 
 module.exports = class APIAuthRoute {
     /**
@@ -35,12 +36,12 @@ module.exports = class APIAuthRoute {
                 return res.status(200).json({ code: 200 });
             } catch (error) {
                 if (error instanceof APIError) {
-                    if (error == APIError.MISSING_REQUIRED_VALUES) {
-                        return res.status(400).json({ error: "Missing required values" });
-                    }
+                    // if (error == APIError.MISSING_REQUIRED_VALUES) {
+                    //     return APIResponse.MISSING_REQUIRED_VALUES.send(res);
+                    // }
     
                     if (error == APIError.INVALID_CREDENTIALS) {
-                        return res.status(400).json({ error: "Invalid credentials" });
+                        return APIResponse.INVALID_CREDENTIALS.send(res);
                     }
                 }
 

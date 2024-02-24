@@ -1,4 +1,5 @@
 const Config = require("../../Config");
+const APIResponse = require("../APIResponse");
 
 module.exports = class APIAuthMiddleware {
     /**
@@ -13,12 +14,12 @@ module.exports = class APIAuthMiddleware {
 
         const auth = req.headers.authorization;
         if (!auth) {
-            return res.status(401).json({ code: 401, error: "MISSING_AUTHORIZATION_HEADER" });
+            return APIResponse.UNAUTHORIZED.send(res);
         }
-
+        
         const [ username, password ] = Buffer.from(auth.split(" ")[1], "base64").toString().split(":");
         if (username != Config.getAPIUsername() || password != Config.getAPIPassword()) {
-            return res.status(401).json({ code: 401, error: "INVALID_CREDENTIALS" });
+            return APIResponse.UNAUTHORIZED.send(res);
         }
 
         return next();
