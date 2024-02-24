@@ -170,7 +170,7 @@ module.exports = class LecturersAPIRoute {
 
                 if (!lecturer.events || lecturer.events.length == 0) {
                     Logger.debug(Logger.Type.LecturerManager, `No events found for lecturer ${uuid}`);
-                    return res.status(204);
+                    return res.status(204).send({ code: 204, message: "Lecturer has no events" });
                 }
 
                 ics.createEvents(lecturer.events.map(event => event.toICSFormat()), (error, value) => {
