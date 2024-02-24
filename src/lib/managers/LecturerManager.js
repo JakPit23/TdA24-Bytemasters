@@ -19,11 +19,11 @@ const sanitizeHtml = require("sanitize-html");
 const bcryptjs = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const Lecturer = require("./types/Lecturer");
-const UUIDProcessor = require("../utils/UUIDProcessor");
 const Logger = require("../Logger");
 const { APIError } = require("../Errors");
 const Config = require("../Config");
 const Event = require("./types/Event");
+const Utils = require("../Utils");
 
 class LecturerManager {
     /**
@@ -80,6 +80,7 @@ class LecturerManager {
             return null;
         }
     }
+    
     /**
      * @private
      * @param {import("./types/Lecturer")} lecturer 
@@ -192,7 +193,7 @@ class LecturerManager {
         }
 
         if (events) {
-            json.events = JSON.parse(events).map(event => new Event(event));
+            json.events = JSON.parse(events).map(data => new Event(data));
         }
 
         return new Lecturer(json);
@@ -295,13 +296,19 @@ class LecturerManager {
         if (data.contact) {
             if (data.contact.telephone_numbers && Array.isArray(data.contact.telephone_numbers)) {
                 filteredNumbers = [...new Set(
-                    data.contact.telephone_numbers.filter(number => this._isValidPhoneNumber(number)).map(number => this._sanitize(number))
+                    data.contact.telephone_numbers.filter(number => {
+                        Logger.debug(Logger.Type.LecturerManager, `Validating phone number ${number}`);
+                        return Utils.validatePhoneNumber(number);
+                    }).map(number => this._sanitize(number))
                 )];
             }
         
             if (data.contact.emails && Array.isArray(data.contact.emails)) {
                 filteredEmails = [...new Set(
-                    data.contact.emails.filter(email => this._isValidEmail(email)).map(email => this._sanitize(email))
+                    data.contact.emails.filter(email => {
+                        Logger.debug(Logger.Type.LecturerManager, `Validating email ${email}`);
+                        return Utils.validateEmail(email);
+                    }).map(email => this._sanitize(email))
                 )];
             }
         }
@@ -310,7 +317,7 @@ class LecturerManager {
             Logger.debug(Logger.Type.LecturerManager, "Lecturer events:", data.events);
 
             for (const event of data.events) {
-                if (!(event.name && event.startDate && event.endDate)) {
+                if (!(event.name && event.start && event.end)) {
                     Logger.debug(Logger.Type.LecturerManager, "Invalid event:", event);
                 }
 
@@ -352,8 +359,8 @@ class LecturerManager {
             return combination;
         }
 
-        json.uuid = UUIDProcessor.newUUID();
-        while (await this.getLecturer({ uuid: json.uuid })) { json.uuid = UUIDProcessor.newUUID() }
+        json.uuid = Utils.newUUID();
+        while (await this.getLecturer({ uuid: json.uuid })) { json.uuid = Utils.newUUID() }
 
         return json;
     }
@@ -443,26 +450,6 @@ class LecturerManager {
         const result = await this._processLecturer(data, originalData);
         await this._saveLecturer(result, true);
         return result;
-    }
-
-    /**
-     * @private
-     * @param {string} phoneNumber
-     * @returns {boolean}
-     */
-    _isValidPhoneNumber(phoneNumber) {
-        Logger.debug(Logger.Type.LecturerManager, `Validating phone number ${phoneNumber}`);
-        return /^\+?(\d+\s?)+$/.test(phoneNumber);
-    }
-
-    /**
-     * @private
-     * @param {string} email
-     * @returns {boolean}
-     */
-    _isValidEmail(email) {
-        Logger.debug(Logger.Type.LecturerManager, `Validating email ${email}`);
-        return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
     }
 }
 

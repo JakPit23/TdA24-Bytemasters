@@ -1,3 +1,7 @@
+const { APIError } = require("../../Errors");
+const Logger = require("../../Logger");
+const Event = require("./Event");
+
 class Lecturer {
     constructor(data) {
         /** 
@@ -85,10 +89,10 @@ class Lecturer {
         this.tags = data.tags;
 
         /** 
-         * @type {Array<import("./Event")>} 
+         * @type {Array<import("./Event")>}
          * @description The events of the lecturer.
          */
-        this.events = data.events;
+        this.events = data.events || [];
 
         /** 
          * @type {Object} 
@@ -100,6 +104,33 @@ class Lecturer {
     toJSON() {
         const { username, password, ...data } = this;
         return data;
+    }
+
+    /**
+     * @param {object} data 
+     * @param {string} data.firstName
+     * @param {string} data.lastName
+     * @param {string} data.email
+     * @param {string} data.phoneNumber
+     * @param {object} data.event
+     * @param {string} data.event.name
+     * @param {string} data.event.location
+     * @param {number} data.event.start
+     * @param {number} data.event.end
+     */
+    addEvent(data) {
+        this.events.find(event => {
+            if (data.event.start >= event.start && data.event.start <= event.end) {
+                Logger.debug(Logger.Type.LecturerManager, "Event conflicts with existing event");
+                throw APIError.EVENT_CONFLICTS_WITH_EXISTING_EVENT;
+            }
+        });
+
+        const event = new Event(data);
+        let index = (this.events ??= []).push(event);
+     
+        Logger.debug(Logger.Type.LecturerManager, `Added event to lecturer ${this.uuid}`);
+        return this.events[index-1];
     }
 }
 

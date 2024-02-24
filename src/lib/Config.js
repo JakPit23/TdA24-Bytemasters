@@ -1,4 +1,4 @@
-const UUIDProcessor = require("./utils/UUIDProcessor");
+const Utils = require("./Utils");
 
 class Config {
     /**
@@ -14,7 +14,7 @@ class Config {
     /**
      * @returns {string}
      */
-    getSecretKey = () => process.env.SECRET_KEY || UUIDProcessor.newUUID();
+    getSecretKey = () => process.env.SECRET_KEY || Utils.newUUID();
 
     /**
      * @returns {string}

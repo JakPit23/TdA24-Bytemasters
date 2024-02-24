@@ -1,7 +1,7 @@
 const sanitizeHtml = require("sanitize-html");
 const Logger = require("../Logger");
-const UUIDProcessor = require("../utils/UUIDProcessor");
 const Tag = require("./types/Tag");
+const Utils = require("../Utils");
 
 class TagManager {
     /**
@@ -37,9 +37,9 @@ class TagManager {
             json.name = this._sanitize(data.name);
         }
 
-        if (!UUIDProcessor.validateUUID(data.uuid)) {
-            json.uuid = UUIDProcessor.newUUID();
-            while (await this.getTag({ uuid: json.uuid })) { json.uuid = UUIDProcessor.newUUID() };
+        if (!Utils.validateUUID(data.uuid)) {
+            json.uuid = Utils.newUUID();
+            while (await this.getTag({ uuid: json.uuid })) { json.uuid = Utils.newUUID() };
 
             Logger.debug(Logger.Type.TagManager, `Generated new UUID: ${json.uuid}`);
         }

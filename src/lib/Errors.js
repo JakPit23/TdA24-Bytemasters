@@ -13,7 +13,9 @@ class APIError extends Error {
     static INVALID_EVENT_START_DATE = new APIError("INVALID_EVENT_START_DATE");
     static INVALID_EVENT_END_DATE = new APIError("INVALID_EVENT_END_DATE");
     static INVALID_EVENT_DATES = new APIError("INVALID_EVENT_DATES");
-    
+    static INVALID_EMAIL = new APIError("INVALID_EMAIL");
+    static INVALID_PHONE_NUMBER = new APIError("INVALID_PHONE_NUMBER");
+    static EVENT_CONFLICTS_WITH_EXISTING_EVENT = new APIError("EVENT_CONFLICTS_WITH_EXISTING_EVENT");
 }
 
 module.exports = {

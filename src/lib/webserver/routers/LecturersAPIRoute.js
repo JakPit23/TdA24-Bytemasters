@@ -122,25 +122,27 @@ module.exports = class LecturersAPIRoute {
                 const { uuid } = req.params;
                 const data = req.body;
 
-                if (!Array.isArray(data)) {
-                    return res.status(200).json({ code: 400, error: "MISSING_REQUIRED_VALUES" });
-                }
-    
                 const lecturer = await this.webserver.getCore().getLecturerManager().getLecturer({ uuid });
                 if (!lecturer) {
                     return res.status(200).json({ code: 404, message: "Lecturer not found" });
                 }
 
                 // TODO: ig ze poslat email lektorovi a tomu typkovi ze yoo dobra prace you did it
-                const editedLecturer = await this.webserver.getCore().getLecturerManager().editLecturer(uuid, { events: data });
-                return res.status(200).json(editedLecturer);
+                lecturer.addEvent(data);
+                this.webserver.getCore().getLecturerManager()._saveLecturer(lecturer, true);
+
+                return res.status(200).json({ code: 200, message: "OK" });
             } catch (error) {
                 if (error == APIError.MISSING_REQUIRED_VALUES) {
                     return res.status(400).json({ code: 400, error: "MISSING_REQUIRED_VALUES" });
                 }
 
-                if (error == APIError.INVALID_EVENT_NAME) {
-                    return res.status(200).json({ code: 400, error: "INVALID_EVENT_NAME" });
+                if (error == APIError.INVALID_EMAIL) {
+                    return res.status(200).json({ code: 400, error: "INVALID_EMAIL" });
+                }
+
+                if (error == APIError.INVALID_PHONE_NUMBER) {
+                    return res.status(200).json({ code: 400, error: "INVALID_PHONE_NUMBER" });
                 }
 
                 if (error == APIError.INVALID_EVENT_START_DATE) {
@@ -153,6 +155,10 @@ module.exports = class LecturersAPIRoute {
 
                 if (error == APIError.INVALID_EVENT_DATES) {
                     return res.status(200).json({ code: 400, error: "INVALID_EVENT_DATES" });
+                }
+
+                if (error == APIError.EVENT_CONFLICTS_WITH_EXISTING_EVENT) {
+                    return res.status(200).json({ code: 400, error: "EVENT_CONFLICTS_WITH_EXISTING_EVENT" });
                 }
 
                 return next(error);
