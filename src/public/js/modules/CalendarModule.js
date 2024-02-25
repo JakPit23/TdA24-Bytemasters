@@ -1,6 +1,7 @@
 class CalendarModule {
     constructor(app) {
         this.app = app;
+        this.LecturerAPI = new LecturerAPI();
         this.Calendar = FullCalendar.Calendar;
         this.Draggable = FullCalendar.Draggable;
         this.calendarEl = $('[data-calendar]')[0];
@@ -10,7 +11,7 @@ class CalendarModule {
         this.test();
     }
 
-    createCalendar(calendarElement) {
+    createCalendar = async(calendarElement) => {
         let calendar = new this.Calendar(calendarElement, {
             locale: 'cs',
             firstDay: 1,
@@ -23,6 +24,12 @@ class CalendarModule {
         });
 
         this.calendar = calendar;
+        // getLecturers from LecturerAPI and filter it by uuid
+        const uuid = this.app.getUUID()[0];
+        const lecturer = await this.LecturerAPI.getLecturer(uuid);
+        const events = lecturer.events;
+        console.log(events);
+        this.createEvents(events);
     }
 
     renderCalendar() {
@@ -54,7 +61,17 @@ class CalendarModule {
             title: title,
             start: start,
             end: end
-        })        
+        })
+        return;        
+    }
+
+    createEvents(events) {
+        // input data is JSON array of events
+        console.log("Generating");
+        events.forEach(event => {
+            console.log(new Date(event.event.start).toISOString());
+            this.createEvent(event.event.name, new Date(event.event.start).toISOString(), new Date(event.event.end).toISOString());
+        });
     }
 
     exportCalendar = async() => {
@@ -73,8 +90,6 @@ class CalendarModule {
     test() {
         this.createCalendar(this.calendarEl);
         this.renderCalendar();
-        this.createEvent("AHOJDA", "2024-02-24T07:30:00.000Z", "2024-02-25T12:45:00.000Z");
-        this.createAllDayEvent('test', '2024-02-21');
         this.createDraggable(this.draggableEl);
     }
 
