@@ -30,6 +30,8 @@ module.exports = class APIResponse {
 
     static INVALID_EVENT_FIRST_NAME = new APIResponse({ statusCode: 400, code: 400, error: "INVALID_EVENT_FIRST_NAME" });
     static INVALID_EVENT_LAST_NAME = new APIResponse({ statusCode: 400, code: 400, error: "INVALID_EVENT_LAST_NAME" });
+    static INVALID_EVENT_NAME = new APIResponse({ statusCode: 400, code: 400, error: "INVALID_EVENT_NAME" });
+    static INVALID_EVENT_LOCATION = new APIResponse({ statusCode: 400, code: 400, error: "INVALID_EVENT_LOCATION" });
     static INVALID_EVENT_START_DATE = new APIResponse({ statusCode: 400, code: 400, error: "INVALID_EVENT_START_DATE" });
     static INVALID_EVENT_END_DATE = new APIResponse({ statusCode: 400, code: 400, error: "INVALID_EVENT_END_DATE" });
     static INVALID_EVENT_DATES = new APIResponse({ statusCode: 400, code: 400, error: "INVALID_EVENT_DATES" });

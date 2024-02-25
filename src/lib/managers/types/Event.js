@@ -24,6 +24,11 @@ class Event {
             throw APIError.INVALID_PHONE_NUMBER;
         }
 
+        if (typeof data.event !== "object") {
+            Logger.debug(Logger.Type.LecturerManager, "Invalid event for adding event to lecturer");
+            throw APIError.MISSING_REQUIRED_VALUES;
+        }
+
         if (typeof data.event.name !== "string") {
             Logger.debug(Logger.Type.LecturerManager, "Invalid event name for adding event to lecturer");
             throw APIError.INVALID_EVENT_NAME;

@@ -119,6 +119,8 @@ class Lecturer {
      * @param {number} data.event.end
      */
     addEvent(data) {
+        const event = new Event(data);
+
         this.events.find(event => {
             if (data.event.start >= event.start && data.event.start <= event.end) {
                 Logger.debug(Logger.Type.LecturerManager, "Event conflicts with existing event");
@@ -126,7 +128,6 @@ class Lecturer {
             }
         });
 
-        const event = new Event(data);
         let index = (this.events ??= []).push(event);
      
         Logger.debug(Logger.Type.LecturerManager, `Added event to lecturer ${this.uuid}`);

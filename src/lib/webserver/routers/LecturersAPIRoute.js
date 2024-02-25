@@ -124,11 +124,11 @@ module.exports = class LecturersAPIRoute {
                 if (error == APIError.MISSING_REQUIRED_VALUES) {
                     return APIResponse.MISSING_REQUIRED_VALUES.send(res);
                 }
-
+                
                 if (error == APIError.INVALID_EVENT_FIRST_NAME) {
                     return APIResponse.INVALID_EVENT_FIRST_NAME.send(res);
                 }
-
+                
                 if (error == APIError.INVALID_EVENT_LAST_NAME) {
                     return APIResponse.INVALID_EVENT_LAST_NAME.send(res);
                 }
@@ -139,6 +139,14 @@ module.exports = class LecturersAPIRoute {
 
                 if (error == APIError.INVALID_PHONE_NUMBER) {
                     return APIResponse.INVALID_PHONE_NUMBER.send(res);
+                }
+
+                if (error == APIError.INVALID_EVENT_NAME) {
+                    return APIResponse.INVALID_EVENT_NAME.send(res);
+                }
+
+                if (error == APIError.INVALID_EVENT_LOCATION) {
+                    return APIResponse.INVALID_EVENT_LOCATION.send(res);
                 }
 
                 if (error == APIError.INVALID_EVENT_START_DATE) {
