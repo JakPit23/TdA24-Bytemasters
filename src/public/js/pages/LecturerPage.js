@@ -108,19 +108,6 @@ class Page {
         alert('Rezervace');
         var time = new Date(document.getElementById('time').value).getTime();
 
-        console.log(JSON.stringify({
-            "firstName" : document.getElementById('firstName').value,
-            "lastName" : document.getElementById('lastName').value,
-            "email" : document.getElementById('email').value,
-            "phoneNumber": document.getElementById('telephone').value,
-            "event": {
-                "name": document.getElementById('message').value,
-                "location": document.getElementById('location').value,
-                "start":  time,
-                "end": time + 3600
-            }
-        }));
-
         const response = await fetch(`/api/lecturers/${this.app.getUUID()[0]}/event`, {
             method: 'POST',
             headers: {
@@ -139,6 +126,11 @@ class Page {
                 }
             }),
         });
-        console.log(response);
+        if(response.status !== 200) {
+            const data = await response.json();
+            if(data.error == "EVENT_CONFLICTS_WITH_EXISTING_EVENT") {
+                alert("Kolize s jinou událostí, zvolte jiný čas nebo datum.")
+            }
+        }
     }
 }
