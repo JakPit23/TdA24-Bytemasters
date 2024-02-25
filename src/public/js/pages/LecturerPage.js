@@ -34,7 +34,6 @@ class Page {
         }
         
         const lecturerContent = $('<div>').addClass('lecturer-content flex flex-col').appendTo(this.lecturerElement);
-        const signupForm = $('<div>').addClass('flex flex-column').appendTo(lecturerContent);
         const profile = $('<div>').addClass('flex flex-col md:flex-row').appendTo(lecturerContent);
         const profileInfo = $('<div>').appendTo(profile);
         
@@ -86,17 +85,60 @@ class Page {
             $('<p>').addClass('lecturer-bio').text(data.bio).appendTo(lecturerContent);
         }
 
-        $('<h2>').addClass('text-2xl font-semibold').text('Chceš si zarezervovat hodinu?').appendTo(lecturerContent);
-        const form = $('<form>').addClass('flex flex-col gap-4 bg-dark-900 text-white').appendTo(lecturerContent);
-        $('<input>').attr('type', 'text').attr('placeholder', 'Jméno').appendTo(form);
-        $('<input>').attr('type', 'text').attr('placeholder', 'Příjmení').appendTo(form);
-        $('<input>').attr('type', 'date').appendTo(form);
-        $('<input>').attr('type', 'time').appendTo(form);
-        $('<textarea>').attr('placeholder', 'Zpráva').appendTo(form);
-        $('<button>').addClass("btn").text('Odeslat').appendTo(form);   
+        // Reservation form consists of firstName, lastName, email, message, date and time and a submit button. it should be flex-column and have a gap. Please use the right colors
+        const reservationForm = $('<form>').addClass('flex flex-col gap-4').appendTo(lecturerContent);
+        $('<h1>').text('Rezervace').appendTo(reservationForm).addClass('text-2xl mx-auto font-bold');
+        $('<input>').attr('type', 'text').attr('placeholder', 'Jméno').appendTo(reservationForm).addClass('bg-transparent').attr('id', 'firstName')
+        $('<input>').attr('type', 'text').attr('placeholder', 'Příjmení').appendTo(reservationForm).addClass('bg-transparent').attr('id', 'lastName')
+        $('<input>').attr('type', 'email').attr('placeholder', 'Email').appendTo(reservationForm).addClass('bg-transparent').attr('id', 'email')
+        $('<input>').attr('type', 'tel').attr('placeholder', 'Telefon').appendTo(reservationForm).addClass('bg-transparent').attr('id', 'telephone')
+        $('<input>').attr('type', 'text').attr('placeholder', 'Místo').appendTo(reservationForm).addClass('bg-transparent').attr('id', 'location')
+        $('<textarea>').attr('placeholder', 'Zpráva').appendTo(reservationForm).addClass('bg-transparent').attr('id', 'message');
+        $('<input>').attr('type', 'datetime-local').appendTo(reservationForm).addClass('bg-transparent').attr('id', 'time');
+        $('<button>').text('Rezervovat').addClass('btn').on('click', this.reserveLecturer).appendTo(reservationForm);
 
-
+        
+        
         $('title').text(`${name} | ${$('title').text()}`);
         this.lecturerElement.show();
+    }
+
+    reserveLecturer = async (e) => {
+        e.preventDefault();
+        alert('Rezervace');
+        var time = new Date(document.getElementById('time').value).getTime() / 1000;
+
+        console.log(JSON.stringify({
+            "firstName" : document.getElementById('firstName').value,
+            "lastName" : document.getElementById('lastName').value,
+            "email" : document.getElementById('email').value,
+            "phoneNumber": document.getElementById('telephone').value,
+            "event": {
+                "name": document.getElementById('message').value,
+                "location": document.getElementById('location').value,
+                "start":  time,
+                "end": time + 3600
+            }
+        }));
+
+        const response = await fetch(`/api/lecturers/${this.app.getUUID()[0]}/event`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                "firstName" : document.getElementById('firstName').value,
+                "lastName" : document.getElementById('lastName').value,
+                "email" : document.getElementById('email').value,
+                "phoneNumber": document.getElementById('telephone').value,
+                "event": {
+                    "name": document.getElementById('message').value,
+                    "location": document.getElementById('location').value,
+                    "start":  time,
+                    "end": time + 3600
+                }
+            }),
+        });
+        console.log(response);
     }
 }
