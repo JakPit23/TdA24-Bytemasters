@@ -1006,10 +1006,6 @@ video {
   color: rgba(255, 255, 255, 1);
 }
 
-.text-dark-700 {
-  color: rgba(51, 51, 51, 0.8);
-}
-
 .shadow {
   --tw-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
   --tw-shadow-colored: 0 1px 3px 0 var(--tw-shadow-color), 0 1px 2px -1px var(--tw-shadow-color);
@@ -1690,6 +1686,16 @@ p {
   background-color: rgba(254, 203, 46, 1);
 }
 
+/* FORM */
+
+form {
+  color: rgba(51, 51, 51, 1);
+}
+
+:is(.dark form) {
+  color: rgba(255, 255, 255, 1);
+}
+
 .hover\:bg-neutral-600:hover {
   --tw-bg-opacity: 1;
   background-color: rgb(82 82 82 / var(--tw-bg-opacity));
@@ -1720,20 +1726,12 @@ p {
   background-color: rgba(255, 255, 255, 0.1);
 }
 
-:is(.dark .dark\:bg-transparent) {
-  background-color: transparent;
-}
-
 :is(.dark .dark\:text-white-200) {
   color: rgba(255, 255, 255, 0.3);
 }
 
 :is(.dark .dark\:text-white-900) {
   color: rgba(255, 255, 255, 1);
-}
-
-:is(.dark .dark\:text-white-700) {
-  color: rgba(255, 255, 255, 0.8);
 }
 
 :is(.dark .dark\:hover\:bg-white-100:hover) {

@@ -106,7 +106,7 @@ class Page {
     reserveLecturer = async (e) => {
         e.preventDefault();
         alert('Rezervace');
-        var time = new Date(document.getElementById('time').value).getTime() / 1000;
+        var time = new Date(document.getElementById('time').value).getTime();
 
         console.log(JSON.stringify({
             "firstName" : document.getElementById('firstName').value,

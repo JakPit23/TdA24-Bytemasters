@@ -295,3 +295,8 @@ p {
 .fc-event-main-frame {
     @apply bg-sunglate-900 dark:bg-sunglate-900 border-none;
 }
+
+/* FORM */
+form {
+    @apply text-dark-900 dark:text-white-900;
+}
