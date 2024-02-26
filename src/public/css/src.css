@@ -114,6 +114,16 @@ p {
     @apply flex flex-row dark:bg-dark-900 rounded-md py-4 px-4 cursor-pointer;
 }
 
+.reservation {
+    @apply flex flex-col rounded-md py-4 px-4 shadow-xl bg-dark-900;
+}
+
+input[type="text"], input[type="email"], input[type="tel"], textarea {
+    @apply border-2 border-skyblue-100 lg:mr-2 h-fit w-full rounded py-2 px-4;
+}
+
+
+
 .lecturerCard:hover {
     /* use transition and do the color transparent on hover */
     transition: all 0.2s;
@@ -301,3 +311,7 @@ p {
 form {
     @apply text-dark-900 dark:text-white-900;
 }
+
+input[type="datetime-local"]::-webkit-calendar-picker-indicator {
+    filter: invert(1);
+  }
