@@ -36,5 +36,10 @@
     <script defer src="/public/js/modules/CalendarModule.js"></script>
     <script defer src="/public/js/pages/DashboardPage.js"></script>
     <script>class Page{}</script>
+
+    <%-'<script>'%>
+        this.uuid = "<%= lecturer.uuid %>";
+        console.log(`cum vole moje uuid je ${this.uuid}`);
+    <%-'</script>'%>
 </body>
 </html>
