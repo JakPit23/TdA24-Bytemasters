@@ -15,6 +15,7 @@ module.exports = class WebRoute {
         this.router.get("/", this.webserver.middlewares["LecturerMiddleware"].fetchSession, async (req, res) => res.render("index"));
         this.router.get("/gdpr", this.webserver.middlewares["LecturerMiddleware"].fetchSession, (req, res) => res.render("gdpr"));
         this.router.get("/contact", this.webserver.middlewares["LecturerMiddleware"].fetchSession, (req, res) => res.render("contact"));
+
         this.router.get("/login", this.webserver.middlewares["LecturerMiddleware"].fetchSession, (req, res) => {
             if (res.locals.lecturer) {
                 return res.redirect("/dashboard");
@@ -23,7 +24,7 @@ module.exports = class WebRoute {
             res.render("login");
         });
 
-        this.router.get("/lecturer/:lecturerUUID", async (req, res) => {
+        this.router.get("/lecturer/:lecturerUUID", this.webserver.middlewares["LecturerMiddleware"].fetchSession, async (req, res) => {
             const lecturerUUID = req.params.lecturerUUID;
 
             const lecturer = await this.webserver.getCore().getLecturerManager().getLecturer({ uuid: lecturerUUID });

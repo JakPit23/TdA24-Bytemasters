@@ -53,16 +53,31 @@ p {
 }
 
 .btn {
-    @apply py-2 px-4 rounded-md bg-sunglate-900 text-white-900 font-semibold transition-colors;
-    cursor: pointer;
+    @apply py-2 px-4 rounded-md bg-sunglate-900 text-white-900 font-semibold transition-colors cursor-pointer;
+
+    &:hover {
+        @apply bg-sunglate-700;
+    }
 }
 
 .btn-big {
     @apply text-2xl font-bold py-3 px-6;
-
 }
-.btn:hover {
-    @apply bg-sunglate-300;
+
+.btn-skyblue {
+    @apply bg-skyblue-900;
+
+    &:hover {
+        @apply bg-skyblue-700;
+    }
+}
+
+.btn-prussianblue {
+    @apply bg-prussianblue-900;
+
+    &:hover {
+        @apply bg-prussianblue-700;
+    }
 }
 
 /* LOADER */
@@ -111,14 +126,11 @@ p {
 
 /* LECTURER CARD */
 .lecturerCard {
-    @apply flex flex-row dark:bg-dark-900 rounded-md py-4 px-4 cursor-pointer;
+    @apply flex flex-row dark:bg-black-50 rounded-md py-4 px-4 cursor-pointer transition-colors;
 }
 
 .lecturerCard:hover {
-    /* use transition and do the color transparent on hover */
-    transition: all 0.2s;
-    @apply bg-sunglate-300;
-    @apply border-2 rounded border-dark-200
+    @apply dark:bg-black-100;
 }
 
 .lecturerCard .lecturer-profileImage {
@@ -312,5 +324,10 @@ input[type="datetime-local"]::-webkit-calendar-picker-indicator {
 }
 
 .reservation .user-input {
+    @apply w-full rounded py-2 px-4 bg-white-900 text-dark-900;
+}
+
+
+.user-input {
     @apply w-full rounded py-2 px-4 bg-white-900 text-dark-900;
 }

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><%- lecturer.first_name %> <%- lecturer.last_name%> | Teacher Digital Agency</title>
+    <title><%= lecturer.first_name %> <%= lecturer.last_name %> | Teacher Digital Agency</title>
     <link rel="stylesheet" href="/public/lib/fontawesome/css/fontawesome.css">
     <link rel="stylesheet" href="/public/lib/fontawesome/css/solid.css">
     <link rel="stylesheet" href="/public/css/app.css">
@@ -13,22 +13,80 @@
     <%- include('partials/navbar') %>
     <%- include('partials/blobs') %>
 
+    <div class="h-24 block"></div>
+    
     <div class="w-full">
-        <div class="bg-dark-900 pb-5">
-            <div class="text-left pl-12">
-                <h1 class="font-bold text-3xl">Ahoj Lektore <%- lecturer.first_name  %> </h1>
-                <p class="text-lg">Tvá nejbližší schůzka je: {undefined}</p>
-            </div>
-            <div class="flex flex-row gap-3">
-                <div data-draggable data-event='{ "title": "Volno", "duration": "01:00" }' class="btn text-xl bg-sunglate-900 w-max ml-4 rounded-md fc-event">Volno </div>
-                <div class="btn w-max" data-export >Exportovat kalendář</div>
-            </div>
-            <div data-calendar class="mx-3"></div>
-        </div>
+        <div class="max-w-[1280px] mx-auto px-4">
+            <div class="flex flex-col items-start w-full pt-4 gap-4">
+                <div class="flex flex-col items-center gap-4 dark:bg-dark-700 shadow-lg rounded-md p-6 w-full">
+                    <div class="flex w-full justify-between">
+                        <h1 class="text-4xl font-extrabold"><%= lecturer.first_name %> <%= lecturer.last_name %></h1>
 
+                        <!-- TODO: fixnout aby text byl vertikalne v centru -->
+                        <button data-logout class="btn">
+                            <i class="fa-solid fa-sign-out text-xl"></i>
+                            Odhlásit se
+                        </button>
+                    </div>
+
+                    <!-- TODO: pridat user nastaveni -->
+                    <div class="flex flex-row justify-center gap-4 w-full">
+                        <button data-pageToggler="settings" class="btn">
+                            <i class="fa-solid fa-cog text-xl"></i>
+                            Nastavení
+                        </button>
+
+                        <button data-pageToggler="calendar" class="btn">
+                            <i class="fa-solid fa-calendar text-xl"></i>
+                            Kalendář
+                        </button>
+                    </div>
+
+                    <!-- <div data-page="settings" class="flex flex-col items-center gap-4 w-full">
+                        <h2 class="text-2xl font-bold">Nastavení</h2>
+
+                        <div class="flex flex-row gap-4 w-full">
+                            <div>
+                                <h3 class="text-xl font-bold">Jméno</h3>
+                                <input data-input="first_name" class="user-input" type="text" value="<%= lecturer.first_name %>">
+                            </div>
+
+                            <div>
+                                <h3 class="text-xl font-bold">Příjmení</h3>
+                                <input data-input="first_name" class="user-input" type="text" value="<%= lecturer.first_name %>">
+                            </div>
+
+                            <div>
+                                <h3 class="text-xl font-bold">Příjmení</h3>
+                                <input data-input="first_name" class="user-input" type="text" value="<%= lecturer.first_name %>">
+                            </div>
+
+                            <div>
+                                <h3 class="text-xl font-bold">Příjmení</h3>
+                                <input data-input="first_name" class="user-input" type="text" value="<%= lecturer.first_name %>">
+                            </div>
+                        </div>
+                    </div> -->
+
+                    <div data-page="calendar" class="flex flex-col items-center gap-4 w-full">
+                        <h2 class="text-2xl font-bold">Kalendář</h2>
+
+                        <div class="flex flex-col items-center gap-4 w-full">
+                            <div class="flex flex-row gap-3">
+                                <button data-draggable data-event='{ "title": "Volno", "duration": "01:00" }' class="btn fc-event">Volno</button>
+                                <button data-export class="btn btn-skyblue">Exportovat kalendář</button>
+                            </div>
+
+                            <div data-calendar></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
     <%- include('partials/footer') %>
+
     <script defer src='/public/lib/js/fullcalendar-6.1.10.min.js'></script>
     <script defer src="/public/lib/js/jquery-3.7.1.min.js"></script>
     <script defer src="/public/js/Application.js"></script>
@@ -37,7 +95,7 @@
     <script>class Page{}</script>
 
     <%-'<script>'%>
-        this.uuid = "<%= lecturer.uuid %>";       
+        this.uuid = "<%- lecturer.uuid %>";       
     <%-'</script>'%>
     <script defer src="/public/js/pages/DashboardPage.js"></script>
 </body>
