@@ -9,8 +9,14 @@ class CalendarModule {
         this.draggableEl = $('[data-draggable]')[0];
         this.exportEl = $('[data-export]')[0];
         this.exportEl.addEventListener('click', this.exportCalendar);
-        this.test();
+        this.init();
     }
+
+    init = async() => {
+        this.createCalendar(this.calendarEl);
+        this.renderCalendar();
+        this.createDraggable(this.draggableEl);
+    } 
 
     createCalendar = async(calendarElement) => {
         let calendar = new this.Calendar(calendarElement, {
@@ -21,6 +27,16 @@ class CalendarModule {
             dayMaxEvents: true,
             buttonText: {
                 today: 'Tento měsíc'
+            },
+            eventClick: function(info) {
+                let result = confirm("Opravdu chcete smazat událost?");
+                if(result) {
+                    info.event.remove();
+                }
+            },
+            drop : function(info) {
+                console.log(info);
+                calendar.addAllDayEvent(info.eventData.title, info.dateStr);
             }
         });
 
@@ -42,18 +58,26 @@ class CalendarModule {
             start: date,
             allDay: true,
         });
-    }
+    } 
 
-    createDraggable(element, eventDate) {
+    createDraggable = async(element, eventDate) => {
         this.dragObj = new this.Draggable(element, {
             eventData: function (eventEl) {
+                console.log({
+                    title: eventEl.innerText,
+                    date: eventDate,
+                    create: true,
+                });
                 return {
                     title: eventEl.innerText,
                     date: eventDate,
                     create: true,
                 };
+                }
             }
-        });
+        );
+
+        console.log(this.dragObj.eventData);
     }
 
     createEvent(title, start, end) {
@@ -64,6 +88,11 @@ class CalendarModule {
             displayEventEnd: true,
         })
         return;        
+    }
+
+
+    deleteEvent = (event) => {
+        event.remove();
     }
 
     createEvents(events) {
@@ -85,12 +114,6 @@ class CalendarModule {
         document.body.appendChild(a);
         a.click();
         a.remove();
-    }
-
-    test() {
-        this.createCalendar(this.calendarEl);
-        this.renderCalendar();
-        this.createDraggable(this.draggableEl);
     }
 
     getEvents = () => {
