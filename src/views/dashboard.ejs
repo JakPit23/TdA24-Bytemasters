@@ -20,7 +20,7 @@
                 <p class="text-lg">Tvá nejbližší schůzka je: {undefined}</p>
             </div>
             <div class="flex flex-row gap-3">
-                <div data-draggable class="btn text-xl bg-sunglate-900 w-max ml-4 rounded-md">Volno </div>
+                <div data-draggable data-event='{ "title": "Volno", "duration": "01:00" }' class="btn text-xl bg-sunglate-900 w-max ml-4 rounded-md fc-event">Volno </div>
                 <div class="btn w-max" data-export >Exportovat kalendář</div>
             </div>
             <div data-calendar class="mx-3"></div>
@@ -34,12 +34,11 @@
     <script defer src="/public/js/Application.js"></script>
     <script defer src="/public/js/LecturerAPI.js"></script>
     <script defer src="/public/js/modules/CalendarModule.js"></script>
-    <script defer src="/public/js/pages/DashboardPage.js"></script>
     <script>class Page{}</script>
 
     <%-'<script>'%>
-        this.uuid = "<%= lecturer.uuid %>";
-        console.log(`cum vole moje uuid je ${this.uuid}`);
+        this.uuid = "<%= lecturer.uuid %>";       
     <%-'</script>'%>
+    <script defer src="/public/js/pages/DashboardPage.js"></script>
 </body>
 </html>

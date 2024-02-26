@@ -1,6 +1,7 @@
 class CalendarModule {
-    constructor(app) {
+    constructor(app, uuid) {
         this.app = app;
+        this.uuid = uuid;
         this.LecturerAPI = new LecturerAPI();
         this.Calendar = FullCalendar.Calendar;
         this.Draggable = FullCalendar.Draggable;
@@ -23,10 +24,8 @@ class CalendarModule {
             }
         });
 
-        this.calendar = calendar;
-        // getLecturers from LecturerAPI and filter it by uuid
-        const uuid = this.app.getUUID()[0];
-        const lecturer = await this.LecturerAPI.getLecturer(uuid);
+        this.calendar = calendar;;
+        const lecturer = await this.LecturerAPI.getLecturer(this.uuid);
         const events = lecturer.events;
         console.log(events);
         this.createEvents(events);
@@ -41,21 +40,21 @@ class CalendarModule {
         this.calendar.addEvent({
             title: title,
             start: date,
-            allDay: true
+            allDay: true,
         });
     }
 
     createDraggable(element, eventDate) {
-        new this.Draggable(element, {
+        this.dragObj = new this.Draggable(element, {
             eventData: function (eventEl) {
                 return {
                     title: eventEl.innerText,
-                    date: eventDate
+                    date: eventDate,
+                    create: true,
                 };
             }
         });
     }
-
 
     createEvent(title, start, end) {
         this.calendar.addEvent({
@@ -77,8 +76,7 @@ class CalendarModule {
     }
 
     exportCalendar = async() => {
-        const uuid = this.app.getUUID()[0];
-        const response = await fetch(`/api/lecturers/${uuid}/event`);
+        const response = await fetch(`/api/lecturers/${this.uuid}/event`);
         const blob = await response.blob();
         const url = window.URL.createObjectURL(blob);
         const a = document.createElement('a');
