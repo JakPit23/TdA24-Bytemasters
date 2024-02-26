@@ -5,7 +5,7 @@ module.exports = class WebRoute {
      * @param {import("../Webserver")} webserver 
      */
     constructor(webserver) {
-        this.core = webserver;
+        this.webserver = webserver;
         this.router = express.Router();
 
         this.loadRoutes();
@@ -15,10 +15,19 @@ module.exports = class WebRoute {
         this.router.get("/", (req, res) => res.render("index"));
         this.router.get("/gdpr", (req, res) => res.render("gdpr"));
         this.router.get("/contact", (req, res) => res.render("contact"));
-        this.router.get("/register", (req, res) => res.render("register"));
         this.router.get("/login", (req, res) => res.render("login"));
-        this.router.get("/dashboard", (req, res) => res.render("dashboard"));
-        this.router.get("/lecturer/:lecturerUUID", (req, res) => res.render("lecturer"));
-        this.router.get("/dashboard/:lecturerUUID", (req, res) => res.render("dashboard"));
+
+        this.router.get("/lecturer/:lecturerUUID", async (req, res) => {
+            const lecturerUUID = req.params.lecturerUUID;
+
+            const lecturer = await this.webserver.getCore().getLecturerManager().getLecturer({ uuid: lecturerUUID });
+            if (!lecturer) {
+                return res.redirect("/");
+            }
+
+            res.render("lecturer", { lecturerUUID });
+        });
+
+        this.router.get("/dashboard/:lecturerUUID", this.webserver.middlewares["LecturerAuthMiddleware"].run, (req, res) => res.render("dashboard"));
     }
 };

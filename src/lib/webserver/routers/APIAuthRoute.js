@@ -36,9 +36,9 @@ module.exports = class APIAuthRoute {
                 return res.status(200).json({ code: 200 });
             } catch (error) {
                 if (error instanceof APIError) {
-                    // if (error == APIError.MISSING_REQUIRED_VALUES) {
-                    //     return APIResponse.MISSING_REQUIRED_VALUES.send(res);
-                    // }
+                    if (error == APIError.MISSING_REQUIRED_VALUES) {
+                        return APIResponse.MISSING_REQUIRED_VALUES.send(res);
+                    }
     
                     if (error == APIError.INVALID_CREDENTIALS) {
                         return APIResponse.INVALID_CREDENTIALS.send(res);
