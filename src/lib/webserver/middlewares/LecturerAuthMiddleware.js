@@ -15,19 +15,20 @@ module.exports = class LecturerAuthMiddleware {
         const { token } = req.session;
         
         if (!token) {
-            return res.redirect("/");
+            return res.redirect("/login");
         }
 
         const result = this.webserver.getCore().getLecturerManager().verifyToken(token);
         if (!result.uuid) {
-            return res.redirect("/");
+            return res.redirect("/login");
         }
 
         const lecturer = await this.webserver.getCore().getLecturerManager().getLecturer({ uuid: result.uuid });
         if (!lecturer) {
-            return res.redirect("/");
+            return res.redirect("/login");
         }
 
+        res.locals.lecturer = lecturer;
         return next();
     }
 }

@@ -25,9 +25,11 @@ module.exports = class WebRoute {
                 return res.redirect("/");
             }
 
-            res.render("lecturer", { lecturerUUID });
+            res.render("lecturer");
         });
 
-        this.router.get("/dashboard/:lecturerUUID", this.webserver.middlewares["LecturerAuthMiddleware"].run, (req, res) => res.render("dashboard"));
+        this.router.get("/dashboard", this.webserver.middlewares["LecturerAuthMiddleware"].run, (req, res) => {
+            res.render("dashboard", { lecturer: res.locals.lecturer });
+        });
     }
 };
