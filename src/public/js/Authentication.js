@@ -1,6 +1,7 @@
 class Authentication {
     constructor() {
         // get control elements
+        this.LecturerAPI = new LecturerAPI();
         this.loginBtn = $('[data-loginBtn]');
         this.messagebox = $('[data-error]');
         this.loginBtn.on('click', (event) => this.login(event));
@@ -23,7 +24,8 @@ class Authentication {
             }),
         });
         const body = await response.json();
-        console.log(body)
+        console.log(response);
+        console.log(body);
         if(response.status !== 200) {
             var text = ""
             if(body.error == "INVALID_CREDENTIALS") {
@@ -36,7 +38,8 @@ class Authentication {
             this.messagebox.addClass('mt-3');
         return;
         }
-        window.location.href = "/dashboard";
+
+        window.location.href = `/dashboard/`;
     }
 }
 

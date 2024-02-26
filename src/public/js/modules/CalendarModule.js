@@ -56,6 +56,7 @@ class CalendarModule {
         });
     }
 
+
     createEvent(title, start, end) {
         this.calendar.addEvent({
             title: title,
