@@ -60,7 +60,8 @@ class CalendarModule {
         this.calendar.addEvent({
             title: title,
             start: start,
-            end: end
+            end: end,
+            displayEventEnd: true,
         })
         return;        
     }
