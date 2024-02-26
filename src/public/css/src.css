@@ -115,13 +115,16 @@ p {
 }
 
 .reservation {
-    @apply flex flex-col rounded-md py-4 px-4 shadow-xl bg-dark-900;
+    @apply flex flex-col rounded-md py-4 px-4 shadow-xl ;
 }
 
 input[type="text"], input[type="email"], input[type="tel"], textarea {
-    @apply border-2 border-skyblue-100 lg:mr-2 h-fit w-full rounded py-2 px-4;
+    @apply border-2 border-skyblue-100 lg:mr-2 h-fit w-full rounded py-2 px-4 bg-white-900 text-dark-900;
 }
 
+input[type="datetime-local"] {
+    @apply bg-white-900 text-dark-900;
+}
 
 
 .lecturerCard:hover {

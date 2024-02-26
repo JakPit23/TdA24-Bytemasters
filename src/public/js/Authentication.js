@@ -23,12 +23,13 @@ class Authentication {
             }),
         });
         const body = await response.json();
+        console.log(body)
         if(response.status !== 200) {
             var text = ""
             if(body.error == "Invalid credentials") {
                 console.log("ERROR")
                 text = $("<p></p>").text("Špatné uživatelské jméno nebo heslo").addClass('mx-auto p-4');
-            } else if(body.error == "Missing required values") {
+            } else if(body.error == "MISSING_REQUIRED_VALUES") {
                 text = $("<p></p>").text("Nezadali jste veškeré údaje");
             }
             this.messagebox.append(text);
