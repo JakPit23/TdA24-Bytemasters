@@ -3,6 +3,8 @@ const fs = require("fs");
 const path = require("path");
 const express = require("express");
 const expressSession = require("express-session");
+const betterSqlite = require("better-sqlite3");
+const sessionSqliteStore = require("better-sqlite3-session-store")(expressSession);
 const Logger = require("../Logger");
 const Config = require("../Config");
 
@@ -22,25 +24,33 @@ class Webserver {
         this.app.set("views", path.join(__dirname, "../../views"));
 
         this.app.disable("x-powered-by");
+
         this.app.use(expressSession({
             secret: Config.getSecretKey(),
             resave: false,
-            saveUninitialized: false
+            saveUninitialized: false,
+            store: new sessionSqliteStore({
+                client: new betterSqlite(path.join(__dirname, "../../data/sessions.db")),
+                expired: {
+                    clear: true,
+                    intervalMs: 900000 //ms = 15min
+                }
+            }),
         }));
 
         this.loadMiddlewares();
         this.loadRouters();
-        
+
         this.app.use("/api", express.json());
         this.app.use((req, res, next) => this.middlewares["RequestLog"].run(req, res, next));
 
         this.app.use("/public", express.static(path.join(__dirname, "../../public")));
         this.app.use("/", this.routers["WebRoute"].router);
-        
+
         this.app.use("/api", this.routers["APIRoute"].router);
         this.app.use("/api/lecturers", this.routers["LecturersAPIRoute"].router);
         this.app.use("/api/auth", this.routers["APIAuthRoute"].router);
-        
+
         this.app.use((req, res, next) => this.middlewares["RouteNotFound"].run(req, res, next));
         this.app.use((error, req, res, next) => this.middlewares["ServerError"].run(error, req, res, next));
 
@@ -58,7 +68,7 @@ class Webserver {
 
         for (const filePath of fs.readdirSync(path.resolve(__dirname, "./routers")).filter(file => file.endsWith(".js"))) {
             try {
-                const router = new (require(`./routers/${filePath}`))(this);
+                const router = new(require(`./routers/${filePath}`))(this);
                 const fileName = path.parse(filePath).name;
 
                 this.routers[fileName] = router;
@@ -71,7 +81,7 @@ class Webserver {
         if (Object.keys(this.routers).length === 0) {
             return Logger.warn(Logger.Type.Webserver, "No routers loaded");
         }
-        
+
         Logger.info(Logger.Type.Webserver, `${Logger.Colors.Fg.Magenta}${Object.keys(this.routers).length}${Logger.Colors.Reset} routers loaded`);
     }
 
@@ -80,7 +90,7 @@ class Webserver {
 
         for (const filePath of fs.readdirSync(path.resolve(__dirname, "./middlewares")).filter(file => file.endsWith(".js"))) {
             try {
-                const middleware = new (require(`./middlewares/${filePath}`))(this);
+                const middleware = new(require(`./middlewares/${filePath}`))(this);
                 const fileName = path.parse(filePath).name;
 
                 this.middlewares[fileName] = middleware;
@@ -93,7 +103,7 @@ class Webserver {
         if (Object.keys(this.middlewares).length === 0) {
             return Logger.warn(Logger.Type.Webserver, "No middlewares loaded");
         }
-        
+
         Logger.info(Logger.Type.Webserver, `${Logger.Colors.Fg.Magenta}${Object.keys(this.middlewares).length}${Logger.Colors.Reset} middlewares loaded`);
     }
 

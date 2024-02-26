@@ -19,6 +19,7 @@ RUN npx tailwindcss -c /app/tailwind.config.js -i /app/public/css/src.css -o /ap
 
 ENV NODE_ENV=production
 ENV LOG_LEVEL=debug
+ENV SECRET_KEY=8b1748ee-595a-4d96-b381-36f95f70ecee
 
 VOLUME /app/data
 EXPOSE 3000/tcp

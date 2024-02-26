@@ -1,7 +1,7 @@
 const Utils = require("./Utils");
 
 class Config {
-    static _secretKey = process.env.SECRET_KEY || Utils.newUUID();
+    static _secretKey = process.argv.includes("--dev") ? "dev" : process.env.SECRET_KEY || Utils.newUUID();
 
     /**
      * @returns {number}
