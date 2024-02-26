@@ -86,24 +86,6 @@ class Page {
             $('<p>').addClass('lecturer-bio').text(data.bio).appendTo(lecturerContent);
         }
 
-        // Reservation form consists of firstName, lastName, email, message, date and time and a submit button. it should be flex-column and have a gap. Please use the right colors
-        const reservationForm = $('<form>').addClass('flex flex-col gap-4 w-full').appendTo(this.page);
-        $('<h1>').text('Chcete si zarezervovat hodinu?').appendTo(reservationForm).addClass('text-2xl mx-auto font-bold');
-        const fullName = $('<div>').addClass('flex flex-col lg:flex-row justify-between w-full mb-2').appendTo(reservationForm);
-        $('<input>').attr('type', 'text').attr('placeholder', 'Jméno').appendTo(fullName).addClass('lg:w-1/2 mb-2').attr('id', 'firstName')
-        $('<input>').attr('type', 'text').attr('placeholder', 'Příjmení').appendTo(fullName).addClass('lg:w-1/2').attr('id', 'lastName')
-        const contact = $('<div>').addClass('flex flex-col lg:flex-row justify-around w-full mb-2').appendTo(reservationForm);
-        $('<input>').attr('type', 'email').attr('placeholder', 'Email').appendTo(contact).addClass('lg:w-1/2 mb-2').attr('id', 'email')
-        $('<input>').attr('type', 'tel').attr('placeholder', 'Telefon').appendTo(contact).addClass('lg:w-1/2').attr('id', 'telephone')
-        const additional = $('<div>').addClass('flex flex-col w-full mb-2 mr-2').appendTo(reservationForm);
-        $('<input>').attr('type', 'text').attr('placeholder', 'Místo').appendTo(additional).addClass('mb-2 w-full').attr('id', 'location')
-        $('<textarea>').attr('placeholder', 'Zpráva').appendTo(additional).addClass('mb-4').attr('id', 'message');
-        $('<label>').text('Datum a čas').appendTo(additional).addClass('text-lg font-bold');
-        $('<input>').attr('type', 'datetime-local').appendTo(additional).attr('id', 'time');
-        $('<button>').text('Rezervovat').addClass('btn').on('click', this.reserveLecturer).appendTo(reservationForm);
-
-        
-        
         $('title').text(`${name} | ${$('title').text()}`);
         this.lecturerElement.show();
     }

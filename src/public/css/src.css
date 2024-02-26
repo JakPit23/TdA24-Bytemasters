@@ -114,19 +114,6 @@ p {
     @apply flex flex-row dark:bg-dark-900 rounded-md py-4 px-4 cursor-pointer;
 }
 
-.reservation {
-    @apply flex flex-col rounded-md py-4 px-4 shadow-xl ;
-}
-
-input[type="text"], input[type="email"], input[type="tel"], textarea {
-    @apply border-2 border-skyblue-100 lg:mr-2 h-fit w-full rounded py-2 px-4 bg-white-900 text-dark-900;
-}
-
-input[type="datetime-local"] {
-    @apply bg-white-900 text-dark-900;
-}
-
-
 .lecturerCard:hover {
     /* use transition and do the color transparent on hover */
     transition: all 0.2s;
@@ -317,4 +304,13 @@ form {
 
 input[type="datetime-local"]::-webkit-calendar-picker-indicator {
     filter: invert(1);
-  }
+}
+
+/* rezervace */
+.reservation {
+    @apply flex flex-col dark:bg-dark-900 rounded-md py-4 px-4 shadow-xl;
+}
+
+.reservation .user-input {
+    @apply w-full rounded py-2 px-4 bg-white-900 text-dark-900;
+}

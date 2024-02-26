@@ -22,7 +22,52 @@
             <div class="flex flex-col items-start w-full pt-4 gap-4">
                 <div data-lecturer style="display: none;" class="lecturer">
                 </div>
-                <div data-page class="w-full lg:w-1/2 mx-auto reservation bg-transparent"></div>
+
+                <div data-page class="w-full lg:w-1/2 mx-auto reservation">
+                    <form class="flex flex-col gap-2 w-full">
+                        <h1 class="text-2xl mx-auto font-bold">Chcete si zarezervovat hodinu?</h1>
+                        
+                        <div class="flex flex-row justify-between gap-2 w-full">
+                            <div class="w-1/2">
+                                <label for="firstName" class="text-lg font-bold">Jméno</label>
+                                <input class="user-input" type="text" placeholder="Veronika" id="firstName">
+                            </div>
+                            
+                            <div class="w-1/2">
+                                <label for="firstName" class="text-lg font-bold">Příjmení</label>
+                                <input class="user-input" type="text" placeholder="Vašíčková" id="lastName">
+                            </div>
+                        </div>
+                        
+                        <div class="flex flex-row justify-between gap-2 w-full">
+                            <div class="w-1/2">
+                                <label for="firstName" class="text-lg font-bold">Email</label>
+                                <input class="user-input" type="email" placeholder="veronika.vasickova@gmail.com" id="email">
+                            </div>
+
+                            <div class="w-1/2">
+                                <label for="firstName" class="text-lg font-bold">Telefonní číslo</label>
+                                <input class="user-input" type="tel" placeholder="+420 123 456 789" id="telephone">
+                            </div>
+                        </div>
+
+                        <div class="flex flex-col w-full">
+                            <label for="firstName" class="text-lg font-bold">Místo setkání</label>
+                            <input class="user-input" type="text" placeholder="Kočičí kavárna na Smíchově" id="location">
+                        </div>
+
+                        <div class="flex flex-col w-full mb-2">
+                            <label class="text-lg font-bold">Datum a čas</label>
+                            <input class="user-input" type="datetime-local" id="time">
+                        </div>
+
+                        <div class="flex flex-col w-full">
+                            <textarea class="user-input h-24" placeholder="Moje zpráva lektorovi..." id="message"></textarea>
+                        </div>
+                        
+                        <button class="btn">Rezervovat</button>
+                    </form>
+                </div>
             </div>
         </div>
     </div>

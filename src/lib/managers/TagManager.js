@@ -24,7 +24,6 @@ class TagManager {
      */
     _sanitize = (data) => sanitizeHtml(data, { allowedTags: [] });
 
-
     /**
      * @private
      * @param {object} data
