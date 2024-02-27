@@ -74,8 +74,17 @@
                         <div class="flex flex-col items-center gap-4 w-full">
                             <div data-calendar class="w-9/12 px-4 py-2"></div>
                             <div class="flex flex-row gap-3">
-                                <button data-draggable data-event='{ "title": "Volno", "duration": "01:00" }' class="btn fc-event">Volno</button>
+                                <button id="timeBtn" class="btn">Přidat volno</button>
                                 <button data-export class="btn btn-skyblue">Exportovat kalendář</button>
+                            </div>
+                            <div id="timeForm" class="flex flex-col w-9/12 hidden dark:text-white-900">
+                                <label>Datum</label>
+                                <input type="date" class="mb-3 user-input">
+                                <label>Čas od:</label>
+                                <input type="time" class="mb-3 user-input">
+                                <label>Čas do:</label>
+                                <input type="time" class="mb-3 user-input">
+                                <button data-addFreeTime class="btn">Přidat</button>
                             </div>
                         </div>
                     </div>

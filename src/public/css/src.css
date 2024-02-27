@@ -346,5 +346,5 @@ input[type="datetime-local"]::-webkit-calendar-picker-indicator {
  
 /* nevim */
 .user-input {
-    @apply w-full rounded py-2 px-4 bg-white-900 text-dark-900;
+    @apply w-full rounded py-2 px-4 bg-black-100 text-dark-900 dark:text-white-900;
 }

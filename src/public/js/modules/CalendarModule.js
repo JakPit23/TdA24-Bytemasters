@@ -6,7 +6,6 @@ class CalendarModule {
         this.Calendar = FullCalendar.Calendar;
         this.Draggable = FullCalendar.Draggable;
         this.calendarEl = $('[data-calendar]')[0];
-        this.draggableEl = $('[data-draggable]')[0];
         this.exportEl = $('[data-export]')[0];
         this.exportEl.addEventListener('click', this.exportCalendar);
         this.init();
@@ -15,7 +14,6 @@ class CalendarModule {
     init = async() => {
         this.createCalendar(this.calendarEl);
         this.renderCalendar();
-        this.createDraggable(this.draggableEl);
     } 
 
     createCalendar = async(calendarElement) => {
@@ -59,26 +57,6 @@ class CalendarModule {
             allDay: true,
         });
     } 
-
-    createDraggable = async(element, eventDate) => {
-        this.dragObj = new this.Draggable(element, {
-            eventData: function (eventEl) {
-                console.log({
-                    title: eventEl.innerText,
-                    date: eventDate,
-                    create: true,
-                });
-                return {
-                    title: eventEl.innerText,
-                    date: eventDate,
-                    create: true,
-                };
-                }
-            }
-        );
-
-        console.log(this.dragObj.eventData);
-    }
 
     createEvent(title, start, end) {
         this.calendar.addEvent({
