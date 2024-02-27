@@ -13,31 +13,33 @@ module.exports = class RequestLog {
         }
 
         if (Config.getLogLevel() == "debug" && req.path.startsWith("/api")) {
-            if (req.body) {
+            if (req.body && Config.logRequestBody) {
                 Logger.debug(Logger.Type.Webserver, `Request body:`, req.body);
             }
-            
-            // absolutne ale jako fakt absolutne nechapu jak to dela brm brm (z casti)
-            const oldWrite = res.write, oldEnd = res.end;
-            let chunks = [];
-            
-            res.write = function (chunk) {
-                chunks.push(chunk);
-                return oldWrite.apply(res, arguments);
-            };
 
-            res.end = function (chunk) {
-                if (chunk) {
+            if (Config.logResponseBody) {
+                // absolutne ale jako fakt absolutne nechapu jak to dela brm brm (z casti)
+                const oldWrite = res.write, oldEnd = res.end;
+                let chunks = [];
+                
+                res.write = function (chunk) {
                     chunks.push(chunk);
-                }
-
-                const body = Buffer.concat(chunks).toString('utf8');
-                if (body) {
-                    Logger.debug(Logger.Type.Webserver, `Response body:`, body);
-                }
-
-                oldEnd.apply(res, arguments);
-            };
+                    return oldWrite.apply(res, arguments);
+                };
+    
+                res.end = function (chunk) {
+                    if (chunk) {
+                        chunks.push(chunk);
+                    }
+    
+                    const body = Buffer.concat(chunks).toString('utf8');
+                    if (body) {
+                        Logger.debug(Logger.Type.Webserver, `Response body:`, body);
+                    }
+    
+                    oldEnd.apply(res, arguments);
+                };
+            }
         }
 
         return next();

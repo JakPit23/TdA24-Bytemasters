@@ -47,14 +47,41 @@ module.exports = class APILecturersRoute {
 
         this.router.get("/", async (req, res, next) => {
             try {
-                const lecturers = await this.webserver.getCore().getLecturerManager().getLecturers();
+                const { limit, before, after } = req.query;
+                let lecturers = await this.webserver.getCore().getLecturerManager().getLecturers();
 
                 if (!lecturers || lecturers.length == 0) {
                     return res.status(200).json([]);
                 }
-    
+
+                if (before) {
+                    const index = lecturers.findIndex(lecturer => lecturer.uuid == before);
+                    if (index == -1) {
+                        throw APIError.LECTURER_NOT_FOUND;
+                    }
+
+                    lecturers = lecturers.slice(0, index);
+                }
+
+                if (after) {
+                    const index = lecturers.findIndex(lecturer => lecturer.uuid == after);
+                    if (index == -1) {
+                        throw APIError.LECTURER_NOT_FOUND;
+                    }
+
+                    lecturers = lecturers.slice(index + 1);
+                }
+
+                if (!isNaN(limit) && limit > 0) {
+                    lecturers = lecturers.slice(0, limit);
+                }
+
                 return res.status(200).json(lecturers);
             } catch (error) {
+                if (error == APIError.LECTURER_NOT_FOUND) {
+                    return APIResponse.LECTURER_NOT_FOUND.send(res);
+                }
+
                 return next(error);
             }
         });
