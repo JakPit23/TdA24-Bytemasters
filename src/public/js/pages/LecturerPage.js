@@ -116,23 +116,21 @@ class Page {
         });
         if(response.status !== 200) {
             const data = await response.json();
+            const el = document.createElement("p");
+            el.addClass('text-2xl mx-auto mt-2')
             switch(data.error) {
                 case "INVALID_EMAIL":
-                    console.log('Invalid email');
-                    this.page.append($('<p>').text('Neplatný email').addClass('text-2xl mx-auto mt-2'));
+                    el.text('Neplatný email');
                 case "INVALID_PHONE_NUMBER":
-                    console.log('Invalid phone number');
-                    this.page.append($('<p>').text('Neplatné telefonní číslo').addClass('text-2xl mx-auto mt-2'));
+                    el.text('Neplatné telefonní číslo');
                 case "INVALID_EVENT_NAME":
-                    console.log('Invalid event name');
-                    this.page.append($('<p>').text('Neplatný název události').addClass('text-2xl mx-auto mt-2'));
+                    el.text('Neplatný název události');
                 case "INVALID_EVENT_LOCATION":
-                    console.log('Invalid event location');
-                    this.page.append($('<p>').text('Neplatné místo události').addClass('text-2xl mx-auto mt-2'));
+                    el.text('Neplatné místo události');
                 case "EVENT_CONFLICTS_WITH_EXISTING_EVENT":
-                    console.log('Event conflicts with existing event');
-                    this.page.append($('<p>').text('Daný čas je již obsazený').addClass('text-2xl mx-auto mt-2'));
+                    el.text('Daný čas je již obsazený');
             }
+            el.appendTo(this.message);
             return;
         }
 
