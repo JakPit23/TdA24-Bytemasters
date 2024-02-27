@@ -47,5 +47,18 @@ module.exports = class APIAuthRoute {
                 return next(error);
             }
         });
+        
+        this.router.post("/logout", this.webserver.middlewares["LecturerMiddleware"].forceAuth, async (req, res, next) => {
+            try {
+                if (!res.locals.lecturer) {
+                    return APIResponse.UNAUTHORIZED.send(res);
+                }
+
+                req.session.token = null;
+                return APIResponse.OK.send(res);
+            } catch (error) {
+                return next(error);
+            }
+        });
     }
 };
