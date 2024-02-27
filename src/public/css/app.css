@@ -725,12 +725,13 @@ video {
   width: 100%;
 }
 
-.w-36 {
-  width: 9rem;
+.w-max {
+  width: -moz-max-content;
+  width: max-content;
 }
 
-.w-28 {
-  width: 7rem;
+.w-9\/12 {
+  width: 75%;
 }
 
 .min-w-fit {
