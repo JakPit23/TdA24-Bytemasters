@@ -4,7 +4,7 @@ const { APIError } = require("../../Errors");
 const Logger = require("../../Logger");
 const APIResponse = require("../APIResponse");
 
-module.exports = class LecturersAPIRoute {
+module.exports = class APILecturersRoute {
     /**
      * @param {import("../Webserver")} webserver 
      */
