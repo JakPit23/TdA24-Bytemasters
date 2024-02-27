@@ -16,7 +16,7 @@ module.exports = class ServerError {
 
             Logger.error(Logger.Type.Webserver, "An error occured while processing the request:", error);
             return APIResponse.INTERNAL_SERVER_ERROR.send(res, {
-                stack: (process.env.NODE_ENV != "production" || process.argv.includes("--dev") ? error.stack.split("\n").map(line => line.trim()) : undefined)
+                stack: (process.env.NODE_ENV != "production" || process.argv.includes("--dev")) && error.stack ? error.stack.split("\n").map(line => line.trim()) : undefined
             });
         }
         
