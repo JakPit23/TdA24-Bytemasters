@@ -14,13 +14,40 @@ class Page {
         this.filterTags = $('[data-filterTags]');
         this.filterLocation = $('[data-filterLocations]');
     }
+        
+    async _fetchMoreLecturers() {
+        console.log('Loading more items...');
+
+        this._fetchInProgress = true;
+
+        console.log("after uuid:", this.lecturers[this.lecturers.length - 1].uuid);
+        const lecturers = await this._fetchLecturers({ limit: 25, after: this.lecturers[this.lecturers.length - 1].uuid });
+        if (!lecturers) {
+            console.log('No more items to load...');
+            // TODO: nevim jestli davat _fetchInProgress na false kdyz uz neni co loadovat at to nefetchuje furt uvidime
+            return;
+        }
+
+        this.lecturers.push(...lecturers);
+        this.loadLecturers(lecturers);
+        this._fetchInProgress = false;
+    }
+
+    _fetchLecturers = async (options = {}) => {
+        try {
+            const lecturers = await this.lecturerAPI.getLecturers(options);
+            return lecturers;
+        } catch (error) {
+            console.error(error);
+            return null;
+        }
+    }
 
     init = async () => {
         $('[data-navbarLinks]').addClass("md:block");
 
         this.filters = {};
-
-        this.lecturers = await this.lecturerAPI.getLecturers();
+        this.lecturers = await this._fetchLecturers({ limit: 25 });
         if (!this.lecturers) {
             this.noResults.show();
             return;
@@ -73,6 +100,27 @@ class Page {
         this.filterPriceMaxInput.on('input', this.filterByPrice.bind(this));
         this.filterPriceMinInput.val(this.minPrice);
         this.filterPriceMaxInput.val(this.maxPrice);
+
+        $(window).scroll(async () => {
+            const windowBottom = $(window).scrollTop() + $(window).height();
+            const gridBottom = this.lecturersList.offset().top + this.lecturersList.outerHeight();
+            
+            if (windowBottom <= gridBottom - 200) {
+                return;
+            }
+
+            if (!this.lecturers || this.lecturers.length <= 0) {
+                console.log('No items to load...');
+                return;
+            }
+            
+            if (this._fetchInProgress) {
+                console.log('Fetch in progress, skipping...');
+                return;
+            }
+
+            await this._fetchMoreLecturers();
+        });
     }
 
     filterLecturers = () => {
@@ -185,6 +233,7 @@ class Page {
         this.lecturersList.show();
         this.app.hideLoader('[data-loaderLecturers]');
     }
+
     renderLecturer = async (data) => {
         const lecturerDiv = $('<div>').addClass('lecturerCard').data('lecturerUUID', data.uuid).appendTo(this.lecturersList);
         lecturerDiv.on("click", () => $(location).attr('href', `/lecturer/${data.uuid}`));
