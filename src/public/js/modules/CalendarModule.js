@@ -20,6 +20,7 @@ class CalendarModule {
 
     createCalendar = async(calendarElement) => {
         let calendar = new this.Calendar(calendarElement, {
+            width: '100%',
             locale: 'cs',
             firstDay: 1,
             editable: true,
