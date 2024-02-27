@@ -63,7 +63,6 @@ class CalendarModule {
             title: title,
             start: start,
             end: end,
-            displayEventEnd: true,
         })
         return;        
     }
@@ -83,7 +82,7 @@ class CalendarModule {
     }
 
     exportCalendar = async() => {
-        const response = await fetch(`/api/lecturers/${this.uuid}/event`);
+        const response = await fetch(`/api/user/@me/reservation/ics`);
         const blob = await response.blob();
         const url = window.URL.createObjectURL(blob);
         const a = document.createElement('a');

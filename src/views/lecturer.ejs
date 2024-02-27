@@ -26,49 +26,52 @@
                 </div>
 
                 <div data-page class="w-full lg:w-2/3 mx-auto reservation">
-                    <form class="flex flex-col gap-4 w-full">
+                    <form class="flex flex-col gap-4 w-full" data-form>
                         <h1 class="text-2xl mx-auto font-bold">Chcete si zarezervovat hodinu?</h1>
                         
                         <div class="flex flex-row justify-between gap-2 w-full">
                             <div class="w-1/2">
                                 <label for="firstName" class="text-lg font-bold">Jméno</label>
-                                <input class="user-input" type="text" placeholder="Veronika" id="firstName">
+                                <input class="user-input" type="text" placeholder="Veronika" id="firstName" required>
                             </div>
                             
                             <div class="w-1/2">
                                 <label for="firstName" class="text-lg font-bold">Příjmení</label>
-                                <input class="user-input" type="text" placeholder="Vašíčková" id="lastName">
+                                <input class="user-input" type="text" placeholder="Vašíčková" id="lastName" required>
                             </div>
                         </div>
                         
                         <div class="flex flex-row justify-between gap-2 w-full">
                             <div class="w-1/2">
                                 <label for="firstName" class="text-lg font-bold">Email</label>
-                                <input class="user-input" type="email" placeholder="veronika.vasickova@gmail.com" id="email">
+                                <input class="user-input" type="email" placeholder="veronika.vasickova@gmail.com" id="email" required>
                             </div>
 
                             <div class="w-1/2">
                                 <label for="firstName" class="text-lg font-bold">Telefonní číslo</label>
-                                <input class="user-input" type="tel" placeholder="+420 123 456 789" id="telephone">
+                                <input class="user-input" type="tel" placeholder="+420 123 456 789" id="telephone" required>
                             </div>
                         </div>
 
                         <div class="flex flex-col w-full">
                             <label for="firstName" class="text-lg font-bold">Místo setkání</label>
-                            <input class="user-input" type="text" placeholder="Kočičí kavárna na Smíchově" id="location">
+                            <input class="user-input" type="text" placeholder="Kočičí kavárna na Smíchově" id="location" required>
                         </div>
 
                         <div class="flex flex-col w-full mb-2">
                             <label class="text-lg font-bold">Datum a čas</label>
-                            <input class="user-input" type="datetime-local" id="time">
+                            <input class="user-input" type="datetime-local" id="time" required>
                         </div>
 
                         <div class="flex flex-col w-full">
-                            <textarea class="user-input h-24" placeholder="Moje zpráva lektorovi..." id="message"></textarea>
+                            <textarea class="user-input h-24" placeholder="Moje zpráva lektorovi..." id="message" required></textarea>
                         </div>
                         
-                        <button class="btn mt-4">Rezervovat</button>
+                        <button class="btn mt-4" data-reserveBtn>Rezervovat</button>
                     </form>
+                </div>
+                <div data-message>
+
                 </div>
             </div>
         </div>
