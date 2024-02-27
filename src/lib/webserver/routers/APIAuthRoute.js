@@ -32,8 +32,7 @@ module.exports = class APIAuthRoute {
 
                 req.session.token = this.webserver.getCore().getLecturerManager().generateJWTToken(lecturer);
                 
-                // TODO: udelat nejakou ApiResponse classu
-                return res.status(200).json({ code: 200 });
+                return APIResponse.OK.send(res);
             } catch (error) {
                 if (error instanceof APIError) {
                     if (error == APIError.MISSING_REQUIRED_VALUES) {
