@@ -42,7 +42,7 @@
                         </button>
                     </div>
 
-                    <!-- <div data-page="settings" class="flex flex-col items-center gap-4 w-full">
+                    <!--<div data-page="settings" class="flex flex-col items-center gap-4 w-full">
                         <h2 class="text-2xl font-bold">Nastavení</h2>
 
                         <div class="flex flex-row gap-4 w-full">
@@ -66,18 +66,17 @@
                                 <input data-input="first_name" class="user-input" type="text" value="<%= lecturer.first_name %>">
                             </div>
                         </div>
-                    </div> -->
+                    </div>-->
 
                     <div data-page="calendar" class="flex flex-col gap-4 w-full">
                         <h2 class="text-2xl font-bold">Kalendář</h2>
 
                         <div class="flex flex-col items-center gap-4 w-full">
+                            <div data-calendar class="w-9/12 px-4 py-2"></div>
                             <div class="flex flex-row gap-3">
                                 <button data-draggable data-event='{ "title": "Volno", "duration": "01:00" }' class="btn fc-event">Volno</button>
                                 <button data-export class="btn btn-skyblue">Exportovat kalendář</button>
                             </div>
-
-                            <div data-calendar class="w-9/12 px-4 py-2"></div>
                         </div>
                     </div>
                 </div>

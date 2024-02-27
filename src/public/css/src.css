@@ -20,6 +20,14 @@
 /* 
     CHANGING DEFAULT VALUES
 */
+
+:root {
+    --fc-button-bg-color: theme("colors.sunglate.900");
+    --fc-button-hover-bg-color: theme("colors.sunglate.700");
+    --fc-today-bg-color: theme("colors.skyblue.200");
+    --fc-event-bg-color: theme("colors.white.900");
+}
+
 *,
 *::before,
 *::after {
@@ -297,8 +305,13 @@ p {
 }
 
 /* CALENDAR */
-.calendar  {
+.fc  {
     @apply w-full h-max px-4;
+}
+
+.fc a {
+    @apply text-dark-700 dark:text-white-700;
+
 }
 
 .fc-popover {
