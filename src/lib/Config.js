@@ -27,6 +27,16 @@ class Config {
      * @returns {string}
      */
     static getAPIPassword = () => process.env.API_PASSWORD || "d8Ef6!dGG_pv";
+
+    /**
+     * @returns {boolean}
+     */
+    static logRequestBody = process.argv.includes("--logRequestBody");
+
+    /**
+     * @returns {boolean}
+    */
+    static logResponseBody = process.argv.includes("--logResponseBody");
 }
 
 module.exports = Config;
