@@ -1,6 +1,6 @@
 const { APIError } = require("../../Errors");
 const Logger = require("../../Logger");
-const Event = require("./Event");
+const Reservation = require("./Reservation");
 
 class Lecturer {
     constructor(data) {
@@ -89,16 +89,16 @@ class Lecturer {
         this.tags = data.tags;
 
         /** 
-         * @type {Array<import("./Event")>}
-         * @description The events of the lecturer.
-         */
-        this.events = data.events || [];
-
-        /** 
          * @type {Object} 
          * @description The contact information of the lecturer.
          */
         this.contact = data.contact;
+
+        /** 
+         * @type {Array<import("./Reservation")>}
+         * @description The events of the lecturer.
+         */
+        this.reservations = data.reservations || [];
     }
 
     toJSON() {
@@ -106,32 +106,33 @@ class Lecturer {
         return data;
     }
 
-    /**
-     * @param {object} data 
-     * @param {string} data.firstName
-     * @param {string} data.lastName
-     * @param {string} data.email
-     * @param {string} data.phoneNumber
-     * @param {object} data.event
-     * @param {string} data.event.name
-     * @param {string} data.event.location
-     * @param {number} data.event.start
-     * @param {number} data.event.end
-     */
-    addEvent(data) {
-        const event = new Event(data);
+    addReservation(data) {
+        const reservation = new Reservation(data);
 
-        this.events.find(event => {
-            if (data.event.start >= event.start && data.event.start <= event.end) {
-                Logger.debug(Logger.Type.LecturerManager, "Event conflicts with existing event");
-                throw APIError.EVENT_CONFLICTS_WITH_EXISTING_EVENT;
+        this.reservations.find(reservation => {
+            if (data.start >= reservation.start && data.start <= reservation.end) {
+                Logger.debug(Logger.Type.LecturerManager, "Reservation conflicts with existing reservation");
+                
+                throw APIError.TIME_CONFLICT;
             }
         });
 
-        let index = (this.events ??= []).push(event);
+        let index = (this.reservations ??= []).push(reservation);
      
-        Logger.debug(Logger.Type.LecturerManager, `Added event to lecturer ${this.uuid}`);
-        return this.events[index-1];
+        Logger.debug(Logger.Type.LecturerManager, `Added reservation to lecturer ${this.uuid}`);
+        return this.reservations[index-1];
+    }
+
+    addReservations = (data) => data.forEach(reservation => this.addReservation(reservation));
+
+    createAppointment(data) {
+        const reservation = this.reservations.find(reservation => data.start >= reservation.start && data.end <= reservation.end);
+        if (!reservation) {
+            throw APIError.RESERVATION_NOT_FOUND;
+        }
+
+        const appointment = reservation.createAppointment(data);
+        return appointment;
     }
 }
 

@@ -132,7 +132,7 @@ module.exports = class APILecturersRoute {
             }
         });
 
-        this.router.post("/:uuid/event", async (req, res, next) => {
+        this.router.post("/:uuid/reservation", async (req, res, next) => {
             try {
                 const { uuid } = req.params;
                 const data = req.body;
@@ -142,54 +142,23 @@ module.exports = class APILecturersRoute {
                     return APIResponse.LECTURER_NOT_FOUND.send(res);
                 }
 
-                // TODO: ig ze poslat email lektorovi a tomu typkovi ze yoo dobra prace you did it
-                lecturer.addEvent(data);
-                this.webserver.getCore().getLecturerManager()._saveLecturer(lecturer, true);
-
+                lecturer.createAppointment(data);
                 return APIResponse.OK.send(res); 
             } catch (error) {
                 if (error == APIError.MISSING_REQUIRED_VALUES) {
                     return APIResponse.MISSING_REQUIRED_VALUES.send(res);
                 }
                 
-                if (error == APIError.INVALID_EVENT_FIRST_NAME) {
-                    return APIResponse.INVALID_EVENT_FIRST_NAME.send(res);
-                }
-                
-                if (error == APIError.INVALID_EVENT_LAST_NAME) {
-                    return APIResponse.INVALID_EVENT_LAST_NAME.send(res);
+                if (error == APIError.TIME_SLOT_NOT_AVAILABLE || error == APIError.RESERVATION_NOT_FOUND) {
+                    return APIResponse.TIME_SLOT_NOT_AVAILABLE.send(res);
                 }
 
-                if (error == APIError.INVALID_EMAIL) {
-                    return APIResponse.INVALID_EMAIL.send(res);
+                if (error == APIError.INVALID_VALUE_TYPE) {
+                    return APIResponse.INVALID_VALUE_TYPE.send(res);
                 }
 
-                if (error == APIError.INVALID_PHONE_NUMBER) {
-                    return APIResponse.INVALID_PHONE_NUMBER.send(res);
-                }
-
-                if (error == APIError.INVALID_EVENT_NAME) {
-                    return APIResponse.INVALID_EVENT_NAME.send(res);
-                }
-
-                if (error == APIError.INVALID_EVENT_LOCATION) {
-                    return APIResponse.INVALID_EVENT_LOCATION.send(res);
-                }
-
-                if (error == APIError.INVALID_EVENT_START_DATE) {
-                    return APIResponse.INVALID_EVENT_START_DATE.send(res);
-                }
-
-                if (error == APIError.INVALID_EVENT_END_DATE) {
-                    return APIResponse.INVALID_EVENT_END_DATE.send(res);
-                }
-
-                if (error == APIError.INVALID_EVENT_DATES) {
-                    return APIResponse.INVALID_EVENT_DATES.send(res);
-                }
-
-                if (error == APIError.EVENT_CONFLICTS_WITH_EXISTING_EVENT) {
-                    return APIResponse.EVENT_CONFLICTS_WITH_EXISTING_EVENT.send(res);
+                if (error == APIError.INVALID_DATES) {
+                    return APIResponse.INVALID_DATES.send(res);
                 }
 
                 return next(error);

@@ -35,8 +35,9 @@ class Core {
             process.exit(1);
         }, 15000);
 
-        this.database.close();
         await this.webserver.shutdown();
+        await this.lecturerManager.shutdown();
+        this.database.close();
 
         // Clear the force shutdown timeout as the shutdown was successful.
         clearTimeout(forceShutdownTimeout);

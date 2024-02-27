@@ -28,12 +28,8 @@ module.exports = class APIResponse {
     static USERNAME_DOESNT_MEET_MINIMAL_REQUIREMENTS = new APIResponse({ statusCode: 400, code: 400, error: "USERNAME_DOESNT_MEET_MINIMAL_REQUIREMENTS" });
     static USERNAME_DOESNT_MEET_MAXIMAL_REQUIREMENTS = new APIResponse({ statusCode: 400, code: 400, error: "USERNAME_DOESNT_MEET_MAXIMAL_REQUIREMENTS" });
 
-    static INVALID_EVENT_FIRST_NAME = new APIResponse({ statusCode: 400, code: 400, error: "INVALID_EVENT_FIRST_NAME" });
-    static INVALID_EVENT_LAST_NAME = new APIResponse({ statusCode: 400, code: 400, error: "INVALID_EVENT_LAST_NAME" });
-    static INVALID_EVENT_NAME = new APIResponse({ statusCode: 400, code: 400, error: "INVALID_EVENT_NAME" });
-    static INVALID_EVENT_LOCATION = new APIResponse({ statusCode: 400, code: 400, error: "INVALID_EVENT_LOCATION" });
-    static INVALID_EVENT_START_DATE = new APIResponse({ statusCode: 400, code: 400, error: "INVALID_EVENT_START_DATE" });
-    static INVALID_EVENT_END_DATE = new APIResponse({ statusCode: 400, code: 400, error: "INVALID_EVENT_END_DATE" });
-    static INVALID_EVENT_DATES = new APIResponse({ statusCode: 400, code: 400, error: "INVALID_EVENT_DATES" });
-    static EVENT_CONFLICTS_WITH_EXISTING_EVENT = new APIResponse({ statusCode: 400, code: 400, error: "EVENT_CONFLICTS_WITH_EXISTING_EVENT" });
+    static TIME_SLOT_NOT_AVAILABLE = new APIResponse({ statusCode: 400, code: 400, error: "TIME_SLOT_NOT_AVAILABLE" });
+    static TIME_CONFLICT = new APIResponse({ statusCode: 400, code: 400, error: "TIME_CONFLICT" });
+    static INVALID_VALUE_TYPE = new APIResponse({ statusCode: 400, code: 400, error: "INVALID_VALUE_TYPE" });
+    static INVALID_DATES = new APIResponse({ statusCode: 400, code: 400, error: "INVALID_DATES" });
 }
