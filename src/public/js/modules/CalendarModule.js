@@ -1,103 +1,36 @@
 class CalendarModule {
-    constructor(app, uuid) {
-        this.app = app;
-        this.uuid = uuid;
-        this.LecturerAPI = new LecturerAPI();
-        this.Calendar = FullCalendar.Calendar;
-        this.Draggable = FullCalendar.Draggable;
-        this.calendarEl = $('[data-calendar]')[0];
-        this.exportEl = $('[data-export]')[0];
-        this.exportEl.addEventListener('click', this.exportCalendar);
-        this.init();
-    }
+    constructor(page) {
+        this.page = page;
+        this.calendarElement = $("[data-calendar]");
 
-    init = async() => {
-        this.createCalendar(this.calendarEl);
-        this.renderCalendar();
-    } 
-
-    createCalendar = async(calendarElement) => {
-        let calendar = new this.Calendar(calendarElement, {
-            locale: 'cs',
+        this.fullCalendar = new FullCalendar.Calendar(this.calendarElement[0], {
+            locale: "cs",
             firstDay: 1,
-            editable: true,
-            droppable: true,
+            editable: false,
             dayMaxEvents: true,
             buttonText: {
-                today: 'Tento měsíc'
-            },
-            eventClick: function(info) {
-                let result = confirm("Opravdu chcete smazat událost?");
-                if(result) {
-                    info.event.remove();
-                }
-            },
-            drop : function(info) {
-                console.log(info);
-                calendar.addAllDayEvent(info.eventData.title, info.dateStr);
+                today: "Tento měsíc"
             }
         });
-
-        this.calendar = calendar;;
-        const lecturer = await this.LecturerAPI.getLecturer(this.uuid);
-        const events = lecturer.events;
-        console.log(events);
-        this.createEvents(events);
     }
 
-    renderCalendar() {
-        this.calendar.setOption('editable', false);
-        this.calendar.render();
+    load() {
+        this._createEvents();
+        this.fullCalendar.render();
     }
 
-    createAllDayEvent(title, date) {
-        this.calendar.addEvent({
-            title: title,
-            start: date,
-            allDay: true,
-        });
-    } 
-
-    createEvent(title, start, end) {
-        this.calendar.addEvent({
-            title: title,
-            start: start,
-            end: end,
-        })
-        return;        
-    }
-
-
-    deleteEvent = (event) => {
-        event.remove();
-    }
-
-    createEvents(events) {
-        // input data is JSON array of events
-        console.log("Generating");
-        events.forEach(event => {
-            console.log(new Date(event.event.start).toISOString());
-            this.createEvent(event.event.name, new Date(event.event.start).toISOString(), new Date(event.event.end).toISOString());
-        });
-    }
-
-    exportCalendar = async() => {
-        const response = await fetch(`/api/user/@me/reservation/ics`);
-        const blob = await response.blob();
-        const url = window.URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = 'events.ics';
-        document.body.appendChild(a);
-        a.click();
-        a.remove();
-    }
-
-    getEvents = () => {
-        return this.calendar.getEvents().map(event => ({
-            title: event.title,
-            start: event.start.getTime(),
-            end: event.end.getTime(),
-        }));
-    }
+    /**
+     * @param {object} data 
+     * @param {number} data.start
+     * @param {number} data.end
+     * @param {string} data.title
+     */
+    _createEvents = () => this.page.user.reservations
+        .map(reservation => reservation.appointments)
+        .filter(appointments => appointments.length > 0)
+        .forEach(appointments => appointments.forEach(appointment => this.fullCalendar.addEvent({
+            title: `${appointment.firstName} ${appointment.lastName}`,
+            start: appointment.start * 1000,
+            end: appointment.end * 1000,
+        })))
 }

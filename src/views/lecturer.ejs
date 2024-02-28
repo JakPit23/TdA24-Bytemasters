@@ -130,8 +130,9 @@
                         <div class="flex flex-col w-full mb-2">
                             <label class="text-lg font-bold">Datum a čas</label>
                             
-                            <div class="flex flex-row gap-2">
+                            <div class="flex flex-row items-center gap-2">
                                 <input data-reservationInput="timeStart" class="user-input" type="datetime-local" required>
+                                <p>-</p>
                                 <input data-reservationInput="timeEnd" class="user-input" type="time" required>
                             </div>
                         </div>
@@ -159,7 +160,7 @@
     
     <script>
         const app = new Application();
-        const page = new Page(app);
+        const page = new Page(app, "<%= lecturer.uuid %>");
     </script>
 </body>
 </html>

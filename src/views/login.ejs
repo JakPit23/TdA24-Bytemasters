@@ -13,43 +13,46 @@
     <%- include('partials/navbar') %>
     <%- include('partials/blobs') %>
 
+    <div data-loaderPage class="loader-page">
+        <div class="loader"></div>
+    </div>
+
     <div class="w-full">
-        <!-- register form -->
-        <div class="container mx-auto mb-6">
-            <div class="flex justify-center items-center h-max">
-                <div class="w-full max-w-md">
-                    <form class="dark:bg-dark-900 shadow-lg rounded px-8 pt-6 pb-8 mb-4">
-                        <h1 class="text-3xl font-semibold text-center mb-4 dark:text-white-700">Přidejte se k nám!</h1>
-                        <div data-error class="bg-sunglate-900 text-xl rounded">
+        <div class="max-w-[1280px] mx-auto px-4">
+            <div class="flex flex-col items-center w-full gap-4">
+                <h1 class="text-4xl font-extrabold">Přihlášení</h1>
+
+                <div class="w-1/2 mx-auto">
+                    <form data-loginForm class="user-form flex flex-col gap-2 w-full">
+                        <div class="flex flex-col gap-1">
+                            <label for="firstName" class="text-lg font-bold">Username</label>
+                            <input data-userInput="username" class="user-input" type="text" placeholder="veronika.vasickova" required>
+                        </div>
+
+                        <div class="flex flex-col gap-1">
+                            <label for="firstName" class="text-lg font-bold">Heslo</label>
+                            <input data-userInput="password" class="user-input" type="password" required>
+                        </div>
                         
-                        </div>
-                        <div class="mb-4">
-                            <label class="block text-white-700 text-sm font-bold mb-2" for="username">
-                                Uživatelské jméno
-                            </label>
-                            <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="username" type="text" data-username placeholder="SuperCat345" required>
-                        </div>
-                        <div class="mb-6">
-                            <label class="block text-white-700 text-sm font-bold mb-2" for="password">
-                                Heslo
-                            </label>
-                            <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="password" type="password" data-password placeholder="SecretPass" required>
-                        </div>
-                        <!-- button -->
-                        <div class="flex items-center justify-center">
-                            <button data-loginBtn class="btn btn-big" type="submit">
-                                Přihlásit se
-                            </button>
+                        <div class="flex flex-col gap-1 mt-4">
+                            <button type="submit" class="btn">Přihlásit se</button>
                         </div>
                     </form>
                 </div>
+            </div>
+        </div>
     </div>
-    <script defer src="/public/lib/js/jquery-3.7.1.min.js"></script>
-    <script defer src="/public/js/LecturerAPI.js"></script>
-    <script defer src="/public/js/Application.js"></script>
-    <script defer src="/public/js/Authentication.js"></script>
-    <script>class Page{}</script>
 
     <%- include('partials/footer') %>
+
+    <script src="/public/lib/js/jquery-3.7.1.min.js"></script>
+    <script src="/public/js/Application.js"></script>
+    <script src="/public/js/API.js"></script>
+    <script src="/public/js/pages/LoginPage.js"></script>
+
+    <script>
+        const app = new Application();
+        const page = new Page(app);
+    </script>
 </body>
 </html>

@@ -1,37 +1,95 @@
-class DashboardPage {
-    constructor(app, uuid) {
+class Page {
+    constructor(app) {
         this.app = app;
-        this.uuid = uuid;
-        new CalendarModule(this.app, this.uuid);
-        this.btn = document.getElementById('timeBtn');
-        this.btn.addEventListener('click', this.toggleForm);
-        /* $('[data-addFreeTime]').on('click', this.addFreeTime); */
-        $('[data-logout]').on('click', this.logoutUser);
+        this.api = new API();
+        this.calendarModule = new CalendarModule(this);
+
+        this.logoutButton = $("[data-logout]");
+        this.reservationForm = $("[data-reservationForm]");
+        this.downloadCalendarButton = $("[data-downloadCalendar]");
+        this.addReservationTimeButton = $("[data-addReservationTime]");
+
+        this.init();
+    }
+    
+    _toggleReservationForm = () => this.reservationForm.fadeToggle(100)
+
+    async init() {
+        this.user = (await this.api.getUser()).user;
+
+        this.logoutButton.on("click", this.authLogout.bind(this));
+        this.reservationForm.on("submit", this.addReservation.bind(this));
+        this.addReservationTimeButton.on("click", () => this._toggleReservationForm());
+        this.downloadCalendarButton.on("click", this.downloadCalendar.bind(this));
+
+        this.calendarModule.load();
+        this.app.hideLoader();
     }
 
-    toggleForm = () => {
-        const form = document.getElementById('timeForm');
-        form.classList.toggle('hidden');
-    }
+    async authLogout() {
+        try {
+            this.logoutButton.prop("disabled", true);
 
-    logoutUser = async() => {
-        const response = await fetch('/api/auth/logout', {
-            method: 'POST'
-        })
-        if (response.status === 200) {
-            window.location.href = '/';
+            await this.api.authLogout();
+            window.location.href = "/";
+        } catch (error) {
+            this.logoutButton.addClass("!bg-red-500");
+
+            console.error("An error occurred while logging out:", error);
+            setTimeout(() => this.logoutButton.removeClass("!bg-red-500").prop("disabled", false), 1500);
         }
     }
 
-    addFreeTime = async() => {
-        const response = await fetch(`/api/user/@me`, {
-           method: 'PATCH',
-           body: JSON.stringify({
-               "start": new Date($('[data-timeFrom]')[0].val).getTime(),
-               "end": new Date($('[data-timeTo]')[0].val).getTime()
-           }),       
-    })
-}
-}
+    async addReservation(event) {
+        event.preventDefault();
+        
+        const reserveButton = this.reservationForm.find(":submit");
+        // nejvic messy vec :3
+        const reservationTimeStart = this.app.getDateTimeFromString($('[data-reservationInput="timeStart"]').val());
+        const reservationTimeEnd = this.app.getTimeFromString($('[data-reservationInput="timeEnd"]').val());
+        reservationTimeEnd.setDate(reservationTimeStart.getDate());
+        reservationTimeEnd.setMonth(reservationTimeStart.getMonth());
+        reservationTimeEnd.setFullYear(reservationTimeStart.getFullYear());
 
-this.dash = new DashboardPage(this.app, this.uuid);
+        try {
+            await this.api.addUserSettings({
+                reservations: [
+                    {
+                        start: Math.floor(reservationTimeStart.getTime() / 1000),
+                        end: Math.floor(reservationTimeEnd.getTime() / 1000),
+                    }
+                ]
+            });
+
+            reserveButton.prop("disabled", true).addClass("!bg-green-500").text("Rezervace úspěšně přidána");
+            setTimeout(() => reserveButton.prop("disabled", false).removeClass("!bg-green-500").text("Přidat"), 1500);
+        } catch (error) {
+            console.error("An error occurred while adding a reservation:", error);
+            
+            const errorMessage = error.displayMessage || "Nastala chyba při rezervaci";
+            reserveButton.prop("disabled", true).addClass("!bg-red-500").text(errorMessage);
+            setTimeout(() => reserveButton.prop("disabled", false).removeClass("!bg-red-500").text("Přidat"), 2500);
+        }
+    }
+
+    async downloadCalendar() {
+        try {
+            const blob = await this.api.getUserAppointmentsICS();
+            const url = window.URL.createObjectURL(blob);
+            const a = $('<a>').attr('href', url).attr('download', 'events.ics');
+
+            $('body').append(a);
+            a[0].click();
+
+            setTimeout(() => {
+                a.remove();
+                window.URL.revokeObjectURL(url);
+            }, 100);
+        } catch (error) {
+            console.error("An error occurred while downloading ICS:", error);
+
+            this.downloadCalendarButton.prop("disabled", true).addClass("!bg-red-500");
+            setTimeout(() => this.downloadCalendarButton.prop("disabled", false).removeClass("!bg-red-500"), 2500);
+        }
+    }
+}

@@ -61,7 +61,7 @@
                     </div>
                 </div>
 
-                <div  class="flex flex-col items-center justify-center gap-8 w-full">
+                <div class="flex flex-col items-center justify-center gap-8 w-full">
                     <h1 class="font-black text-4xl">Najděte svého lektora</h1>
                     
                     <div class="flex flex-row w-full gap-2">
@@ -109,7 +109,7 @@
                         </div>
 
                         <p data-noResults style="display: none" class="text-white text-2xl">Nenašli jsme žádné lektory</p>
-                        <div data-lecturers style="display: none" class="grid md:grid-cols-2 gap-4 w-full mb-4"></div>
+                        <div data-lecturers class="grid md:grid-cols-2 gap-4 w-full mb-4"></div>
                     </div>
                 </div>
             </div>
@@ -118,9 +118,14 @@
 
     <%- include('partials/footer') %>
 
-    <script defer src="/public/lib/js/jquery-3.7.1.min.js"></script>
-    <script defer src="/public/js/pages/LecturersPage.js"></script>
-    <script defer src="/public/js/LecturerAPI.js"></script>
-    <script defer src="/public/js/Application.js"></script>
+    <script src="/public/lib/js/jquery-3.7.1.min.js"></script>
+    <script src="/public/js/pages/IndexPage.js"></script>
+    <script src="/public/js/API.js"></script>
+    <script src="/public/js/Application.js"></script>
+
+    <script>
+        const app = new Application();
+        const page = new Page(app);
+    </script>
 </body>
 </html>

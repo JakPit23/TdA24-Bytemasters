@@ -1,29 +1,23 @@
 class Application {
     constructor() {
-        this.page = new Page(this);
         this.themeSwitcher = $('[data-themeSwitcher]');
-        this.themeSwitcherDarkIcon = $('[data-themeSwitcher-icon="dark"]');
-        this.themeSwitcherLightIcon = $('[data-themeSwitcher-icon="light"]');
+        this.themeSwitcherIcon = $('[data-themeSwitcher-icon]');
 
-        this.themeSwitcher.on('click', () => this.toggleTheme());
+        this.themeSwitcher.on("click", () => this.toggleTheme());
         this.init();
     }
 
-    init = async () => {
+    init() {
         this.initTheme();
-        await this.page.init();
-
-        this.hideLoader('[data-loaderPage]');
     }
 
-    initTheme = () => {
-        if (localStorage.theme === 'light' || (!(localStorage.theme) && window.matchMedia('(prefers-color-scheme: light)').matches)) {
-            this.themeSwitcherLightIcon.hide();
-            return;
+    initTheme() {
+        if (localStorage.theme == "light" || (!localStorage.theme && window.matchMedia("(prefers-color-scheme: light)").matches)) {
+            return this.themeSwitcherIcon.addClass("fa-moon");
         }
         
         $('html').addClass('dark');
-        this.themeSwitcherDarkIcon.hide();
+        return this.themeSwitcherIcon.addClass("fa-sun");
     }
 
     toggleTheme = () => {
@@ -31,26 +25,39 @@ class Application {
             $('html').addClass('dark');
             localStorage.theme = 'dark';
 
-            this.themeSwitcherLightIcon.show();
-            this.themeSwitcherDarkIcon.hide();
-            return;
+            return this.themeSwitcherIcon.removeClass("fa-moon").addClass("fa-sun");
         }
         
         $('html').removeClass('dark');
         localStorage.theme = 'light';
-
-        this.themeSwitcherDarkIcon.show();
-        this.themeSwitcherLightIcon.hide();
+        
+        return this.themeSwitcherIcon.removeClass("fa-sun").addClass("fa-moon");
     }
 
-    hideLoader(id = "[data-loaderPage]") {
-        $(id).css("opacity", 0);
-        $(id).remove();
+    hideLoader = (id = "[data-loaderPage]") => $(id).css("opacity", 0).remove()
+
+    
+    /**
+     * @param {string} val 
+     * @returns {Date} 
+     */
+    getDateTimeFromString(val) {
+        const [ date, time ] = val.split('T');
+        const [ year, month, day ] = date.split('-');
+        const [ hour, minute ] = time.split(':');
+
+        return new Date(year, month - 1, day, hour, minute);
     }
 
-    getUUID = () => {
-        return window.location.pathname.match(/[0-9a-f]{8}-[0-9a-f]{4}-[14][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}/i);
+    /**
+     * @param {string} val 
+     * @returns {Date} 
+     */
+    getTimeFromString(val) {
+        const [ hour, minute ] = val.split(':');
+
+        const date = new Date();
+        date.setHours(hour, minute);
+        return date;
     }
 }
-
-this.app = new Application();

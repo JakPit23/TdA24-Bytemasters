@@ -1,140 +1,61 @@
 class Page {
-    constructor(app) {
+    /**
+     * @param {Application} app 
+     * @param {string} uuid 
+     */
+    constructor(app, uuid) {
         this.app = app;
-        this.lecturerAPI = new LecturerAPI();
+        this.uuid = uuid;
+        this.api = new API();
+
         this.lecturerElement = $('[data-lecturer]');
-        this.page = $('[data-page]');
-        this.form = $('[data-form]');
-        this.message = $('[data-message]');
-        $('[data-reserveBtn]').on('click', this.reserveLecturer);
+        this.reservationForm = $('[data-reservationForm]');
+
+        this.init();
     }
 
-    init = async () => {
-        const lecturerUUID = this.app.getUUID();
-        if (!(lecturerUUID && lecturerUUID[0])) {
-            $(location).attr('href', '/404');
-            return;
-        }
-        
-        this.lecturerUUID = lecturerUUID[0];
-        await this.loadLecturer();
-    }
-
-    loadLecturer = async () => {
-        const lecturer = await this.lecturerAPI.getLecturer(this.lecturerUUID);
-
-        if (!lecturer) {
-            $(location).attr('href', '/404');
-            return;
-        }
-
-        this.renderLecturer(lecturer);
+    init() {
+        this.reservationForm.on('submit', this._reserveLecturer.bind(this));
         this.app.hideLoader();
     }
 
-    renderLecturer = async (data) => {
-        if (data.picture_url) {
-            $('<img>').addClass('lecturer-profileImage').attr('src', data.picture_url).appendTo(this.lecturerElement);
-        }
+    async _reserveLecturer(event) {
+        event.preventDefault();
+
+        const reserveButton = this.reservationForm.find(":submit");
+        const firstName = $('[data-reservationInput="firstName"]').val();
+        const lastName = $('[data-reservationInput="lastName"]').val();
+        const email = $('[data-reservationInput="email"]').val();
+        const phoneNumber = $('[data-reservationInput="phoneNumber"]').val();
+        const message = $('[data-reservationInput="message"]').val();
+        const location = $('[data-reservationInput="location"]').val();
+
+        // nejvic messy vec :3
+        const reservationTimeStart = this.app.getDateTimeFromString($('[data-reservationInput="timeStart"]').val());
+        const reservationTimeEnd = this.app.getTimeFromString($('[data-reservationInput="timeEnd"]').val());
+        reservationTimeEnd.setDate(reservationTimeStart.getDate());
+        reservationTimeEnd.setMonth(reservationTimeStart.getMonth());
+        reservationTimeEnd.setFullYear(reservationTimeStart.getFullYear());
         
-        const lecturerContent = $('<div>').addClass('lecturer-content flex flex-col').appendTo(this.lecturerElement);
-        const profile = $('<div>').addClass('flex flex-col md:flex-row').appendTo(lecturerContent);
-        const profileInfo = $('<div>').appendTo(profile);
-        
-        const name = [ data.title_before, data.first_name, data.middle_name, data.last_name, data.title_after ].filter(part => part !== "").join(' ');
-        $('<h1>').addClass('lecturer-name').text(name).appendTo(profileInfo);
+        try {
+            await this.api.createReservation(this.uuid, {
+                start: Math.floor(reservationTimeStart.getTime() / 1000),
+                end: Math.floor(reservationTimeEnd.getTime() / 1000),
+                firstName,
+                lastName,
+                email,
+                phoneNumber,
+                message,
+                location
+            });
 
-        if (data.claim) {
-            $('<p>').addClass('lecturer-claim').text(data.claim).appendTo(profileInfo);
+            reserveButton.prop('disabled', true).addClass("!bg-green-600").text("Rezervace úspěšně odeslána");
+        } catch (error) {
+            console.log("An error occurred while reserving:", error);
+
+            const errorMessage = error.displayMessage || "Nastala neznámá chyba";
+            reserveButton.prop("disabled", true).addClass("!bg-red-500").text(errorMessage);
+            setTimeout(() => reserveButton.prop("disabled", false).removeClass("!bg-red-500").text("Rezervovat"), 2500);
         }
-        
-        if (data.tags) {
-            const lecturerTags = $('<div>').addClass('lecturer-tags').appendTo(profileInfo);
-            data.tags.forEach(tag => $('<p>').text(tag.name).appendTo(lecturerTags));
-        }
-
-        if (data.location || data.price_per_hour) {
-            const rowBox = $('<div>').addClass('flex flex-row space-x-2').appendTo(
-                $('<div>').addClass('min-w-fit md:ml-auto').appendTo(profile)
-            );
-
-            if (data.location) {
-                $('<p>').addClass('lecturer-location').text(data.location).appendTo(rowBox);
-            }
-
-            if (data.price_per_hour) {
-                $('<p>').addClass('lecturer-price').text(`${data.price_per_hour} Kč/h`).appendTo(rowBox);
-            }
-        }
-
-        if (data.contact && (data.contact.emails || data.contact.telephone_numbers)) {
-            const contactBox = $('<div>').addClass('flex flex-wrap gap-4 my-4').appendTo(lecturerContent);
-
-            if (data.contact.emails) {
-                const info = $('<div>').addClass('lecturer-rowBox').appendTo(contactBox).append($('<h1>').text('Emails'));
-
-                const emails = $('<div>').addClass('flex flex-col space-y-1').appendTo(info);
-                data.contact.emails.forEach(email => $('<a>').attr('href', `mailto:${email}`).text(email).appendTo(emails));
-            }
-
-            if (data.contact.telephone_numbers) {
-                const info = $('<div>').addClass('lecturer-rowBox').appendTo(contactBox).append($('<h1>').text('Telephone Numbers'));
-
-                const telephoneNumbers = $('<div>').addClass('flex flex-col space-y-1').appendTo(info);
-                data.contact.telephone_numbers.forEach(telephoneNumber => $('<a>').attr('href', `tel:${telephoneNumber}`).text(telephoneNumber).appendTo(telephoneNumbers));
-            }
-        }
-
-        if (data.bio) {
-            $('<p>').addClass('lecturer-bio').text(data.bio).appendTo(lecturerContent);
-        }
-
-        $('title').text(`${name} | ${$('title').text()}`);
-        this.lecturerElement.show();
-    }
-
-    reserveLecturer = async(e) => {
-        e.preventDefault();
-        var time = new Date(document.getElementById('time').value).getTime();
-        const response = await fetch(`/api/lecturers/${this.app.getUUID()[0]}/reservation`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                "firstName" : document.getElementById('firstName').value,
-                "lastName" : document.getElementById('lastName').value,
-                "email" : document.getElementById('email').value,
-                "phoneNumber": document.getElementById('telephone').value,
-                "event": {
-                    "name": document.getElementById('message').value,
-                    "location": document.getElementById('location').value,
-                    "start":  time,
-                    "end": time + 3600
-                }
-            }),
-        });
-        if(response.status !== 200) {
-            const data = await response.json();
-            const el = document.createElement("p");
-            el.addClass('text-2xl mx-auto mt-2')
-            switch(data.error) {
-                case "INVALID_EMAIL":
-                    el.text('Neplatný email');
-                case "INVALID_PHONE_NUMBER":
-                    el.text('Neplatné telefonní číslo');
-                case "INVALID_EVENT_NAME":
-                    el.text('Neplatný název události');
-                case "INVALID_EVENT_LOCATION":
-                    el.text('Neplatné místo události');
-                case "EVENT_CONFLICTS_WITH_EXISTING_EVENT":
-                    el.text('Daný čas je již obsazený');
-            }
-            el.appendTo(this.message);
-            return;
-        }
-
-        this.form.addClass('hidden');
-        this.page.append($('<p>').text('Rezervace proběhla úspěšně').addClass('text-white-900 text-2xl mx-auto mt-2'));
     }
 }

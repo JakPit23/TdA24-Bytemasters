@@ -13,6 +13,10 @@
     <%- include('partials/navbar') %>
     <%- include('partials/blobs') %>
 
+    <div data-loaderPage class="loader-page">
+        <div class="loader"></div>
+    </div>
+
     <div class="h-24 block"></div>
     
     <div class="w-full">
@@ -22,70 +26,43 @@
                     <div class="flex w-full justify-between">
                         <h1 class="text-4xl font-extrabold"><%= user.first_name %> <%= user.last_name %></h1>
 
-                        <!-- TODO: fixnout aby text byl vertikalne v centru -->
-                        <button data-logout class="btn">
-                            <i class="fa-solid fa-sign-out text-xl"></i>
-                            Odhlásit se
-                        </button>
-                    </div>
+                        <div class="flex flex-row gap-2">
+                            <button data-addReservationTime class="btn btn-skyblue">
+                                <i class="fa-solid fa-calendar text-xl"></i>
+                                Přidat rezervační čas
+                            </button>
+    
+                            <button data-downloadCalendar class="btn btn-skyblue">
+                                <i class="fa-solid fa-download text-xl"></i>
+                                Stáhnout kalendář
+                            </button>
 
-                    <!-- TODO: pridat user nastaveni -->
-                    <div class="flex flex-row justify-center gap-4 w-full">
-                        <button data-pageToggler="settings" class="btn">
-                            <i class="fa-solid fa-cog text-xl"></i>
-                            Nastavení
-                        </button>
-
-                        <button data-pageToggler="calendar" class="btn">
-                            <i class="fa-solid fa-calendar text-xl"></i>
-                            Kalendář
-                        </button>
-                    </div>
-
-                    <!--<div data-page="settings" class="flex flex-col items-center gap-4 w-full">
-                        <h2 class="text-2xl font-bold">Nastavení</h2>
-
-                        <div class="flex flex-row gap-4 w-full">
-                            <div>
-                                <h3 class="text-xl font-bold">Jméno</h3>
-                                <input data-input="first_name" class="user-input" type="text" value="<%= user.first_name %>">
-                            </div>
-
-                            <div>
-                                <h3 class="text-xl font-bold">Příjmení</h3>
-                                <input data-input="first_name" class="user-input" type="text" value="<%= user.first_name %>">
-                            </div>
-
-                            <div>
-                                <h3 class="text-xl font-bold">Příjmení</h3>
-                                <input data-input="first_name" class="user-input" type="text" value="<%= user.first_name %>">
-                            </div>
-
-                            <div>
-                                <h3 class="text-xl font-bold">Příjmení</h3>
-                                <input data-input="first_name" class="user-input" type="text" value="<%= user.first_name %>">
-                            </div>
+                            <button data-logout class="btn">
+                                <i class="fa-solid fa-sign-out text-xl"></i>
+                                Odhlásit se
+                            </button>
                         </div>
-                    </div>-->
+                    </div>
 
                     <div data-page="calendar" class="flex flex-col gap-4 w-full">
                         <h2 class="text-2xl font-bold">Kalendář</h2>
 
                         <div class="flex flex-col items-center gap-4 w-full">
-                            <div data-calendar class="w-9/12 px-4 py-2"></div>
-                            <div class="flex flex-row gap-3">
-                                <button id="timeBtn" class="btn">Přidat volno</button>
-                                <button data-export class="btn btn-skyblue">Exportovat kalendář</button>
+                            <form data-reservationForm style="display: none;" class="user-form flex flex-col gap-2 w-1/2">
+                                <div class="flex flex-col w-full">
+                                    <label class="text-lg font-bold">Datum a čas</label>
+                                    
+                                    <div class="flex flex-row items-center gap-2">
+                                        <input data-reservationInput="timeStart" class="user-input" type="datetime-local" required>
+                                        <p>-</p>
+                                        <input data-reservationInput="timeEnd" class="user-input" type="time" required>
+                                    </div>
+                                </div>
+        
+                                <button type="submit" class="btn mt-4">Přidat</button>
                             </div>
-                            <div id="timeForm" class="flex flex-col w-9/12 hidden dark:text-white-900">
-                                <label>Datum</label>
-                                <input type="date" class="mb-3 user-input" data-timeFrom>
-                                <label>Čas od:</label>
-                                <input type="time" class="mb-3 user-input">
-                                <label>Čas do:</label>
-                                <input data-timeTo type="time" class="mb-3 user-input">
-                                <button data-addFreeTime class="btn">Přidat</button>
-                            </div>
+
+                            <div data-calendar class="w-3/4 px-4 py-2"></div>
                         </div>
                     </div>
                 </div>
@@ -95,16 +72,15 @@
 
     <%- include('partials/footer') %>
 
-    <script defer src='/public/lib/js/fullcalendar-6.1.10.min.js'></script>
-    <script defer src="/public/lib/js/jquery-3.7.1.min.js"></script>
-    <script defer src="/public/js/Application.js"></script>
-    <script defer src="/public/js/LecturerAPI.js"></script>
-    <script defer src="/public/js/modules/CalendarModule.js"></script>
-    <script>class Page{}</script>
-
-    <%-'<script>'%>
-        this.uuid = "<%- user.uuid %>";       
-    <%-'</script>'%>
-    <script defer src="/public/js/pages/DashboardPage.js"></script>
+    <script src="/public/lib/js/jquery-3.7.1.min.js"></script>
+    <script src="/public/lib/js/fullcalendar-6.1.10.min.js"></script>
+    <script src="/public/js/Application.js"></script>
+    <script src="/public/js/API.js"></script>
+    <script src="/public/js/modules/CalendarModule.js"></script>
+    <script src="/public/js/pages/DashboardPage.js"></script>
+    <script>
+        const app = new Application();
+        const page = new Page(app);
+    </script>
 </body>
 </html>

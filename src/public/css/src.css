@@ -61,10 +61,14 @@ p {
 }
 
 .btn {
-    @apply py-2 px-4 rounded-md bg-sunglate-900 text-white-900 font-semibold transition-colors cursor-pointer;
+    @apply py-2 px-4 rounded-md bg-sunglate-900 text-white-900 font-semibold transition ease-in-out duration-300;
 
     &:hover {
         @apply bg-sunglate-700;
+    }
+
+    &:disabled {
+        @apply bg-sunglate-600 cursor-not-allowed;
     }
 }
 
@@ -78,6 +82,10 @@ p {
     &:hover {
         @apply bg-skyblue-700;
     }
+    
+    &:disabled {
+        @apply bg-skyblue-600 cursor-not-allowed;
+    }
 }
 
 .btn-prussianblue {
@@ -85,6 +93,10 @@ p {
 
     &:hover {
         @apply bg-prussianblue-700;
+    }
+
+    &:disabled {
+        @apply bg-prussianblue-600 cursor-not-allowed;
     }
 }
 
@@ -142,7 +154,11 @@ p {
 }
 
 .lecturerCard .lecturer-profileImage {
-    @apply h-32 w-32 rounded-md;
+    @apply dark:bg-black-100 h-32 min-w-[8rem] rounded-md;
+}
+
+.lecturerCard .lecturer-profileImage .placeholder  {
+    @apply text-6xl text-dark-900 dark:text-white-900;
 }
 
 .lecturerCard .lecturer-content {
@@ -179,7 +195,7 @@ p {
 }
 
 .lecturer .lecturer-profileImage {
-    @apply h-80 w-80 rounded-md;
+    @apply dark:bg-black-100 h-80 min-w-[20rem] rounded-md;
 }
 
 .lecturer .lecturer-content {
@@ -327,10 +343,6 @@ form {
     @apply text-dark-900 dark:text-white-900;
 }
 
-input[type="datetime-local"]::-webkit-calendar-picker-indicator {
-    filter: invert(1);
-}
-
 /* rezervace */
 .reservation {
     @apply flex flex-col dark:bg-black-300 rounded-md py-4 px-4 shadow-xl;
@@ -343,8 +355,37 @@ input[type="datetime-local"]::-webkit-calendar-picker-indicator {
 .reservation label {
     @apply mb-2;
 }
- 
+
 /* nevim */
-.user-input {
+.user-message {
+    @apply text-sm font-bold;
+    
+    &.success {
+        @apply !text-green-500;
+    }
+
+    &.error {
+        @apply !text-red-500;
+    }
+}
+
+/* formiky preddefinovany :3 */
+.user-form {
+    @apply flex flex-col dark:bg-black-200 rounded-md p-4;
+}
+
+.user-form .user-input {
     @apply w-full rounded py-2 px-4 bg-black-100 text-dark-900 dark:text-white-900;
+
+    &:focus {
+        @apply outline-none;
+    }
+
+    &[type="datetime-local"]::-webkit-calendar-picker-indicator {
+        @apply dark:invert;
+    }
+
+    &[type="time"]::-webkit-calendar-picker-indicator {
+        @apply dark:invert;
+    }
 }
