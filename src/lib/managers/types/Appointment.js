@@ -1,3 +1,4 @@
+const { APIError } = require("../../Errors");
 const Logger = require("../../Logger");
 const Utils = require("../../Utils");
 
