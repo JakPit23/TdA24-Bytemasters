@@ -32,7 +32,6 @@ module.exports = class APIUserRoute {
 
                 return APIResponse.OK.send(res);
             } catch (error) {
-                console.log(error);
                 if (error == APIError.MISSING_REQUIRED_VALUES) {
                     return APIResponse.MISSING_REQUIRED_VALUES.send(res);
                 }

@@ -52,12 +52,12 @@ module.exports = class Reservation {
 
     isAppointmentConflict = (appointment) => this.appointments.find(existingAppointment => appointment.start >= existingAppointment.start && appointment.start <= existingAppointment.end)
 
-    createAppointment = (data) => {
+    createAppointment(data) {
         const appointment = new Appointment(data);
         if (this.isAppointmentConflict(appointment)) {
             throw APIError.TIME_SLOT_NOT_AVAILABLE;
         }
-
+        
         this.appointments.push(appointment);
         return appointment;
     }
