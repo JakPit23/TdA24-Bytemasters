@@ -42,17 +42,23 @@ module.exports = class LecturerMiddleware {
     fetchSession = async (req, res, next) => {
         const { token } = req.session;
 
-        if (token) {
-            try {
-                const { uuid } = this.webserver.getCore().getLecturerManager().verifyToken(req.session.token);
-                const lecturer = await this.webserver.getCore().getLecturerManager().getLecturer({ uuid });
-                res.locals.lecturer = lecturer;
-            } catch (error) {
-                Logger.error(Logger.Type.LecturerManager, "An unknown error occurred while fetching session", error);
-                return next(error);
-            }
+        if (!token) {
+            return next();
         }
-        
+
+        try {
+            const verified = this.webserver.getCore().getLecturerManager().verifyToken(token);
+            if (!verified || !verified.uuid) {
+                return next();
+            }
+
+            const lecturer = await this.webserver.getCore().getLecturerManager().getLecturer({ uuid: verified.uuid });
+            res.locals.lecturer = lecturer;
+        } catch (error) {
+            Logger.error(Logger.Type.LecturerManager, "An unknown error occurred while fetching session", error);
+            return next(error);
+        }
+
         return next();
     }
 }
