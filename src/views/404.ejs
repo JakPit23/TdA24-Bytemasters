@@ -17,21 +17,31 @@
         <div class="loader"></div>
     </div>
 
+    <div class="h-24 block"></div>
+
     <div class="w-full">
         <div class="max-w-[1280px] mx-auto px-4">
-            <div class="flex flex-col items-start w-full pt-32 gap-64">
-                <div class="flex flex-col items-left md:items-center justify-center gap-8 w-full h-[50vh]">
-                    <h1 class="font-black text-6xl uppercase text-left">Stránka nenalezena</h1>
-                    <p class="text-lg md:text-xl text-left md:text-center max-w-5xl">Ups! Zdá se, že jste zabloudili. Nechte nás vám pomoci najít cestu zpět.</p>
-                    <div><a class="btn btn-big !bg-sunglate-700" href="/">Cesta zpět</a></div>
+            <div class="flex flex-col w-full gap-2">
+                <h1 class="text-6xl text-black font-bold uppercase">Stránka nenalezena</h1>
+                
+                <div class="flex flex-col gap-4">
+                    <p class="text-lg">Psps! Zdá se, že jste zabloudili. Tady dole najdete cestu zpět</p>
+                    
+                    <div class="block">
+                        <a class="btn btn-big w-fit" href="/">Cesta zpět</a>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 
     <%- include('partials/footer') %>
-    <script defer src="/public/lib/js/jquery-3.7.1.min.js"></script>
-    <script defer src="/public/js/pages/Page.js"></script>
-    <script defer src="/public/js/Application.js"></script>
+
+    <script src="/public/lib/js/jquery-3.7.1.min.js"></script>
+    <script src="/public/js/Application.js"></script>
+    <script>
+        const app = new Application();
+        app.hideLoader();
+    </script>
 </body>
 </html>
