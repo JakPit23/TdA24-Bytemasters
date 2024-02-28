@@ -50,7 +50,7 @@ module.exports = class APIAuthRoute {
         
         this.router.post("/logout", this.webserver.middlewares["LecturerMiddleware"].forceAuth, async (req, res, next) => {
             try {
-                if (!res.locals.lecturer) {
+                if (!res.locals.user) {
                     return APIResponse.UNAUTHORIZED.send(res);
                 }
 
