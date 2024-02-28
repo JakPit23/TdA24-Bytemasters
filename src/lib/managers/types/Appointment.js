@@ -39,19 +39,26 @@ module.exports = class Appointment {
             throw APIError.INVALID_VALUE_TYPE;
         }
 
+        if (typeof data.message !== "string") {
+            Logger.debug(Logger.Type.LecturerManager, "Variable \"message\" is not a string, cannot create an appointment.");
+            throw APIError.INVALID_VALUE_TYPE;
+        }
+
+        if (data.message.length > 500) {
+            throw APIError.INVALID_VALUE_TYPE;
+        }
+
         /**
          * @type {number}
          * @description The start date of the reservation.
          */
         this.start = data.start;
-        this.startDate = new Date(this.start * 1000);
 
         /**
          * @type {number}
          * @description The end date of the reservation.
          */
         this.end = data.end;
-        this.endDate = new Date(this.end * 1000);
         
         /**
          * @type {string}
@@ -76,5 +83,11 @@ module.exports = class Appointment {
          * @description The phone number of the person.
          */
         this.phoneNumber = data.phoneNumber;
+
+        /**
+         * @type {string}
+         * @description The message from the person for lecturer.
+         */
+        this.message = data.message;
     }
 }

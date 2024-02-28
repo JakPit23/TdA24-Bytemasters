@@ -48,6 +48,7 @@ module.exports = class Reservation {
     toJSON = () => ({
         start: this.start,
         end: this.end,
+        appointments: this.appointments
     })
 
     isAppointmentConflict = (appointment) => this.appointments.find(existingAppointment => appointment.start >= existingAppointment.start && appointment.start <= existingAppointment.end)
