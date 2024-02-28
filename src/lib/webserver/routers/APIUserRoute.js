@@ -16,8 +16,8 @@ module.exports = class APIUserRoute {
     loadRoutes = () => {
         this.router.patch("/@me", this.webserver.middlewares["LecturerMiddleware"].fetchSession, async (req, res, next) => {
             try {
-                const { lecturer } = res.locals;
-                if (!lecturer) {
+                const { user } = res.locals;
+                if (!user) {
                     return APIResponse.UNAUTHORIZED.send(res);
                 }
 
@@ -27,7 +27,7 @@ module.exports = class APIUserRoute {
                 }
 
                 if (data.reservations) {
-                    lecturer.addReservations(data.reservations);
+                    user.addReservations(data.reservations);
                 }
 
                 return APIResponse.OK.send(res);
