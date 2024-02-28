@@ -1,7 +1,5 @@
 const express = require("express");
-const ics = require("ics");
 const { APIError } = require("../../Errors");
-const Logger = require("../../Logger");
 const APIResponse = require("../APIResponse");
 
 module.exports = class APILecturersRoute {
@@ -161,36 +159,6 @@ module.exports = class APILecturersRoute {
                     return APIResponse.INVALID_DATES.send(res);
                 }
 
-                return next(error);
-            }
-        });
-
-        this.router.get("/:uuid/event", async (req, res, next) => {
-            try {
-                const { uuid } = req.params;
-
-                const lecturer = await this.webserver.getCore().getLecturerManager().getLecturer({ uuid });
-                if (!lecturer) {
-                    return APIResponse.LECTURER_NOT_FOUND.send(res);
-                }
-
-                if (!lecturer.events || lecturer.events.length == 0) {
-                    Logger.debug(Logger.Type.LecturerManager, `No events found for lecturer ${uuid}`);
-                    return res.sendStatus(204);
-                }
-
-                ics.createEvents(lecturer.events.map(event => event.toICSFormat()), (error, value) => {
-                    if (error) {
-                        Logger.error(Logger.Type.LecturerManager, `Failed to generate ics file for lecturer ${uuid}`, error);
-                        return next(error);
-                    }
-
-                    return res.status(200)
-                        .set("Content-Type", "text/calendar")
-                        .set("Content-Disposition", "attachment; filename=events.ics")
-                        .send(value);
-                });
-            } catch (error) {
                 return next(error);
             }
         });
