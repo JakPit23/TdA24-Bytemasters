@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><%= lecturer.first_name %> <%= lecturer.last_name %> | Teacher Digital Agency</title>
+    <title><%= user.first_name %> <%= user.last_name %> | Teacher Digital Agency</title>
     <link rel="stylesheet" href="/public/lib/fontawesome/css/fontawesome.css">
     <link rel="stylesheet" href="/public/lib/fontawesome/css/solid.css">
     <link rel="stylesheet" href="/public/css/app.css">
@@ -20,7 +20,7 @@
             <div class="flex flex-col items-start w-full pt-4 gap-4">
                 <div class="flex flex-col items-center gap-4 dark:bg-dark-700 shadow-lg rounded-md p-6 w-full">
                     <div class="flex w-full justify-between">
-                        <h1 class="text-4xl font-extrabold"><%= lecturer.first_name %> <%= lecturer.last_name %></h1>
+                        <h1 class="text-4xl font-extrabold"><%= user.first_name %> <%= user.last_name %></h1>
 
                         <!-- TODO: fixnout aby text byl vertikalne v centru -->
                         <button data-logout class="btn">
@@ -48,22 +48,22 @@
                         <div class="flex flex-row gap-4 w-full">
                             <div>
                                 <h3 class="text-xl font-bold">Jméno</h3>
-                                <input data-input="first_name" class="user-input" type="text" value="<%= lecturer.first_name %>">
+                                <input data-input="first_name" class="user-input" type="text" value="<%= user.first_name %>">
                             </div>
 
                             <div>
                                 <h3 class="text-xl font-bold">Příjmení</h3>
-                                <input data-input="first_name" class="user-input" type="text" value="<%= lecturer.first_name %>">
+                                <input data-input="first_name" class="user-input" type="text" value="<%= user.first_name %>">
                             </div>
 
                             <div>
                                 <h3 class="text-xl font-bold">Příjmení</h3>
-                                <input data-input="first_name" class="user-input" type="text" value="<%= lecturer.first_name %>">
+                                <input data-input="first_name" class="user-input" type="text" value="<%= user.first_name %>">
                             </div>
 
                             <div>
                                 <h3 class="text-xl font-bold">Příjmení</h3>
-                                <input data-input="first_name" class="user-input" type="text" value="<%= lecturer.first_name %>">
+                                <input data-input="first_name" class="user-input" type="text" value="<%= user.first_name %>">
                             </div>
                         </div>
                     </div>-->
@@ -103,7 +103,7 @@
     <script>class Page{}</script>
 
     <%-'<script>'%>
-        this.uuid = "<%- lecturer.uuid %>";       
+        this.uuid = "<%- user.uuid %>";       
     <%-'</script>'%>
     <script defer src="/public/js/pages/DashboardPage.js"></script>
 </body>

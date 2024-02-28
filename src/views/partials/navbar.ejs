@@ -19,9 +19,9 @@
             </button>
 
             <a class="flex justify-center items-center bg-neutral-200 dark:bg-white-50 hover:bg-neutral-600 dark:hover:bg-white-100 rounded-full transition h-12 w-12"
-            href="<%- locals.lecturer ? '/dashboard' : '/login' %>">
-                <% if (locals.lecturer && locals.lecturer.picture_url) { %>
-                    <img src="<%- locals.lecturer.picture_url %>" class="p-1.5 rounded-full">
+            href="<%- locals.user ? '/dashboard' : '/login' %>">
+                <% if (locals.user && locals.user.picture_url) { %>
+                    <img src="<%- locals.user.picture_url %>" class="p-1.5 rounded-full">
                 <% } else { %>
                     <i class="p-2 fa-solid fa-user text-xl text-dark-900 dark:text-white-900"></i>
                 <% } %>

@@ -25,12 +25,12 @@ module.exports = class LecturerMiddleware {
             return res.redirect("/login");
         }
 
-        const lecturer = await this.webserver.getCore().getLecturerManager().getLecturer({ uuid: result.uuid });
-        if (!lecturer) {
+        const user = await this.webserver.getCore().getLecturerManager().getLecturer({ uuid: result.uuid });
+        if (!user) {
             return res.redirect("/login");
         }
 
-        res.locals.lecturer = lecturer;
+        res.locals.user = user;
         return next();
     }
 
@@ -52,8 +52,8 @@ module.exports = class LecturerMiddleware {
                 return next();
             }
 
-            const lecturer = await this.webserver.getCore().getLecturerManager().getLecturer({ uuid: verified.uuid });
-            res.locals.lecturer = lecturer;
+            const user = await this.webserver.getCore().getLecturerManager().getLecturer({ uuid: verified.uuid });
+            res.locals.user = user;
         } catch (error) {
             Logger.error(Logger.Type.LecturerManager, "An unknown error occurred while fetching session", error);
             return next(error);

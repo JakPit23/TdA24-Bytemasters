@@ -17,7 +17,7 @@ module.exports = class WebRoute {
         this.router.get("/contact", this.webserver.middlewares["LecturerMiddleware"].fetchSession, (req, res) => res.render("contact"));
 
         this.router.get("/login", this.webserver.middlewares["LecturerMiddleware"].fetchSession, (req, res) => {
-            if (res.locals.lecturer) {
+            if (res.locals.user) {
                 return res.redirect("/dashboard");
             }
 
@@ -32,11 +32,13 @@ module.exports = class WebRoute {
                 return res.redirect("/");
             }
 
-            res.render("lecturer");
+            res.render("lecturer", {
+                lecturer
+            });
         });
 
         this.router.get("/dashboard", this.webserver.middlewares["LecturerMiddleware"].forceAuth, (req, res) => {
-            res.render("dashboard", { lecturer: res.locals.lecturer });
+            res.render("dashboard");
         });
     }
 };
