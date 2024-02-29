@@ -94,7 +94,7 @@ module.exports = class Appointment {
     toICS = () => ({
         start: this.start * 1000,
         end: this.end * 1000,
-        title: `${this.firstName} ${this.lastName}`,
+        title: `Výuka: ${this.firstName} ${this.lastName}`,
         description: this.message,
         location: this.location
     });
