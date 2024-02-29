@@ -1362,7 +1362,7 @@ p {
 }
 
 :is(.dark .lecturer) {
-  background-color: rgba(51, 51, 51, 0.8);
+  background-color: rgba(0, 0, 0, 0.3);
 }
 
 @media (min-width: 768px) {
@@ -1378,7 +1378,7 @@ p {
 }
 
 :is(.dark .lecturer .lecturer-profileImage) {
-  background-color: rgba(0, 0, 0, 0.2);
+  background-color: rgba(51, 51, 51, 0.9);
 }
 
 .lecturer .lecturer-content {
@@ -1773,6 +1773,12 @@ form {
 
 :is(.dark .user-form) {
   background-color: rgba(0, 0, 0, 0.3);
+}
+
+@media (min-width: 1024px) {
+  .user-form {
+    width: 50%;
+  }
 }
 
 .user-form {
