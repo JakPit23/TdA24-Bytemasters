@@ -23,10 +23,10 @@
         <div class="max-w-[1280px] mx-auto px-4">
             <div class="flex flex-col items-start w-full pt-4 gap-4">
                 <div class="flex flex-col items-center gap-4 dark:bg-dark-700 shadow-lg rounded-md p-6 w-full">
-                    <div class="flex w-full justify-between">
+                    <div class="flex flex-col gap-2 md:flex-row w-full justify-between">
                         <h1 class="text-4xl font-extrabold"><%= user.first_name %> <%= user.last_name %></h1>
 
-                        <div class="flex flex-row gap-2">
+                        <div class="flex flex-col md:flex-row gap-2">
                             <button data-addReservationTime class="btn btn-skyblue">
                                 <i class="fa-solid fa-calendar text-xl"></i>
                                 Přidat rezervační čas
@@ -44,11 +44,11 @@
                         </div>
                     </div>
 
-                    <div data-page="calendar" class="flex flex-col gap-4 w-full">
-                        <h2 class="text-2xl font-bold">Kalendář</h2>
+                    <div data-page="calendar" class="flex flex-col items-center gap-2 w-full">
+                        <h2 class="text-3xl font-bold">Kalendář</h2>
 
                         <div class="flex flex-col items-center gap-4 w-full">
-                            <form data-reservationForm style="display: none;" class="user-form flex flex-col gap-2 w-1/2">
+                            <form data-reservationForm style="display: none;" class="user-form flex flex-col gap-2">
                                 <div class="flex flex-col w-full">
                                     <label class="text-lg font-bold">Datum a čas</label>
                                     
@@ -62,7 +62,7 @@
                                 <button type="submit" class="btn mt-4">Přidat</button>
                             </div>
 
-                            <div data-calendar class="w-3/4 px-4 py-2"></div>
+                            <div data-calendar class="w-3/4"></div>
                         </div>
                     </div>
                 </div>
