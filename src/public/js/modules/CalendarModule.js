@@ -5,6 +5,10 @@ class CalendarModule {
 
         this.fullCalendar = new FullCalendar.Calendar(this.calendarElement[0], {
             locale: "cs",
+            eventTimeFormat: {
+                hour: '2-digit',
+                minute: '2-digit',
+            },
             firstDay: 1,
             editable: false,
             dayMaxEvents: true,
