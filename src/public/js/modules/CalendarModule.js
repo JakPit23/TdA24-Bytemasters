@@ -15,16 +15,19 @@ class CalendarModule {
             buttonText: {
                 today: "Tento měsíc"
             },
-           /*  eventClick: (info) => {
-                console.log(this.page._getAppointmenBetweenDates((info.event.start.getTime() / 1000), (info.event.end.getTime()) / 1000));
-                const appointments = this.page._getAppointmenBetweenDates((info.event.start.getTime() / 1000), (info.event.end.getTime()) / 1000);
-                const content =
+           eventClick: (info) => {
+                const appointment = this.page._getAppointmenBetweenDates((info.event.start.getTime() / 1000), (info.event.end.getTime()) / 1000);
+                
+                const startTime = new Date(info.event.start).getHours() + ":" + String(new Date(info.event.start).getMinutes()).padStart(2, "0");
+                const endTime = new Date(info.event.end).getHours() + ":" + String(new Date(info.event.end).getMinutes()).padStart(2, "0");
+                
                 tippy(info.el, {
-                    trigger: 'click',
-                    content: `<div class="flex flex-col"><h1 class="text-3xl font-bold">Výuka - ${info.event.title}</h1><h2 class="text-2xl font-semibold">Zpráva: <span class="text-xl ">${appointments.message}</span></h2></div>`,
+                    placement: 'top',
+                    trigger: "click",
+                    content: `<div class="flex flex-col"><h1 class="text-3xl font-bold">Výuka - ${info.event.title}</h1><h2 class="text-2xl font-semibold">Lokace: <span class="text-xl ">${appointment.location}</span></h2><h2 class="text-2xl font-semibold">Čas: <span class="text-xl">${startTime} - ${endTime}</span></h2><h2 class="text-2xl">Poznámka: </h2> <span class="text-normal">${appointment.message}</span></div>`,
                     allowHTML: true,
                 })
-              } */
+              }
         });
     }
 
