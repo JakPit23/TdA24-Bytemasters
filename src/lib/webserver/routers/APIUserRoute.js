@@ -94,9 +94,11 @@ module.exports = class APIUserRoute {
                         return next(error);
                     }
                 
+                    // YYYY-MM-DD_plan-vyuky.ical
+                    const fileName = `${new Date().toISOString().split("T")[0]}_plan-vyuky`;
                     return res.status(200)
                         .set("Content-Type", "text/calendar")
-                        .set("Content-Disposition", "attachment; filename=events.ics")
+                        .set("Content-Disposition", `attachment; filename=${fileName}.ical`)
                         .send(value);
                 });
             } catch (error) {
