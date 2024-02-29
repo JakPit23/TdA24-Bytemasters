@@ -14,7 +14,17 @@ class CalendarModule {
             dayMaxEvents: true,
             buttonText: {
                 today: "Tento měsíc"
-            }
+            },
+           /*  eventClick: (info) => {
+                console.log(this.page._getAppointmenBetweenDates((info.event.start.getTime() / 1000), (info.event.end.getTime()) / 1000));
+                const appointments = this.page._getAppointmenBetweenDates((info.event.start.getTime() / 1000), (info.event.end.getTime()) / 1000);
+                const content =
+                tippy(info.el, {
+                    trigger: 'click',
+                    content: `<div class="flex flex-col"><h1 class="text-3xl font-bold">Výuka - ${info.event.title}</h1><h2 class="text-2xl font-semibold">Zpráva: <span class="text-xl ">${appointments.message}</span></h2></div>`,
+                    allowHTML: true,
+                })
+              } */
         });
     }
 
