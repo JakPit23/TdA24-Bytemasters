@@ -76,7 +76,7 @@ class Page {
         try {
             const blob = await this.api.getUserAppointmentsICS();
             const url = window.URL.createObjectURL(blob);
-            const a = $('<a>').attr('href', url).attr('download', 'events.ics');
+            const a = $('<a>').attr('href', url).attr('download', `${new Date().toISOString().split("T")[0]}_plan-vyuky`);
 
             $('body').append(a);
             a[0].click();
