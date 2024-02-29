@@ -29,6 +29,11 @@ module.exports = class Appointment {
             throw APIError.INVALID_VALUE_TYPE;
         }
 
+        if (typeof data.location !== "string") {
+            Logger.debug(Logger.Type.LecturerManager, "Variable \"location\" is not a string, cannot create an appointment.");
+            throw APIError.INVALID_VALUE_TYPE;
+        }
+
         if (!Utils.validateEmail(data.email)) {
             Logger.debug(Logger.Type.LecturerManager, "Variable \"email\" is not a valid email, cannot create an appointment.");
             throw APIError.INVALID_VALUE_TYPE;
@@ -74,6 +79,12 @@ module.exports = class Appointment {
 
         /**
          * @type {string}
+         * @description The location of the appointment.
+         */
+        this.location = data.location;
+
+        /**
+         * @type {string}
          * @description The email of the person.
          */
         this.email = data.email;
@@ -96,6 +107,6 @@ module.exports = class Appointment {
         end: this.end * 1000,
         title: `Výuka: ${this.firstName} ${this.lastName}`,
         description: this.message,
-        location: this.location
+        location: this.location,
     });
 }
