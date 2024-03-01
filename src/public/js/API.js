@@ -50,24 +50,22 @@ class API {
             }
 
             const data = await fetch(requestOptions.url, requestOptions)
-                .then(response => {
+                .then(response => response.json())
+                .then(data => {
+                    if (data.error) {
+                        if (APIError[data.error]) {
+                            throw APIError[data.error];
+                        }
+
+                        throw new APIError(data.error);
+                    }
+
                     if (requestOptions.responseType == "text") {
                         return response.text();
                     }
 
                     if (requestOptions.responseType == "blob") {
                         return response.blob();
-                    }
-
-                    return response.json();
-                })
-                .then(data => {
-                    if (requestOptions.responseType == "json" && data.error) {
-                        if (APIError[data.error]) {
-                            throw APIError[data.error];
-                        }
-
-                        throw new APIError(data.error);
                     }
 
                     return data;
