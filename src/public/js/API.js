@@ -49,29 +49,34 @@ class API {
                 requestOptions.body = JSON.stringify(options.body);
             }
 
-            const data = await fetch(requestOptions.url, requestOptions)
-                .then(response => response.json())
-                .then(data => {
-                    if (data.error) {
-                        if (APIError[data.error]) {
-                            throw APIError[data.error];
+            return fetch(requestOptions.url, requestOptions)
+                .then(response => response.blob())
+                .then(async (blob) => {
+                    try {
+                        return JSON.parse(await blob.text());
+                    } catch (error) {
+                        return blob;
+                    }
+                })
+                .then(blob => {
+                    if (blob.error) {
+                        if (APIError[blob.error]) {
+                            throw APIError[blob.error];
                         }
 
-                        throw new APIError(data.error);
+                        throw new APIError(blob.error);
                     }
 
                     if (requestOptions.responseType == "text") {
-                        return response.text();
+                        return blob.text();
                     }
 
                     if (requestOptions.responseType == "blob") {
-                        return response.blob();
+                        return blob;
                     }
 
-                    return data;
+                    return blob;
                 });
-
-            return data;
         } catch (error) {
             console.log("An error occurred while calling the API:", error);
             throw error;
