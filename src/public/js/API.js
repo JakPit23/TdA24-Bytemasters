@@ -113,7 +113,7 @@ class API {
      * @param {string} data.location
      * @returns {Promise<object>}
      */
-    createReservation = (uuid, data) => this._call({
+    createAppointment = (uuid, data) => this._call({
         url: `/api/lecturers/${uuid}/appointment`,
         method: "POST",
         type: "json",

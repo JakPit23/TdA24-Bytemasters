@@ -42,7 +42,7 @@ class Page {
         reservationTimeEnd.setFullYear(reservationTimeStart.getFullYear());
         
         try {
-            await this.api.createReservation(this.uuid, {
+            await this.api.createAppointment(this.uuid, {
                 start: Math.floor(reservationTimeStart.getTime() / 1000),
                 end: Math.floor(reservationTimeEnd.getTime() / 1000),
                 firstName,

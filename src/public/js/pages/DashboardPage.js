@@ -17,12 +17,12 @@ class Page {
     _getAppointmentBetweenDates = (start, end) => 
         this.user.appointments
             .map(reservation => reservation.appointments)
+        this.user.appointments
             .flat()
             .find(appointment => appointment.start >= start && appointment.end <= end);
 
     _getAppointmentsBetweenDates = (start, end) =>
         this.user.appointments
-            .map(reservation => reservation.appointments)
             .flat()
             .filter(appointment => appointment.start >= start && appointment.end <= end);
 
