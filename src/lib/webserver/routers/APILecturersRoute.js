@@ -130,7 +130,7 @@ module.exports = class APILecturersRoute {
             }
         });
 
-        this.router.post("/:uuid/reservation", async (req, res, next) => {
+        this.router.post("/:uuid/appointment", async (req, res, next) => {
             try {
                 const { uuid } = req.params;
                 const data = req.body;

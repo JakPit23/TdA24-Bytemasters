@@ -23,7 +23,7 @@ const Logger = require("../Logger");
 const { APIError } = require("../Errors");
 const Config = require("../Config");
 const Utils = require("../Utils");
-const Reservation = require("./types/Reservation");
+const Appointment = require("./types/Appointment");
 
 class LecturerManager {
     /**
@@ -112,7 +112,7 @@ class LecturerManager {
         if (edit) {
             Logger.debug(Logger.Type.LecturerManager, `Updating lecturer ${lecturer.uuid} in database...`);
 
-            this.core.getDatabase().exec("UPDATE lecturers SET password = ?, title_before = ?, first_name = ?, middle_name = ?, last_name = ?, title_after = ?, picture_url = ?, location = ?, claim = ?, bio = ?, tags = ?, price_per_hour = ?, reservations = ?, emails = ?, telephone_numbers = ? WHERE uuid = ?", [
+            this.core.getDatabase().exec("UPDATE lecturers SET password = ?, title_before = ?, first_name = ?, middle_name = ?, last_name = ?, title_after = ?, picture_url = ?, location = ?, claim = ?, bio = ?, tags = ?, price_per_hour = ?, appointments = ?, emails = ?, telephone_numbers = ? WHERE uuid = ?", [
                 lecturer.password,
                 lecturer.title_before,
                 lecturer.first_name,
@@ -125,7 +125,7 @@ class LecturerManager {
                 lecturer.bio,
                 tags,
                 lecturer.price_per_hour,
-                JSON.stringify(lecturer.reservations),  // je to fakt debilni reseni, ale nechce se mi to resit jinak
+                JSON.stringify(lecturer.appointments),  // je to fakt debilni reseni, ale nechce se mi to resit jinak
                 emails,
                 telephoneNumbers,
                 lecturer.uuid,
@@ -133,7 +133,7 @@ class LecturerManager {
         } else {
             Logger.debug(Logger.Type.LecturerManager, `Creating lecturer ${lecturer.uuid} in database...`);
 
-            this.core.getDatabase().exec("INSERT INTO lecturers (uuid, username, password, title_before, first_name, middle_name, last_name, title_after, picture_url, location, claim, bio, tags, price_per_hour, reservations, emails, telephone_numbers) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", [
+            this.core.getDatabase().exec("INSERT INTO lecturers (uuid, username, password, title_before, first_name, middle_name, last_name, title_after, picture_url, location, claim, bio, tags, price_per_hour, appointments, emails, telephone_numbers) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", [
                 lecturer.uuid,
                 lecturer.username,
                 lecturer.password,
@@ -148,7 +148,7 @@ class LecturerManager {
                 lecturer.bio,
                 tags,
                 lecturer.price_per_hour,
-                JSON.stringify(lecturer.reservations), // je to fakt debilni reseni, ale nechce se mi to resit jinak
+                JSON.stringify(lecturer.appointments), // je to fakt debilni reseni, ale nechce se mi to resit jinak
                 emails,
                 telephoneNumbers,
             ]);
@@ -169,7 +169,7 @@ class LecturerManager {
      * @returns {Promise<Lecturer>}
      */
     _readLecturer = async (_data) => {
-        const { tags, emails, telephone_numbers, reservations, ...data } = _data;
+        const { tags, emails, telephone_numbers, appointments, ...data } = _data;
         const json = { ...data };
 
         const contact = {};
@@ -192,8 +192,8 @@ class LecturerManager {
             }
         }
 
-        if (reservations) {
-            json.reservations = JSON.parse(reservations).map(data => new Reservation(data));
+        if (appointments) {
+            json.appointments = JSON.parse(appointments).map(data => new Appointment(data));
         }
 
         return new Lecturer(json);

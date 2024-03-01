@@ -55,13 +55,13 @@ module.exports = class Appointment {
 
         /**
          * @type {number}
-         * @description The start date of the reservation.
+         * @description The unix start of the appointment.
          */
         this.start = data.start;
 
         /**
          * @type {number}
-         * @description The end date of the reservation.
+         * @description The unix end of the appointment.
          */
         this.end = data.end;
         
@@ -100,6 +100,23 @@ module.exports = class Appointment {
          * @description The message from the person for lecturer.
          */
         this.message = data.message;
+
+        /**
+         * @type {Date}
+         * @description The start date of the appointment.
+         */
+        this.startDate = new Date(this.start * 1000);
+        // If the appointment is not in the working hours of the lecturer, throw an error.
+        if (this.startDate.getHours() > 19 || this.startDate.getHours() < 8) {
+            Logger.error(Logger.Type.LecturerManager, "Appointment is not in the working hours of the lecturer.");
+            throw APIError.TIME_SLOT_NOT_AVAILABLE;
+        }
+
+        /**
+         * @type {Date}
+         * @description The end date of the appointment.
+         */
+        this.endDate = new Date(this.end * 1000);
     }
 
     toICS = () => ({

@@ -42,7 +42,7 @@ module.exports = class APIUserRoute {
             }
         });
 
-        this.router.patch("/@me", this.webserver.middlewares["LecturerMiddleware"].fetchSession, async (req, res, next) => {
+        this.router.delete("/@me", this.webserver.middlewares["LecturerMiddleware"].fetchSession, async (req, res, next) => {
             try {
                 const { user } = res.locals;
                 if (!user) {
@@ -54,8 +54,8 @@ module.exports = class APIUserRoute {
                     return APIResponse.MISSING_REQUIRED_VALUES.send(res);
                 }
 
-                if (data.reservations) {
-                    user.addReservations(data.reservations);
+                if (data.appointments) {
+                    user.deleteAppointments(data.appointments);
                 }
 
                 return APIResponse.OK.send(res);

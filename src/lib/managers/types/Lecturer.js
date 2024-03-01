@@ -1,6 +1,5 @@
 const { APIError } = require("../../Errors");
-const Logger = require("../../Logger");
-const Reservation = require("./Reservation");
+const Appointment = require("./Appointment");
 
 class Lecturer {
     constructor(data) {
@@ -95,10 +94,10 @@ class Lecturer {
         this.contact = data.contact;
 
         /** 
-         * @type {Array<import("./Reservation")>}
+         * @type {Array<import("./Appointment")>}
          * @description The events of the lecturer.
          */
-        this.reservations = data.reservations || [];
+        this.appointments = data.appointments || [];
     }
 
     toJSON() {
@@ -106,34 +105,37 @@ class Lecturer {
         return data;
     }
 
-    addReservation(data) {
-        const reservation = new Reservation(data);
+    /**
+     * @private
+     * @param {Appointment} appointment 
+     * @returns {boolean}
+     */
+    _isAppointmentConflict = (appointment) => this.appointments
+        .find(existingAppointment => appointment.start >= existingAppointment.start && appointment.start <= existingAppointment.end)
 
-        this.reservations.find(reservation => {
-            if (data.start >= reservation.start && data.start <= reservation.end) {
-                Logger.debug(Logger.Type.LecturerManager, "Reservation conflicts with existing reservation");
-                
-                throw APIError.TIME_CONFLICT;
-            }
-        });
-
-        let index = (this.reservations ??= []).push(reservation);
-     
-        Logger.debug(Logger.Type.LecturerManager, `Added reservation to lecturer ${this.uuid}`);
-        return this.reservations[index-1];
-    }
-
-    addReservations = (data) => data.forEach(reservation => this.addReservation(reservation));
-
+    /**
+     * @param {Object} data
+     * @returns {Appointment}
+     */
     createAppointment(data) {
-        const reservation = this.reservations.find(reservation => data.start >= reservation.start && data.end <= reservation.end);
-        if (!reservation) {
-            throw APIError.RESERVATION_NOT_FOUND;
+        const appointment = new Appointment(data);
+        if (this._isAppointmentConflict(appointment)) {
+            throw APIError.TIME_SLOT_NOT_AVAILABLE;
         }
 
-        const appointment = reservation.createAppointment(data);
+        this.appointments.push(appointment);
         return appointment;
     }
+    
+    /**
+     * @param {Appointment} appointment 
+     */
+    deleteAppointment = (appointment) => this.appointments = this.appointments.filter(existingAppointment => existingAppointment.start != appointment.start && existingAppointment.end != appointment.end)
+
+    /**
+     * @param {Array<Appointment>} appointments 
+     */
+    deleteAppointments = (appointments) => appointments.forEach(this.deleteAppointment);
 }
 
 module.exports = Lecturer;
