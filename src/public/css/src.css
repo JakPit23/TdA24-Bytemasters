@@ -58,6 +58,7 @@ h1, h2, h3, h4, h5, h6 {
 p {
     @apply text-dark-900 dark:text-white-900;
     font-family: 'Open Sans', sans-serif;
+    text-wrap: wrap;
 }
 
 .btn {

@@ -679,6 +679,10 @@ video {
   height: 50vh;
 }
 
+.h-auto {
+  height: auto;
+}
+
 .min-h-\[100vh\] {
   min-height: 100vh;
 }
@@ -718,15 +722,6 @@ video {
 
 .w-full {
   width: 100%;
-}
-
-.w-max {
-  width: -moz-max-content;
-  width: max-content;
-}
-
-.w-9\/12 {
-  width: 75%;
 }
 
 .min-w-fit {
@@ -812,10 +807,6 @@ video {
   --tw-space-y-reverse: 0;
   margin-top: calc(0.25rem * calc(1 - var(--tw-space-y-reverse)));
   margin-bottom: calc(0.25rem * var(--tw-space-y-reverse));
-}
-
-.overflow-hidden {
-  overflow: hidden;
 }
 
 .rounded {
@@ -1130,6 +1121,7 @@ p {
 
 p {
   font-family: 'Open Sans', sans-serif;
+  text-wrap: wrap;
 }
 
 .btn {

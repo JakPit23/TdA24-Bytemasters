@@ -7,6 +7,15 @@ class APIError {
     static INTERNAL_SERVER_ERROR = new APIError("INTERNAL_SERVER_ERROR", "Interní chyba serveru");
     static MISSING_REQUIRED_VALUES = new APIError("MISSING_REQUIRED_VALUES", "Chybějící povinné hodnoty");
     static TIME_SLOT_NOT_AVAILABLE = new APIError("TIME_SLOT_NOT_AVAILABLE", "Časový slot není dostupný");
+    static LECTURER_ALREADY_EXISTS = new APIError("LECTURER_ALREADY_EXISTS", "Lektor již existuje");
+    static LECTURER_NOT_FOUND = new APIError("LECTURER_NOT_FOUND", "Lektor nebyl nalezen");
+    static USERNAME_DOESNT_MEET_MINIMAL_REQUIREMENTS = new APIError("USERNAME_DOESNT_MEET_MINIMAL_REQUIREMENTS", "Uživatelské jméno nesplňuje minimální požadavky");
+    static USERNAME_DOESNT_MEET_MAXIMAL_REQUIREMENTS = new APIError("USERNAME_DOESNT_MEET_MAXIMAL_REQUIREMENTS", "Uživatelské jméno nesplňuje maximální požadavky");
+    static INVALID_VALUE_TYPE = new APIError("INVALID_VALUE_TYPE", "Neplatný typ hodnoty");
+    static INVALID_DATES = new APIError("INVALID_DATES", "Neplatné datum");
+    static INVALID_EMAIL = new APIError("INVALID_EMAIL", "Neplatný email");
+    static INVALID_PHONE_NUMBER = new APIError("INVALID_PHONE_NUMBER", "Neplatné telefonní číslo");
+    static RESERVATION_NOT_FOUND = new APIError("RESERVATION_NOT_FOUND", "Rezervace nebyla nalezena");
     static TIME_CONFLICT = new APIError("TIME_CONFLICT", "Konflikt časového slotu");
     static INVALID_CREDENTIALS = new APIError("INVALID_CREDENTIALS", "Neplatné přihlašovací údaje");
 }
