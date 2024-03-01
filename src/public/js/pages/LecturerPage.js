@@ -63,19 +63,13 @@ class Page {
         }
     }
 
-    async online(event) {
+    online(event) {
         event.preventDefault();
-        console.log("online");
-        var location = $('[data-reservationInput="location"]');
-        location.val("Online");
-        location.prop('disabled', true);
+        $('[data-reservationInput="location"]').val("Online").prop('disabled', true);
     }
 
-    async offline(event) {
+    offline(event) {
         event.preventDefault();
-        console.log("offline");
-        var location = $('[data-reservationInput="location"]');
-        location.val("");
-        location.prop('disabled', false);
+        $('[data-reservationInput="location"]').val("").prop('disabled', false);
     }
 }
