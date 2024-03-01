@@ -24,14 +24,26 @@ module.exports = class Appointment {
             throw APIError.INVALID_VALUE_TYPE;
         }
 
+        if (data.firstName.length > 50) {
+            throw APIError.INVALID_VALUE_LENGTH;
+        }
+        
         if (typeof data.lastName !== "string") {
             Logger.debug(Logger.Type.LecturerManager, "Variable \"lastName\" is not a string, cannot create an appointment.");
             throw APIError.INVALID_VALUE_TYPE;
         }
-
+        
+        if (data.lastName.length > 50) {
+            throw APIError.INVALID_VALUE_LENGTH;
+        }
+        
         if (typeof data.location !== "string") {
             Logger.debug(Logger.Type.LecturerManager, "Variable \"location\" is not a string, cannot create an appointment.");
             throw APIError.INVALID_VALUE_TYPE;
+        }
+        
+        if (data.lastName.length > 100) {
+            throw APIError.INVALID_VALUE_LENGTH;
         }
 
         if (!Utils.validateEmail(data.email)) {
