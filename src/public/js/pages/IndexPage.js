@@ -197,7 +197,7 @@ class Page {
     }
 
     loadLecturers(lecturers) {
-        if (lecturers.length < 0) {
+        if (lecturers.length <= 0) {
             this.noResults.show();
             this.app.hideLoader('[data-loaderLecturers]');
             return;
