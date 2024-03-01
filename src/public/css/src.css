@@ -373,3 +373,7 @@ form {
 .tippy-box {
     @apply bg-white-900 text-dark-900 dark:bg-dark-900 dark:text-white-900 rounded-md p-2;
 }
+
+::placeholder {
+    @apply text-dark-900 dark:text-white-900;
+}

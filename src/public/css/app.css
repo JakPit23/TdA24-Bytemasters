@@ -846,6 +846,14 @@ video {
   background-color: transparent;
 }
 
+.bg-sunglate-600 {
+  background-color: rgba(254, 203, 46, 0.7);
+}
+
+.bg-skyblue-600 {
+  background-color: rgba(116, 199, 211, 0.7);
+}
+
 .object-cover {
   -o-object-fit: cover;
      object-fit: cover;
@@ -1002,6 +1010,10 @@ video {
 
 .text-white-900 {
   color: rgba(255, 255, 255, 1);
+}
+
+.opacity-50 {
+  opacity: 0.5;
 }
 
 .shadow-lg {
@@ -1836,6 +1848,22 @@ form {
 
 :is(.dark .tippy-box) {
   background-color: rgba(51, 51, 51, 1);
+  color: rgba(255, 255, 255, 1);
+}
+
+::-moz-placeholder {
+  color: rgba(51, 51, 51, 1);
+}
+
+::placeholder {
+  color: rgba(51, 51, 51, 1);
+}
+
+:is(.dark )::-moz-placeholder {
+  color: rgba(255, 255, 255, 1);
+}
+
+:is(.dark )::placeholder {
   color: rgba(255, 255, 255, 1);
 }
 

@@ -10,6 +10,10 @@ class Page {
 
         this.lecturerElement = $('[data-lecturer]');
         this.reservationForm = $('[data-reservationForm]');
+        this.onBtn = $('[data-on]');
+        this.offBtn = $('[data-off]');
+        this.onBtn.on('click', this.online);
+        this.offBtn.on('click', this.offline);
 
         this.init();
     }
@@ -57,5 +61,21 @@ class Page {
             reserveButton.prop("disabled", true).addClass("!bg-red-500").text(errorMessage);
             setTimeout(() => reserveButton.prop("disabled", false).removeClass("!bg-red-500").text("Rezervovat"), 2500);
         }
+    }
+
+    async online(event) {
+        event.preventDefault();
+        console.log("online");
+        var location = $('[data-reservationInput="location"]');
+        location.val("Online");
+        location.prop('disabled', true);
+    }
+
+    async offline(event) {
+        event.preventDefault();
+        console.log("offline");
+        var location = $('[data-reservationInput="location"]');
+        location.val("");
+        location.prop('disabled', false);
     }
 }
