@@ -590,6 +590,10 @@ video {
   top: 0px;
 }
 
+.right-0 {
+  right: 0px;
+}
+
 .z-\[-3\] {
   z-index: -3;
 }
@@ -680,6 +684,10 @@ video {
 }
 
 .min-h-screen {
+  min-height: 100vh;
+}
+
+.min-h-\[100vh\] {
   min-height: 100vh;
 }
 
