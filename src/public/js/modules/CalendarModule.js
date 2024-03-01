@@ -24,7 +24,7 @@ class CalendarModule {
                 }
             },
             eventMouseEnter: (info) => {
-                const appointment = this.page._getAppointmenBetweenDates((info.event.start.getTime() / 1000), (info.event.end.getTime()) / 1000);
+                const appointment = this.page._getAppointmentBetweenDates((info.event.start.getTime() / 1000), (info.event.end.getTime()) / 1000);
                 
                 const startTime = new Date(info.event.start).getHours() + ":" + String(new Date(info.event.start).getMinutes()).padStart(2, "0");
                 const endTime = new Date(info.event.end).getHours() + ":" + String(new Date(info.event.end).getMinutes()).padStart(2, "0");
@@ -84,12 +84,10 @@ class CalendarModule {
      * @param {number} data.end
      * @param {string} data.title
      */
-    _createEvents = () => this.page.user.reservations
-        .map(reservation => reservation.appointments)
-        .filter(appointments => appointments.length > 0)
-        .forEach(appointments => appointments.forEach(appointment => this.fullCalendar.addEvent({
+    _createEvents = () => this.page.user.appointments
+        .forEach(appointment => this.fullCalendar.addEvent({
             title: `${appointment.firstName} ${appointment.lastName}`,
             start: appointment.start * 1000,
             end: appointment.end * 1000,
-        })))
+        }))
 }

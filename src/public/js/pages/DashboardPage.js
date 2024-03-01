@@ -15,14 +15,12 @@ class Page {
     _toggleReservationForm = () => this.reservationForm.fadeToggle(100)
 
     _getAppointmentBetweenDates = (start, end) => 
-        this.user.reservations
-            .map(reservation => reservation.appointments)
+        this.user.appointments
             .flat()
             .find(appointment => appointment.start >= start && appointment.end <= end);
 
     _getAppointmentsBetweenDates = (start, end) =>
-        this.user.reservations
-            .map(reservation => reservation.appointments)
+        this.user.appointments
             .flat()
             .filter(appointment => appointment.start >= start && appointment.end <= end);
 
