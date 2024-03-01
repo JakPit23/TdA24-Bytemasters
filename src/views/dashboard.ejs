@@ -27,11 +27,6 @@
                         <h1 class="text-4xl font-extrabold"><%= user.first_name %> <%= user.last_name %></h1>
 
                         <div class="flex flex-col md:flex-row gap-2">
-                            <button data-addReservationTime class="btn btn-skyblue">
-                                <i class="fa-solid fa-calendar text-xl"></i>
-                                Přidat rezervační čas
-                            </button>
-    
                             <button data-downloadCalendar class="btn btn-skyblue">
                                 <i class="fa-solid fa-download text-xl"></i>
                                 Stáhnout kalendář
@@ -48,20 +43,6 @@
                         <h2 class="text-3xl font-bold">Kalendář</h2>
 
                         <div class="flex flex-col items-center gap-4 w-full">
-                            <form data-reservationForm style="display: none;" class="user-form flex flex-col gap-2">
-                                <div class="flex flex-col w-full">
-                                    <label class="text-lg font-bold">Datum a čas</label>
-                                    
-                                    <div class="flex flex-row items-center gap-2">
-                                        <input data-reservationInput="timeStart" class="user-input" type="datetime-local" required>
-                                        <p>-</p>
-                                        <input data-reservationInput="timeEnd" class="user-input" type="time" required>
-                                    </div>
-                                </div>
-        
-                                <button type="submit" class="btn mt-4">Přidat</button>
-                            </div>
-
                             <div data-calendar class="w-3/4"></div>
                             <div data-modal class="flex flex-col hidden justify-center w-full">
                                 <h1 class="text-3xl font-semibold" id="modal">Přehled dne</h1>
