@@ -74,6 +74,7 @@ class CalendarModule {
             var phone = $('<h2>').text(`Telefon: `).appendTo(eventContainer);
             $('<a>').text(`${appointment.phoneNumber}`).attr('href', `tel:${appointment.phoneNumber}`).appendTo(phone);
             $('<h2>').text(`Poznámka: ${appointment.message}`).appendTo(eventContainer).addClass('text-wrap');
+            window.location.href = "#modal";
         })
 
         this.modal.show();
