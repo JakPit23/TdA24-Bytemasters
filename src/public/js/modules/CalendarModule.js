@@ -26,7 +26,7 @@ class CalendarModule {
 
             // TODO: tooltip
             /* eventMouseOver: (info) => {
-                const appointment = this.page._getAppointmenBetweenDates((info.event.start.getTime() / 1000), (info.event.end.getTime()) / 1000);
+                const appointment = this.page._getAppointmentBetweenDates((info.event.start.getTime() / 1000), (info.event.end.getTime()) / 1000);
                 
                 const startTime = new Date(info.event.start).getHours() + ":" + String(new Date(info.event.start).getMinutes()).padStart(2, "0");
                 const endTime = new Date(info.event.end).getHours() + ":" + String(new Date(info.event.end).getMinutes()).padStart(2, "0");
