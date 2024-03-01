@@ -155,6 +155,10 @@ module.exports = class APILecturersRoute {
                     return APIResponse.INVALID_VALUE_TYPE.send(res);
                 }
 
+                if (error == APIError.INVALID_VALUE_LENGTH) {
+                    return APIResponse.INVALID_VALUE_LENGTH.send(res);
+                }
+
                 if (error == APIError.INVALID_DATES) {
                     return APIResponse.INVALID_DATES.send(res);
                 }

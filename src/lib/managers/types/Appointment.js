@@ -50,7 +50,7 @@ module.exports = class Appointment {
         }
 
         if (data.message.length > 500) {
-            throw APIError.INVALID_VALUE_TYPE;
+            throw APIError.INVALID_VALUE_LENGTH;
         }
 
         /**

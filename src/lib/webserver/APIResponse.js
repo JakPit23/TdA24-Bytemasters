@@ -31,5 +31,6 @@ module.exports = class APIResponse {
     static TIME_SLOT_NOT_AVAILABLE = new APIResponse({ statusCode: 400, code: 400, error: "TIME_SLOT_NOT_AVAILABLE" });
     static TIME_CONFLICT = new APIResponse({ statusCode: 400, code: 400, error: "TIME_CONFLICT" });
     static INVALID_VALUE_TYPE = new APIResponse({ statusCode: 400, code: 400, error: "INVALID_VALUE_TYPE" });
+    static INVALID_VALUE_LENGTH = new APIResponse({ statusCode: 400, code: 400, error: "INVALID_VALUE_LENGTH" });
     static INVALID_DATES = new APIResponse({ statusCode: 400, code: 400, error: "INVALID_DATES" });
 }
