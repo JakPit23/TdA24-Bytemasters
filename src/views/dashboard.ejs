@@ -19,7 +19,7 @@
 
     <div class="h-24 block"></div>
     
-    <div class="w-full">
+    <div class="w-full flex-row">
         <div class="max-w-[1280px] mx-auto px-4">
             <div class="flex flex-col items-start w-full pt-4 gap-4">
                 <div class="flex flex-col items-center gap-4 dark:bg-black-200 shadow-lg rounded-md p-6 w-full">
@@ -63,10 +63,9 @@
                             </div>
 
                             <div data-calendar class="w-3/4"></div>
-                            <div data-modal class="flex flex-col hidden">
-                                <h1 data-title class="text-4xl font-semibold text-center"></h1>
-                                <label>Lokace</label>
-                                <p data-location></p>
+                            <div data-modal class="flex flex-col hidden justify-center">
+                                <h1 class="text-3xl font-semibold">Přehled dne</h1>
+                                <div class="flex flex-row gap-4 flex-wrap" data-modalContent></div>
                             </div>
                         </div>
                     </div>

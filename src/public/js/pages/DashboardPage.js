@@ -20,6 +20,12 @@ class Page {
             .flat()
             .find(appointment => appointment.start >= start && appointment.end <= end);
 
+    _getAppointmentsBetweenDates = (start, end) =>
+        this.user.reservations
+            .map(reservation => reservation.appointments)
+            .flat()
+            .filter(appointment => appointment.start >= start && appointment.end <= end);
+
     async init() {
         this.user = (await this.api.getUser()).user;
 
