@@ -10,16 +10,24 @@ class Page {
 
         this.lecturerElement = $('[data-lecturer]');
         this.reservationForm = $('[data-reservationForm]');
-        this.onBtn = $('[data-on]');
-        this.offBtn = $('[data-off]');
-        this.onBtn.on('click', this.online);
-        this.offBtn.on('click', this.offline);
+        this.locationOnlineElement = $('[data-on]');
+        this.locationOfflineElement = $('[data-off]');
 
         this.init();
     }
 
     init() {
         this.reservationForm.on('submit', this._reserveLecturer.bind(this));
+        this.locationOnlineElement.on('click', (event) => {
+            event.preventDefault();
+            $('[data-reservationInput="location"]').val("Online").prop('disabled', true);
+        });
+
+        this.locationOfflineElement.on('click', (event) => {
+            event.preventDefault();
+            $('[data-reservationInput="location"]').val("").prop('disabled', false);
+        });
+
         this.app.hideLoader();
     }
 
@@ -61,15 +69,5 @@ class Page {
             reserveButton.prop("disabled", true).addClass("!bg-red-500").text(errorMessage);
             setTimeout(() => reserveButton.prop("disabled", false).removeClass("!bg-red-500").text("Rezervovat"), 2500);
         }
-    }
-
-    online(event) {
-        event.preventDefault();
-        $('[data-reservationInput="location"]').val("Online").prop('disabled', true);
-    }
-
-    offline(event) {
-        event.preventDefault();
-        $('[data-reservationInput="location"]').val("").prop('disabled', false);
     }
 }
