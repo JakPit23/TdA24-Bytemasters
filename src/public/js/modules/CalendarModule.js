@@ -55,7 +55,6 @@ class CalendarModule {
             $('<h2>').addClass("appointment-location").text("Lokace: ").appendTo(eventContainer)
         );
 
-
         const contactContainer = $('<div>').appendTo(eventContainer).addClass('contact-container');
         // janky af :tf:
         const emailContactInfo = $('<div>').addClass("contact-info").appendTo(contactContainer);
@@ -81,7 +80,7 @@ class CalendarModule {
 
     createEventBox(info) {
         this.modalContent.empty();
-        this.modal.show();
+        this.modal.toggleClass("!hidden");
 
         const start = (new Date(info.dateStr).getTime() / 1000) - 3600;
         const end = start + 86400;
