@@ -14,7 +14,7 @@ class Page {
     
     _toggleReservationForm = () => this.reservationForm.fadeToggle(100)
 
-    _getAppointmenBetweenDates = (start, end) => 
+    _getAppointmentBetweenDates = (start, end) => 
         this.user.reservations
             .map(reservation => reservation.appointments)
             .flat()
