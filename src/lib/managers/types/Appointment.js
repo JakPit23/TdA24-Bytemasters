@@ -107,7 +107,7 @@ module.exports = class Appointment {
          */
         this.startDate = new Date(this.start * 1000);
         // If the appointment is not in the working hours of the lecturer, throw an error.
-        if (this.startDate.getHours() > 19 || this.startDate.getHours() < 8) {
+        if (this.startDate.getHours() > 21 || this.startDate.getHours() < 8) {
             Logger.error(Logger.Type.LecturerManager, "Appointment is not in the working hours of the lecturer.");
             throw APIError.TIME_SLOT_NOT_AVAILABLE;
         }
