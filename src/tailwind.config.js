@@ -4,7 +4,6 @@ module.exports = {
         "./views/**/*.ejs",
         "./public/js/**/*.js"
     ],
-    darkMode: 'class',
     theme: {
         extend: {
             colors: {

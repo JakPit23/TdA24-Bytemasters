@@ -3,8 +3,7 @@
 <div class="container mx-auto px-4">
     <div class="flex items-center justify-between w-full py-4">
         <a href="/">
-            <img src="/public/images/logo/black.svg" class="dark:hidden h-12">
-            <img src="/public/images/logo/white.svg" class="hidden dark:block h-12">
+            <img src="/public/images/logo/white.svg" class="block h-12">
         </a>
         
         <div class="flex items-center gap-4 flex-row">
@@ -13,16 +12,12 @@
                 <a class="nav-link text-white-900" href="/#lecturers">Lektoři</a>
             </div>
 
-            <button data-themeSwitcher class="bg-neutral-500 dark:bg-white-50 hover:bg-neutral-600 dark:hover:bg-white-100 transition-colors rounded-md px-3 py-1 focus:outline-none">
-                <i data-themeSwitcher-icon class="fa-solid text-2xl text-white-900 w-6"></i>
-            </button>
-
-            <a class="flex justify-center items-center bg-white-900 dark:bg-dark-500 hover:bg-neutral-600 dark:hover:bg-white-100 rounded-full transition h-12 w-12"
+            <a class="flex justify-center items-center bg-dark-500 hover:bg-white-100 rounded-full transition h-12 w-12"
             href="<%- locals.user ? '/dashboard' : '/login' %>">
                 <% if (locals.user && locals.user.picture_url) { %>
                     <img src="<%- locals.user.picture_url %>" class="p-1.5 rounded-full">
                 <% } else { %>
-                    <i class="p-2 fa-solid fa-user text-xl text-dark-900 dark:text-white-900"></i>
+                    <i class="p-2 fa-solid fa-user text-xl text-white-900"></i>
                 <% } %>
             </a>
         </div>
