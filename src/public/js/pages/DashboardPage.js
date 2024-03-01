@@ -5,14 +5,10 @@ class Page {
         this.calendarModule = new CalendarModule(this);
 
         this.logoutButton = $("[data-logout]");
-        this.reservationForm = $("[data-reservationForm]");
         this.downloadCalendarButton = $("[data-downloadCalendar]");
-        this.addReservationTimeButton = $("[data-addReservationTime]");
-
         this.init();
     }
     
-    _toggleReservationForm = () => this.reservationForm.fadeToggle(100)
 
     _getAppointmentBetweenDates = (start, end) => 
         this.user.appointments
@@ -29,8 +25,6 @@ class Page {
         this.user = (await this.api.getUser()).user;
 
         this.logoutButton.on("click", this.authLogout.bind(this));
-        this.reservationForm.on("submit", this.addReservation.bind(this));
-        this.addReservationTimeButton.on("click", () => this._toggleReservationForm());
         this.downloadCalendarButton.on("click", this.downloadCalendar.bind(this));
 
         this.calendarModule.load();
