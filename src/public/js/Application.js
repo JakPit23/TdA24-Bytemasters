@@ -1,7 +1,7 @@
 class Application {
-    hideLoader = (id = "[data-loaderPage]") => $(id).css("opacity", 0).remove()
+    showLoader = (id = "[data-loaderPage]") => $(id).css("opacity", 1).show()
+    hideLoader = (id = "[data-loaderPage]") => $(id).css("opacity", 0).hide()
 
-    
     /**
      * @param {string} val 
      * @returns {Date} 

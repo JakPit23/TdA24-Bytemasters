@@ -86,13 +86,12 @@ class Page {
      */
     async _fetchMoreLecturers() {
         console.log('Loading more items...');
-
         this._fetchInProgress = true;
 
         const lecturers = await this._fetchLecturers({ limit: 25, after: this.lecturers[this.lecturers.length - 1].uuid });
-        if (!lecturers) {
+        if (!lecturers || lecturers.length <= 0) {
+            this.app.hideLoader('[data-loaderLecturers]');
             console.log('No more items to load...');
-            // TODO: nevim jestli davat _fetchInProgress na false kdyz uz neni co loadovat at to nefetchuje furt uvidime
             return;
         }
 
@@ -106,6 +105,7 @@ class Page {
      */
     async _fetchLecturers(options = {}) {
         try {
+            this.app.showLoader("[data-loaderLecturers]");
             const lecturers = await this.api.getLecturers(options);
             return lecturers;
         } catch (error) {
