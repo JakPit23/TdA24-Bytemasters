@@ -114,7 +114,7 @@ class API {
      * @returns {Promise<object>}
      */
     createReservation = (uuid, data) => this._call({
-        url: `/api/lecturers/${uuid}/reservation`,
+        url: `/api/lecturers/${uuid}/appointment`,
         method: "POST",
         type: "json",
         body: data

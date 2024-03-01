@@ -74,6 +74,7 @@ class CalendarModule {
             var phone = $('<h2>').text(`Telefon: `).appendTo(eventContainer);
             $('<a>').text(`${appointment.phoneNumber}`).attr('href', `tel:${appointment.phoneNumber}`).appendTo(phone);
             $('<h2>').text(`Poznámka: ${appointment.message}`).appendTo(eventContainer).addClass('text-wrap');
+            window.location.href = "#modal";
         })
 
         this.modal.show();
@@ -84,8 +85,8 @@ class CalendarModule {
      * @param {number} data.end
      * @param {string} data.title
      */
-    _createEvents = () => this.page.user.reservations
-        .map(reservation => reservation.appointments)
+    _createEvents = () => this.page.user.appointment
+        .map(appointment => appointment.appointments)
         .filter(appointments => appointments.length > 0)
         .forEach(appointments => appointments.forEach(appointment => this.fullCalendar.addEvent({
             title: `${appointment.firstName} ${appointment.lastName}`,

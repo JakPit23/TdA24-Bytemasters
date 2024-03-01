@@ -147,7 +147,7 @@ p {
 
 /* LECTURER CARD */
 .lecturerCard {
-    @apply flex flex-row shadow-lg shadow-sunglate-200 bg-white-900 dark:bg-black-100 rounded-md py-4 px-4 cursor-pointer transition-colors;
+    @apply flex flex-row shadow-lg shadow-sunglate-200 dark:shadow-none bg-white-900 dark:bg-black-100 rounded-md py-4 px-4 cursor-pointer transition-colors;
 
     &:hover {
         @apply dark:bg-black-200;
