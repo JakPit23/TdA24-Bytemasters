@@ -17,7 +17,7 @@
                 <i data-themeSwitcher-icon class="fa-solid text-2xl text-white-900 w-6"></i>
             </button>
 
-            <a class="flex justify-center items-center bg-neutral-200 dark:bg-white-50 hover:bg-neutral-600 dark:hover:bg-white-100 rounded-full transition h-12 w-12"
+            <a class="flex justify-center items-center bg-white-900 dark:bg-dark-500 hover:bg-neutral-600 dark:hover:bg-white-100 rounded-full transition h-12 w-12"
             href="<%- locals.user ? '/dashboard' : '/login' %>">
                 <% if (locals.user && locals.user.picture_url) { %>
                     <img src="<%- locals.user.picture_url %>" class="p-1.5 rounded-full">
