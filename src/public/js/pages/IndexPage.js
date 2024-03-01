@@ -231,7 +231,11 @@ class Page {
 
             if (this.filters.search) {
                 const name = [ lecturer.title_before, lecturer.first_name, lecturer.middle_name, lecturer.last_name, lecturer.title_after ].filter(part => part != undefined).join(' ');
-                return name.toLowerCase().includes(this.filters.search.toLowerCase());
+
+                return lecturer.tags.some(tag => tag.name.toLowerCase().includes(this.filters.search.toLowerCase()))
+                    || lecturer.location.toLowerCase().includes(this.filters.search.toLowerCase())
+                    || lecturer.claim.toLowerCase().includes(this.filters.search.toLowerCase())
+                    || name.toLowerCase().includes(this.filters.search.toLowerCase())
             }
     
             return true;
