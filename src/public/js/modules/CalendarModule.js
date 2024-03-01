@@ -7,14 +7,14 @@ class CalendarModule {
         this.fullCalendar = new FullCalendar.Calendar(this.calendarElement[0], {
             locale: "cs",
             eventTimeFormat: {
-            hour: '2-digit',
-            minute: '2-digit',
+                hour: '2-digit',
+                minute: '2-digit',
             },
             firstDay: 1,
             editable: false,
             dayMaxEvents: true,
             buttonText: {
-            today: "Tento měsíc"
+                today: "Tento měsíc"
             },
             eventClick: (info) => {
                 const appointment = this.page._getAppointmentBetweenDates((info.event.start.getTime() / 1000), (info.event.end.getTime()) / 1000);
