@@ -12,7 +12,7 @@
                 <a class="nav-link text-white-900" href="/#lecturers">Lektoři</a>
             </div>
 
-            <a class="flex justify-center items-center bg-dark-500 hover:bg-white-100 rounded-full transition h-12 w-12"
+            <a class="flex justify-center items-center bg-white-50 hover:bg-white-100 rounded-full transition h-12 w-12"
             href="<%- locals.user ? '/dashboard' : '/login' %>">
                 <% if (locals.user && locals.user.picture_url) { %>
                     <img src="<%- locals.user.picture_url %>" class="p-1.5 rounded-full">
