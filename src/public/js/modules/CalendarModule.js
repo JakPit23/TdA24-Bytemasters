@@ -63,7 +63,7 @@ class CalendarModule {
             $('<h1>').text("Žádné rezervace").appendTo(this.modalContent).addClass('text-2xl font-semibold mx-auto');
         }
         appointments.forEach(appointment => {
-            var eventContainer = $('<div>').appendTo(this.modalContent).addClass('flex flex-col border-2 border-dark-900 shadow-md px-4 py-2 w-fit');
+            var eventContainer = $('<div>').appendTo(this.modalContent).addClass('flex flex-col border-2 border-dark-900 shadow-md px-4 py-2 w-full mx-auto my-4 rounded-md bg-white');
             $('<h1>').text(`Výuka - ${appointment.firstName} ${appointment.lastName}`).appendTo(eventContainer).addClass('text-2xl font-semibold mx-auto');  
             $('<h2>').text(`Lokace: ${appointment.location}`).appendTo(eventContainer);
             var startHours = new Date(appointment.start * 1000).getHours();
@@ -75,7 +75,7 @@ class CalendarModule {
             $('<a>').text(`${appointment.email}`).attr('href', `mailto:${appointment.email}`).appendTo(mail);
             var phone = $('<h2>').text(`Telefon: `).appendTo(eventContainer);
             $('<a>').text(`${appointment.phoneNumber}`).attr('href', `tel:${appointment.phoneNumber}`).appendTo(phone);
-            $('<h2>').text(`Poznámka: ${appointment.message}`).appendTo(eventContainer);
+            $('<h2>').text(`Poznámka: ${appointment.message}`).appendTo(eventContainer).addClass('text-balance');
         })
 
         this.modal.show();
