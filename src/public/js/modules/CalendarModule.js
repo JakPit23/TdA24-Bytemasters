@@ -1,9 +1,12 @@
 class CalendarModule {
     constructor(page) {
         this.page = page;
+
         this.calendarElement = $("[data-calendar]");
         this.modal = $("[data-modal]");
-        this.modalContent = this.modal.find("[data-modalContent]");
+        this.modalTitle = $("[data-modalTitle]");
+        this.modalContent = $("[data-modalContent]");
+
         this.fullCalendar = new FullCalendar.Calendar(this.calendarElement[0], {
             locale: "cs",
             eventTimeFormat: {
@@ -35,38 +38,63 @@ class CalendarModule {
         });
     }
 
+    /**
+     * @param {object} data 
+     */
+    _renderAppointment(data) {
+        const eventContainer = $('<div>').appendTo(this.modalContent).addClass('appointment-details');
+
+        const start = new Date(data.start * 1000);
+        const end = new Date(data.end * 1000);
+        const startTime = `${start.getHours()}:${String(start.getMinutes()).padStart(2, "0")}`;
+        const endTime = `${end.getHours()}:${String(end.getMinutes()).padStart(2, "0")}`;
+
+        $('<h1>').addClass('appointment-title').text(`${data.firstName} ${data.lastName} (${startTime} - ${endTime})`).appendTo(eventContainer);
+
+        $("<p>").text(data.location).appendTo(
+            $('<h2>').addClass("appointment-location").text("Lokace: ").appendTo(eventContainer)
+        );
+
+
+        const contactContainer = $('<div>').appendTo(eventContainer).addClass('contact-container');
+        // janky af :tf:
+        const emailContactInfo = $('<div>').addClass("contact-info").appendTo(contactContainer);
+        const phoneNumberContactInfo = $('<div>').addClass("contact-info").appendTo(contactContainer);
+
+        $('<h2>').text("Email: ").appendTo(emailContactInfo);
+        $('<a>').text(`${data.email}`).attr('href', `mailto:${data.email}`).appendTo(emailContactInfo);
+
+        $('<h2>').text("Telefon: ").appendTo(phoneNumberContactInfo);
+        $('<a>').text(data.phoneNumber).attr('href', `tel:${data.phoneNumber}`).appendTo(phoneNumberContactInfo);
+
+        $("<p>").text(data.message).appendTo(
+            $('<h2>').text("Poznámka: ").appendTo(eventContainer)
+        );
+
+        window.location.href = "#modal";
+    }
+
     load() {
         this._createEvents();
         this.fullCalendar.render();
     }
 
-    createEventBox = (info) => {
+    createEventBox(info) {
         this.modalContent.empty();
-        const start = (new Date(info.dateStr).getTime() / 1000) - 3600;
-        const end = start + 86400
-        const appointments = this.page._getAppointmentsBetweenDates(start, end);
-                
-        if (appointments.length === 0) {
-            $('<h1>').text("Žádné rezervace").appendTo(this.modalContent).addClass('text-2xl font-semibold mx-auto');
-        }
-        appointments.forEach(appointment => {
-            var eventContainer = $('<div>').appendTo(this.modalContent).addClass('flex flex-col border-2 border-dark-900 shadow-md px-4 py-2 w-full mx-auto my-4 rounded-md bg-white h-auto');
-            $('<h1>').text(`Výuka - ${appointment.firstName} ${appointment.lastName}`).appendTo(eventContainer).addClass('text-2xl font-semibold mx-auto');  
-            $('<h2>').text(`Lokace: ${appointment.location}`).appendTo(eventContainer);
-            var startHours = new Date(appointment.start * 1000).getHours();
-            var startMinutes = String(new Date(appointment.start * 1000).getMinutes()).padStart(2, "0");
-            var endHours = new Date(appointment.end * 1000).getHours();
-            var endMinutes = String(new Date(appointment.end * 1000).getMinutes()).padStart(2, "0");
-            $('<h2>').text(`Čas: ${startHours}:${startMinutes} - ${endHours}:${endMinutes}`).appendTo(eventContainer);
-            var mail = $('<h2>').text(`Kontakt: `).appendTo(eventContainer);
-            $('<a>').text(`${appointment.email}`).attr('href', `mailto:${appointment.email}`).appendTo(mail);
-            var phone = $('<h2>').text(`Telefon: `).appendTo(eventContainer);
-            $('<a>').text(`${appointment.phoneNumber}`).attr('href', `tel:${appointment.phoneNumber}`).appendTo(phone);
-            $('<h2>').text(`Poznámka: ${appointment.message}`).appendTo(eventContainer).addClass('text-wrap');
-            window.location.href = "#modal";
-        })
-
         this.modal.show();
+
+        const start = (new Date(info.dateStr).getTime() / 1000) - 3600;
+        const end = start + 86400;
+        const appointments = this.page._getAppointmentsBetweenDates(start, end);
+
+        this.modalTitle.text(`Schůzky na ${new Date(info.dateStr).getDate()}.${new Date(info.dateStr).getMonth() + 1}.${new Date(info.dateStr).getFullYear()}`);
+                
+        if (appointments.length == 0) {
+            $('<h1>').text("Žádné schůzky").appendTo(this.modalContent).addClass('text-2xl font-semibold mx-auto');
+            return;
+        }
+
+        appointments.forEach(appointment => this._renderAppointment(appointment));
     }
     /**
      * @param {object} data 

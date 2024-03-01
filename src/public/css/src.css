@@ -377,3 +377,31 @@ form {
 ::placeholder {
     @apply text-white-900;
 }
+
+.appointment-details {
+    @apply flex flex-col gap-1 bg-black-100 px-4 py-2 w-full rounded-md;
+
+    & .contact-container {
+        @apply flex gap-4;
+    }
+
+    & .contact-container .contact-info {
+        @apply flex flex-col gap-1;
+    }
+
+    & .contact-container .contact-info a {
+        @apply text-base font-bold;
+    }
+
+    & h1 {
+        @apply text-2xl font-semibold;
+    }
+
+    & h2 {
+        @apply text-2xl font-semibold;
+    }
+
+    & p {
+        @apply text-base font-medium;
+    }
+}
