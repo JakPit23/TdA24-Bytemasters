@@ -83,12 +83,11 @@ module.exports = class APIUserRoute {
                     return APIResponse.UNAUTHORIZED.send(res);
                 }
 
-                const appointments = user.reservations.map(reservation => reservation.appointments).flat();
-                if (!appointments || appointments.length == 0) {
+                if (!user.appointments || user.appointments.length == 0) {
                     return res.sendStatus(204);
                 }
 
-                ics.createEvents(appointments.map(appointment => appointment.toICS()), (error, value) => {
+                ics.createEvents(user.appointments.map(appointment => appointment.toICS()), (error, value) => {
                     if (error) {
                         Logger.error(Logger.Type.LecturerManager, `Failed to generate ics file for lecturer ${uuid}`, error);
                         return next(error);
