@@ -140,8 +140,10 @@ module.exports = class APILecturersRoute {
                     return APIResponse.LECTURER_NOT_FOUND.send(res);
                 }
 
-                lecturer.createAppointment(data);
-                return APIResponse.OK.send(res); 
+                const appointment = lecturer.createAppointment(data);
+
+                this.webserver.getCore().getEmailClient().sendAppointmentConfirmation(lecturer, appointment);
+                return APIResponse.OK.send(res);
             } catch (error) {
                 if (error == APIError.MISSING_REQUIRED_VALUES) {
                     return APIResponse.MISSING_REQUIRED_VALUES.send(res);

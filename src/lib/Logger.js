@@ -58,7 +58,8 @@ class Logger {
         Webserver: `${Logger.Colors.Fg.Green}WEBSERVER${Logger.Colors.Reset}`,
         UserManager: `${Logger.Colors.Bright}${Logger.Colors.Fg.Blue}USER MANAGER${Logger.Colors.Reset}`,
         LecturerManager: `${Logger.Colors.Bright}${Logger.Colors.Fg.Yellow}LECTURER MANAGER${Logger.Colors.Reset}`,
-        TagManager: `${Logger.Colors.Fg.Blue}TAG MANAGER${Logger.Colors.Reset}`
+        TagManager: `${Logger.Colors.Fg.Blue}TAG MANAGER${Logger.Colors.Reset}`,
+        EmailClient: `${Logger.Colors.Fg.Yellow}EMAIL CLIENT${Logger.Colors.Reset}`,
     }
 
     /**

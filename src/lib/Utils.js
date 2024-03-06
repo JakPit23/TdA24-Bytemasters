@@ -20,6 +20,18 @@ class Utils {
      * @returns {boolean}
      */
     static validateEmail = (email) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+
+    /**
+     * @param {Date} date 
+     * @returns {string} Returns date in format DD.MM.YYYY
+     */
+    static formatDate = (date) => `${date.getDate()}. ${date.getMonth() + 1}. ${date.getFullYear()}`
+
+    /**
+     * @param {Date} date 
+     * @returns {string} Returns time in format HH:MM 
+     */
+    static formatTime = (date) => `${date.getHours()}:${date.getMinutes()}`
 }
 
 module.exports = Utils;

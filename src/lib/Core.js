@@ -5,6 +5,7 @@ const Database = require("./database/Database");
 const LecturerManager = require("./managers/LecturerManager");
 const Webserver = require("./webserver/Webserver");
 const TagManager = require("./managers/TagManager");
+const EmailClient = require("./managers/EmailClient");
 
 class Core {
     constructor() {
@@ -18,6 +19,7 @@ class Core {
         this.database = new Database();
         this.lecturerManager = new LecturerManager(this);
         this.tagManager = new TagManager(this);
+        this.emailClient = new EmailClient(this);
         this.webserver = new Webserver(this);
     }
 
@@ -25,6 +27,7 @@ class Core {
     getWebserver = () => this.webserver;
     getLecturerManager = () => this.lecturerManager;
     getTagManager = () => this.tagManager;
+    getEmailClient = () => this.emailClient;
 
     async shutdown() {
         Logger.info(Logger.Type.Core, "Shutdown in progress...");

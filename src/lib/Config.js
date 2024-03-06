@@ -35,6 +35,41 @@ class Config {
      * @returns {boolean}
     */
     static logResponseBody = process.argv.includes("--logResponseBody");
+
+    /**
+     * @returns {string}
+     */
+    static smtpService = process.env.SMTP_SERVICE || "outlook365";
+
+    /**
+     * @returns {string}
+     */
+    static smtpHost = process.env.SMTP_HOST || "smtp-mail.outlook.com";
+
+    /**
+     * @returns {number}
+     */
+    static smtpPort = process.env.SMTP_PORT || 587;
+
+    /**
+     * @returns {string}
+     */
+    static smtpUsername = process.env.SMTP_USERNAME || "tda-bytemasters@outlook.com"
+
+    /**
+     * @returns {string}
+     */
+    static smtpPassword = process.env.SMTP_PASSWORD || "cpamg9i2AufVSXr6sAhixsqSq8NwqyKDiW8gTgiztqnYwRQRPp4nG83ubph5ZGP5";
+
+    /**
+     * @returns {string}
+     */
+    static smtpUseSSL = process.env.SMTP_USE_SSL || true;
+
+    /**
+     * @returns {string}
+     */
+    static smtpFrom = process.env.SMTP_FROM || "Teacher Digital Agency <tda-bytemasters@outlook.com>"
 }
 
 module.exports = Config;
