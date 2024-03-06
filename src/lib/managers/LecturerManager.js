@@ -67,7 +67,7 @@ class LecturerManager {
      * @param {import("./types/Lecturer")} lecturer
      * @returns {string}
      */
-    generateJWTToken = (lecturer) => jwt.sign({ uuid: lecturer.uuid }, Config.getSecretKey(), { expiresIn: "24h"});
+    generateJWTToken = (lecturer) => jwt.sign({ uuid: lecturer.uuid }, Config.secretKey, { expiresIn: "24h"});
 
     /**
      * @param {string} token
@@ -75,7 +75,7 @@ class LecturerManager {
      */
     verifyToken = (token) => {
         try {
-            return jwt.verify(token, Config.getSecretKey());
+            return jwt.verify(token, Config.secretKey);
         } catch (error) {
             return null;
         }

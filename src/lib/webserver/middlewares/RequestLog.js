@@ -12,7 +12,7 @@ module.exports = class RequestLog {
             Logger.info(Logger.Type.Webserver, `${req.headers['x-forwarded-for'] || req.ip} - "${req.method} ${req.url}" ${req.headers['user-agent']}`);
         }
 
-        if (Config.getLogLevel() == "debug" && req.path.startsWith("/api")) {
+        if (Config.logLevel == "debug" && req.path.startsWith("/api")) {
             if (req.body && Config.logRequestBody) {
                 Logger.debug(Logger.Type.Webserver, `Request body:`, req.body);
             }

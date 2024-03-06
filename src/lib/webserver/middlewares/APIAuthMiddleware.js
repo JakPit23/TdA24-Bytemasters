@@ -18,7 +18,7 @@ module.exports = class APIAuthMiddleware {
         }
         
         const [ username, password ] = Buffer.from(auth.split(" ")[1], "base64").toString().split(":");
-        if (username != Config.getAPIUsername() || password != Config.getAPIPassword()) {
+        if (username != Config.apiUsername || password != Config.apiPassword) {
             return APIResponse.UNAUTHORIZED.send(res);
         }
 

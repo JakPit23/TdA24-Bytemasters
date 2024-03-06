@@ -16,7 +16,7 @@ class Webserver {
         this.core = core;
         this.routers = {};
         this.middlewares = {};
-        this.port = Config.getWebserverPort();
+        this.port = Config.webserverPort;
 
         this.app = express();
 
@@ -26,7 +26,7 @@ class Webserver {
         this.app.disable("x-powered-by");
 
         this.app.use(expressSession({
-            secret: Config.getSecretKey(),
+            secret: Config.secretKey,
             resave: false,
             saveUninitialized: false,
             store: new sessionSqliteStore({
