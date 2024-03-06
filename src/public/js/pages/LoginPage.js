@@ -33,7 +33,7 @@ class Page {
 
             const errorMessage = error.displayMessage || "Nastala neznámá chyba";
             loginButton.prop("disabled", true).addClass("!bg-red-500").text(errorMessage);
-            setTimeout(() => loginButton.prop("disabled", false).removeClass("!bg-red-500").text("Přidat"), 2500);
+            setTimeout(() => loginButton.prop("disabled", false).removeClass("!bg-red-500").text("Přihlásit se"), 2500);
         }
     }
 }
