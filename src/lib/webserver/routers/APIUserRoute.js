@@ -42,6 +42,39 @@ module.exports = class APIUserRoute {
             }
         });
 
+        this.router.post("/@me", this.webserver.middlewares["LecturerMiddleware"].fetchSession, async (req, res, next) => {
+            try {
+                const { user } = res.locals;
+                if (!user) {
+                    return APIResponse.UNAUTHORIZED.send(res);
+                }
+
+                const data = req.body;
+                if (!data) {
+                    return APIResponse.MISSING_REQUIRED_VALUES.send(res);
+                }
+
+                this.webserver.getCore().getLecturerManager().editLecturer(user.uuid, data);
+                return APIResponse.OK.send(res, {
+                    user: user.toJSON()
+                });
+            } catch (error) {
+                if (error == APIError.MISSING_REQUIRED_VALUES) {
+                    return APIResponse.MISSING_REQUIRED_VALUES.send(res);
+                }
+                
+                if (error == APIError.INVALID_DATES) {
+                    return APIResponse.INVALID_DATES.send(res);
+                }
+                
+                if (error == APIError.TIME_CONFLICT) {
+                    return APIResponse.TIME_CONFLICT.send(res);
+                }
+
+                return next(error);
+            }
+        });
+
         this.router.delete("/@me", this.webserver.middlewares["LecturerMiddleware"].fetchSession, async (req, res, next) => {
             try {
                 const { user } = res.locals;
