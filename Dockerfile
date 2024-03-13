@@ -24,4 +24,4 @@ ENV SECRET_KEY=8b1748ee-595a-4d96-b381-36f95f70ecee
 VOLUME /app/data
 EXPOSE 3000/tcp
 
-CMD ["node", "app.js"]
+CMD ["node", "app.js", "--logRequestBody", "--logResponseBody"]
