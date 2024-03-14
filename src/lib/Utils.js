@@ -13,7 +13,7 @@ class Utils {
      * @param {string} phoneNumber
      * @returns {boolean}
      */
-    static validatePhoneNumber = (phoneNumber) => /^\+?(\d+\s?)+$/.test(phoneNumber);
+    static validatePhoneNumber = (phoneNumber) => /^\+?([0-9 \-]{9,})$/.test(phoneNumber);
 
     /**
      * @param {string} email
