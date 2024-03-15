@@ -1,63 +1,63 @@
-const { APIError } = require("../../Errors");
 const Logger = require("../../Logger");
 const Utils = require("../../Utils");
+const APIError = require("../../types/APIError");
 
 module.exports = class Appointment {
     constructor(data) {
         if (typeof data.start !== "number") {
             Logger.debug(Logger.Type.LecturerManager, "Variable \"start\" is not a number, cannot create an appointment.");
-            throw APIError.INVALID_VALUE_TYPE;
+            throw APIError.InvalidValueType;
         }
         
         if (typeof data.end !== "number") {
             Logger.debug(Logger.Type.LecturerManager, "Variable \"end\" is not a number, cannot create an appointment.");
-            throw APIError.INVALID_VALUE_TYPE;
+            throw APIError.InvalidValueType;
         }
 
         if (typeof data.firstName !== "string") {
             Logger.debug(Logger.Type.LecturerManager, "Variable \"firstName\" is not a string, cannot create an appointment.");
-            throw APIError.INVALID_VALUE_TYPE;
+            throw APIError.InvalidValueType;
         }
 
         if (data.firstName.length > 50) {
-            throw APIError.INVALID_VALUE_LENGTH;
+            throw APIError.InvalidValueLength;
         }
         
         if (typeof data.lastName !== "string") {
             Logger.debug(Logger.Type.LecturerManager, "Variable \"lastName\" is not a string, cannot create an appointment.");
-            throw APIError.INVALID_VALUE_TYPE;
+            throw APIError.InvalidValueType;
         }
         
         if (data.lastName.length > 50) {
-            throw APIError.INVALID_VALUE_LENGTH;
+            throw APIError.InvalidValueLength;
         }
         
         if (typeof data.location !== "string") {
             Logger.debug(Logger.Type.LecturerManager, "Variable \"location\" is not a string, cannot create an appointment.");
-            throw APIError.INVALID_VALUE_TYPE;
+            throw APIError.InvalidValueType;
         }
         
         if (data.lastName.length > 100) {
-            throw APIError.INVALID_VALUE_LENGTH;
+            throw APIError.InvalidValueLength;
         }
 
         if (!Utils.validateEmail(data.email)) {
             Logger.debug(Logger.Type.LecturerManager, "Variable \"email\" is not a valid email, cannot create an appointment.");
-            throw APIError.INVALID_VALUE_TYPE;
+            throw APIError.InvalidValueType;
         }
 
         if (!Utils.validatePhoneNumber(data.phoneNumber)) {
             Logger.debug(Logger.Type.LecturerManager, "Variable \"phoneNumber\" is not a valid phone number, cannot create an appointment.");
-            throw APIError.INVALID_VALUE_TYPE;
+            throw APIError.InvalidValueType;
         }
 
         if (typeof data.message !== "string") {
             Logger.debug(Logger.Type.LecturerManager, "Variable \"message\" is not a string, cannot create an appointment.");
-            throw APIError.INVALID_VALUE_TYPE;
+            throw APIError.InvalidValueType;
         }
 
         if (data.message.length > 500) {
-            throw APIError.INVALID_VALUE_LENGTH;
+            throw APIError.InvalidValueLength;
         }
 
         /**
@@ -124,27 +124,27 @@ module.exports = class Appointment {
 
         if (this.startDate.getDate() != this.endDate.getDate() || this.startDate.getMonth() != this.endDate.getMonth() || this.startDate.getFullYear() != this.endDate.getFullYear()) {
             Logger.error(Logger.Type.LecturerManager, "Appointment start and end are not on the same day.");
-            throw APIError.INVALID_DATES;
+            throw APIError.InvalidDates;
         }
 
         if (this.startDate.getHours() < 8 || this.startDate.getHours() > 20) {
             Logger.error(Logger.Type.LecturerManager, "Appointment start is not in the working hours of the lecturer.");
-            throw APIError.TIME_SLOT_NOT_AVAILABLE;
+            throw APIError.TimeSlotNotAvailable;
         }   
 
         if (this.endDate.getHours() > 20) {
             Logger.error(Logger.Type.LecturerManager, "Appointment end is not in the working hours of the lecturer.");
-            throw APIError.TIME_SLOT_NOT_AVAILABLE;
+            throw APIError.TimeSlotNotAvailable;
         }
 
         if (this.startDate.getMinutes() > 0 || this.endDate.getMinutes() > 0) {
             Logger.error(Logger.Type.LecturerManager, "Appointment cannot have minutes set.");
-            throw APIError.INVALID_DATES;
+            throw APIError.InvalidDates;
         }
 
         if (this.startDate.getTime() >= this.endDate.getTime()) {
             Logger.error(Logger.Type.LecturerManager, "Appointment start is after the end.");
-            throw APIError.INVALID_DATES;
+            throw APIError.InvalidDates;
         }
     }
 

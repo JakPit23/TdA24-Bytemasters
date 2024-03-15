@@ -1,7 +1,7 @@
 const express = require("express");
 const ics = require("ics");
-const { APIError } = require("../../Errors");
 const APIResponse = require("../APIResponse");
+const APIError = require("../../types/APIError");
 
 module.exports = class APIUserRoute {
     /**
@@ -26,15 +26,15 @@ module.exports = class APIUserRoute {
                     user: user.toJSON()
                 });
             } catch (error) {
-                if (error == APIError.MISSING_REQUIRED_VALUES) {
+                if (error == APIError.MissingRequiredValues) {
                     return APIResponse.MISSING_REQUIRED_VALUES.send(res);
                 }
                 
-                if (error == APIError.INVALID_DATES) {
+                if (error == APIError.InvalidDates) {
                     return APIResponse.INVALID_DATES.send(res);
                 }
                 
-                if (error == APIError.TIME_CONFLICT) {
+                if (error == APIError.TimeConflict) {
                     return APIResponse.TIME_CONFLICT.send(res);
                 }
 
@@ -59,15 +59,15 @@ module.exports = class APIUserRoute {
                     user: user.toJSON()
                 });
             } catch (error) {
-                if (error == APIError.MISSING_REQUIRED_VALUES) {
+                if (error == APIError.MissingRequiredValues) {
                     return APIResponse.MISSING_REQUIRED_VALUES.send(res);
                 }
                 
-                if (error == APIError.INVALID_DATES) {
+                if (error == APIError.InvalidDates) {
                     return APIResponse.INVALID_DATES.send(res);
                 }
                 
-                if (error == APIError.TIME_CONFLICT) {
+                if (error == APIError.TimeConflict) {
                     return APIResponse.TIME_CONFLICT.send(res);
                 }
 
@@ -93,15 +93,15 @@ module.exports = class APIUserRoute {
 
                 return APIResponse.OK.send(res);
             } catch (error) {
-                if (error == APIError.MISSING_REQUIRED_VALUES) {
+                if (error == APIError.MissingRequiredValues) {
                     return APIResponse.MISSING_REQUIRED_VALUES.send(res);
                 }
                 
-                if (error == APIError.INVALID_DATES) {
+                if (error == APIError.InvalidDates) {
                     return APIResponse.INVALID_DATES.send(res);
                 }
                 
-                if (error == APIError.TIME_CONFLICT) {
+                if (error == APIError.TimeConflict) {
                     return APIResponse.TIME_CONFLICT.send(res);
                 }
 
@@ -134,15 +134,15 @@ module.exports = class APIUserRoute {
                         .send(value);
                 });
             } catch (error) {
-                if (error == APIError.MISSING_REQUIRED_VALUES) {
+                if (error == APIError.MissingRequiredValues) {
                     return APIResponse.MISSING_REQUIRED_VALUES.send(res);
                 }
                 
-                if (error == APIError.INVALID_DATES) {
+                if (error == APIError.InvalidDates) {
                     return APIResponse.INVALID_DATES.send(res);
                 }
                 
-                if (error == APIError.TIME_CONFLICT) {
+                if (error == APIError.TimeConflict) {
                     return APIResponse.TIME_CONFLICT.send(res);
                 }
 

@@ -1,4 +1,4 @@
-const { APIError } = require("../../Errors");
+const APIError = require("../../types/APIError");
 const Appointment = require("./Appointment");
 
 class Lecturer {
@@ -120,7 +120,7 @@ class Lecturer {
     createAppointment(data) {
         const appointment = new Appointment(data);
         if (this._isAppointmentConflict(appointment)) {
-            throw APIError.TIME_SLOT_NOT_AVAILABLE;
+            throw APIError.TimeSlotNotAvailable;
         }
 
         this.appointments.push(appointment);

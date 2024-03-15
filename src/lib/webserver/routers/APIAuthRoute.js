@@ -1,6 +1,6 @@
 const express = require("express");
-const { APIError } = require("../../Errors");
 const APIResponse = require("../APIResponse");
+const APIError = require("../../types/APIError");
 
 module.exports = class APIAuthRoute {
     /**
@@ -18,16 +18,16 @@ module.exports = class APIAuthRoute {
             try {
                 const { username, password } = req.body;
                 if (!(username && password)) {
-                    throw APIError.MISSING_REQUIRED_VALUES;
+                    throw APIError.MissingRequiredValues;
                 }
 
                 const lecturer = await this.webserver.getCore().getLecturerManager().getLecturer({ username });
                 if (!lecturer) {
-                    throw APIError.INVALID_CREDENTIALS;
+                    throw APIError.InvalidCredentials;
                 }
 
                 if (!await this.webserver.getCore().getLecturerManager()._comparePassword(lecturer.password, password)) {
-                    throw APIError.INVALID_CREDENTIALS;
+                    throw APIError.InvalidCredentials;
                 }
 
                 req.session.token = this.webserver.getCore().getLecturerManager().generateJWTToken(lecturer);
@@ -35,11 +35,11 @@ module.exports = class APIAuthRoute {
                 return APIResponse.OK.send(res);
             } catch (error) {
                 if (error instanceof APIError) {
-                    if (error == APIError.MISSING_REQUIRED_VALUES) {
+                    if (error == APIError.MissingRequiredValues) {
                         return APIResponse.MISSING_REQUIRED_VALUES.send(res);
                     }
     
-                    if (error == APIError.INVALID_CREDENTIALS) {
+                    if (error == APIError.InvalidCredentials) {
                         return APIResponse.INVALID_CREDENTIALS.send(res);
                     }
                 }

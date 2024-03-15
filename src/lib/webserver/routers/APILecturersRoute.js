@@ -1,6 +1,6 @@
 const express = require("express");
-const { APIError } = require("../../Errors");
 const APIResponse = require("../APIResponse");
+const APIError = require("../../types/APIError");
 
 module.exports = class APILecturersRoute {
     /**
@@ -22,19 +22,19 @@ module.exports = class APILecturersRoute {
                 return APIResponse.OK.send(res, lecturer.toJSON());
             } catch (error) {
                 if (error instanceof APIError) {
-                    if (error == APIError.MISSING_REQUIRED_VALUES) {
+                    if (error == APIError.MissingRequiredValues) {
                         return APIResponse.MISSING_REQUIRED_VALUES.send(res);
                     }
                     
-                    if (error == APIError.LECTURER_ALREADY_EXISTS) {
+                    if (error == APIError.LecturerAlreadyExists) {
                         return APIResponse.LECTURER_ALREADY_EXISTS.send(res);
                     }
 
-                    if (error == APIError.USERNAME_DOESNT_MEET_MINIMAL_REQUIREMENTS) {
+                    if (error == APIError.UsernameDoesntMeetMinimalRequirements) {
                         return APIResponse.USERNAME_DOESNT_MEET_MINIMAL_REQUIREMENTS.send(res);
                     }
 
-                    if (error == APIError.USERNAME_DOESNT_MEET_MAXIMAL_REQUIREMENTS) {
+                    if (error == APIError.UsernameDoesntMeetMaximalRequirements) {
                         return APIResponse.USERNAME_DOESNT_MEET_MAXIMAL_REQUIREMENTS.send(res);
                     }
                 }
@@ -55,7 +55,7 @@ module.exports = class APILecturersRoute {
                 if (before) {
                     const index = lecturers.findIndex(lecturer => lecturer.uuid == before);
                     if (index == -1) {
-                        throw APIError.LECTURER_NOT_FOUND;
+                        throw APIError.LecturerNotFound;
                     }
 
                     lecturers = lecturers.slice(0, index);
@@ -64,7 +64,7 @@ module.exports = class APILecturersRoute {
                 if (after) {
                     const index = lecturers.findIndex(lecturer => lecturer.uuid == after);
                     if (index == -1) {
-                        throw APIError.LECTURER_NOT_FOUND;
+                        throw APIError.LecturerNotFound;
                     }
 
                     lecturers = lecturers.slice(index + 1);
@@ -76,7 +76,7 @@ module.exports = class APILecturersRoute {
 
                 return res.status(200).json(lecturers);
             } catch (error) {
-                if (error == APIError.LECTURER_NOT_FOUND) {
+                if (error == APIError.LecturerNotFound) {
                     return APIResponse.LECTURER_NOT_FOUND.send(res);
                 }
 
@@ -106,7 +106,7 @@ module.exports = class APILecturersRoute {
                 await this.webserver.getCore().getLecturerManager().deleteLecturer(uuid);
                 return APIResponse.OK.send(res);
             } catch (error) {
-                if (error == APIError.LECTURER_NOT_FOUND) {
+                if (error == APIError.LecturerNotFound) {
                     return APIResponse.LECTURER_NOT_FOUND.send(res);
                 }
 
@@ -122,7 +122,7 @@ module.exports = class APILecturersRoute {
                 const lecturer = await this.webserver.getCore().getLecturerManager().editLecturer(uuid, data);
                 return APIResponse.OK.send(res, lecturer.toJSON()); 
             } catch (error) {
-                if (error == APIError.LECTURER_NOT_FOUND) {
+                if (error == APIError.LecturerNotFound) {
                     return APIResponse.LECTURER_NOT_FOUND.send(res); 
                 }
 
@@ -145,23 +145,23 @@ module.exports = class APILecturersRoute {
                 this.webserver.getCore().getEmailClient().sendAppointmentConfirmation(lecturer, appointment);
                 return APIResponse.OK.send(res);
             } catch (error) {
-                if (error == APIError.MISSING_REQUIRED_VALUES) {
+                if (error == APIError.MissingRequiredValues) {
                     return APIResponse.MISSING_REQUIRED_VALUES.send(res);
                 }
                 
-                if (error == APIError.TIME_SLOT_NOT_AVAILABLE || error == APIError.RESERVATION_NOT_FOUND) {
+                if (error == APIError.TimeSlotNotAvailable || error == APIError.ReservationNotFound) {
                     return APIResponse.TIME_SLOT_NOT_AVAILABLE.send(res);
                 }
 
-                if (error == APIError.INVALID_VALUE_TYPE) {
+                if (error == APIError.InvalidValueType) {
                     return APIResponse.INVALID_VALUE_TYPE.send(res);
                 }
 
-                if (error == APIError.INVALID_VALUE_LENGTH) {
+                if (error == APIError.InvalidValueLength) {
                     return APIResponse.INVALID_VALUE_LENGTH.send(res);
                 }
 
-                if (error == APIError.INVALID_DATES) {
+                if (error == APIError.InvalidDates) {
                     return APIResponse.INVALID_DATES.send(res);
                 }
 

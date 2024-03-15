@@ -20,10 +20,10 @@ const bcryptjs = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const Lecturer = require("./types/Lecturer");
 const Logger = require("../Logger");
-const { APIError } = require("../Errors");
 const Config = require("../Config");
 const Utils = require("../Utils");
 const Appointment = require("./types/Appointment");
+const APIError = require("../types/APIError");
 
 class LecturerManager {
     /**
@@ -106,7 +106,7 @@ class LecturerManager {
 
         if (await this.getLecturer({ uuid: lecturer.uuid, username: lecturer.username }) && !edit) {
             Logger.debug(Logger.Type.LecturerManager, `Not saving lecturer ${lecturer.uuid} because it already exists in database and it's not an edit operation...`);
-            throw APIError.LECTURER_ALREADY_EXISTS;
+            throw APIError.LecturerAlreadyExists;
         }
 
         if (edit) {
@@ -226,7 +226,7 @@ class LecturerManager {
         for (const { key, required } of allowedKeys) {
             if (!data[key] && required && !combination) {
                 Logger.debug(Logger.Type.LecturerManager, `Missing required value "${key}"`);
-                throw APIError.MISSING_REQUIRED_VALUES;
+                throw APIError.MissingRequiredValues;
             }
 
             if (!data[key]) {
@@ -236,12 +236,12 @@ class LecturerManager {
 
             if (key == "username" && data[key].length < 2) {
                 Logger.debug(Logger.Type.LecturerManager, `Username "${data[key]}" doesn't meet minimal requirements`);
-                throw APIError.USERNAME_DOESNT_MEET_MINIMAL_REQUIREMENTS;
+                throw APIError.UsernameDoesntMeetMaximalRequirements;
             }
 
             if (key == "username" && data[key].length > 32) {
                 Logger.debug(Logger.Type.LecturerManager, `Username "${data[key]}" doesn't meet maximal requirements`);
-                throw APIError.USERNAME_DOESNT_MEET_MAXIMAL_REQUIREMENTS;
+                throw APIError.UsernameDoesntMeetMaximalRequirements;
             }
 
             if (typeof data[key] == "object") {
@@ -331,7 +331,7 @@ class LecturerManager {
         if (Object.keys(contact).length > 0) {
             json.contact = contact;
         } else if (!combination) {
-            throw APIError.MISSING_REQUIRED_VALUES;
+            throw APIError.MissingRequiredValues;
         }
 
         if (combination) {
@@ -409,7 +409,7 @@ class LecturerManager {
      */
     async deleteLecturer(uuid) {
         if (!(await this.getLecturer({ uuid }))) {
-            throw APIError.LECTURER_NOT_FOUND;
+            throw APIError.LecturerNotFound;
         }
 
         const result = this.core.getDatabase().exec("DELETE FROM lecturers WHERE uuid = ?", [uuid]);
@@ -432,7 +432,7 @@ class LecturerManager {
     async editLecturer(uuid, data) {
         const originalData = await this.getLecturer({ uuid });
         if (!originalData) {
-            throw APIError.LECTURER_NOT_FOUND;
+            throw APIError.LecturerNotFound;
         }
 
         const result = await this._processLecturer(data, originalData);
