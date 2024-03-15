@@ -69,8 +69,8 @@ module.exports = class EmailClient {
         })
 
     /**
-     * @param {import("./types/Lecturer")} lecturer 
-     * @param {import("./types/Appointment")} appointment 
+     * @param {import("../types/Lecturer")} lecturer 
+     * @param {import("../types/Appointment")} appointment 
      */
     async sendAppointmentConfirmation(lecturer, appointment) {
         const lecturerName = `${lecturer.first_name}${lecturer.middle_name ? ` ${lecturer.middle_name}` : ""} ${lecturer.last_name}`;

@@ -1,6 +1,6 @@
 const sanitizeHtml = require("sanitize-html");
 const Logger = require("../Logger");
-const Tag = require("./types/Tag");
+const Tag = require("../types/Tag");
 const Utils = require("../Utils");
 
 class TagManager {
@@ -12,7 +12,7 @@ class TagManager {
 
         /**
          * @private
-         * @type {import("./types/Tag")[]}
+         * @type {import("../types/Tag")[]}
          */
         this._cache = [];
     }
@@ -47,7 +47,7 @@ class TagManager {
     }
 
     /**
-     * @returns {Promise<import("./types/Tag")[]>}
+     * @returns {Promise<import("../types/Tag")[]>}
      */
     getTags = async () => {
         // TODO: (asi) pridat cteni z cache
@@ -58,8 +58,8 @@ class TagManager {
     }
 
     /**
-     * @param {import("./types/Tag")} options
-     * @returns {Promise<import("./types/Tag") | null>}
+     * @param {import("../types/Tag")} options
+     * @returns {Promise<import("../types/Tag") | null>}
      */
     getTag = async (options = {}) => {
         const { uuid, name } = options;
@@ -84,7 +84,7 @@ class TagManager {
     }
 
     /**
-     * @param {import("./types/Tag")} data
+     * @param {import("../types/Tag")} data
      * @returns {Promise<Tag>}
      */
     createTag = async (data) => {

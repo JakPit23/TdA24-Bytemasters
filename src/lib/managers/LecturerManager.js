@@ -18,11 +18,11 @@
 const sanitizeHtml = require("sanitize-html");
 const bcryptjs = require("bcryptjs");
 const jwt = require("jsonwebtoken");
-const Lecturer = require("./types/Lecturer");
+const Lecturer = require("../types/Lecturer");
 const Logger = require("../Logger");
 const Config = require("../Config");
 const Utils = require("../Utils");
-const Appointment = require("./types/Appointment");
+const Appointment = require("../types/Appointment");
 const APIError = require("../types/APIError");
 
 class LecturerManager {
@@ -34,7 +34,7 @@ class LecturerManager {
 
         /**
          * @private
-         * @type {import("./types/Lecturer")[]}
+         * @type {import("../types/Lecturer")[]}
          */
         this._cache = [];
     }
@@ -64,7 +64,7 @@ class LecturerManager {
     _comparePassword = async (hashedPassword, clearPassword) => await bcryptjs.compare(clearPassword, hashedPassword);
 
     /**
-     * @param {import("./types/Lecturer")} lecturer
+     * @param {import("../types/Lecturer")} lecturer
      * @returns {string}
      */
     generateJWTToken = (lecturer) => jwt.sign({ uuid: lecturer.uuid }, Config.secretKey, { expiresIn: "24h"});
@@ -83,7 +83,7 @@ class LecturerManager {
     
     /**
      * @private
-     * @param {import("./types/Lecturer")} lecturer 
+     * @param {import("../types/Lecturer")} lecturer 
      * @param {boolean} edit
      */
     _saveLecturer = async (lecturer, edit = false) => {
@@ -202,8 +202,8 @@ class LecturerManager {
         
     /**
      * @private
-     * @param {import("./types/Lecturer")} data 
-     * @param {import("./types/Lecturer")} combination 
+     * @param {import("../types/Lecturer")} data 
+     * @param {import("../types/Lecturer")} combination 
      * @returns {Promise<object>}
      */
     async _processLecturer(data, combination) {
@@ -355,7 +355,7 @@ class LecturerManager {
 
 
     /**
-     * @returns {Promise<import("./types/Lecturer")[]>}
+     * @returns {Promise<import("../types/Lecturer")[]>}
      */
     getLecturers = async () => {
         // TODO: (asi) pridat cteni z cache

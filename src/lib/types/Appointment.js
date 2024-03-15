@@ -1,6 +1,6 @@
-const Logger = require("../../Logger");
-const Utils = require("../../Utils");
-const APIError = require("../../types/APIError");
+const Logger = require("../Logger");
+const Utils = require("../Utils");
+const APIError = require("./APIError");
 
 module.exports = class Appointment {
     constructor(data) {

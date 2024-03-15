@@ -1,4 +1,4 @@
-const APIError = require("../../types/APIError");
+const APIError = require("./APIError");
 const Appointment = require("./Appointment");
 
 class Lecturer {
