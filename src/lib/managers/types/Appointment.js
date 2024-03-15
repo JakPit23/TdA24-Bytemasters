@@ -113,30 +113,39 @@ module.exports = class Appointment {
          * @description The start date of the appointment.
          */
         this.startDate = new Date(this.start * 1000);
+        this.startDate.setSeconds(0, 0);
 
         /**
          * @type {Date}
          * @description The end date of the appointment.
          */
         this.endDate = new Date(this.end * 1000);
+        this.endDate.setSeconds(0, 0);
 
-        // If the appointment is the same as the end date, throw an error.
-        if (this.startDate.getHours() == this.endDate.getHours() && this.startDate.getMinutes() == this.endDate.getMinutes()) {
-            Logger.error(Logger.Type.LecturerManager, "Appointment start and end are the same.");
+        if (this.startDate.getDate() != this.endDate.getDate() || this.startDate.getMonth() != this.endDate.getMonth() || this.startDate.getFullYear() != this.endDate.getFullYear()) {
+            Logger.error(Logger.Type.LecturerManager, "Appointment start and end are not on the same day.");
             throw APIError.INVALID_DATES;
         }
 
-        // If the appointment is not in the working hours of the lecturer, throw an error.
-        if (this.startDate.getHours() > 20 || this.startDate.getHours() < 8) {
-            Logger.error(Logger.Type.LecturerManager, "Appointment is not in the working hours of the lecturer.");
+        if (this.startDate.getHours() < 8 || this.startDate.getHours() > 20) {
+            Logger.error(Logger.Type.LecturerManager, "Appointment start is not in the working hours of the lecturer.");
+            throw APIError.TIME_SLOT_NOT_AVAILABLE;
+        }   
+
+        if (this.endDate.getHours() > 20) {
+            Logger.error(Logger.Type.LecturerManager, "Appointment end is not in the working hours of the lecturer.");
             throw APIError.TIME_SLOT_NOT_AVAILABLE;
         }
 
-        if (this.endDate.getHours() >= 20 && this.endDate.getMinutes() > 0) {
-            Logger.error(Logger.Type.LecturerManager, "Appointment is not in the working hours of the lecturer.");
-            throw APIError.TIME_SLOT_NOT_AVAILABLE;
+        if (this.startDate.getMinutes() > 0 || this.endDate.getMinutes() > 0) {
+            Logger.error(Logger.Type.LecturerManager, "Appointment cannot have minutes set.");
+            throw APIError.INVALID_DATES;
         }
 
+        if (this.startDate.getTime() >= this.endDate.getTime()) {
+            Logger.error(Logger.Type.LecturerManager, "Appointment start is after the end.");
+            throw APIError.INVALID_DATES;
+        }
     }
 
     toICS = () => ({

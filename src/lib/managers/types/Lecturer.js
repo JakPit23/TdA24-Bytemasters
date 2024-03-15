@@ -111,7 +111,7 @@ class Lecturer {
      * @returns {boolean}
      */
     _isAppointmentConflict = (appointment) => this.appointments
-        .find(existingAppointment => appointment.start >= existingAppointment.start && appointment.start <= existingAppointment.end)
+        .find(existingAppointment => appointment.startDate < existingAppointment.endDate && appointment.endDate > existingAppointment.startDate)
 
     /**
      * @param {Object} data
