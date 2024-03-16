@@ -49,52 +49,96 @@ class Logger {
     }
 
     /**
+     * @typedef {Object} LogType
+     * @property {string} color
+     * @property {string} output
+     */
+
+    /**
      * @readonly
+     * @type {Object<LogType>}
      */
     static Type = {
-        Core: `${Logger.Colors.Fg.Magenta}CORE${Logger.Colors.Reset}`,
-        Database: `${Logger.Colors.Fg.Cyan}DATABASE${Logger.Colors.Reset}`,
-        Watchdog: `${Logger.Colors.Fg.Red}WATCHDOG${Logger.Colors.Reset}`,
-        Webserver: `${Logger.Colors.Fg.Green}WEBSERVER${Logger.Colors.Reset}`,
-        UserManager: `${Logger.Colors.Bright}${Logger.Colors.Fg.Blue}USER MANAGER${Logger.Colors.Reset}`,
-        LecturerManager: `${Logger.Colors.Bright}${Logger.Colors.Fg.Yellow}LECTURER MANAGER${Logger.Colors.Reset}`,
-        TagManager: `${Logger.Colors.Fg.Blue}TAG MANAGER${Logger.Colors.Reset}`,
-        EmailClient: `${Logger.Colors.Fg.Yellow}EMAIL CLIENT${Logger.Colors.Reset}`,
+        Core: {
+            color: Logger.Colors.Fg.Magenta,
+            output: "CORE"
+        },
+        Database: {
+            color: Logger.Colors.Fg.Cyan,            
+            output: "DATABASE"
+        },
+        Watchdog: {
+            color: Logger.Colors.Fg.Red,
+            output: "WATCHDOG"
+        },
+        Webserver: {
+            color: Logger.Colors.Fg.Green,
+            output: "WEBSERVER"
+        },
+        UserManager: {
+            color: `${Logger.Colors.Bright}${Logger.Colors.Fg.Blue}`,
+            output: "USER MANAGER"
+        },
+        LecturerManager: {
+            color: `${Logger.Colors.Bright}${Logger.Colors.Fg.Yellow}`,
+            output: "LECTURER MANAGER"
+        },
+        TagManager: {
+            color: Logger.Colors.Fg.Blue,
+            output: "TAG MANAGER"
+        },
+        EmailClient: {
+            color: Logger.Colors.Fg.Yellow,
+            output: "EMAIL CLIENT"
+        }
     }
 
     /**
-     * @property {object} trace
-     * @property {object} debug
-     * @property {object} info
-     * @property {object} warn
-     * @property {object} error
-     * @returns {object}
+     * @typedef {Object} LogLevel
+     * @property {number} level
+     * @property {Function} callback
+     * @property {string} color
+     * @property {string} output
+     */
+
+    /**
+     * @type {Object}
+     * @property {LogLevel} trace
+     * @property {LogLevel} debug
+     * @property {LogLevel} info
+     * @property {LogLevel} warn
+     * @property {LogLevel} error
      */
     static LogLevels = Object.freeze({
-        'trace': {
-            'level': -2,
-            'callback': console.debug,
-            'output': `${Logger.Colors.Fg.Yellow}TRACE${Logger.Colors.Reset}`
+        trace: {
+            level: -2,
+            callback: console.debug,
+            color: Logger.Colors.Fg.Yellow,
+            output: "TRACE"
         },
-        'debug': {
-            'level': -1,
-            'callback': console.debug,
-            'output': `${Logger.Colors.Fg.Yellow}DEBUG${Logger.Colors.Reset}`
+        debug: {
+            level: -1,
+            callback: console.debug,
+            color: Logger.Colors.Fg.Yellow,
+            output: "DEBUG"
         },
-        'info': {
-            'level': 0,
-            'callback': console.info,
-            'output': `${Logger.Colors.Bright}${Logger.Colors.Fg.Blue}INFO${Logger.Colors.Reset}`
+        info: {
+            level: 0,
+            callback: console.info,
+            color: `${Logger.Colors.Bright}${Logger.Colors.Fg.Blue}`,
+            output: "INFO"
         },
-        'warn': {
-            'level': 1,
-            'callback': console.warn,
-            'output': `${Logger.Colors.Bright}${Logger.Colors.Fg.Yellow}WARN${Logger.Colors.Reset}`
+        warn: {
+            level: 1,
+            callback: console.warn,
+            color: `${Logger.Colors.Bright}${Logger.Colors.Fg.Yellow}`,
+            output: "WARN"
         },
-        'error': {
-            'level': 2,
-            'callback': console.error,
-            'output': `${Logger.Colors.Bright}${Logger.Colors.Fg.Red}ERROR${Logger.Colors.Reset}`
+        error: {
+            level: 2,
+            callback: console.error,
+            color: `${Logger.Colors.Bright}${Logger.Colors.Fg.Red}`,
+            output: "ERROR"
         }
     });
 
@@ -120,7 +164,7 @@ class Logger {
             fileId++;
         }
 
-        Logger.debug(Logger.Type.Core, `Creating log file "${fileName}"`);
+        Logger.debug(Logger.Type.Core, `Creating log file "&c${fileName}&r"`);
         Logger.logFile = fs.createWriteStream(fileName, { flags: "a" });
     }
 
@@ -142,13 +186,13 @@ class Logger {
     }
 
     /**
-     * @param {string} logType
-     * @param {string} logLevel
+     * @param {LogType} logType
+     * @param {LogLevel} logLevel
      * @returns {string}
      */
     static buildLogLinePrefix(logType, logLevel) {
         const dateString = Logger.buildDatePrefix({ year: true, month: true, day: true, hour: true, minute: true, second: true });
-        return `[${dateString}] [${logLevel}] [${logType}]`;
+        return `[${dateString}] [${logLevel.color}${logLevel.output}${Logger.Colors.Reset}] [${logType.color}${logType.output}${Logger.Colors.Reset}]`;
     }
 
     /**
@@ -208,26 +252,30 @@ class Logger {
     }
 
     /**
-     * @param {string} type
-     * @param {string} level
+     * @param {LogType} type
+     * @param {LogLevel} level
      * @param {...any} args
      * @private
      */
     static _log(type, level, ...args){
-        if (Logger.logLevel['level'] > Logger.LogLevels[level]['level']) {
+        if (Logger.logLevel.level > level.level) {
             return;
         }
 
-        const logLinePrefix = Logger.buildLogLinePrefix(type, Logger.LogLevels[level]['output']);
+        const logLinePrefix = Logger.buildLogLinePrefix(type, level);
         const logLine = [logLinePrefix, ...args].map(arg => {
-            if (typeof arg === 'string') {
+            if (arg == logLinePrefix) {
                 return arg;
+            }
+            
+            if (typeof arg === 'string') {
+                return arg.replaceAll("&c", level.color).replaceAll("&r", Logger.Colors.Reset)
             }
 
             return (args[0]?.includes?.('=') ? '' : '\n') + util.inspect(arg, { depth: Infinity });
         }).join(' ');
 
-        Logger.LogLevels[level]['callback'](logLine);
+        level['callback'](logLine);
      
         if (Logger.logFile) {
             Logger.logFile.write(`${logLine.replace(/\u001b\[.*?m/g, '')}\n`);
@@ -238,31 +286,31 @@ class Logger {
      * @param {string} type
      * @param {...any} args
      */
-    static trace = (type, ...args) => Logger._log(type, "trace", ...args);
+    static trace = (type, ...args) => Logger._log(type, Logger.LogLevels.trace, ...args);
 
     /**
      * @param {string} type
      * @param {...any} args
      */
-    static debug = (type, ...args) => Logger._log(type, "debug", ...args);
+    static debug = (type, ...args) => Logger._log(type, Logger.LogLevels.debug, ...args);
 
     /**
      * @param {string} type
      * @param {...any} args
      */
-    static info = (type, ...args) => Logger._log(type, "info", ...args);
+    static info = (type, ...args) => Logger._log(type, Logger.LogLevels.info, ...args);
 
     /**
      * @param {string} type
      * @param {...any} args
      */
-    static warn = (type, ...args) => Logger._log(type, "warn", ...args);
+    static warn = (type, ...args) => Logger._log(type, Logger.LogLevels.warn, ...args);
 
     /**
      * @param {string} type
      * @param {...any} args
      */
-    static error = (type, ...args) => Logger._log(type, "error", ...args);
+    static error = (type, ...args) => Logger._log(type, Logger.LogLevels.error, ...args);
 }
 
 Logger.setLogLevel(Config.logLevel);
