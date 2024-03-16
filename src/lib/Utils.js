@@ -19,7 +19,7 @@ class Utils {
      * @param {string} email
      * @returns {boolean}
      */
-    static validateEmail = (email) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+    static validateEmail = (email) => /^(?=.{1,254}$)[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 
     /**
      * @param {Date} date 
