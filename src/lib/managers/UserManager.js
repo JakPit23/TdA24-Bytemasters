@@ -313,7 +313,6 @@ module.exports = class UserManager {
         
         if (user instanceof Lecturer) {
             user.edit(data);
-            console.log(user);
             await this._saveLecturer(user, true);
         }
 
