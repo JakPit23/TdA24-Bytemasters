@@ -4,33 +4,35 @@ module.exports = class APIResponse {
         this.code = data.code;
         this.message = data.message;
         this.error = data.error;
+        this.data = data.data;
     }
+
+    static fromAPIError = (error) => APIResponse[error.type];
 
     send = (res, data) => res.status(this.statusCode).json({
         code: this.code,
         message: this.message,
         error: this.error,
+        ...this.data,
         ...data
     })
 
-    static OK = new APIResponse({ statusCode: 200, code: 200, message: "OK" });
-    static ROUTE_NOT_FOUND = new APIResponse({ statusCode: 404, code: 404, error: "ROUTE_NOT_FOUND" });
-    static INTERNAL_SERVER_ERROR = new APIResponse({ statusCode: 500, code: 500, error: "INTERNAL_SERVER_ERROR" });
-    static UNAUTHORIZED = new APIResponse({ statusCode: 401, code: 401, error: "UNAUTHORIZED" });
-    static MISSING_REQUIRED_VALUES = new APIResponse({ statusCode: 400, code: 400, error: "MISSING_REQUIRED_VALUES" });
-    static INVALID_REQUEST_BODY = new APIResponse({ statusCode: 400, code: 400, error: "INVALID_REQUEST_BODY" });
+    static Ok = new APIResponse({ statusCode: 200, code: 200, message: "OK" });
+    static RouteNotFound = new APIResponse({ statusCode: 404, code: 404, error: { type: "RouteNotFound" } });
+    static InternalServerError = new APIResponse({ statusCode: 500, code: 500, error: { type: "InternalServerError" } });
+    static InvalidRequestBody = new APIResponse({ statusCode: 400, code: 400, error: { type: "InvalidRequestBody" } });
+    static Unauthorized = new APIResponse({ statusCode: 401, code: 401, error: { type: "Unauthorized" } });
 
-    static LECTURER_NOT_FOUND = new APIResponse({ statusCode: 200, code: 404, error: "LECTURER_NOT_FOUND" });
-    static LECTURER_ALREADY_EXISTS = new APIResponse({ statusCode: 400, code: 400, error: "LECTURER_ALREADY_EXISTS" });
-    static INVALID_CREDENTIALS = new APIResponse({ statusCode: 400, code: 400, error: "INVALID_CREDENTIALS" });
-    static INVALID_EMAIL = new APIResponse({ statusCode: 400, code: 400, error: "INVALID_EMAIL" });
-    static INVALID_PHONE_NUMBER = new APIResponse({ statusCode: 400, code: 400, error: "INVALID_PHONE_NUMBER" });
-    static USERNAME_DOESNT_MEET_MINIMAL_REQUIREMENTS = new APIResponse({ statusCode: 400, code: 400, error: "USERNAME_DOESNT_MEET_MINIMAL_REQUIREMENTS" });
-    static USERNAME_DOESNT_MEET_MAXIMAL_REQUIREMENTS = new APIResponse({ statusCode: 400, code: 400, error: "USERNAME_DOESNT_MEET_MAXIMAL_REQUIREMENTS" });
+    static InvalidCredentials = new APIResponse({ statusCode: 400, code: 400, error: { type: "InvalidCredentials" } });
 
-    static TIME_SLOT_NOT_AVAILABLE = new APIResponse({ statusCode: 400, code: 400, error: "TIME_SLOT_NOT_AVAILABLE" });
-    static TIME_CONFLICT = new APIResponse({ statusCode: 400, code: 400, error: "TIME_CONFLICT" });
-    static INVALID_VALUE_TYPE = new APIResponse({ statusCode: 400, code: 400, error: "INVALID_VALUE_TYPE" });
-    static INVALID_VALUE_LENGTH = new APIResponse({ statusCode: 400, code: 400, error: "INVALID_VALUE_LENGTH" });
-    static INVALID_DATES = new APIResponse({ statusCode: 400, code: 400, error: "INVALID_DATES" });
+    static TimeSlotNotAvailable = new APIResponse({ statusCode: 400, code: 400, error: { type: "TimeSlotNotAvailable" } });
+    static TimeConflict = new APIResponse({ statusCode: 400, code: 400, error: { type: "TimeConflict" } });
+    static InvalidDates = new APIResponse({ statusCode: 400, code: 400, error: { type: "InvalidDates" } });
+
+    static InvalidValueType = (value) => new APIResponse({ statusCode: 400, code: 400, error: { type: "InvalidValueType", value } });
+    static InvalidValueLength = (value) => new APIResponse({ statusCode: 400, code: 400, error: { type: "InvalidValueLength", value } });
+    static DuplicateValue = (value) => new APIResponse({ statusCode: 400, code: 400, error: { type: "DuplicateValue", value } });
+
+    static UserNotFound = new APIResponse({ statusCode: 400, code: 400, error: { type: "UserNotFound" } });
+    static UserAlreadyExists = new APIResponse({ statusCode: 400, code: 400, error: { type: "UserAlreadyExists" } });
 }

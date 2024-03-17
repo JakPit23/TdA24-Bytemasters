@@ -98,4 +98,27 @@ module.exports = class EmailClient {
             html: template
         });
     }
+
+    /**
+     * @param {import("../types/user/Lecturer")} lecturer 
+     * @param {import("../types/Appointment")} appointment 
+     */
+    async sendAppointmentCancellation(lecturer, appointment) {
+        const lecturerName = `${lecturer.first_name}${lecturer.middle_name ? ` ${lecturer.middle_name}` : ""} ${lecturer.last_name}`;
+        const appointmentName = `${appointment.firstName} ${appointment.lastName}`;
+
+        const template = ejs.render(this.templates["appointmentCancellation"], {
+            lecturerName,
+            appointmentName,
+            appointmentDate: Utils.formatDate(appointment.startDate),
+            appointmentStart: Utils.formatTime(appointment.startDate),
+            appointmentEnd: Utils.formatTime(appointment.endDate),
+        });
+
+        return this._send({
+            to: appointment.email,
+            subject: `Schůzka s ${lecturerName} byla zrušena`,
+            html: template
+        });
+    }
 }

@@ -51,14 +51,7 @@
         <div class="message">
             <h2>Schůzka byla zrušena</h2>
             <p>Dobrý den <%= appointmentName %>,</p>
-            <p>Vaše schůzka s lektorem <%= lecturerName %> byla právě zrušena. V případě, že si myslíte že se stala chyba kontaktujte svého lektora.</p>
-
-            <ul>
-                <li><strong>Datum:</strong> <%= appointmentDate %></li>
-                <li><strong>Čas:</strong> <%= appointmentStart %> - <%= appointmentEnd %></li>
-                <li><strong>Místo:</strong> <%= appointmentLocation %></li>
-            </ul>
-
+            <p>Vaše schůzka dne <%= appointmentDate %> <% appointmentStart %> - <%= appointmentEnd %> s lektorem <%= lecturerName %> byla právě zrušena. V případě, že si myslíte že se stala chyba kontaktujte svého lektora.</p>
             <p>S pozdravem, Teacher Digital Agency</p>
         </div>
     </div>;

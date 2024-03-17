@@ -56,7 +56,16 @@ class Logger {
 
     /**
      * @readonly
-     * @type {Object<string, LogType>}
+     * @type {{
+     *  Core: LogType,
+        *  Database: LogType,
+        *  Watchdog: LogType,
+        *  Webserver: LogType,
+        *  UserManager: LogType,
+        *  AppointmentManager: LogType,
+        *  TagManager: LogType,
+        *  EmailClient: LogType
+        * }}
      */
     static Type = {
         Core: {
@@ -79,9 +88,9 @@ class Logger {
             color: `${Logger.Colors.Bright}${Logger.Colors.Fg.Blue}`,
             output: "USER MANAGER"
         },
-        LecturerManager: {
+        AppointmentManager: {
             color: `${Logger.Colors.Bright}${Logger.Colors.Fg.Yellow}`,
-            output: "LECTURER MANAGER"
+            output: "APPOINTMENT MANAGER"
         },
         TagManager: {
             color: Logger.Colors.Fg.Blue,

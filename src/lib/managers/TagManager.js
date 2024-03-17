@@ -1,9 +1,9 @@
-const sanitizeHtml = require("sanitize-html");
 const Logger = require("../Logger");
 const Tag = require("../types/Tag");
 const Utils = require("../Utils");
+const APIError = require("../types/APIError");
 
-class TagManager {
+module.exports = class TagManager {
     /**
      * @param {import("../Core")} core 
      */
@@ -19,28 +19,52 @@ class TagManager {
 
     /**
      * @private
-     * @param {string} data
-     * @returns {string}
+     * @param {import("../types/Tag")} tag
      */
-    _sanitize = (data) => sanitizeHtml(data, { allowedTags: [] });
+    _addToCache(tag) {
+        if (!(tag instanceof Tag)) {
+            throw APIError.InvalidValueType("tag", "Tag");
+        }
+
+        if (this._getFromCache(tag)) {
+            Logger.debug(Logger.Type.TagManager, `&c${tag.uuid}&r already exists in cache, updating...`);
+            this._cache = this._cache.map(data => data.uuid == tag.uuid ? tag : data);
+        } else {
+            Logger.debug(Logger.Type.TagManager, `Caching tag &c${tag.uuid}&r...`);
+            this._cache.push(tag);
+        }
+    }
 
     /**
      * @private
-     * @param {object} data
-     * @returns {object}
+     * @param {import("../types/DocTypes").TagData} options
      */
-    _processTag = async (data) => {
+    _removeFromCache(options) {
+        this._cache = this._cache.filter(data => data.uuid != options.uuid && data.name != options.name);
+    }
+
+    /**
+     * @private
+     * @param {import("../types/DocTypes").TagData} options 
+     * @returns {import("../types/Tag") | null}
+     */
+    _getFromCache = (options) => this._cache.find(data => data.uuid == options.uuid || data.name == options.name)
+
+    /**
+     * @private
+     * @param {import("../types/DocTypes").TagData} data
+     * @returns {Promise<import("../types/DocTypes").TagData>}
+     */
+    async _processTag(data) {
         const json = {};
 
         if (data.name) {
-            json.name = this._sanitize(data.name);
+            json.name = data.name;
         }
 
         if (!Utils.validateUUID(data.uuid)) {
             json.uuid = Utils.newUUID();
             while (await this.getTag({ uuid: json.uuid })) { json.uuid = Utils.newUUID() };
-
-            Logger.debug(Logger.Type.TagManager, `Generated new UUID: ${json.uuid}`);
         }
 
         return json;
@@ -49,74 +73,57 @@ class TagManager {
     /**
      * @returns {Promise<import("../types/Tag")[]>}
      */
-    getTags = async () => {
-        // TODO: (asi) pridat cteni z cache
+    async getTags() {
         const tags = await this.core.getDatabase().query("SELECT * FROM `tags`");
-        Logger.debug(Logger.Type.TagManager, `Loaded ${tags.length} tags from database`);
+        Logger.debug(Logger.Type.TagManager, `Loaded &c${tags.length}&r tags from database`);
 
-        return tags.map(tagData => new Tag(tagData));
+        return tags.map(data => new Tag(data));
     }
 
     /**
-     * @param {import("../types/Tag")} options
+     * @param {import("../types/DocTypes").Tag} options
      * @returns {Promise<import("../types/Tag") | null>}
      */
-    getTag = async (options = {}) => {
-        const { uuid, name } = options;
-        let tag = this._cache.find(tag => tag.uuid == uuid || tag.name == name);
+    async getTag(options = {}) {
+        let tag = this._getFromCache(options);
 
         if (!tag) {
-            const tagData = await this.core.getDatabase().query("SELECT * FROM `tags` WHERE `uuid` = ? OR `name` = ?", [ uuid, name ]);
+            const tagData = await this.core.getDatabase().query("SELECT * FROM `tags` WHERE `uuid` = ? OR `name` = ?", [ options.uuid, options.name ]);
 
             if (!Array.isArray(tagData) || tagData.length == 0) {
-                Logger.debug(Logger.Type.TagManager, `Tag "${uuid || name}" not found`);
+                Logger.debug(Logger.Type.TagManager, `Tag &c${options.uuid || options.name}&r not found`);
                 return null;
             }
 
             tag = new Tag(tagData[0]);
-            this._cache.push(tag);
-            Logger.debug(Logger.Type.TagManager, `Loaded tag ${tag.uuid} from database, caching...`);
+            this._addToCache(tag);
+            Logger.debug(Logger.Type.TagManager, `Loaded tag &c${tag.uuid}&r from database, caching...`);
         } else {
-            Logger.debug(Logger.Type.TagManager, `Found tag ${tag?.name || tag?.uuid} in cache`);
+            Logger.debug(Logger.Type.TagManager, `Found tag &c${tag.uuid || tag.name}&r in cache`);
         }
 
         return tag;
     }
 
     /**
-     * @param {import("../types/Tag")} data
-     * @returns {Promise<Tag>}
+     * @param {import("../types/DocTypes").Tag} data
+     * @returns {Promise<import("../types/Tag")>}
      */
-    createTag = async (data) => {
-        // TODO: udelat custom error classu
-        if (!data) {
-            throw Error("MISSING_DATA");
+    async createTag(data) {
+        let tag = await this.getTag(data);
+
+        if (!tag) {
+            tag = new Tag(await this._processTag(data));
+
+            this.core.getDatabase().exec("INSERT INTO `tags` (`uuid`, `name`) VALUES (?, ?)", [ tag.uuid, tag.name ]);
+            this._addToCache(tag);
+            Logger.debug(Logger.Type.TagManager, `Created new tag &c${tag.uuid}&r, caching...`);
+        } else {
+            Logger.debug(Logger.Type.TagManager, `Tag &c${tag.name}&r (&c${tag.uuid}&r) already exists, skipping...`);
         }
 
-        if (!data.name) {
-            throw Error("MISSING_NAME");
-        }
-        
-        try {
-            const processedData = await this._processTag(data);
-            let tag = await this.getTag({ uuid: processedData.uuid, name: processedData.name });
-
-            if (!tag) {
-                tag = new Tag(processedData);
-    
-                this.core.getDatabase().exec("INSERT INTO tags (uuid, name) VALUES (?, ?)", [ tag.uuid, tag.name ]);
-                this._cache.push(tag);
-                Logger.debug(Logger.Type.TagManager, `Created new tag "${tag.uuid}" with name "${tag.name}", caching...`);
-            } else {
-                Logger.debug(Logger.Type.TagManager, `Tag "${tag.uuid}" already exists`);
-            }
-
-            return tag;
-        } catch (error) {
-            Logger.error(Logger.Type.TagManager, "An unknown error occured while creating tag:", error);
-            throw error;
-        }
+        return tag;
     }
-}
 
-module.exports = TagManager;
+    createTags = async (data) => Promise.all(data.map(tag => this.createTag(tag)));
+}

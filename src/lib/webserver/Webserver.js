@@ -53,6 +53,7 @@ class Webserver {
         this.app.use("/api/auth", this.routers["APIAuthRoute"].router);
 
         this.app.use((req, res, next) => this.middlewares["RouteNotFound"].run(req, res, next));
+        this.app.use((error, req, res, next) => this.middlewares["APIServerError"].run(error, req, res, next));
         this.app.use((error, req, res, next) => this.middlewares["ServerError"].run(error, req, res, next));
 
         this.webserver = http.createServer(this.app);

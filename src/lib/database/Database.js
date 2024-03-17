@@ -23,14 +23,13 @@ class Database extends BetterSQLite {
      */
     exec = (statement, params = [])  => this.prepare(statement).run(...params);
 
-    // TODO: vylepsit u vsech tabulek ty datovy typy at vse nema text lol (chci spachat neziti)
     createTables = () => {
         try {
             Logger.debug(Logger.Type.Database, "Creating tables...");
-            this.exec("CREATE TABLE IF NOT EXISTS users (uuid VARCHAR(36), email TEXT, password VARCHAR(255), username VARCHAR(32), createdAt NUMBER)");
-
-            this.exec("CREATE TABLE IF NOT EXISTS lecturers (uuid VARCHAR(36), username TEXT, password TEXT, title_before TEXT, first_name TEXT, middle_name TEXT, last_name TEXT, title_after TEXT, picture_url TEXT, location TEXT, claim TEXT, bio TEXT, tags TEXT, price_per_hour INTEGER, appointments TEXT, emails TEXT, telephone_numbers TEXT)");
-            this.exec("CREATE TABLE IF NOT EXISTS tags (uuid VARCHAR(36), name TEXT)");
+            this.exec("CREATE TABLE IF NOT EXISTS users (uuid VARCHAR(36), type INTEGER(1) DEFAULT 0, email VARCHAR(254), password BINARY(60), username VARCHAR(32), createdAt NUMBER)");
+            this.exec("CREATE TABLE IF NOT EXISTS lecturers (uuid VARCHAR(36), title_before VARCHAR(32), first_name VARCHAR(32), middle_name VARCHAR(32), last_name VARCHAR(32), title_after VARCHAR(32), picture_url VARCHAR(256), location VARCHAR(128), claim VARCHAR(256), bio VARCHAR(4000), price_per_hour INTEGER, emails VARCHAR, telephone_numbers VARCHAR, tags VARCHAR, appointments VARCHAR)");
+            this.exec("CREATE TABLE IF NOT EXISTS tags (uuid VARCHAR(36), name VARCHAR(48))");
+            this.exec("CREATE TABLE IF NOT EXISTS appointments (uuid VARCHAR(36), start NUMBER, end NUMBER, firstName VARCHAR(32), lastName VARCHAR(32), location VARCHAR(128), email VARCHAR(254), phoneNumber VARCHAR(15), message VARCHAR(500))");
         } catch (error) {
             return Logger.error(Logger.Type.Database, "An unknown error occured while creating tables:", error);
         }

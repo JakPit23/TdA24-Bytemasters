@@ -3,156 +3,119 @@ const Utils = require("../Utils");
 const APIError = require("./APIError");
 
 module.exports = class Appointment {
+    /**
+     * @param {import("./DocTypes").AppointmentData} data 
+     */
     constructor(data) {
+        if (!Utils.validateUUID(data.uuid)) {
+            throw APIError.InvalidValueType("uuid", "UUIDv4");
+        }
+
         if (typeof data.start !== "number") {
-            Logger.debug(Logger.Type.LecturerManager, "Variable \"start\" is not a number, cannot create an appointment.");
-            throw APIError.InvalidValueType;
+            throw APIError.InvalidValueType("start", "number");
         }
         
         if (typeof data.end !== "number") {
-            Logger.debug(Logger.Type.LecturerManager, "Variable \"end\" is not a number, cannot create an appointment.");
-            throw APIError.InvalidValueType;
+            throw APIError.InvalidValueType("end", "number");
         }
 
         if (typeof data.firstName !== "string") {
-            Logger.debug(Logger.Type.LecturerManager, "Variable \"firstName\" is not a string, cannot create an appointment.");
-            throw APIError.InvalidValueType;
+            throw APIError.InvalidValueType("firstName", "string");
         }
 
-        if (data.firstName.length > 50) {
-            throw APIError.InvalidValueLength;
+        if (data.firstName.length < 1 || data.firstName.length > 50) {
+            throw APIError.InvalidValueLength("firstName", 1, 50);
         }
         
         if (typeof data.lastName !== "string") {
-            Logger.debug(Logger.Type.LecturerManager, "Variable \"lastName\" is not a string, cannot create an appointment.");
-            throw APIError.InvalidValueType;
+            throw APIError.InvalidValueType("lastName", "string");
         }
         
-        if (data.lastName.length > 50) {
-            throw APIError.InvalidValueLength;
+        if (data.lastName.length < 1 || data.lastName.length > 50) {
+            throw APIError.InvalidValueLength("lastName", 1, 50);
         }
-        
+
         if (typeof data.location !== "string") {
-            Logger.debug(Logger.Type.LecturerManager, "Variable \"location\" is not a string, cannot create an appointment.");
-            throw APIError.InvalidValueType;
+            throw APIError.InvalidValueType("location", "string");
         }
         
-        if (data.lastName.length > 100) {
-            throw APIError.InvalidValueLength;
+        if (data.location.length < 1 || data.location.length > 100) {
+            throw APIError.InvalidValueLength("location", 1, 100);
         }
 
         if (!Utils.validateEmail(data.email)) {
-            Logger.debug(Logger.Type.LecturerManager, "Variable \"email\" is not a valid email, cannot create an appointment.");
-            throw APIError.InvalidValueType;
+            throw APIError.InvalidValueType("email", "email_format");
         }
 
         if (!Utils.validatePhoneNumber(data.phoneNumber)) {
-            Logger.debug(Logger.Type.LecturerManager, "Variable \"phoneNumber\" is not a valid phone number, cannot create an appointment.");
-            throw APIError.InvalidValueType;
+            throw APIError.InvalidValueType("phoneNumber", "phoneNumber_format");
         }
 
         if (typeof data.message !== "string") {
-            Logger.debug(Logger.Type.LecturerManager, "Variable \"message\" is not a string, cannot create an appointment.");
-            throw APIError.InvalidValueType;
+            throw APIError.InvalidValueType("message", "string");
         }
 
-        if (data.message.length > 500) {
-            throw APIError.InvalidValueLength;
+        if (data.message.length < 25 || data.message.length > 500) {
+            throw APIError.InvalidValueLength("message", 25, 500);
         }
 
-        /**
-         * @type {number}
-         * @description The unix start of the appointment.
-         */
+        this.uuid = data.uuid;
         this.start = data.start;
-
-        /**
-         * @type {number}
-         * @description The unix end of the appointment.
-         */
         this.end = data.end;
-        
-        /**
-         * @type {string}
-         * @description The first name of the person.
-         */
         this.firstName = data.firstName;
-
-        /**
-         * @type {string}
-         * @description The last name of the person.
-         */
         this.lastName = data.lastName;
-
-        /**
-         * @type {string}
-         * @description The location of the appointment.
-         */
         this.location = data.location;
-
-        /**
-         * @type {string}
-         * @description The email of the person.
-         */
         this.email = data.email;
-
-        /**
-         * @type {string}
-         * @description The phone number of the person.
-         */
         this.phoneNumber = data.phoneNumber;
-
-        /**
-         * @type {string}
-         * @description The message from the person for lecturer.
-         */
         this.message = data.message;
 
         /**
          * @type {Date}
-         * @description The start date of the appointment.
          */
         this.startDate = new Date(this.start * 1000);
         this.startDate.setSeconds(0, 0);
 
         /**
          * @type {Date}
-         * @description The end date of the appointment.
          */
         this.endDate = new Date(this.end * 1000);
         this.endDate.setSeconds(0, 0);
 
         if (this.startDate.getDate() != this.endDate.getDate() || this.startDate.getMonth() != this.endDate.getMonth() || this.startDate.getFullYear() != this.endDate.getFullYear()) {
-            Logger.error(Logger.Type.LecturerManager, "Appointment start and end are not on the same day.");
-            throw APIError.InvalidDates;
+            Logger.error(Logger.Type.AppointmentManager, "Appointment start and end are not on the same day.");
+            throw APIError.InvalidValueType("start,end", "same_day");
         }
 
         if (this.startDate.getHours() < 8 || this.startDate.getHours() > 20) {
-            Logger.error(Logger.Type.LecturerManager, "Appointment start is not in the working hours of the lecturer.");
-            throw APIError.TimeSlotNotAvailable;
+            Logger.error(Logger.Type.AppointmentManager, "Appointment start is not in the working hours of the lecturer.");
+            throw APIError.InvalidValueType("start", "working_hours");
         }   
 
         if (this.endDate.getHours() > 20) {
-            Logger.error(Logger.Type.LecturerManager, "Appointment end is not in the working hours of the lecturer.");
-            throw APIError.TimeSlotNotAvailable;
+            Logger.error(Logger.Type.AppointmentManager, "Appointment end is not in the working hours of the lecturer.");
+            throw APIError.InvalidValueType("end", "working_hours");
         }
 
         if (this.startDate.getMinutes() > 0 || this.endDate.getMinutes() > 0) {
-            Logger.error(Logger.Type.LecturerManager, "Appointment cannot have minutes set.");
-            throw APIError.InvalidDates;
+            Logger.error(Logger.Type.AppointmentManager, "Appointment cannot have minutes set.");
+            throw APIError.InvalidValueType("start,end", "minutes");
         }
 
         if (this.startDate.getTime() >= this.endDate.getTime()) {
-            Logger.error(Logger.Type.LecturerManager, "Appointment start is after the end.");
-            throw APIError.InvalidDates;
+            Logger.error(Logger.Type.AppointmentManager, "Appointment start is after the end.");
+            throw APIError.InvalidValueType("start,end", "start_after_end");
         }
     }
 
+    /**
+     * @returns {import("ics").EventAttributes}
+     */
     toICS = () => ({
         start: this.start * 1000,
         end: this.end * 1000,
         title: `Výuka: ${this.firstName} ${this.lastName}`,
         description: this.message,
         location: this.location,
+        organizer: { name: `${this.firstName} ${this.lastName}`, email: this.email }
     });
 }

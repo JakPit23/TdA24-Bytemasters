@@ -1,17 +1,37 @@
-class Tag {
-    constructor(data) {
-        /**
-         * @type {string}
-         * @description The UUID of the tag.
-         * @example "f7b3e3e0-3e3e-4e3e-8e3e-3e3e3e3e3e3e"
-         */
-        this.uuid = data.uuid;
+const Utils = require("../Utils");
+const APIError = require("./APIError");
 
-        /**
-         * @type {string}
-         * @description The name of the tag.
-         */
+class Tag {
+    /**
+     * @param {import("./DocTypes").TagData} data 
+     */
+    constructor(data) {
+        if (!Utils.validateUUID(data.uuid)) {
+            throw APIError.InvalidValueType("uuid", "UUIDv4");
+        }
+
+        if (typeof data.name !== "string") {
+            throw APIError.InvalidValueType("name", "string");
+        }
+
+        if (!/^[a-zA-Z0-9_ ]+$/.test(data.name)) {
+            throw APIError.InvalidValueType("name", "alphanumeric");
+        }
+
+        if (data.name.length < 1 || data.name.length > 48) {
+            throw APIError.InvalidValueLength("name", 1, 48);
+        }
+
+        this.uuid = data.uuid;
         this.name = data.name;
+    }
+
+    static create(data) {
+        if (!Utils.validateUUID(data.uuid)) {
+            data.uuid = Utils.newUUID();
+        }
+        
+        return new Tag(data);
     }
 }
 

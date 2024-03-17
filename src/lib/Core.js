@@ -2,10 +2,11 @@ const fs = require("fs");
 const path = require("path");
 const Logger = require("./Logger");
 const Database = require("./database/Database");
-const LecturerManager = require("./managers/LecturerManager");
 const Webserver = require("./webserver/Webserver");
 const TagManager = require("./managers/TagManager");
 const EmailClient = require("./managers/EmailClient");
+const UserManager = require("./managers/UserManager");
+const AppointmentManager = require("./managers/AppointmentManager");
 
 class Core {
     constructor() {
@@ -17,16 +18,18 @@ class Core {
         }
         
         this.database = new Database();
-        this.lecturerManager = new LecturerManager(this);
+        this.userManager = new UserManager(this);
         this.tagManager = new TagManager(this);
+        this.appointmentManager = new AppointmentManager(this);
         this.emailClient = new EmailClient(this);
         this.webserver = new Webserver(this);
     }
 
     getDatabase = () => this.database;
     getWebserver = () => this.webserver;
-    getLecturerManager = () => this.lecturerManager;
+    getUserManager = () => this.userManager;
     getTagManager = () => this.tagManager;
+    getAppointmentManager = () => this.appointmentManager;
     getEmailClient = () => this.emailClient;
 
     async shutdown() {
@@ -39,7 +42,7 @@ class Core {
         }, 15000);
 
         await this.webserver.shutdown();
-        await this.lecturerManager.shutdown();
+        await this.userManager.shutdown();
         this.database.close();
 
         // Clear the force shutdown timeout as the shutdown was successful.

@@ -1,4 +1,5 @@
 const Logger = require("../../Logger");
+const UserSession = require("../../types/user/UserSession");
 
 module.exports = class LecturerMiddleware {
     /**
@@ -20,12 +21,12 @@ module.exports = class LecturerMiddleware {
             return res.redirect("/login");
         }
 
-        const result = this.webserver.getCore().getLecturerManager().verifyToken(token);
-        if (!result.uuid) {
+        const verified = UserSession.verifyToken(token);
+        if (!verified || !verified.uuid) {
             return res.redirect("/login");
         }
 
-        const user = await this.webserver.getCore().getLecturerManager().getLecturer({ uuid: result.uuid });
+        const user = await this.webserver.getCore().getUserManager().getUser({ uuid: verified.uuid });
         if (!user) {
             return res.redirect("/login");
         }
@@ -47,15 +48,15 @@ module.exports = class LecturerMiddleware {
         }
 
         try {
-            const verified = this.webserver.getCore().getLecturerManager().verifyToken(token);
+            const verified = UserSession.verifyToken(token);
             if (!verified || !verified.uuid) {
                 return next();
             }
 
-            const user = await this.webserver.getCore().getLecturerManager().getLecturer({ uuid: verified.uuid });
+            const user = await this.webserver.getCore().getUserManager().getUser({ uuid: verified.uuid });
             res.locals.user = user;
         } catch (error) {
-            Logger.error(Logger.Type.LecturerManager, "An unknown error occurred while fetching session", error);
+            Logger.error(Logger.Type.UserManager, "An unknown error occurred while fetching session", error);
             return next(error);
         }
 

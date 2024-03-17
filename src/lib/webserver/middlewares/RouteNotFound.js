@@ -8,7 +8,7 @@ module.exports = class RouteNotFound {
      */
     run = (req, res, next) => {
         if (req.path.startsWith("/api")) {
-            return APIResponse.ROUTE_NOT_FOUND.send(res);
+            return APIResponse.RouteNotFound.send(res);
         }
 
         return res.status(404).render("404");

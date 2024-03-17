@@ -1,6 +1,7 @@
 const express = require("express");
 const APIResponse = require("../APIResponse");
 const APIError = require("../../types/APIError");
+const UserType = require("../../types/user/UserType");
 
 module.exports = class APILecturersRoute {
     /**
@@ -17,28 +18,10 @@ module.exports = class APILecturersRoute {
         this.router.post("/", this.webserver.middlewares["APIAuthMiddleware"].run, async (req, res, next) => {
             try {
                 const data = req.body;
+                const lecturer = await this.webserver.getCore().getUserManager().createUser({ type: UserType.Lecturer, ...data });
 
-                const lecturer = await this.webserver.getCore().getLecturerManager().createLecturer(data);
-                return APIResponse.OK.send(res, lecturer.toJSON());
+                return APIResponse.Ok.send(res, lecturer.toJSON());
             } catch (error) {
-                if (error instanceof APIError) {
-                    if (error == APIError.MissingRequiredValues) {
-                        return APIResponse.MISSING_REQUIRED_VALUES.send(res);
-                    }
-                    
-                    if (error == APIError.LecturerAlreadyExists) {
-                        return APIResponse.LECTURER_ALREADY_EXISTS.send(res);
-                    }
-
-                    if (error == APIError.UsernameDoesntMeetMinimalRequirements) {
-                        return APIResponse.USERNAME_DOESNT_MEET_MINIMAL_REQUIREMENTS.send(res);
-                    }
-
-                    if (error == APIError.UsernameDoesntMeetMaximalRequirements) {
-                        return APIResponse.USERNAME_DOESNT_MEET_MAXIMAL_REQUIREMENTS.send(res);
-                    }
-                }
-
                 return next(error);
             }
         });
@@ -46,7 +29,9 @@ module.exports = class APILecturersRoute {
         this.router.get("/", async (req, res, next) => {
             try {
                 const { limit, before, after } = req.query;
-                let lecturers = await this.webserver.getCore().getLecturerManager().getLecturers();
+                let lecturers = (await this.webserver.getCore().getUserManager().getUsers())
+                    .filter(user => user.type == UserType.Lecturer)
+                    .map(lecturer => lecturer.toJSON());
 
                 if (!lecturers || lecturers.length == 0) {
                     return res.status(200).json([]);
@@ -55,7 +40,7 @@ module.exports = class APILecturersRoute {
                 if (before) {
                     const index = lecturers.findIndex(lecturer => lecturer.uuid == before);
                     if (index == -1) {
-                        throw APIError.LecturerNotFound;
+                        throw APIError.KeyNotFound("user");
                     }
 
                     lecturers = lecturers.slice(0, index);
@@ -64,7 +49,7 @@ module.exports = class APILecturersRoute {
                 if (after) {
                     const index = lecturers.findIndex(lecturer => lecturer.uuid == after);
                     if (index == -1) {
-                        throw APIError.LecturerNotFound;
+                        throw APIError.KeyNotFound("user");
                     }
 
                     lecturers = lecturers.slice(index + 1);
@@ -76,10 +61,6 @@ module.exports = class APILecturersRoute {
 
                 return res.status(200).json(lecturers);
             } catch (error) {
-                if (error == APIError.LecturerNotFound) {
-                    return APIResponse.LECTURER_NOT_FOUND.send(res);
-                }
-
                 return next(error);
             }
         });
@@ -87,13 +68,13 @@ module.exports = class APILecturersRoute {
         this.router.get("/:uuid", async (req, res, next) => {
             try {
                 const { uuid } = req.params;
-                const lecturer = await this.webserver.getCore().getLecturerManager().getLecturer({ uuid });
+                const lecturer = await this.webserver.getCore().getUserManager().getLecturer({ uuid });
     
                 if (!lecturer) {
-                    return APIResponse.LECTURER_NOT_FOUND.send(res);
+                    throw APIError.KeyNotFound("user");
                 }
     
-                return APIResponse.OK.send(res, lecturer.toJSON());
+                return APIResponse.Ok.send(res, lecturer.toJSON());
             } catch (error) {
                 return next(error);
             }
@@ -103,13 +84,9 @@ module.exports = class APILecturersRoute {
             try {
                 const { uuid } = req.params;
                 
-                await this.webserver.getCore().getLecturerManager().deleteLecturer(uuid);
-                return APIResponse.OK.send(res);
+                await this.webserver.getCore().getUserManager().deleteUser({ uuid });
+                return APIResponse.Ok.send(res);
             } catch (error) {
-                if (error == APIError.LecturerNotFound) {
-                    return APIResponse.LECTURER_NOT_FOUND.send(res);
-                }
-
                 return next(error);
             }
         });
@@ -119,13 +96,11 @@ module.exports = class APILecturersRoute {
                 const { uuid } = req.params;
                 const data = req.body;
                 
-                const lecturer = await this.webserver.getCore().getLecturerManager().editLecturer(uuid, data);
-                return APIResponse.OK.send(res, lecturer.toJSON()); 
-            } catch (error) {
-                if (error == APIError.LecturerNotFound) {
-                    return APIResponse.LECTURER_NOT_FOUND.send(res); 
-                }
+                const lecturer = await this.webserver.getCore().getUserManager().getLecturer({ uuid });
+                await this.webserver.getCore().getUserManager().editUser(lecturer, data);
 
+                return APIResponse.Ok.send(res, lecturer.toJSON()); 
+            } catch (error) {
                 return next(error);
             }
         });
@@ -135,36 +110,34 @@ module.exports = class APILecturersRoute {
                 const { uuid } = req.params;
                 const data = req.body;
 
-                const lecturer = await this.webserver.getCore().getLecturerManager().getLecturer({ uuid });
+                const lecturer = await this.webserver.getCore().getUserManager().getLecturer({ uuid });
                 if (!lecturer) {
-                    return APIResponse.LECTURER_NOT_FOUND.send(res);
+                    throw APIError.KeyNotFound("user");
                 }
 
                 const appointment = lecturer.createAppointment(data);
-
+                await this.webserver.getCore().getUserManager()._saveLecturer(lecturer, true);
                 this.webserver.getCore().getEmailClient().sendAppointmentConfirmation(lecturer, appointment);
-                return APIResponse.OK.send(res);
+
+                return APIResponse.Ok.send(res, { uuid: appointment.uuid });
             } catch (error) {
-                if (error == APIError.MissingRequiredValues) {
-                    return APIResponse.MISSING_REQUIRED_VALUES.send(res);
-                }
-                
-                if (error == APIError.TimeSlotNotAvailable || error == APIError.ReservationNotFound) {
-                    return APIResponse.TIME_SLOT_NOT_AVAILABLE.send(res);
+                return next(error);
+            }
+        });
+
+        this.router.delete("/:uuid/appointment/:appointmentUUID", async (req, res, next) => {
+            try {
+                const { uuid, appointmentUUID } = req.params;
+                const lecturer = await this.webserver.getCore().getUserManager().getLecturer({ uuid });
+                if (!lecturer) {
+                    throw APIError.KeyNotFound("user");
                 }
 
-                if (error == APIError.InvalidValueType) {
-                    return APIResponse.INVALID_VALUE_TYPE.send(res);
-                }
+                const appointment = lecturer.deleteAppointment(appointmentUUID);
+                this.webserver.getCore().getEmailClient().sendAppointmentCancellation(lecturer, appointment);
 
-                if (error == APIError.InvalidValueLength) {
-                    return APIResponse.INVALID_VALUE_LENGTH.send(res);
-                }
-
-                if (error == APIError.InvalidDates) {
-                    return APIResponse.INVALID_DATES.send(res);
-                }
-
+                return APIResponse.Ok.send(res);
+            } catch (error) {
                 return next(error);
             }
         });

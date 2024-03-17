@@ -2,6 +2,8 @@ const express = require("express");
 const ics = require("ics");
 const APIResponse = require("../APIResponse");
 const APIError = require("../../types/APIError");
+const UserType = require("../../types/user/UserType");
+const Logger = require("../../Logger");
 
 module.exports = class APIUserRoute {
     /**
@@ -15,114 +17,74 @@ module.exports = class APIUserRoute {
     }
 
     loadRoutes = () => {
-        this.router.get("/@me", this.webserver.middlewares["LecturerMiddleware"].fetchSession, async (req, res, next) => {
+        this.router.get("/@me", this.webserver.middlewares["AuthMiddleware"].fetchSession, async (req, res, next) => {
             try {
-                const { user } = res.locals;
+                /** @type {import("../../types/user/User")} */
+                const user = res.locals.user;
                 if (!user) {
-                    return APIResponse.UNAUTHORIZED.send(res);
+                    return APIResponse.Unauthorized.send(res);
                 }
 
-                return APIResponse.OK.send(res, {
-                    user: user.toJSON()
-                });
+                const data = {};
+                data.user = user.toJSON();
+
+                if (user.type == UserType.Lecturer) {
+                    const lecturer = await this.webserver.getCore().getUserManager().getLecturer({ uuid: user.uuid });
+                    data.lecturer = lecturer.toJSON();
+                }
+
+                return APIResponse.Ok.send(res, data);
             } catch (error) {
-                if (error == APIError.MissingRequiredValues) {
-                    return APIResponse.MISSING_REQUIRED_VALUES.send(res);
-                }
-                
-                if (error == APIError.InvalidDates) {
-                    return APIResponse.INVALID_DATES.send(res);
-                }
-                
-                if (error == APIError.TimeConflict) {
-                    return APIResponse.TIME_CONFLICT.send(res);
-                }
-
                 return next(error);
             }
         });
 
-        this.router.post("/@me", this.webserver.middlewares["LecturerMiddleware"].fetchSession, async (req, res, next) => {
+        this.router.post("/@me", this.webserver.middlewares["AuthMiddleware"].fetchSession, async (req, res, next) => {
             try {
-                const { user } = res.locals;
+                /** @type {import("../../types/user/User")} */
+                let user = res.locals.user;
                 if (!user) {
-                    return APIResponse.UNAUTHORIZED.send(res);
+                    return APIResponse.Unauthorized.send(res);
                 }
 
                 const data = req.body;
-                if (!data) {
-                    return APIResponse.MISSING_REQUIRED_VALUES.send(res);
+                if (typeof data !== "object" || Object.keys(data).length == 0) {
+                    return APIResponse.InvalidValueType().send(res);
                 }
 
-                this.webserver.getCore().getLecturerManager().editLecturer(user.uuid, data);
-                return APIResponse.OK.send(res, {
-                    user: user.toJSON()
-                });
+                if (user.type == UserType.Lecturer) {
+                    user = await this.webserver.getCore().getUserManager().getLecturer({ uuid: user.uuid });
+                    await this.webserver.getCore().getUserManager().editUser(user, data);
+                } else {
+                    this.webserver.getCore().getUserManager().editUser(user, data);
+                }
+
+                return APIResponse.Ok.send(res, { user: user.toJSON() });
             } catch (error) {
-                if (error == APIError.MissingRequiredValues) {
-                    return APIResponse.MISSING_REQUIRED_VALUES.send(res);
-                }
-                
-                if (error == APIError.InvalidDates) {
-                    return APIResponse.INVALID_DATES.send(res);
-                }
-                
-                if (error == APIError.TimeConflict) {
-                    return APIResponse.TIME_CONFLICT.send(res);
-                }
-
                 return next(error);
             }
         });
 
-        this.router.delete("/@me", this.webserver.middlewares["LecturerMiddleware"].fetchSession, async (req, res, next) => {
+        this.router.get("/@me/appointments", this.webserver.middlewares["AuthMiddleware"].fetchSession, async (req, res, next) => {
             try {
-                const { user } = res.locals;
+                /** @type {import("../../types/user/User")} */
+                const user = res.locals.user;
                 if (!user) {
-                    return APIResponse.UNAUTHORIZED.send(res);
+                    return APIResponse.Unauthorized.send(res);
                 }
 
-                const data = req.body;
-                if (!data) {
-                    return APIResponse.MISSING_REQUIRED_VALUES.send(res);
+                if (user.type != UserType.Lecturer) {
+                    return APIResponse.Unauthorized.send(res);
                 }
 
-                if (data.appointments) {
-                    user.deleteAppointments(data.appointments);
-                }
-
-                return APIResponse.OK.send(res);
-            } catch (error) {
-                if (error == APIError.MissingRequiredValues) {
-                    return APIResponse.MISSING_REQUIRED_VALUES.send(res);
-                }
-                
-                if (error == APIError.InvalidDates) {
-                    return APIResponse.INVALID_DATES.send(res);
-                }
-                
-                if (error == APIError.TimeConflict) {
-                    return APIResponse.TIME_CONFLICT.send(res);
-                }
-
-                return next(error);
-            }
-        });
-        
-        this.router.get("/@me/appointments", this.webserver.middlewares["LecturerMiddleware"].fetchSession, async (req, res, next) => {
-            try {
-                const { user } = res.locals;
-                if (!user) {
-                    return APIResponse.UNAUTHORIZED.send(res);
-                }
-
-                if (!user.appointments || user.appointments.length == 0) {
+                const lecturer = await this.webserver.getCore().getUserManager().getLecturer({ uuid: user.uuid });
+                if (!Array.isArray(lecturer.appointments) || lecturer.appointments.length == 0) {
                     return res.sendStatus(204);
                 }
 
-                ics.createEvents(user.appointments.map(appointment => appointment.toICS()), (error, value) => {
+                ics.createEvents(lecturer.appointments.map(appointment => appointment.toICS()), (error, value) => {
                     if (error) {
-                        Logger.error(Logger.Type.LecturerManager, `Failed to generate ics file for lecturer ${uuid}`, error);
+                        Logger.error(Logger.Type.UserManager, `Failed to generate ics file for lecturer ${uuid}`, error);
                         return next(error);
                     }
                 
@@ -134,18 +96,6 @@ module.exports = class APIUserRoute {
                         .send(value);
                 });
             } catch (error) {
-                if (error == APIError.MissingRequiredValues) {
-                    return APIResponse.MISSING_REQUIRED_VALUES.send(res);
-                }
-                
-                if (error == APIError.InvalidDates) {
-                    return APIResponse.INVALID_DATES.send(res);
-                }
-                
-                if (error == APIError.TimeConflict) {
-                    return APIResponse.TIME_CONFLICT.send(res);
-                }
-
                 return next(error);
             }
         });

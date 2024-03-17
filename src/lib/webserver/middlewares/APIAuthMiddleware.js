@@ -14,12 +14,12 @@ module.exports = class APIAuthMiddleware {
 
         const auth = req.headers.authorization;
         if (!auth) {
-            return APIResponse.UNAUTHORIZED.send(res);
+            return APIResponse.Unauthorized.send(res);
         }
         
         const [ username, password ] = Buffer.from(auth.split(" ")[1], "base64").toString().split(":");
         if (username != Config.apiUsername || password != Config.apiPassword) {
-            return APIResponse.UNAUTHORIZED.send(res);
+            return APIResponse.Unauthorized.send(res);
         }
 
         return next();
