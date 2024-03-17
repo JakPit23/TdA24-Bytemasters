@@ -41,13 +41,15 @@ module.exports = class User {
         this.createdAt = data.createdAt;
     }
 
-    toJSON = () => ({
-        uuid: this.uuid,
-        type: this.type,
-        email: this.email,
-        username: this.username,
-        createdAt: this.createdAt
-    })
+    toJSON() {
+        return {
+            uuid: this.uuid,
+            type: this.type,
+            email: this.email,
+            username: this.username,
+            createdAt: this.createdAt
+        };
+    }
 
     /**
      * @param {string} password

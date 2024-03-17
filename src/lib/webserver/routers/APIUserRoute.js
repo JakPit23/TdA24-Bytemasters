@@ -20,20 +20,18 @@ module.exports = class APIUserRoute {
         this.router.get("/@me", this.webserver.middlewares["AuthMiddleware"].fetchSession, async (req, res, next) => {
             try {
                 /** @type {import("../../types/user/User")} */
-                const user = res.locals.user;
+                let user = res.locals.user;
                 if (!user) {
                     return APIResponse.Unauthorized.send(res);
                 }
 
-                const data = {};
-                data.user = user.toJSON();
-
                 if (user.type == UserType.Lecturer) {
-                    const lecturer = await this.webserver.getCore().getUserManager().getLecturer({ uuid: user.uuid });
-                    data.lecturer = lecturer.toJSON();
+                    user = await this.webserver.getCore().getUserManager().getLecturer({ uuid: user.uuid });
                 }
 
-                return APIResponse.Ok.send(res, data);
+                return APIResponse.Ok.send(res, {
+                    user: user.toJSON()
+                });
             } catch (error) {
                 return next(error);
             }

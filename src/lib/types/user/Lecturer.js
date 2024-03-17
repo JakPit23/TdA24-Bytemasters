@@ -15,8 +15,8 @@ class Lecturer extends User {
     }
 
     toJSON = () => {
-        const { uuid, title_before, first_name, middle_name, last_name, title_after, picture_url, location, claim, bio, price_per_hour, contact, tags } = this;
-        return { uuid, title_before, first_name, middle_name, last_name, title_after, picture_url, location, claim, bio, price_per_hour, contact, tags };
+        const { uuid, title_before, first_name, middle_name, last_name, title_after, picture_url, location, claim, bio, price_per_hour, contact, tags, appointments } = this;
+        return { ...super.toJSON(), uuid, title_before, first_name, middle_name, last_name, title_after, picture_url, location, claim, bio, price_per_hour, contact, tags, appointments };
     }
 
     /**
