@@ -144,7 +144,6 @@ p {
         background-position: 0 0, 10px 10px, 20px 20px
     }
 }
-
 /* LECTURER CARD */
 .lecturerCard {
     @apply flex flex-row bg-black-100 rounded-md py-4 px-4 cursor-pointer transition-colors;
