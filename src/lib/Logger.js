@@ -56,7 +56,7 @@ class Logger {
 
     /**
      * @readonly
-     * @type {Object<LogType>}
+     * @type {Object<string, LogType>}
      */
     static Type = {
         Core: {
