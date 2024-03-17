@@ -33,7 +33,7 @@ class Utils {
      * @param {Date} date 
      * @returns {string} Returns time in format HH:MM 
      */
-    static formatTime = (date) => `${date.getHours()}:${date.getMinutes()}`
+    static formatTime = (date) => `${date.getHours().toString().padStart(2, "0")}:${date.getMinutes().toString().padStart(2, "0")}`
 }
 
 module.exports = Utils;
