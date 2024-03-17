@@ -49,7 +49,10 @@ class CalendarModule {
         const startTime = `${start.getHours()}:${String(start.getMinutes()).padStart(2, "0")}`;
         const endTime = `${end.getHours()}:${String(end.getMinutes()).padStart(2, "0")}`;
 
-        $('<h1>').addClass('appointment-title').text(`${data.firstName} ${data.lastName} (${startTime} - ${endTime})`).appendTo(eventContainer);
+        const firstRow = $('<div>').addClass('flex flex-row').appendTo(eventContainer);
+        $('<h1>').addClass('appointment-title').text(`${data.firstName} ${data.lastName} (${startTime} - ${endTime})`).appendTo(firstRow);
+        $('<i>').addClass('fa-solid fa-trash ml-auto invert p-4 bg-dark-200 rounded-lg cursor-pointer').appendTo(firstRow).on('click', () => this.page.confirmDelete(data));
+
 
         $("<p>").text(data.location).appendTo(
             $('<h2>').addClass("appointment-location").text("Lokace: ").appendTo(eventContainer)
@@ -69,7 +72,6 @@ class CalendarModule {
         $("<p>").text(data.message).appendTo(
             $('<h2>').text("Poznámka: ").appendTo(eventContainer)
         );
-
         window.location.href = "#modal";
     }
 
@@ -95,6 +97,7 @@ class CalendarModule {
 
         appointments.forEach(appointment => this._renderAppointment(appointment));
     }
+
     /**
      * @param {object} data 
      * @param {number} data.start

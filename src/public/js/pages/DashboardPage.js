@@ -6,6 +6,9 @@ class Page {
 
         this.logoutButton = $("[data-logout]");
         this.downloadCalendarButton = $("[data-downloadCalendar]");
+        this.popup = $("[data-popup]");
+        this.deleteWithMail = $("[data-deleteMeeting]");
+        this.deleteWithoutMail = $("[data-closeModal]");
         this.init();
     }
     
@@ -28,6 +31,26 @@ class Page {
 
         this.calendarModule.load();
         this.app.hideLoader();
+    }
+
+    async confirmDelete(data) {
+        console.log(data);
+        this.popup.removeClass("!hidden");
+        this.deleteWithMail.on("click", this.deleteAppointment.bind(this, data, true));
+        this.deleteWithoutMail.on("click", this.deleteAppointment.bind(this, data, false));
+    }
+
+    async deleteAppointment(data, sendMail) {
+        try {
+            await this.api.deleteAppointment(data.id, sendMail);
+            this.popup.addClass("!hidden");
+            this.calendarModule.load();
+            if(sendMail) {
+                console.log("Mail sent");
+            }
+        } catch {
+            console.error("An error occurred while deleting appointment:", error);
+        }
     }
 
     async authLogout() {
