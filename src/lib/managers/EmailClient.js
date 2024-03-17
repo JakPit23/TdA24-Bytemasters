@@ -54,7 +54,13 @@ module.exports = class EmailClient {
      * @param {string} options.subject 
      * @param {string} options.html 
      */
-    _send = (options) => this.transporter.sendMail({
+    _send(options) {
+        if (Utils.isDev) {
+            Logger.debug(Logger.Type.EmailClient, "Email not sent due to development environment.");
+            return;
+        }
+
+        return this.transporter.sendMail({
             from: Config.smtpFrom,
             to: options.to,
             subject: options.subject,
@@ -67,9 +73,10 @@ module.exports = class EmailClient {
 
             Logger.debug(Logger.Type.EmailClient, "Email sent:", info.response);
         })
+    }
 
     /**
-     * @param {import("../types/Lecturer")} lecturer 
+     * @param {import("../types/user/Lecturer")} lecturer 
      * @param {import("../types/Appointment")} appointment 
      */
     async sendAppointmentConfirmation(lecturer, appointment) {

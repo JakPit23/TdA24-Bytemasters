@@ -1,6 +1,8 @@
 const { v4, validate, version } = require("uuid");
 
 class Utils {
+    static isDev = process.argv.includes("--dev");
+    
     /**
      * @param {string} uuid 
      * @returns {boolean}
