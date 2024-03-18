@@ -27,12 +27,12 @@
                         <h1 class="text-4xl font-extrabold"><%= user.first_name %> <%= user.last_name %></h1>
 
                         <div class="flex flex-col md:flex-row gap-2">
-                            <button data-downloadCalendar class="btn btn-skyblue">
+                            <button data-downloadCalendar class="btn btn-big btn-skyblue">
                                 <i class="fa-solid fa-download text-xl"></i>
                                 Stáhnout kalendář
                             </button>
 
-                            <button data-logout class="btn">
+                            <button data-logout class="btn btn-big">
                                 <i class="fa-solid fa-sign-out text-xl"></i>
                                 Odhlásit se
                             </button>
@@ -42,20 +42,40 @@
                     <div data-page="calendar" class="flex flex-col items-center gap-2 w-full">
                         <h2 class="text-3xl font-bold">Kalendář</h2>
 
-                        <div class="flex flex-col items-center gap-4 w-full">
-                            <div data-calendar></div>
+                        <div class="flex flex-col md:flex-row gap-4 w-full">
+                            <div class="calendar">
+                                <div class="flex justify-between items-center">
+                                    <button data-calendarPrevious class="btn btn-skyblue">
+                                        <i class="fa-solid fa-chevron-left text-xl"></i>
+                                    </button>
 
-                            <div data-modal class="flex flex-col justify-center gap-4 w-full !hidden">
-                                <dialog class="mx-auto bg-dark-400 shadow-xl px-6 py-4 rounded-md flex flex-col !hidden" data-popup>
-                                    <p class="text-lg font-bold mb-4">Schůzka bude smazána, chcete upozornit klienta?</p>
-                                    <div class="flex flex-row justify-center gap-4">
-                                        <button data-deleteMeeting class="btn w-1/2">Ano</button>
-                                        <button data-closeModal class="btn w-1/2">Ne</button>
-                                    </div>
-                                </dialog>
-                                <h1 data-modalTitle class="text-3xl font-semibold" id="modal"></h1>
-                                <div data-modalContent class="grid xl:grid-cols-2 gap-4 flex-wrap"></div>
+                                    <h3 data-calendarDate class="text-2xl font-bold"></h3>
+
+                                    <button data-calendarNext class="btn btn-skyblue">
+                                        <i class="fa-solid fa-chevron-right text-xl"></i>
+                                    </button>
+                                </div>
+
+                                <table data-calendar></table>
                             </div>
+
+                            <div class="flex flex-col items-center gap-4 w-full">
+                                <h3 class="text-2xl font-bold">Schůzky</h3>
+
+                                <div data-appointments class="flex flex-col items-center gap-4 lg:w-3/4"></div>
+                            </div>
+                        </div>
+
+                        <div data-modal class="flex flex-col justify-center gap-4 w-full !hidden">
+                            <dialog class="mx-auto bg-dark-400 shadow-xl px-6 py-4 rounded-md flex flex-col !hidden" data-popup>
+                                <p class="text-lg font-bold mb-4">Schůzka bude smazána, chcete upozornit klienta?</p>
+                                <div class="flex flex-row justify-center gap-4">
+                                    <button data-deleteMeeting class="btn w-1/2">Ano</button>
+                                    <button data-closeModal class="btn w-1/2">Ne</button>
+                                </div>
+                            </dialog>
+                            <h1 data-modalTitle class="text-3xl font-semibold" id="modal"></h1>
+                            <div data-modalContent class="grid xl:grid-cols-2 gap-4 flex-wrap"></div>
                         </div>
                     </div>
                 </div>

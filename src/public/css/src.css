@@ -62,7 +62,11 @@ p {
 }
 
 .btn {
-    @apply py-2 px-4 rounded-md bg-sunglate-900 text-white-900 font-semibold transition ease-in-out duration-300;
+    @apply py-1 px-2 rounded-md bg-sunglate-900 text-white-900 font-semibold transition ease-in-out duration-300;
+
+    &.btn-big {
+        @apply py-2 px-4;
+    }
 
     &:hover {
         @apply bg-sunglate-700;
@@ -71,33 +75,53 @@ p {
     &:disabled {
         @apply bg-sunglate-600 cursor-not-allowed;
     }
-}
 
-.btn-big {
-    @apply text-2xl font-bold py-3 px-6;
-}
+    &.btn-green {
+        @apply bg-green-500;
+    
+        &:hover {
+            @apply bg-green-400;
+        }
+    
+        &:disabled {
+            @apply bg-green-600;
+        }
+    }
 
-.btn-skyblue {
-    @apply bg-skyblue-900;
-
-    &:hover {
-        @apply bg-skyblue-700;
+    &.btn-red {
+        @apply bg-red-500;
+    
+        &:hover {
+            @apply bg-red-400;
+        }
+    
+        &:disabled {
+            @apply bg-red-600;
+        }
     }
     
-    &:disabled {
-        @apply bg-skyblue-600 cursor-not-allowed;
+    &.btn-skyblue {
+        @apply bg-skyblue-900;
+    
+        &:hover {
+            @apply bg-skyblue-700;
+        }
+        
+        &:disabled {
+            @apply bg-skyblue-600;
+        }
     }
-}
-
-.btn-prussianblue {
-    @apply bg-prussianblue-900;
-
-    &:hover {
-        @apply bg-prussianblue-700;
-    }
-
-    &:disabled {
-        @apply bg-prussianblue-600 cursor-not-allowed;
+    
+    &.btn-prussianblue {
+        @apply bg-prussianblue-900;
+    
+        &:hover {
+            @apply bg-prussianblue-700;
+        }
+    
+        &:disabled {
+            @apply bg-prussianblue-600;
+        }
     }
 }
 
@@ -402,5 +426,99 @@ form {
 
     & p {
         @apply text-base font-medium;
+    }
+}
+
+.calendar {
+    @apply flex flex-col gap-2;
+
+    & table {
+        font-size: 20px;
+        border-spacing: 0;
+        font-family: opensans-medium, sans-serif;
+        text-align: center;
+        height: 300px;
+
+        & thead {
+            @apply text-sunglate-900 relative;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        & tr th,
+        & tr td {
+            @apply w-auto h-auto p-2;
+            min-width: 50px;
+            min-height: 50px;
+        }
+
+        & tbody {
+            & tr td {
+                @apply relative select-none text-white-400;
+
+                &::before {
+                    @apply absolute -z-10 top-1/2 left-1/2 rounded-full;
+                    width: calc(100% - 10px);
+                    height: calc(100% - 10px);
+                    content: "";
+                    transform: translate(-50%, -50%);
+                    transition-duration: 0.3s;
+                    border: transparent solid 2px;
+                }
+
+                &::before:hover {
+                    @apply bg-black-200;
+                }
+
+                &.selected {
+                    @apply text-white-900;
+                }
+                
+                &.selected::before {
+                    @apply bg-skyblue-900;
+                }
+            }
+        }
+    }
+}
+
+.appointment {
+    @apply flex flex-col w-full bg-black-200 py-2 px-4 rounded-md;
+
+    & .appointment-header {
+        @apply flex flex-col md:flex-row;
+
+        h1 {
+            @apply text-2xl font-bold;
+        }
+
+        & .appointment-delete {
+            @apply flex flex-row space-x-2 min-w-fit md:ml-auto;
+
+            & button {
+                @apply btn !bg-gray-500;
+
+                &:hover {
+                    @apply !bg-gray-600;
+                }
+
+                & i {
+                    @apply text-xl;
+                }
+            }
+        }
+    }
+
+    & .appointment-content {
+        & p {
+            @apply text-lg font-bold;
+        }
+
+        & a {
+            @apply text-base font-bold;
+        }
+
+        & span {
+            @apply text-base font-medium;
+        }
     }
 }

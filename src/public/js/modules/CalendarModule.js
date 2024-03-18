@@ -2,112 +2,156 @@ class CalendarModule {
     constructor(page) {
         this.page = page;
 
+        this.calendarDate = new Date();
         this.calendarElement = $("[data-calendar]");
+        this.calendarDateElement = $("[data-calendarDate]");
+        this.calendarPrevious = $("[data-calendarPrevious]");
+        this.calendarNext = $("[data-calendarNext]");
+        
+        this.appointments = $("[data-appointments]");
+
         this.modal = $("[data-modal]");
         this.modalTitle = $("[data-modalTitle]");
         this.modalContent = $("[data-modalContent]");
-
-        this.fullCalendar = new FullCalendar.Calendar(this.calendarElement[0], {
-            locale: "cs",
-            eventTimeFormat: {
-                hour: '2-digit',
-                minute: '2-digit',
-            },
-            firstDay: 1,
-            editable: false,
-            dayMaxEvents: true,
-            buttonText: {
-                today: "Tento měsíc"
-            },
-            eventClick: (info) => {
-                const appointment = this.page._getAppointmentBetweenDates((info.event.start.getTime() / 1000), (info.event.end.getTime()) / 1000);
-            
-                const startTime = new Date(info.event.start).getHours() + ":" + String(new Date(info.event.start).getMinutes()).padStart(2, "0");
-                const endTime = new Date(info.event.end).getHours() + ":" + String(new Date(info.event.end).getMinutes()).padStart(2, "0");
-            
-                this.tolltip = tippy(info.el, {
-                    placement: 'top',
-                    trigger: "click",
-                    content: `<div class="flex flex-col"><h1 class="text-3xl font-bold">Výuka - ${info.event.title}</h1><h2 class="text-2xl font-semibold">Lokace: <span class="text-xl ">${appointment.location}</span></h2><h2 class="text-2xl font-semibold">Čas: <span class="text-xl">${startTime} - ${endTime}</span></h2><h2 class="text-2xl">Poznámka: </h2> <span class="text-normal">${appointment.message}</span></div>`,
-                    allowHTML: true,
-                });
-            },
-            dateClick: (info) => {
-                this.createEventBox(info);
-            }
-        });
     }
 
     /**
      * @param {object} data 
      */
     _renderAppointment(data) {
-        const eventContainer = $('<div>').appendTo(this.modalContent).addClass('appointment-details');
+        const appointmentElement = $("<div>").addClass("appointment").appendTo(this.appointments);
+
+        const appointmentHeader = $("<div>").addClass("appointment-header").appendTo(appointmentElement);
+        $("<h1>").text(`${data.firstName} ${data.lastName}`).appendTo(appointmentHeader);
+
+        const appointmentDelete = $("<div>").addClass("appointment-delete").appendTo(appointmentHeader);
+        $("<button>").attr("data-appointment-uuid", data.uuid).append($("<i>").addClass("fa-solid fa-trash")).appendTo(appointmentDelete);
+
+        const appointmentContent = $("<div>").addClass("appointment-content").appendTo(appointmentElement);
 
         const start = new Date(data.start * 1000);
         const end = new Date(data.end * 1000);
         const startTime = `${start.getHours()}:${String(start.getMinutes()).padStart(2, "0")}`;
         const endTime = `${end.getHours()}:${String(end.getMinutes()).padStart(2, "0")}`;
-
-        const firstRow = $('<div>').addClass('flex flex-row').appendTo(eventContainer);
-        $('<h1>').addClass('appointment-title').text(`${data.firstName} ${data.lastName} (${startTime} - ${endTime})`).appendTo(firstRow);
-        $('<i>').addClass('fa-solid fa-trash ml-auto invert p-4 bg-dark-200 rounded-lg cursor-pointer').appendTo(firstRow).on('click', () => this.page.confirmDelete(data));
-
-
-        $("<p>").text(data.location).appendTo(
-            $('<h2>').addClass("appointment-location").text("Lokace: ").appendTo(eventContainer)
+        $("<span>").text(`${startTime} - ${endTime}`).appendTo(
+            $("<p>").text("Čas: ").appendTo(appointmentContent)
         );
 
-        const contactContainer = $('<div>').appendTo(eventContainer).addClass('contact-container');
-        // janky af :tf:
-        const emailContactInfo = $('<div>').addClass("contact-info").appendTo(contactContainer);
-        const phoneNumberContactInfo = $('<div>').addClass("contact-info").appendTo(contactContainer);
+        $("<span>").text(data.location).appendTo(
+            $("<p>").text("Místo: ").appendTo(appointmentContent)
+        )
+        
+        $("<p>").text(`Telefon: `).append($("<a>").attr("href", `tel:${data.phoneNumber}`).text(data.phoneNumber)).appendTo(appointmentContent);
+        $("<p>").text(`Email: `).append($("<a>").attr("href", `mailto:${data.email}`).text(data.email)).appendTo(appointmentContent);
 
-        $('<h2>').text("Email: ").appendTo(emailContactInfo);
-        $('<a>').text(`${data.email}`).attr('href', `mailto:${data.email}`).appendTo(emailContactInfo);
+        $("<span>").text(data.message).appendTo(
+            $("<p>").text("Poznámka: ").appendTo(appointmentContent)
+        )
 
-        $('<h2>').text("Telefon: ").appendTo(phoneNumberContactInfo);
-        $('<a>').text(data.phoneNumber).attr('href', `tel:${data.phoneNumber}`).appendTo(phoneNumberContactInfo);
+        appointmentDelete.find("button").on("click", (event) => {
+            const uuid = $(event.target).data("data-appointment-uuid");
+            console.log($(event.target))
+            console.log(uuid)
+            this.page.confirmDelete(uuid);
+        });
 
-        $("<p>").text(data.message).appendTo(
-            $('<h2>').text("Poznámka: ").appendTo(eventContainer)
-        );
-        window.location.href = "#modal";
     }
 
-    load() {
-        this._createEvents();
-        this.fullCalendar.render();
-    }
+    _renderAppointments(date) {
+        if (!date) {
+            console.log("_renderAppointments: invalid date");
+            return;
+        }
 
-    createEventBox(info) {
-        this.modalContent.empty();
-        this.modal.toggleClass("!hidden");
+        date = new Date(date);
+        date.setHours(0, 0, 0, 0);
 
-        const start = (new Date(info.dateStr).getTime() / 1000) - 3600;
-        const end = start + 86400;
-        const appointments = this.page._getAppointmentsBetweenDates(start, end);
+        this.appointments.empty();
 
-        this.modalTitle.text(`Schůzky na ${new Date(info.dateStr).getDate()}.${new Date(info.dateStr).getMonth() + 1}.${new Date(info.dateStr).getFullYear()}`);
-                
+        const appointments = this.page._getAppointmentsBetweenDates(date.getTime() / 1000, (date.getTime() / 1000) + 86400);
         if (appointments.length == 0) {
-            $('<h1>').text("Žádné schůzky").appendTo(this.modalContent).addClass('text-2xl font-semibold mx-auto');
+            $("<h1>").text("Žádné schůzky").addClass("text-lg font-bold").appendTo(this.appointments);
             return;
         }
 
         appointments.forEach(appointment => this._renderAppointment(appointment));
     }
 
-    /**
-     * @param {object} data 
-     * @param {number} data.start
-     * @param {number} data.end
-     * @param {string} data.title
-     */
-    _createEvents = () => this.page.user.appointments
-        .forEach(appointment => this.fullCalendar.addEvent({
-            title: `${appointment.firstName} ${appointment.lastName}`,
-            start: appointment.start * 1000,
-            end: appointment.end * 1000,
-        }))
+    _onCalendarCellClick(event) {
+        const date = $(event.target).data("date");
+        if (!date) {
+            console.log("_onCalendarCellClick: invalid date");
+            return;
+        }
+
+        this.calendarElement.find("td").removeClass("selected");
+        $(event.target).addClass("selected");
+
+        this.currentCalendarDay = date;
+
+        this._renderAppointments(this.currentCalendarDay);
+    }
+
+    _renderCalendar() {
+        this.calendarElement.empty();
+        const thead = $("<thead>").appendTo(this.calendarElement);
+        const tbody = $("<tbody>").appendTo(this.calendarElement);
+        const tr = $("<tr>").appendTo(thead);
+        ["Po", "Út", "St", "Čt", "Pá", "So", "Ne"].forEach(day => $("<th>").text(day).appendTo(tr));
+        
+        const startingDay = new Date(this.calendarDate.getFullYear(), this.calendarDate.getMonth(), 1).getDay() - 1;
+        const totalDays = new Date(this.calendarDate.getFullYear(), this.calendarDate.getMonth() + 1, 0).getDate();
+
+        let currentDay = 1;
+        for (let i = 0; i < 6; i++) {
+            const row = $("<tr>").appendTo(tbody);
+
+            for (let j = 0; j < 7; j++) {
+                // The end of the month has been reached
+                if (currentDay > totalDays) {
+                    break;
+                }
+
+                // Empty cell before the starting day of the month
+                if (i === 0 && j < startingDay) {
+                    $("<td>").appendTo(row);
+                    continue;
+                }
+
+                const cell = $("<td>")
+                    .data("date", new Date(this.calendarDate.getFullYear(), this.calendarDate.getMonth(), currentDay))
+                    .text(currentDay)
+                    .on("click", (event) => this._onCalendarCellClick(event))
+                    .appendTo(row);
+
+                if (!this.currentCalendarDay) {
+                    this.currentCalendarDay = this.calendarDate;
+                }
+
+                if (this.currentCalendarDay && this.currentCalendarDay.getDate() == currentDay && this.currentCalendarDay.getMonth() == this.calendarDate.getMonth() && this.currentCalendarDay.getFullYear() == this.calendarDate.getFullYear()) {
+                    cell.addClass("selected");
+                }
+
+                currentDay++;
+            }
+        }
+
+        this.calendarDateElement.text(this.calendarDate.toLocaleString("cs-cz", { month: "short", year: "numeric" }));
+        this.calendarElement.append(this.calendarElement);
+    }
+
+    load() {
+        this.calendarPrevious.on("click", () => {
+            this.calendarDate.setMonth(this.calendarDate.getMonth() - 1);
+            this._renderCalendar();
+        });
+
+        this.calendarNext.on("click", () => {
+            this.calendarDate.setMonth(this.calendarDate.getMonth() + 1);
+            this._renderCalendar();
+        });
+
+        this._renderCalendar();
+        this._renderAppointments(this.currentCalendarDay);
+    }
 }
