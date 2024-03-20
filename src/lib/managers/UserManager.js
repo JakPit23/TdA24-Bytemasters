@@ -200,8 +200,8 @@ module.exports = class UserManager {
             throw APIError.InvalidValueType("user", "Lecturer");
         }
         
-        if (!await this.getUser({ uuid: user.uuid, username: user.username, email: user.email })) {
-            Logger.debug(Logger.Type.UserManager, `Not saving user &c${user.uuid}&r because it &cdoesn't exist&r in database...`);
+        if (await this.getUser({ uuid: user.uuid, username: user.username, email: user.email }) && !edit) {
+            Logger.debug(Logger.Type.UserManager, `Not saving lecturer &c${user.uuid}&r because it &cexists&r in database and it's not an &cedit operation&r...`);
             throw APIError.KeyNotFound("user");
         }
 
@@ -227,6 +227,8 @@ module.exports = class UserManager {
                 user.appointments.map(appointment => appointment.uuid).join(","),
                 user.uuid
             ]);
+
+            await this._saveUser(user, true);
         } else {
             Logger.debug(Logger.Type.UserManager, `Creating lecturer data for &c${user.uuid}&r in database...`);
             this.core.getDatabase().exec("INSERT INTO `lecturers` (`uuid`, `title_before`, `first_name`, `middle_name`, `last_name`, `title_after`, `picture_url`, `location`, `claim`, `bio`, `price_per_hour`, `tags`, `emails`, `telephone_numbers`, `appointments`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", [
@@ -246,6 +248,8 @@ module.exports = class UserManager {
                 user.contact.telephone_numbers.join(","),
                 user.appointments.map(appointment => appointment.uuid).join(",")
             ]);
+
+            await this._saveUser(user);
         }
 
         this._addToCache(user);
@@ -272,12 +276,13 @@ module.exports = class UserManager {
         data.password = await User.hashPassword(data.password);
 
         const user = data.type == UserType.Lecturer ? new Lecturer(data) : new User(data);
-        await this._saveUser(user);
 
         if (user instanceof Lecturer) {
             await this._saveLecturer(user);
+            return user;
         }
 
+        await this._saveUser(user);
         return user;
     }
 

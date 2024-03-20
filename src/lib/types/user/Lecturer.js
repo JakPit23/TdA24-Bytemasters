@@ -160,6 +160,9 @@ class Lecturer extends User {
                         throw APIError.DuplicateValue(`tags[${index}]`);
                     }
 
+                    // weird way to check if the tag is valid
+                    new Tag({ ...tag, uuid: Utils.newUUID() });
+
                     acc[tag.name] = tag;
                     return acc;
                 }, {});
