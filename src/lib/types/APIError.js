@@ -19,6 +19,7 @@ module.exports = class APIError extends Error {
         InvalidValueLength: "InvalidValueLength",
         DuplicateValue: "DuplicateValue"
     }
+    
     static Unknown = new APIError({ message: "An unknown error occurred", type: APIError.Types.Unknown });
     static InvalidCredentials = new APIError({ message: "InvalidCredentials", type: APIError.Types.InvalidCredentials });
 
