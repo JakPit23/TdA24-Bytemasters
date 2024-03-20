@@ -55,8 +55,8 @@ class API {
                     }
                 })
                 .then(blob => {
-                    console.log(blob.error);
-                    if(APIError[blob.error]) {
+                    if(blob.error && blob.error.type && APIError[blob.error.type]) {
+                        console.log(blob.error.data);
                         throw APIError[blob.error.type];
                     }
 
