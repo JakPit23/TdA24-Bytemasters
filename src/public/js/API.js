@@ -1,24 +1,48 @@
 class APIError {
-    constructor(message, displayMessage) {
-        this.message = message;
-        this.displayMessage = displayMessage;
+    constructor({ type = APIError.Types.Unknown, data }) {
+        this.type = type;
+        this.data = data;
+        
+        this.displayMessage = this.getDisplayMessage();
     }
 
-    static INTERNAL_SERVER_ERROR = new APIError("INTERNAL_SERVER_ERROR", "Interní chyba serveru");
-    static InvalidValueType = (valueType, requiredType) => new APIError("InvalidValueType", `Hodnota ${valueType} musí být typu ${requiredType}`);
-    static InvalidValueLength = (valueType, minLength, maxLength) => new APIError("InvalidValueLength", `Hodnota ${valueType} musí mít délku mezi ${minLength} a ${maxLength} znaky`);
-    static DuplicateValue = (valueType) => new APIError("DuplicateValue", `Hodnota ${valueType} již existuje`);
-    static KeyAlreadyExists = (key) => new APIError("KeyAlreadyExists", `Klíč ${key} již existuje`);
-    static KeyNotFound = (key) => new APIError("KeyNotFound", `Klíč ${key} nebyl nalezen`);
-    static KeyNotDeleted = (key) => new APIError("KeyNotDeleted", `Klíč ${key} nebyl smazán`);
+    getDisplayMessage() {
+        switch (this.type) {
+            case APIError.Types.Unknown: return "Nastala neznámá chyba";
+            case APIError.Types.InvalidCredentials: return "Nesprávné přihlašovací údaje";
 
+            // etc..
+            default: return "Nastala neznámá chyba";
+        }
+    }
 
-    static InvalidCredentials = new APIError("InvalidCredentials", "Neplatné přihlašovací údaje");
+    static Types = {
+        Unknown: "Unknown",
+        InvalidCredentials: "InvalidCredentials",
+
+        KeyAlreadyExists: "KeyNotFound",
+        KeyNotFound: "KeyAlreadyExists",
+        KeyNotDeleted: "KeyNotDeleted",
+
+        InvalidValueType: "InvalidValueType",
+        InvalidValueLength: "InvalidValueLength",
+        DuplicateValue: "DuplicateValue"
+    }    
+
+    static InternalServerError = new APIError({ type: APIError.Types.Unknown });
+
+    static InvalidValueType = (valueType, requiredType) => new APIError({ type: APIError.Types.InvalidValueType, data: { valueType, requiredType } });
+    static InvalidValueLength = (valueType, minLength, maxLength) => new APIError({ type: APIError.Types.InvalidValueLength, data: { valueType, minLength, maxLength } });
+    static DuplicateValue = (valueType) => new APIError({ type: APIError.Types.DuplicateValue, data: { valueType } });
+
+    static KeyAlreadyExists = (key) => new APIError({ type: APIError.Types.KeyAlreadyExists, data: { key } });
+    static KeyNotFound = (key) => new APIError({ type: APIError.Types.KeyNotFound, data: { key } });
+    static KeyNotDeleted = (key) => new APIError({ type: APIError.Types.KeyNotDeleted, data: { key } });
+
+    static InvalidCredentials = new APIError({ type: APIError.Types.InvalidCredentials });
 }
 
 class API {
-    getUUID = () => window.location.pathname.match(/[0-9a-f]{8}-[0-9a-f]{4}-[14][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}/i)
-
     /**
      * @param {object} options 
      * @param {string} options.url 
@@ -55,8 +79,7 @@ class API {
                     }
                 })
                 .then(blob => {
-                    if(blob.error && blob.error.type && APIError[blob.error.type]) {
-                        console.log(blob.error.data);
+                    if (blob.error && blob.error.type && APIError[blob.error.type]) {
                         throw APIError[blob.error.type];
                     }
 

@@ -29,8 +29,7 @@ class Page {
             setTimeout(() => window.location.href = "/dashboard", 1000);
             loginButton.prop('disabled', true).addClass("!bg-green-600").text("Úspěšně přihlášeno");
         } catch (error) {
-            const errorMessage = error.displayMessage || "Nastala neznámá chyba";
-            loginButton.prop("disabled", true).addClass("!bg-red-500").text(errorMessage);
+            loginButton.prop("disabled", true).addClass("!bg-red-500").text(error.displayMessage);
             setTimeout(() => loginButton.prop("disabled", false).removeClass("!bg-red-500").text("Přihlásit se"), 2500);
         }
     }
