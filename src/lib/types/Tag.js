@@ -14,10 +14,6 @@ class Tag {
             throw APIError.InvalidValueType("name", "string");
         }
 
-        if (!/^[a-zA-Z0-9_ ]+$/.test(data.name)) {
-            throw APIError.InvalidValueType("name", "alphanumeric");
-        }
-
         if (data.name.length < 1 || data.name.length > 48) {
             throw APIError.InvalidValueLength("name", 1, 48);
         }
