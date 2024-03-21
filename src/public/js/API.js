@@ -7,10 +7,15 @@ class APIError {
     }
 
     getDisplayMessage() {
+        console.log("DATA: ", this.data);
         switch (this.type) {
             case APIError.Types.Unknown: return "Nastala neznámá chyba";
             case APIError.Types.InvalidCredentials: return "Nesprávné přihlašovací údaje";
-
+            case APIError.Types.KeyAlreadyExists: return `Klíč již existuje`;
+            case APIError.Types.KeyNotFound: return `Klíč nebyl nalezen`;
+            case APIError.Types.KeyNotDeleted: return `Klíč nebyl smazán`;
+            case APIError.Types.InvalidValueType: return `Neplatný typ hodnoty`;
+            case APIError.Types.InvalidValueLength: return `Neplatná délka hodnoty ${this.data.valueType.valueName} (min: ${this.data.valueType.minLength}, max: ${this.data.valueType.maxLength})`;
             // etc..
             default: return "Nastala neznámá chyba";
         }
@@ -80,7 +85,8 @@ class API {
                 })
                 .then(blob => {
                     if (blob.error && blob.error.type && APIError[blob.error.type]) {
-                        throw APIError[blob.error.type];
+                        console.log(blob.error.value);
+                        throw APIError[blob.error.type](blob.error.value);
                     }
 
                     if (requestOptions.responseType == "text") {
