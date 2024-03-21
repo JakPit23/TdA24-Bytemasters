@@ -13,8 +13,8 @@ class APIError {
             case APIError.Types.KeyAlreadyExists: return `Klíč již existuje`;
             case APIError.Types.KeyNotFound: return `Klíč nebyl nalezen`;
             case APIError.Types.KeyNotDeleted: return `Klíč nebyl smazán`;
-            case APIError.Types.InvalidValueType: return `Neplatný typ hodnoty ${this.data.valueType.valueName} (očekáván typ: ${this.data.valueType.requiredType})`;
-            case APIError.Types.InvalidValueLength: return `Neplatná délka hodnoty ${this.data.valueType.valueName} (min: ${this.data.valueType.minLength}, max: ${this.data.valueType.maxLength})`;
+            case APIError.Types.InvalidValueType: return `Neplatný typ hodnoty`;
+            case APIError.Types.InvalidValueLength: return `Neplatná délka hodnoty ${this.data.valueName} (min: ${this.data.minLength}, max: ${this.data.maxLength})`;
             // etc..
             default: return "Nastala neznámá chyba";
         }
@@ -35,13 +35,13 @@ class APIError {
 
     static InternalServerError = new APIError({ type: APIError.Types.Unknown });
 
-    static InvalidValueType = (valueType, requiredType) => new APIError({ type: APIError.Types.InvalidValueType, data: { valueType, requiredType } });
-    static InvalidValueLength = (valueType, minLength, maxLength) => new APIError({ type: APIError.Types.InvalidValueLength, data: { valueType, minLength, maxLength } });
-    static DuplicateValue = (valueType) => new APIError({ type: APIError.Types.DuplicateValue, data: { valueType } });
+    static InvalidValueType = (data) => new APIError({ type: APIError.Types.InvalidValueType, data });
+    static InvalidValueLength = (data) => new APIError({ type: APIError.Types.InvalidValueLength, data });
+    static DuplicateValue = (data) => new APIError({ type: APIError.Types.DuplicateValue, data });
 
-    static KeyAlreadyExists = (key) => new APIError({ type: APIError.Types.KeyAlreadyExists, data: { key } });
-    static KeyNotFound = (key) => new APIError({ type: APIError.Types.KeyNotFound, data: { key } });
-    static KeyNotDeleted = (key) => new APIError({ type: APIError.Types.KeyNotDeleted, data: { key } });
+    static KeyAlreadyExists = (data) => new APIError({ type: APIError.Types.KeyAlreadyExists, data });
+    static KeyNotFound = (data) => new APIError({ type: APIError.Types.KeyNotFound, data });
+    static KeyNotDeleted = (data) => new APIError({ type: APIError.Types.KeyNotDeleted, data });
 
     static InvalidCredentials = new APIError({ type: APIError.Types.InvalidCredentials });
 }
