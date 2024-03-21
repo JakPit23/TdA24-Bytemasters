@@ -65,7 +65,52 @@ class Page {
         } catch (error) {
             console.log("An error occurred while reserving:", error);
 
-            const errorMessage = error.displayMessage || "Nastala neznámá chyba";
+            let errorMessage = error.displayMessage || "Nastala neznámá chyba";
+            console.log(error);
+            if(error.type == APIError.Types.InvalidValueType) {
+                switch(error.data.valueName) {
+                    case "start":
+                    case "end":
+                        errorMessage = "Nastala chyba při zpracování data a času";
+                        break;
+                    case "firstName":
+                        errorMessage = "Špatně zadané jméno";
+                        break;
+                    case "lastName":
+                        errorMessage = "Špatně zadané příjmení";
+                        break;
+                    case "email":
+                        errorMessage = "Špatně zadaný email";
+                    case "phoneNumber":
+                        errorMessage = "Špatně zadané telefonní číslo";
+                        break;
+                    case "location":
+                        errorMessage = "Špatně zadaná lokace";
+                        break;
+                }
+            } 
+            if(error.type == APIError.Types.InvalidValueLength) {
+                console.log("Chyba délky");
+                console.log(error.data.valueName);
+                switch(error.data.valueType.valueName) {
+                    case "start":
+                    case "end":
+                        errorMessage = "Datum a čas nejsou v požadováném formátu";
+                        break;
+                    case "firstName":
+                        errorMessage = `Jméno musí být v rozsahu ${error.data.valueType.minLength} až ${error.data.valueType.maxLength} znaků`;
+                        break;
+                    case "lastName":
+                        errorMessage = `Příjmení musí být v rozsahu ${error.data.valueType.minLength} až ${error.data.valueType.maxLength} znaků`;
+                        break;
+
+                    case "message":
+                        console.log("Chyba zprávy");
+                        errorMessage = `Zpráva musí být v rozsahu ${error.data.valueType.minLength} až ${error.data.valueType.maxLength} znaků`;
+                        console.log(errorMessage);
+                        break;
+                }
+            }
             reserveButton.prop("disabled", true).addClass("!bg-red-500").text(errorMessage);
             setTimeout(() => reserveButton.prop("disabled", false).removeClass("!bg-red-500").text("Rezervovat"), 2500);
         }
