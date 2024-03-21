@@ -7,7 +7,6 @@ class APIError {
     }
 
     getDisplayMessage() {
-        console.log("DATA: ", this.data);
         switch (this.type) {
             case APIError.Types.Unknown: return "Nastala neznámá chyba";
             case APIError.Types.InvalidCredentials: return "Nesprávné přihlašovací údaje";
