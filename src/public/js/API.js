@@ -85,8 +85,11 @@ class API {
                 })
                 .then(blob => {
                     if (blob.error && blob.error.type && APIError[blob.error.type]) {
-                        console.log(blob.error.value);
-                        throw APIError[blob.error.type](blob.error.value);
+                        if (typeof APIError[blob.error.type] == "function") {
+                            throw APIError[blob.error.type](blob.error.value);
+                        }
+                     
+                        throw APIError[blob.error.type];
                     }
 
                     if (requestOptions.responseType == "text") {
