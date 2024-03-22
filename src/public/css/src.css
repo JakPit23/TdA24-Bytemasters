@@ -68,6 +68,10 @@ p {
         @apply py-2 px-4;
     }
 
+    &.btn-xl {
+        @apply py-3 px-6 text-lg font-bold;
+    }
+
     &:hover {
         @apply bg-sunglate-700;
     }
