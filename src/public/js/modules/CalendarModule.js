@@ -2,6 +2,7 @@ class CalendarModule {
     constructor(page) {
         this.page = page;
 
+        this.currentCalendarDay = new Date();
         this.calendarDate = new Date();
         this.calendarElement = $("[data-calendar]");
         this.calendarDateElement = $("[data-calendarDate]");
