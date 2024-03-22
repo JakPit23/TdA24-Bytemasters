@@ -225,7 +225,7 @@ class Lecturer extends User {
 
         const appointment = new Appointment(data);
         if (this._isAppointmentConflict(appointment)) {
-            throw APIError.TimeSlotNotAvailable;
+            throw APIError.DuplicateValue("appointment");
         }
         
         this.appointments.push(appointment);
