@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="cs-cz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login | Teacher Digital Agency</title>
+    <link rel="stylesheet" href="/public/lib/fontawesome/css/fontawesome.css">
+    <link rel="stylesheet" href="/public/lib/fontawesome/css/solid.css">
+    <link rel="stylesheet" href="/public/css/app.css">
+    <link rel="shortcut icon" href="/public/images/favicon.ico" type="image/x-icon">
+</head>
+<body>
+    <%- include('partials/navbar') %>
+    <%- include('partials/blobs') %>
+
+    <div data-loaderPage class="loader-page">
+        <div class="loader"></div>
+    </div>
+
+    <div class="w-full">
+        <div class="max-w-[1280px] mx-auto px-4">
+            <div class="flex flex-col items-center w-full pt-24 pb-16 gap-4">
+                <h1 class="text-2xl font-semibold">Ahoj já jsem ChatGPT</h1>
+            </div>
+        </div>
+    </div>
+
+    <%- include('partials/footer') %>
+
+    <script src="/public/lib/js/jquery-3.7.1.min.js"></script>
+    <script src="/public/js/Application.js"></script>
+    <script src="/public/js/API.js"></script>
+
+    <script>
+        const app = new Application();
+        app.hideLoader();
+    </script>
+</body>
+</html>

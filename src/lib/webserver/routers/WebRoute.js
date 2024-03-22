@@ -36,5 +36,6 @@ module.exports = class WebRoute {
         });
 
         this.router.get("/dashboard", this.webserver.middlewares["AuthMiddleware"].forceAuth, (req, res) => res.render("dashboard"));
+        this.router.get("/openai", (req, res) => res.render("openai"));
     }
 };
