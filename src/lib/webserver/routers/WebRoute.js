@@ -1,4 +1,5 @@
 const express = require("express");
+const Utils = require("../../Utils");
 
 module.exports = class WebRoute {
     /**
@@ -36,6 +37,9 @@ module.exports = class WebRoute {
         });
 
         this.router.get("/dashboard", this.webserver.middlewares["AuthMiddleware"].forceAuth, (req, res) => res.render("dashboard"));
-        this.router.get("/openai", (req, res) => res.render("openai"));
+        this.router.get("/openai", async (req, res) => {
+            const response = !Utils.isDev ? await this.webserver.getCore().getOpenAIManager().complete("Are cats beautiful?") : "dev mode :3";
+            return res.render("openai", { response });
+        });
     }
 };

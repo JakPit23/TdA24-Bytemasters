@@ -70,6 +70,11 @@ class Config {
      * @returns {string}
      */
     static smtpFrom = process.env.SMTP_FROM || "Teacher Digital Agency <tda-bytemasters@outlook.com>"
+
+    /**
+     * @returns {string}
+     */
+    static openAIKey = process.env.OPENAI_KEY || "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"
 }
 
 module.exports = Config;
