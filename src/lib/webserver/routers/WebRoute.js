@@ -38,7 +38,7 @@ module.exports = class WebRoute {
 
         this.router.get("/dashboard", this.webserver.middlewares["AuthMiddleware"].forceAuth, (req, res) => res.render("dashboard"));
         this.router.get("/openai", async (req, res) => {
-            const response = !Utils.isDev ? await this.webserver.getCore().getOpenAIManager().complete("Are cats beautiful?") : "dev mode :3";
+            const response = !Utils.isDev ? (await this.webserver.getCore().getOpenAIManager().complete("Are cats beautiful?")).message.content : "dev mode :3";
             return res.render("openai", { response });
         });
     }
