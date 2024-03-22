@@ -205,7 +205,11 @@ module.exports = class UserManager {
             throw APIError.KeyNotFound("user");
         }
 
-        const tags = await this.core.getTagManager().createTags(user.tags);
+        let tags = [];
+        if (user.tags) {
+            tags = await this.core.getTagManager().createTags(user.tags);
+        }
+        
         await this.core.getAppointmentManager().saveAppointments(user.appointments);
 
         if (edit) {
