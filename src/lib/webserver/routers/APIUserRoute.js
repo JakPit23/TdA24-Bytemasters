@@ -97,5 +97,32 @@ module.exports = class APIUserRoute {
                 return next(error);
             }
         });
+
+        this.router.delete("/appointment/:appointmentUUID", this.webserver.middlewares["AuthMiddleware"].fetchSession, async (req, res, next) => {
+            try {
+                /** @type {import("../../types/user/User")} */
+                const user = res.locals.user;
+                if (!user) {
+                    return APIResponse.Unauthorized.send(res);
+                }
+
+                if (user.type != UserType.Lecturer) {
+                    return APIResponse.Unauthorized.send(res);
+                }
+
+                const lecturer = await this.webserver.getCore().getUserManager().getLecturer({ uuid: user.uuid });
+                if (!lecturer) {
+                    throw APIError.KeyNotFound("user");
+                }
+                
+                const { appointmentUUID } = req.params;
+                const appointment = lecturer.deleteAppointment(appointmentUUID);
+                this.webserver.getCore().getEmailClient().sendAppointmentCancellation(lecturer, appointment);
+
+                return APIResponse.Ok.send(res);
+            } catch (error) {
+                return next(error);
+            }
+        });
     }
 };

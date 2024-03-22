@@ -124,22 +124,5 @@ module.exports = class APILecturersRoute {
                 return next(error);
             }
         });
-
-        this.router.delete("/:uuid/appointment/:appointmentUUID", async (req, res, next) => {
-            try {
-                const { uuid, appointmentUUID } = req.params;
-                const lecturer = await this.webserver.getCore().getUserManager().getLecturer({ uuid });
-                if (!lecturer) {
-                    throw APIError.KeyNotFound("user");
-                }
-
-                const appointment = lecturer.deleteAppointment(appointmentUUID);
-                this.webserver.getCore().getEmailClient().sendAppointmentCancellation(lecturer, appointment);
-
-                return APIResponse.Ok.send(res);
-            } catch (error) {
-                return next(error);
-            }
-        });
     }
 };

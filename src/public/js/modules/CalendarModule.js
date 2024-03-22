@@ -25,7 +25,7 @@ class CalendarModule {
         $("<h1>").text(`${data.firstName} ${data.lastName}`).appendTo(appointmentHeader);
 
         const appointmentDelete = $("<div>").addClass("appointment-delete").appendTo(appointmentHeader);
-        $("<button>").attr("data-appointment-uuid", data.uuid).append($("<i>").addClass("fa-solid fa-trash")).appendTo(appointmentDelete);
+        $("<button>").data("data-appointment-uuid", data.uuid).append($("<i>").addClass("fa-solid fa-trash")).appendTo(appointmentDelete);
 
         const appointmentContent = $("<div>").addClass("appointment-content").appendTo(appointmentElement);
 
@@ -49,12 +49,11 @@ class CalendarModule {
         )
 
         appointmentDelete.find("button").on("click", (event) => {
-            const uuid = $(event.target).data("data-appointment-uuid");
-            console.log($(event.target))
-            console.log(uuid)
+            let uuid = $(event.target).data("data-appointment-uuid");
+            if (!uuid) uuid = $(event.target).parent().data("data-appointment-uuid");
+
             this.page.confirmDelete(uuid);
         });
-
     }
 
     _renderAppointments(date) {
@@ -86,7 +85,6 @@ class CalendarModule {
 
         this.calendarElement.find("td").removeClass("selected");
         $(event.target).addClass("selected");
-
         this.currentCalendarDay = date;
 
         this._renderAppointments(this.currentCalendarDay);

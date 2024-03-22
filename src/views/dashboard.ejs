@@ -64,14 +64,17 @@
                             </div>
                         </div>
 
-                        <div data-modal class="flex flex-col justify-center gap-4 w-full !hidden">
-                            <dialog class="mx-auto bg-dark-400 shadow-xl px-6 py-4 rounded-md flex flex-col !hidden" data-popup>
-                                <p class="text-lg font-bold mb-4">Schůzka bude smazána, chcete upozornit klienta?</p>
+                        <div data-modal class="flex flex-col justify-center gap-4 w-full">
+                            <dialog data-popup class="mx-auto bg-dark-400 shadow-xl px-6 py-4 rounded-md flex flex-col !hidden">
+                                <!-- TODO: prepsat text todle -->
+                                <p class="text-lg font-bold mb-4">Jste si jistí?</p>
+
                                 <div class="flex flex-row justify-center gap-4">
-                                    <button data-deleteMeeting class="btn w-1/2">Ano</button>
-                                    <button data-closeModal class="btn w-1/2">Ne</button>
+                                    <button data-confirmButton class="btn btn-big w-1/2">Ano</button>
+                                    <button data-closeButton="data-popup" class="btn w-1/2">Ne</button>
                                 </div>
                             </dialog>
+
                             <h1 data-modalTitle class="text-3xl font-semibold" id="modal"></h1>
                             <div data-modalContent class="grid xl:grid-cols-2 gap-4 flex-wrap"></div>
                         </div>

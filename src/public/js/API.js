@@ -196,4 +196,14 @@ class API {
         method: "GET",
         responseType: "blob"
     })
+
+    /**
+     * @param {string} uuid 
+     * @returns {Promise<object>}
+     */
+    deleteAppointment = (uuid) => this._call({
+        url: `/api/user/appointment/${uuid}`,
+        method: "DELETE",
+        type: "json"
+    })
 }

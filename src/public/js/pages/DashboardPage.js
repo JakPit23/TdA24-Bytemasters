@@ -7,11 +7,11 @@ class Page {
         this.logoutButton = $("[data-logout]");
         this.downloadCalendarButton = $("[data-downloadCalendar]");
         this.popup = $("[data-popup]");
-        this.deleteWithMail = $("[data-deleteMeeting]");
-        this.deleteWithoutMail = $("[data-closeModal]");
+        this.closeButton = $("[data-closeButton]");
+        this.confirmButton = $("[data-confirmButton]");
+
         this.init();
     }
-    
 
     _getAppointmentBetweenDates = (start, end) => 
         this.user.appointments
@@ -28,27 +28,25 @@ class Page {
 
         this.logoutButton.on("click", this.authLogout.bind(this));
         this.downloadCalendarButton.on("click", this.downloadCalendar.bind(this));
-
+        this.closeButton.on("click", () => $(`[${this.closeButton.attr("data-closeButton")}]`).addClass("!hidden"));
+        
         this.calendarModule.load();
         this.app.hideLoader();
     }
 
-    async confirmDelete(data) {
-        console.log(data);
+    async confirmDelete(uuid) {
         this.popup.removeClass("!hidden");
-        this.deleteWithMail.on("click", this.deleteAppointment.bind(this, data, true));
-        this.deleteWithoutMail.on("click", this.deleteAppointment.bind(this, data, false));
+        this.confirmButton.on("click", this.deleteAppointment.bind(this, uuid));
     }
 
-    async deleteAppointment(data, sendMail) {
+    async deleteAppointment(uuid) {
         try {
-            await this.api.deleteAppointment(data.id, sendMail);
+            await this.api.deleteAppointment(uuid);
+
             this.popup.addClass("!hidden");
+            this.user.appointments = this.user.appointments.filter(appointment => appointment.uuid != uuid);
             this.calendarModule.load();
-            if(sendMail) {
-                console.log("Mail sent");
-            }
-        } catch {
+        } catch (error) {
             console.error("An error occurred while deleting appointment:", error);
         }
     }
