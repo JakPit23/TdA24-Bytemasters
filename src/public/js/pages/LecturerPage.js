@@ -10,24 +10,12 @@ class Page {
 
         this.lecturerElement = $('[data-lecturer]');
         this.reservationForm = $('[data-reservationForm]');
-        this.locationOnlineElement = $('[data-on]');
-        this.locationOfflineElement = $('[data-off]');
 
         this.init();
     }
 
     init() {
         this.reservationForm.on('submit', this._reserveLecturer.bind(this));
-        this.locationOnlineElement.on('click', (event) => {
-            event.preventDefault();
-            $('[data-reservationInput="location"]').val("Online").prop('disabled', true);
-        });
-
-        this.locationOfflineElement.on('click', (event) => {
-            event.preventDefault();
-            $('[data-reservationInput="location"]').val("").prop('disabled', false);
-        });
-
         this.app.hideLoader();
     }
 

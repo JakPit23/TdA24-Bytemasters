@@ -1098,6 +1098,21 @@ p {
     padding-left: 1rem;
     padding-right: 1rem;
   }
+  &.btn-xl {
+    padding-top: 0.75rem;
+    padding-bottom: 0.75rem;
+  }
+  &.btn-xl {
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+  }
+  &.btn-xl {
+    font-size: 1.125rem;
+    line-height: 1.75rem;
+  }
+  &.btn-xl {
+    font-weight: 700;
+  }
   &:hover {
     background-color: rgba(254, 203, 46, 0.8);
   }
