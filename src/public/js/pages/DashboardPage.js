@@ -90,9 +90,7 @@ class Page {
             setTimeout(() => reserveButton.prop("disabled", false).removeClass("!bg-green-500").text("Přidat"), 1500);
         } catch (error) {
             console.error("An error occurred while adding a reservation:", error);
-            console.log(error);
-            const errorMessage = error.displayMessage || "Nastala chyba při rezervaci";
-            reserveButton.prop("disabled", true).addClass("!bg-red-500").text(errorMessage);
+            reserveButton.prop("disabled", true).addClass("!bg-red-500").text(error.displayMessage);
             setTimeout(() => reserveButton.prop("disabled", false).removeClass("!bg-red-500").text("Přidat"), 2500);
         }
     }
