@@ -65,13 +65,28 @@ class Page {
         } catch (error) {
             console.log("An error occurred while reserving:", error);
 
-            let errorMessage = error.displayMessage || "Nastala neznámá chyba";
-            console.log(error);
-            if(error.type == APIError.Types.InvalidValueType) {
-                switch(error.data.valueName) {
+            let errorMessage = error.displayMessage;
+            if (error.type == APIError.Types.InvalidValueType) {
+                switch (error.data.valueName) {
                     case "start":
+                        if (error.data.requiredType == "working_hours") {
+                            errorMessage = "Čas rezervace musí být v pracovní době (8:00 - 20:00)";
+                            break;
+                        }
                     case "end":
                         errorMessage = "Nastala chyba při zpracování data a času";
+                        break;
+                    case "start,end":
+                        if (error.data.requiredType == "minutes") {
+                            errorMessage = "Rezervace nemůže obsahovat minuty";
+                            break;
+                        }
+
+                        if (error.data.requiredType == "start_after_end") {
+                            errorMessage = "Rezervace nemůže začínat po jejím konci";
+                            break;
+                        }
+
                         break;
                     case "firstName":
                         errorMessage = "Špatně zadané jméno";
@@ -81,6 +96,7 @@ class Page {
                         break;
                     case "email":
                         errorMessage = "Špatně zadaný email";
+                        break;
                     case "phoneNumber":
                         errorMessage = "Špatně zadané telefonní číslo";
                         break;
@@ -89,28 +105,29 @@ class Page {
                         break;
                 }
             } 
-            if(error.type == APIError.Types.InvalidValueLength) {
-                console.log("Chyba délky");
-                console.log(error.data.valueName);
-                switch(error.data.valueType.valueName) {
+
+            if (error.type == APIError.Types.InvalidValueLength) {
+                switch (error.data.valueName) {
                     case "start":
                     case "end":
                         errorMessage = "Datum a čas nejsou v požadováném formátu";
                         break;
                     case "firstName":
-                        errorMessage = `Jméno musí být v rozsahu ${error.data.valueType.minLength} až ${error.data.valueType.maxLength} znaků`;
+                        errorMessage = `Jméno musí být v rozsahu ${error.data.minLength} až ${error.data.maxLength} znaků`;
                         break;
                     case "lastName":
-                        errorMessage = `Příjmení musí být v rozsahu ${error.data.valueType.minLength} až ${error.data.valueType.maxLength} znaků`;
+                        errorMessage = `Příjmení musí být v rozsahu ${error.data.minLength} až ${error.data.maxLength} znaků`;
                         break;
-
                     case "message":
-                        console.log("Chyba zprávy");
-                        errorMessage = `Zpráva musí být v rozsahu ${error.data.valueType.minLength} až ${error.data.valueType.maxLength} znaků`;
-                        console.log(errorMessage);
+                        errorMessage = `Zpráva musí být v rozsahu ${error.data.minLength} až ${error.data.maxLength} znaků`;
                         break;
                 }
             }
+
+            if (error.type == APIError.Types.DuplicateValue && error.data.valueType == "appointment") {
+                errorMessage = "Rezervace v tento čas je již obsazena";
+            }
+
             reserveButton.prop("disabled", true).addClass("!bg-red-500").text(errorMessage);
             setTimeout(() => reserveButton.prop("disabled", false).removeClass("!bg-red-500").text("Rezervovat"), 2500);
         }
