@@ -158,12 +158,12 @@ module.exports = class AppointmentManager {
      */
     async deleteAppointment(options = {}) {
         if (!(await this.getAppointment(options))) {
-            throw APIError.KeyNotFound;
+            throw APIError.KeyNotFound("appointment");
         }
         
         const result = this.core.getDatabase().exec("DELETE FROM `appointments` WHERE `uuid` = ?", [ options.uuid ]);
         if (result.changes != 1) {
-            throw APIError.KeyNotDeleted;
+            throw APIError.KeyNotDeleted("appointment");
         }
 
         this._removeFromCache(options);
