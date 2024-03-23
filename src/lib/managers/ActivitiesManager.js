@@ -217,17 +217,21 @@ module.exports = class ActivitiesManager {
      */
     async searchForSameActivitiesWithOpenAI(query) {
         const activities = await this.getActivities();
-        const activitiesPrompt = activities.map(activity => ({
-            uuid: activity.uuid,
-            activityName: activity.activityName,
-            description: activity.description,
-            objectives: activity.objectives.join(", "),
-            educationLevel: activity.edLevel.join(", "),
-            tools: activity.tools.join(", "),
-            homePreparation: activity.homePreparation.map(preparation => `Preparation title: "${preparation.title}", warn: "${preparation.warn}", note: "${preparation.note}"`).join(", "),
-            instructions: activity.instructions.map(instruction => `Instruction title: "${instruction.title}", warn: "${instruction.warn}", info: "${instruction.info}"`).join(", "),
-            agenda: activity.agenda.map(agenda => `Agenda title: "${agenda.title}", warn: "${agenda.warn}", info: "${agenda.info}"`).join(", ")
-        })).map(activity => `Activity uuid: "${activity.uuid}", Activity name: "${activity.activityName}", description: "${activity.description}", objectives: "${activity.objectives}", education level: "${activity.educationLevel}", tools: "${activity.tools}", home preparation: "${activity.homePreparation}", instructions: "${activity.instructions}", agenda: "${activity.agenda}"`).join("\n");
+        const activitiesPrompt = activities.map(activity => {
+            const json = {
+                uuid: activity.uuid,
+                activityName: activity.activityName,
+                objectives: activity.objectives.join(", "),
+            };
+
+            if (activity.edLevel) { json.edLevel = activity.edLevel.join(", "); }
+            if (activity.tools) { json.tools = activity.tools.join(", "); }
+            if (activity.homePreparation) { json.homePreparation = activity.homePreparation.map(preparation => `Preparation title: "${preparation.title}", warn: "${preparation.warn}", note: "${preparation.note}"`).join(", "); }
+            if (activity.instructions) { json.instructions = activity.instructions.map(instruction => `Instruction title: "${instruction.title}", warn: "${instruction.warn}", info: "${instruction.info}"`).join(", "); }
+            if (activity.agenda) { json.agenda = activity.agenda.map(agenda => `Agenda title: "${agenda.title}", warn: "${agenda.warn}", info: "${agenda.info}"`).join(", "); }
+
+            return json;
+        }).map(activity => `Activity uuid: "${activity.uuid}", Activity name: "${activity.activityName}", description: "${activity.description}", objectives: "${activity.objectives}", education level: "${activity.educationLevel}", tools: "${activity.tools}", home preparation: "${activity.homePreparation}", instructions: "${activity.instructions}", agenda: "${activity.agenda}"`).join("\n");
 
         const response = await this.core.getOpenAIManager().complete({
             system: `Prohledej pole objektů s aktivitami a najdi všechna odpovídající pole a vrať to ve formátu UUID[]:\n${activitiesPrompt}`,
