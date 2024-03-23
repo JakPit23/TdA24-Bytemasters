@@ -24,8 +24,8 @@
             <div class="flex flex-col w-full gap-4">
                 <h1 class="text-6xl text-black font-bold mx-auto">Tvorba aktivity</h1>
 
-                <form class="flex flex-col hidden w-9/12 mx-auto text-white-900 user-form" data-createActivity>
-                    <div class="bg-dark-900 shadow-md px-4 py-2">
+                <form class="flex flex-col w-9/12 mx-auto text-white-900 user-form bg-dark-900" data-createActivity>
+                    <div class="shadow-md px-4 py-2">
                         <h2 class="text-2xl mx-auto">Vytvořit novou aktivitu</h2>
                         Název aktivity *:
                         <br>
@@ -84,10 +84,10 @@
                         Odkazy na obrázky:
                         oddělujte čárkami
                         <input type="text" class="user-input">
-                        
+
+                        <button class="btn btn-big" data-createActivity>Odeslat</button>
                     </div>
                 </form>
-
             </div>
         </div>
     </div>
@@ -96,6 +96,7 @@
 
     <script src="/public/lib/js/jquery-3.7.1.min.js"></script>
     <script src="/public/js/Application.js"></script>
+    <script src="/public/js/CreatePage.js"></script>
     <script>
         const app = new Application();
         app.hideLoader();
