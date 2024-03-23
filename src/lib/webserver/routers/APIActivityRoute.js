@@ -92,9 +92,9 @@ module.exports = class APIActivityRoute {
             try {
                 const { query } = req.body;
                 if (!query) {
-                    throw APIError.MissingParameters("query");
+                    throw APIError.KeyNotFound("query");
                 }
-                
+
                 Logger.debug(Logger.Type.Webserver, `Searching for activities with query: ${query}`);
                 const results = await this.webserver.getCore().getActivitiesManager().searchForSameActivitiesWithOpenAI(query);
                 if (!results) {
