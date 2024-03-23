@@ -11,8 +11,8 @@ module.exports = class APIError extends Error {
         Unknown: "Unknown",
         InvalidCredentials: "InvalidCredentials",
 
-        KeyAlreadyExists: "KeyNotFound",
-        KeyNotFound: "KeyAlreadyExists",
+        KeyAlreadyExists: "KeyAlreadyExists",
+        KeyNotFound: "KeyNotFound",
         KeyNotDeleted: "KeyNotDeleted",
 
         InvalidValueType: "InvalidValueType",
