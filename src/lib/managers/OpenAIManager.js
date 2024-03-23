@@ -17,6 +17,7 @@ module.exports = class OpenAIManager {
      * @returns {Promise<string>}
      */
     async complete(prompts) {
+        // TODO Max tokens ig?
         const completion = await this.openai.chat.completions.create({
             messages: [
                 {
@@ -28,9 +29,13 @@ module.exports = class OpenAIManager {
                     content: prompts.user
                 }
             ],
-            model: "gpt-3.5-turbo",
+            model: "gpt-3.5-turbo"
         });
 
-        return completion.choices[0];
+        if (!completion.choices || completion.choices.length == 0) {
+            return null;
+        }
+
+        return completion.choices[0].message.content;
     }
 }

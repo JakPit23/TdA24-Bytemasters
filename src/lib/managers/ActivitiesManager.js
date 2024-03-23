@@ -80,7 +80,7 @@ module.exports = class ActivitiesManager {
 
         if (edit) {
             Logger.debug(Logger.Type.ActivitiesManager, `Updating activity data for &c${activity.uuid}&r in database...`);
-            this.core.getDatabase().exec("UPDATE `activities` SET `public` = $public, `activityName` = $activityName, `description` = $description, `objectives` = $objectives, `classStructure` = $classStructure, `lengthMin` = $lengthMin, `lengthMax` = $lengthMax, `edLevel` = $edLevel, `tools` = $tools, `homePreparation` = $homePreparation, `instructions` = $instructions, `agenda` = $agenda, `links` = $links, `gallery` = $gallery WHERE `uuid` = $uuid", {
+            this.core.getDatabase().exec("UPDATE `activities` SET `public` = $public, `activityName` = $activityName, `description` = $description, `objectives` = $objectives, `classStructure` = $classStructure, `lengthMin` = $lengthMin, `lengthMax` = $lengthMax, `edLevel` = $edLevel, `tools` = $tools, `homePreparation` = $homePreparation, `instructions` = $instructions, `agenda` = $agenda, `links` = $links, `gallery` = $gallery `shortDescription` = $shortDescription WHERE `uuid` = $uuid", {
                 uuid: activity.uuid,
                 public: activity.public ? 1 : 0,
                 activityName: activity.activityName,
@@ -95,11 +95,12 @@ module.exports = class ActivitiesManager {
                 instructions: JSON.stringify(activity.instructions),
                 agenda: JSON.stringify(activity.agenda),
                 links: JSON.stringify(activity.links),
-                gallery: JSON.stringify(activity.gallery)
+                gallery: JSON.stringify(activity.gallery),
+                shortDescription: activity.shortDescription
             });
         } else {
             Logger.debug(Logger.Type.ActivitiesManager, `Creating activity data for &c${activity.uuid}&r in database...`);
-            this.core.getDatabase().exec("INSERT INTO `activities` (`uuid`, `public`, `activityName`, `description`, `objectives`, `classStructure`, `lengthMin`, `lengthMax`, `edLevel`, `tools`, `homePreparation`, `instructions`, `agenda`, `links`, `gallery`) VALUES ($uuid, $public, $activityName, $description, $objectives, $classStructure, $lengthMin, $lengthMax, $edLevel, $tools, $homePreparation, $instructions, $agenda, $links, $gallery)", {
+            this.core.getDatabase().exec("INSERT INTO `activities` (`uuid`, `public`, `activityName`, `description`, `objectives`, `classStructure`, `lengthMin`, `lengthMax`, `edLevel`, `tools`, `homePreparation`, `instructions`, `agenda`, `links`, `gallery`, `shortDescription`) VALUES ($uuid, $public, $activityName, $description, $objectives, $classStructure, $lengthMin, $lengthMax, $edLevel, $tools, $homePreparation, $instructions, $agenda, $links, $gallery, $shortDescription)", {
                 uuid: activity.uuid,
                 public: activity.public ? 1 : 0,
                 activityName: activity.activityName,
@@ -114,7 +115,8 @@ module.exports = class ActivitiesManager {
                 instructions: JSON.stringify(activity.instructions),
                 agenda: JSON.stringify(activity.agenda),
                 links: JSON.stringify(activity.links),
-                gallery: JSON.stringify(activity.gallery)
+                gallery: JSON.stringify(activity.gallery),
+                shortDescription: activity.shortDescription
             });
         }
 
@@ -168,6 +170,22 @@ module.exports = class ActivitiesManager {
             while (await this.getActivity({ uuid: data.uuid })) { data.uuid = Utils.newUUID() }
         }
 
+        try {
+            const shortDescription = await this.core.getOpenAIManager().complete({
+                system: `Vytvoř krátký popis aktivity s názvem "activityName" a popiskem "description" a vrať ho do 3 vět a ve formátu string:\nactivityName: ${data.activityName}\ndescription: ${data.description}`,
+                user: `Chci vytvořit novou aktivitu s názvem "${data.activityName}" a popiskem "${data.description}"`
+            });
+
+            if (!shortDescription) {
+                throw new Error("Failed to generate short description");
+            }
+
+            data.shortDescription = shortDescription;
+        } catch (error) {
+            Logger.warn(Logger.Type.ActivitiesManager, `Failed to generate short description for activity &c${data.uuid}&r: ${error.message}`);
+        }
+
+        console.log("data:", data)
         const activity = new Activity(data);
         await this._saveActivity(activity);
         Logger.debug(Logger.Type.ActivitiesManager, `Created new activity &c${activity.uuid}&r, caching...`);
@@ -224,32 +242,28 @@ module.exports = class ActivitiesManager {
                 objectives: activity.objectives.join(", "),
             };
 
-            if (activity.edLevel) { json.edLevel = activity.edLevel.join(", "); }
-            if (activity.tools) { json.tools = activity.tools.join(", "); }
-            if (activity.homePreparation) { json.homePreparation = activity.homePreparation.map(preparation => `Preparation title: "${preparation.title}", warn: "${preparation.warn}", note: "${preparation.note}"`).join(", "); }
-            if (activity.instructions) { json.instructions = activity.instructions.map(instruction => `Instruction title: "${instruction.title}", warn: "${instruction.warn}", info: "${instruction.info}"`).join(", "); }
-            if (activity.agenda) { json.agenda = activity.agenda.map(agenda => `Agenda title: "${agenda.title}", warn: "${agenda.warn}", info: "${agenda.info}"`).join(", "); }
+            if (activity.description) { json.description = activity.description; }
 
             return json;
-        }).map(activity => `Activity uuid: "${activity.uuid}", Activity name: "${activity.activityName}", description: "${activity.description}", objectives: "${activity.objectives}", education level: "${activity.educationLevel}", tools: "${activity.tools}", home preparation: "${activity.homePreparation}", instructions: "${activity.instructions}", agenda: "${activity.agenda}"`).join("\n");
+        }).map(activity => `Activity uuid: "${activity.uuid}", Activity name: "${activity.activityName}", description: "${activity.description}", objectives: "${activity.objectives}"`).join("\n");
 
         const response = await this.core.getOpenAIManager().complete({
             system: `Prohledej pole "activitiesPrompt" které obsahuje data aktivit a najdi relevantní věci, který se musí spojovat s variablem "query" a vrať to ve formátu UUID[]:\nactivitiesPrompt: ${activitiesPrompt}`,
             user: `Chci najít všechny aktivity. Moje query: ${query}`
         });
-        Logger.debug(Logger.Type.ActivitiesManager, `OpenAI response: ${response.message.content}`);
+        Logger.debug(Logger.Type.ActivitiesManager, `OpenAI response: ${response}`);
 
-        if (!(response.message && response.message.content)) {
+        if (!response) {
             return null;
         }
 
         try {
-            return JSON.parse(response.message.content);
+            return JSON.parse(response);
         } catch (error) {
             if (error instanceof SyntaxError) {
                 Logger.debug(Logger.Type.ActivitiesManager, `Failed to parse OpenAI response as JSON, trying to get UUIDs from text...`);
 
-                const matches = response.message.content.match(/[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}/gi);
+                const matches = response.match(/[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}/gi);
                 if (!matches) {
                     return null;
                 }
