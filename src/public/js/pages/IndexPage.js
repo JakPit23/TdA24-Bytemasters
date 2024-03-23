@@ -15,7 +15,6 @@ class Page {
         await this.loadActivities();
         this.searchBar.on("input", () => this.fetchSearch());   
         this.formBtn.on("click", () => this.toggleForm());  
-        console.log("hiding loader");
         await this.app.hideLoader();
     }
 
@@ -28,19 +27,24 @@ class Page {
         this.activitiesList.empty();
 
         if (!activities) {
-            // TODO: before, after, limit
             console.log("[DEBUG] Activities are null, fetching...");
-            activities = await this.api.getActivities();
+            const fetchOptions = { limit: 25 };
+
+            const lastActivityUUID = this.activitiesList.last().data("uuid");
+            if (lastActivityUUID) {
+                console.log(`[DEBUG] UUID of the last activity: ${lastActivityUUID}`);
+                fetchOptions["after"] = lastActivityUUID;
+            }
+         
+            activities = await this.api.getActivities(fetchOptions);
         }
 
         if (activities.length == 0) {
             $("<h1>").text("Žádné aktivity nebyly nalezeny").addClass("col-span-3 mx-auto text-3xl font-bold").appendTo(this.activitiesList);
-            $("<p>").text("Začněte tím, že vytvoříte novou aktivitu.").addClass("col-span-3 mx-auto text-xl btn btn-big").appendTo(this.activitiesList);
-            return;            
+            return;
         }
 
         activities.forEach(activity => this.renderActivity(activity));
-        console.log("done1");
     }
 
     async _fetchSearch() {
@@ -51,6 +55,14 @@ class Page {
 
         this.app.showLoader("[data-loader]");
         const search = this.searchBar.val();
+        if (!search || search.length == 0) {
+            console.log("[DEBUG] Search is empty, loading all activities");
+            this.loadActivities();
+            return;
+        }
+
+        console.log(`[DEBUG] Searching for "${search}"`);
+
         const activities = await this.api.searchActivities(search);
         this.loadActivities(activities);
     }
@@ -61,14 +73,36 @@ class Page {
     }
 
     renderActivity(data) {
-        const activityBox = $("<div>").addClass("activity").appendTo(this.activitiesList);
-        activityBox.on("click", () => window.location.href = `/activity/${data.uuid}`);
-        if(data.gallery && Array.isArray(data.gallery)) {
-            $("<img>").attr("src", data.gallery[0].images[0].lowRes).addClass("activity-image").appendTo(activityBox);
-        }
+        const activityBox = $("<div>")
+            .addClass("activity")
+            .data("uuid", data.uuid)
+            .on("click", () => window.location.href = `/activity/${data.uuid}`)
+            .appendTo(this.activitiesList);
         
+        if (Array.isArray(data.gallery)) {
+            data.gallery.some((gallery, galleryIndex) => {
+                if (!Array.isArray(gallery.images) && gallery.images.length == 0) {
+                    console.log(`[DEBUG] gallery.images[${galleryIndex}] is empty`);
+                    return;
+                }
+
+                for (const image of gallery.images) {
+                    console.log(`[DEBUG] Adding image to activity ${data.uuid}: gallery.images[${galleryIndex}]`);
+                    $("<img>").attr("src", image.lowRes || image.highRes).addClass("activity-image").appendTo(activityBox);
+                    return;
+                }
+            });
+        } else {
+            // TODO: add blank placeholder ig?
+        }
+
         const activityDescription = $("<div>").addClass("flex flex-col").appendTo(activityBox);
         $("<h2>").text(data.activityName).addClass("font-bold text-2xl").appendTo(activityDescription);
-        $("<p>").text(data.description).appendTo(activityDescription);
+
+        if (data.description) {
+            $("<p>").text(data.description).appendTo(activityDescription);
+        } else {
+            console.log(`[DEBUG] Activity ${data.uuid} has no description`);
+        }
     }
 }
