@@ -22,10 +22,10 @@ class Page {
             await this.api.authLogout();
             window.location.href = "/";
         } catch (error) {
-            this.logoutButton.addClass("!btn-error");
+            this.logoutButton.addClass("btn-error");
 
             console.error("An error occurred while logging out:", error);
-            setTimeout(() => this.logoutButton.removeClass("!btn-error").prop("disabled", false), 1500);
+            setTimeout(() => this.logoutButton.removeClass("btn-error").prop("disabled", false), 1500);
         }
     }
 

@@ -29,7 +29,7 @@ class Page {
             setTimeout(() => window.location.href = "/dashboard", 1000);
             loginButton.prop('disabled', true).addClass("btn-success").text("Úspěšně přihlášeno");
         } catch (error) {
-            loginButton.prop("disabled", true).addClass("!btn-error").text(error.displayMessage);
+            loginButton.prop("disabled", true).addClass("btn-error").text(error.displayMessage);
             setTimeout(() => loginButton.prop("disabled", false).removeClass("btn-error").text("Přihlásit se"), 2500);
         }
     }
