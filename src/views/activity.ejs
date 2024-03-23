@@ -78,7 +78,7 @@ startMinutes= 0 %>
                                 <li>
                                     <span class="font-bold"><%= startHours.toString().padStart(2, '0') %>:<%= startMinutes.toString().padStart(2, '0') %> - <%= Math.floor(startHours + step.duration / 60).toString().padStart(2, '0') %>:<%= (startMinutes + step.duration % 60).toString().padStart(2, '0') %></span> - <%= step.title %>
                                     <% startHours = Math.floor(startHours + step.duration / 60) %>
-                                    <% startMinutes + step.duration % 60 %>
+                                    <% startMinutes = startMinutes + step.duration % 60 %>
                                 </li>
                            <% }) %>
                         </ol>
