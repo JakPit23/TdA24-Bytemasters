@@ -53,10 +53,29 @@
  * @property {string} message
  */
 
+/**
+ * @typedef {object} ActivityData
+ * @property {string} uuid
+ * @property {string} activityName
+ * @property {string} description
+ * @property {string[]} objectives
+ * @property {string} classStructure
+ * @property {number} lengthMin
+ * @property {number} lengthMax
+ * @property {string[]} edLevel
+ * @property {string[]} tools
+ * @property {Array<{title: string, warn: string, note: string}>} homePreparation
+ * @property {Array<{title: string, warn: string, note: string}>} instructions
+ * @property {Array<{duration: number, title: string, description: string}>} agenda
+ * @property {Array<{title: string, url: string}>} links
+ * @property {Array<{title: string, images: Array<{lowRes: string, highRes: string}>}>} gallery
+ */
+
 module.exports = {
     UserData,
     UserIdentification,
     LecturerData,
     TagData,
-    AppointmentData
+    AppointmentData,
+    ActivityData
 }

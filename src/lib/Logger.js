@@ -96,6 +96,10 @@ class Logger {
             color: Logger.Colors.Fg.Blue,
             output: "TAG MANAGER"
         },
+        ActivitiesManager: {
+            color: `${Logger.Colors.Bright}${Logger.Colors.Fg.Magenta}`,
+            output: "ACTIVITIES MANAGER"
+        },
         EmailClient: {
             color: Logger.Colors.Fg.Yellow,
             output: "EMAIL CLIENT"

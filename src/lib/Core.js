@@ -8,6 +8,7 @@ const EmailClient = require("./managers/EmailClient");
 const UserManager = require("./managers/UserManager");
 const AppointmentManager = require("./managers/AppointmentManager");
 const OpenAIManager = require("./managers/OpenAIManager");
+const ActivitiesManager = require("./managers/ActivitiesManager");
 
 class Core {
     constructor() {
@@ -22,6 +23,7 @@ class Core {
         this.userManager = new UserManager(this);
         this.tagManager = new TagManager(this);
         this.appointmentManager = new AppointmentManager(this);
+        this.activitiesManager = new ActivitiesManager(this);
         this.emailClient = new EmailClient(this);
         this.openAIManager = new OpenAIManager(this);
         this.webserver = new Webserver(this);
@@ -32,6 +34,7 @@ class Core {
     getUserManager = () => this.userManager;
     getTagManager = () => this.tagManager;
     getAppointmentManager = () => this.appointmentManager;
+    getActivitiesManager = () => this.activitiesManager;
     getOpenAIManager = () => this.openAIManager;
     getEmailClient = () => this.emailClient;
 

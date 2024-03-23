@@ -24,6 +24,30 @@ class Utils {
     static validateEmail = (email) => /^(?=.{1,254}$)[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 
     /**
+     * @param {string} string 
+     * @returns {boolean}
+     */
+    static validateString = (string) => typeof string === "string" && string.length > 0;
+
+    /**
+     * @param {number} number
+     * @returns {boolean}
+     */
+    static validateNumber = (number) => typeof number === "number";
+    
+    /**
+     * @param {boolean} bool
+     * @returns {boolean}
+     */
+    static validateBoolean = (bool) => typeof bool === "boolean";
+    
+    /**
+     * @param {any[]} array
+     * @param {string} type
+     */
+    static validateArray = (array, type) => Array.isArray(array) && array.length > 0 && array.every(item => typeof item === type);
+    
+    /**
      * @param {Date} date 
      * @returns {string} Returns date in format DD.MM.YYYY
      */

@@ -17,6 +17,23 @@ module.exports = class UserManager {
          * @type {import("../types/user/User")[]}
          */
         this._cache = [];
+
+        this._createAdminUser();
+    }
+
+    async _createAdminUser() {
+        if (await this.getUser({ username: "admin" })) {
+            Logger.debug(Logger.Type.UserManager, "Admin user already exists, skipping creation...");
+            return;
+        }
+        
+        Logger.debug(Logger.Type.UserManager, "Creating admin user...");
+        await this.createUser({
+            uuid: Utils.newUUID(),
+            type: UserType.Admin,
+            username: "admin",
+            password: "tda"
+        });
     }
 
     /**
@@ -272,8 +289,8 @@ module.exports = class UserManager {
             throw APIError.InvalidValueType("password", "string");
         }
 
-        if (data.password.length < 8 || data.password.length > 128) {
-            throw APIError.InvalidValueLength("password", 8, 128);
+        if (data.password.length > 128) {
+            throw APIError.InvalidValueLength("password", null, 128);
         }
 
         data.createdAt = new Date().getTime();
