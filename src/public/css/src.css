@@ -526,3 +526,15 @@ form {
         }
     }
 }
+
+.activity-title {
+    @apply border-l-4 border-skyblue-900 pl-2;    
+}
+
+li {
+    @apply text-white-900;
+}
+
+.activityBox {
+    @apply shadow-md flex flex-col bg-dark-700 py-2 px-4 rounded;
+}

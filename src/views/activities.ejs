@@ -27,7 +27,7 @@
                 </div>
                 <div data-activities class="grid md:grid-cols-2 gap-4 w-full mb-4 ">
                     <div class="shadow-md flex flex-col bg-dark-700 py-2 px-4 rounded">
-                        <h2 class="font-bold text-3xl">Grandfinále TdA</h2>
+                        <h2 class="">Grandfinále TdA</h2>
                         <div class="flex flex-row mt-2">
                             <img src="http://picsum.photos/seed/a/200" alt="Obrázek aktivity" class="mr-4">
                             <div class="flex flex-col">
@@ -40,16 +40,7 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="shadow-md flex flex-col bg-black-700">
-                        <h2 class="py-2 px-4 font-bold font-2xl">AHOJ</h2>
-                    </div>
-                    <div class="shadow-md flex flex-col bg-black-700">
-                        <h2 class="py-2 px-4 font-bold font-2xl">AHOJ</h2>
-                    </div>
-                    <div class="shadow-md flex flex-col bg-black-700">
-                        <h2 class="py-2 px-4 font-bold font-2xl">AHOJ</h2>
-                    </div>  
+                </div>
                 </div>
             </div>
         </div>
@@ -60,10 +51,11 @@
     <script src="/public/lib/js/jquery-3.7.1.min.js"></script>
     <script src="/public/js/Application.js"></script>
     <script src="/public/js/API.js"></script>
+    <script src="/public/js/pages/ActivityPage.js"></script>
 
     <script>
         const app = new Application();
-        app.hideLoader();
+        const page = new Page(app);
     </script>
 </body>
 </html>

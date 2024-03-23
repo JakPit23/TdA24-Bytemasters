@@ -206,4 +206,10 @@ class API {
         method: "DELETE",
         type: "json"
     })
+
+    getActivities = () => this._call({
+        url: `/api/activity`,
+        method: "GET",
+        type: "json"
+    })
 }
