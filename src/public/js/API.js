@@ -108,46 +108,6 @@ class API {
     }
 
     /**
-     * @param {object} options 
-     * @param {number} options.limit
-     * @param {string} options.before
-     * @param {string} options.after
-     * @returns {Promise<object>}
-     */
-    getLecturers = (options = {}) => this._call({
-        url: `/api/lecturers?${new URLSearchParams(options).toString()}`,
-        responseType: "json"
-    })
-
-    /**
-     * @param {string} uuid 
-     * @returns {Promise<object>}
-     */
-    getLecturer = (uuid) => this._call({
-        url: `/api/lecturers/${uuid}`,
-        responseType: "json"
-    })
-
-    /**
-     * @param {string} uuid 
-     * @param {object} data 
-     * @param {number} data.start
-     * @param {number} data.end
-     * @param {string} data.firstName
-     * @param {string} data.lastName
-     * @param {string} data.email
-     * @param {string} data.phoneNumber
-     * @param {string} data.location
-     * @returns {Promise<object>}
-     */
-    createAppointment = (uuid, data) => this._call({
-        url: `/api/lecturers/${uuid}/appointment`,
-        method: "POST",
-        type: "json",
-        body: data
-    })
-
-    /**
      * @param {object} data
      * @param {string} data.username
      * @param {string} data.password
@@ -170,14 +130,22 @@ class API {
     })
 
     /**
+     * @param {object} options 
+     * @param {number} options.limit
+     * @param {string} options.before
+     * @param {string} options.after
      * @returns {Promise<object>}
      */
-    getActivities = () => this._call({
-        url: `/api/activity`,
+    getActivities = (options = {}) => this._call({
+        url: `/api/activity?${new URLSearchParams(options).toString()}`,
         method: "GET",
         type: "json"
     })
 
+    /**
+     * @param {string} query 
+     * @returns {Promise<object>}
+     */
     searchActivities = (query) => this._call({
         url: `/api/activity/search`,
         method: "POST",

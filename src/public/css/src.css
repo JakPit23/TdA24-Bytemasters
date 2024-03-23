@@ -62,7 +62,7 @@ p {
 }
 
 .btn {
-    @apply py-1 px-2 rounded-md bg-sunglate-900 text-white-900 font-semibold transition ease-in-out duration-300;
+    @apply py-1 px-2 rounded-md bg-sunglate-900 text-white-900 font-semibold transition ease-in-out duration-300 cursor-pointer;
 
     &.btn-big {
         @apply py-2 px-4;
@@ -532,7 +532,7 @@ li {
 }
 
 .activity {
-    @apply shadow-md flex flex-row bg-dark-900 py-2 px-4 rounded;
+    @apply shadow-md flex flex-row bg-dark-900 py-2 px-4 rounded cursor-pointer;
 
     & .activity-title {
         @apply border-l-4 border-skyblue-900 pl-2;   
