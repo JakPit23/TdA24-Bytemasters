@@ -747,6 +747,10 @@ video {
   border-radius: 0.375rem;
 }
 
+.border {
+  border-width: 1px;
+}
+
 .bg-black-200 {
   background-color: rgba(0, 0, 0, 0.3);
 }

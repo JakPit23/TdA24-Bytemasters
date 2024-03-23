@@ -48,16 +48,16 @@
                         <% }) %>
                     </ul>
                 </div>
+                <h2 class="text-3xl font-bold"></h2>
                 <h2 class="text-3xl font-bold">Galerie</h2>
                 <div class="grid gap-4">
                     <% activity.gallery.forEach(set => { %>
                         <div class="flex flex-col gap-4">
                             <h3 class="text-2xl font-semibold"><%= set.title %></h3>
                             <% set.images.forEach(image => { %>
-                                <img src="<%= image.lowRes %>" alt="<%= set.title %>" class="w-32">
-                                <%= image.on('click', function() { 
-                                    
-                                 }) %>
+                                <a href="<%= image.highRes %>" target="_blank">
+                                    <img class="w-32" src="<%= image.lowRes %>"/>
+                                </a>
                             <% }) %>    
                         </div>
                     <% }) %>

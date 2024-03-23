@@ -178,10 +178,10 @@ class API {
         type: "json"
     })
 
-    searchActivities = (search) => this._call({
+    searchActivities = (query) => this._call({
         url: `/api/activity/search`,
         method: "POST",
         type: "json",
-        body: { search }
+        body: { query }
     })
 }

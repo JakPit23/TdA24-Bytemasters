@@ -23,7 +23,7 @@ class Page {
     }
 
     loadActivities = async () => {
-            return await this.api.getActivities();
+        return await this.api.getActivities();
     }
 
     _fetchSearch = async () => {
@@ -32,7 +32,8 @@ class Page {
         setTimeout(async () => {
             if(this.searchNow + 500 < Date.now()) {
                 console.log("Searching for:", search);
-                const activities = await this.api.searchActivities({ search });
+                this.app.showLoader("[data-loader]");
+                const activities = await this.api.searchActivities(search);
                 this.activitiesList.empty();
                 activities.forEach(activity => this.renderActivity(activity));
             }
