@@ -58,61 +58,11 @@ class Page {
             await this.api.authLogout();
             window.location.href = "/";
         } catch (error) {
-            this.logoutButton.addClass("!bg-red-500");
+            this.logoutButton.addClass("!btn-error");
 
             console.error("An error occurred while logging out:", error);
-            setTimeout(() => this.logoutButton.removeClass("!bg-red-500").prop("disabled", false), 1500);
+            setTimeout(() => this.logoutButton.removeClass("!btn-error").prop("disabled", false), 1500);
         }
     }
 
-    async addReservation(event) {
-        event.preventDefault();
-        
-        const reserveButton = this.reservationForm.find(":submit");
-        // nejvic messy vec :3
-        const reservationTimeStart = this.app.getDateTimeFromString($('[data-reservationInput="timeStart"]').val());
-        const reservationTimeEnd = this.app.getTimeFromString($('[data-reservationInput="timeEnd"]').val());
-        reservationTimeEnd.setDate(reservationTimeStart.getDate());
-        reservationTimeEnd.setMonth(reservationTimeStart.getMonth());
-        reservationTimeEnd.setFullYear(reservationTimeStart.getFullYear());
-
-        try {
-            await this.api.addUserSettings({
-                reservations: [
-                    {
-                        start: Math.floor(reservationTimeStart.getTime() / 1000),
-                        end: Math.floor(reservationTimeEnd.getTime() / 1000),
-                    }
-                ]
-            });
-
-            reserveButton.prop("disabled", true).addClass("!bg-green-500").text("Rezervace úspěšně přidána");
-            setTimeout(() => reserveButton.prop("disabled", false).removeClass("!bg-green-500").text("Přidat"), 1500);
-        } catch (error) {
-            console.error("An error occurred while adding a reservation:", error);
-            reserveButton.prop("disabled", true).addClass("!bg-red-500").text(error.displayMessage);
-            setTimeout(() => reserveButton.prop("disabled", false).removeClass("!bg-red-500").text("Přidat"), 2500);
-        }
-    }
-
-    async downloadCalendar() {
-        try {
-            const blob = await this.api.getUserAppointmentsICS();
-            const url = window.URL.createObjectURL(blob);
-            const a = $('<a>').attr('href', url).attr('download', `${new Date().toISOString().split("T")[0]}_plan-vyuky.ical`);
-
-            $('body').append(a);
-            a[0].click();
-
-            setTimeout(() => {
-                a.remove();
-                window.URL.revokeObjectURL(url);
-            }, 100);
-        } catch (error) {
-            console.error("An error occurred while downloading ICS:", error);
-
-            this.downloadCalendarButton.prop("disabled", true).addClass("!bg-red-500");
-            setTimeout(() => this.downloadCalendarButton.prop("disabled", false).removeClass("!bg-red-500"), 2500);
-        }
-    }
 }

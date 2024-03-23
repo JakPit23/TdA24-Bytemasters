@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><%= user.first_name %> <%= user.last_name %> | Teacher Digital Agency</title>
+    <title>Admin | Teacher Digital Agency</title>
     <link rel="stylesheet" href="/public/lib/fontawesome/css/fontawesome.css">
     <link rel="stylesheet" href="/public/lib/fontawesome/css/solid.css">
     <link rel="stylesheet" href="/public/css/app.css">
@@ -24,60 +24,16 @@
             <div class="flex flex-col items-start w-full pt-4 gap-4">
                 <div class="flex flex-col items-center gap-4 bg-black-200 shadow-lg rounded-md p-6 w-full">
                     <div class="flex flex-col gap-2 md:flex-row w-full justify-between">
-                        <h1 class="text-4xl font-extrabold"><%= user.first_name %> <%= user.last_name %></h1>
-
+                        <h1 class="text-4xl font-extrabold">Admin</h1>
                         <div class="flex flex-col md:flex-row gap-2">
-                            <button data-downloadCalendar class="btn btn-big btn-skyblue">
-                                <i class="fa-solid fa-download text-xl"></i>
-                                Stáhnout kalendář
-                            </button>
-
                             <button data-logout class="btn btn-big">
                                 <i class="fa-solid fa-sign-out text-xl"></i>
                                 Odhlásit se
                             </button>
                         </div>
                     </div>
-
-                    <div data-page="calendar" class="flex flex-col items-center gap-2 w-full">
-                        <div class="flex flex-col md:flex-row gap-4 w-full">
-                            <div class="calendar">
-                                <div class="flex justify-between items-center">
-                                    <button data-calendarPrevious class="btn btn-skyblue">
-                                        <i class="fa-solid fa-chevron-left text-xl"></i>
-                                    </button>
-
-                                    <h3 data-calendarDate class="text-2xl font-bold"></h3>
-
-                                    <button data-calendarNext class="btn btn-skyblue">
-                                        <i class="fa-solid fa-chevron-right text-xl"></i>
-                                    </button>
-                                </div>
-
-                                <table data-calendar></table>
-                            </div>
-
-                            <div class="flex flex-col items-center gap-4 w-full">
-                                <h3 class="text-2xl font-bold">Schůzky</h3>
-
-                                <div data-appointments class="flex flex-col items-center gap-4 lg:w-3/4"></div>
-                            </div>
-                        </div>
-
-                        <div data-modal class="flex flex-col justify-center gap-4 w-full">
-                            <dialog data-popup class="mx-auto bg-dark-400 shadow-xl px-6 py-4 rounded-md flex flex-col !hidden">
-                                <!-- TODO: prepsat text todle -->
-                                <p class="text-lg font-bold mb-4">Jste si jistí?</p>
-
-                                <div class="flex flex-row justify-center gap-4">
-                                    <button data-confirmButton class="btn btn-big w-1/2">Ano</button>
-                                    <button data-closeButton="data-popup" class="btn w-1/2">Ne</button>
-                                </div>
-                            </dialog>
-
-                            <h1 data-modalTitle class="text-3xl font-semibold" id="modal"></h1>
-                            <div data-modalContent class="grid xl:grid-cols-2 gap-4 flex-wrap"></div>
-                        </div>
+                    <div class="btn btn-big">
+                        <p>Schvalování aktivit</p>
                     </div>
                 </div>
             </div>
@@ -87,16 +43,12 @@
     <%- include('partials/footer') %>
 
     <script src="/public/lib/js/jquery-3.7.1.min.js"></script>
-    <script src="/public/lib/js/popper.min.js"></script>
-    <script src="/public/lib/js/tippy.min.js"></script>
-    <script src="/public/lib/js/fullcalendar-6.1.10.min.js"></script>
     <script src="/public/js/Application.js"></script>
     <script src="/public/js/API.js"></script>
-    <script src="/public/js/modules/CalendarModule.js"></script>
-    <script src="/public/js/pages/DashboardPage.js"></script>
+
     <script>
         const app = new Application();
-        const page = new Page(app);
+        app.hideLoader();
     </script>
 </body>
 </html>
