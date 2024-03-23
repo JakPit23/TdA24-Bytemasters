@@ -5,6 +5,8 @@ class Page {
         this.api = new API();
         this.activitiesList = $("[data-activities]");
         this.searchBar = $("[data-searchInput]");
+        this.formBtn = $("[data-formBtn]");
+        this.form =  $("[data-createActivity]");
         this.init();
     }
 
@@ -17,9 +19,15 @@ class Page {
             await this.app.hideLoader();
             return;
         }
-        this.searchBar.on("input", () => this._fetchSearch());   
+        this.searchBar.on("input", () => this._fetchSearch()); 
+        this.formBtn.on("click", () => this.toggleForm());  
         activities.forEach(activity => this.renderActivity(activity));
         await this.app.hideLoader();
+    }
+
+    toggleForm() {
+        console.log("Toggling form");
+        this.form.toggleClass("hidden");
     }
 
     loadActivities = async () => {
