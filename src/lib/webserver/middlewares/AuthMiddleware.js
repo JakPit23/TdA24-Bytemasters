@@ -16,7 +16,6 @@ module.exports = class AuthMiddleware {
      */
     forceAuth = async (req, res, next) => {
         const { token } = req.session;
-        
         if (!token) {
             return res.redirect("/login");
         }
@@ -42,7 +41,6 @@ module.exports = class AuthMiddleware {
      */
     fetchSession = async (req, res, next) => {
         const { token } = req.session;
-
         if (!token) {
             return next();
         }
