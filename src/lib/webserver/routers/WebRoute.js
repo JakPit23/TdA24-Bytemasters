@@ -24,6 +24,11 @@ module.exports = class WebRoute {
 
         this.router.get("/activity/:uuid", async (req, res) => {
             const activity = await this.webserver.getCore().getActivitiesManager().getActivity({ uuid: req.params.uuid });
+
+            if (!activity) {
+                return res.render("404");
+            }
+            
             return res.render("activity", { activity });
         });
         
