@@ -19,42 +19,15 @@
 
     <div class="w-full">
         <div class="max-w-[1280px] mx-auto px-4">
-            <div class="flex flex-row w-full pt-24 pb-16 justify-between bg-dark-700 px-4">
-                <div class="flex flex-col w-1/2">
-                    <h1 class="text-3xl font-bold activity-title">Ukázka aktivity</h1>
-                    <div data-description class="bg-dark-400 px-4 py-2 w-1/2">
-                        <h3 class="font-semibold text-2xl">Popis</h3>
-                        <p>Finále 24. ročníku soutěže ve vývoji webových aplikací</p>
-                    </div>
-                    <div data-target class="bg-dark-400 px-4 py-2 ml-auto w-1/2">
-                        <h3 class="font-semibold text-2xl">Cíl</h3>
-                        <ul>
-                            <li>Vyzkoušet si komunikovat s fiktivním klientem.</li>
-                            <li>Naučit se řídit projekt.</li>
-                        </ul>
-                    </div>
-                    <div data-target class="bg-dark-400 px-4 py-2 w-1/2">
-                        <h3 class="font-semibold text-2xl">Přínos</h3>
-                        <ul>
-                            <li>Vyzkoušet si komunikovat s fiktivním klientem.</li>
-                            <li>Naučit se řídit projekt.</li>
-                        </ul>
-                    </div>
+            <div class="flex flex-col w-full pt-24 pb-16 justify-between bg-dark-700 px-4">
+                <h1 class="text-4xl font-bold mx-auto"><%= activity.activityName %></h1>
+                <div class="flex flex-row gap-4 mx-auto">
+                    <p>Odhadovaná doba trvání: <%= Math.round(activity.lengthMin / 60)%> - <%= Math.round(activity.lengthMax / 60) %> hodin</p>
+                    <p>Skupinová aktivita: <span class="font-bold"><%= activity.classStructure == "All" || activity.classStructure == "Group" ? "Ano" : "Ne" %></span></p>
                 </div>
-                <div class="flex flex-col gap-12">
-                    <div class="flex flex-col items-center">
-                        <i class="fa-solid fa-stopwatch text-6xl text-skyblue-900"></i>
-                        <p>25 - 40  minut</p>
-                    </div>
-                    <div class="flex flex-col items-center">
-                        <i class="fa-solid fa-users text-6xl text-skyblue-900"></i>
-                        <p>6 skupin</p>
-                    </div>
-                    <div class="flex flex-col items-center">
-                        <i class="fa-solid fa-print text-6xl text-skyblue-900"></i>
-                        <p>4 - 6 osob/skupina</p>
-                    </div>
-                </div>
+                <h2 class="text-3xl font-bold">O čem aktivita je a co si při ní vyzkoušíte?</h2>
+                <p><%= activity.activityName %> je <%= activity.description %></p>
+
             </div>
         </div>
     </div>
