@@ -76,18 +76,7 @@ module.exports = class APIActivityRoute {
                 return next(error);
             }
         });
-
-        this.router.delete("/:uuid", async (req, res, next) => {
-            try {
-                const { uuid } = req.params;
-                
-                await this.webserver.getCore().getActivitiesManager().deleteActivity({ uuid });
-                return APIResponse.Ok.send(res);
-            } catch (error) {
-                return next(error);
-            }
-        });
-
+        
         this.router.post("/search", async (req, res, next) => {
             try {
                 const { query } = req.body;
@@ -114,7 +103,18 @@ module.exports = class APIActivityRoute {
             }
         });
 
-        this.router.post("/:uuid", async (req, res, next) => {
+        this.router.delete("/:uuid", this.webserver.middlewares["APIAuthMiddleware"].forceAuth, async (req, res, next) => {
+            try {
+                const { uuid } = req.params;
+                
+                await this.webserver.getCore().getActivitiesManager().deleteActivity({ uuid });
+                return APIResponse.Ok.send(res);
+            } catch (error) {
+                return next(error);
+            }
+        });
+
+        this.router.post("/:uuid", this.webserver.middlewares["APIAuthMiddleware"].forceAuth, async (req, res, next) => {
             try {
                 const { uuid } = req.params;
                 const data = req.body;
@@ -129,7 +129,7 @@ module.exports = class APIActivityRoute {
         });
         
         // TODO: mby :3
-        this.router.put("/:uuid", async (req, res, next) => {
+        this.router.put("/:uuid", this.webserver.middlewares["APIAuthMiddleware"].forceAuth, async (req, res, next) => {
             try {
                 const { uuid } = req.params;
                 const data = req.body;
