@@ -234,8 +234,8 @@ module.exports = class ActivitiesManager {
         }).map(activity => `Activity uuid: "${activity.uuid}", Activity name: "${activity.activityName}", description: "${activity.description}", objectives: "${activity.objectives}", education level: "${activity.educationLevel}", tools: "${activity.tools}", home preparation: "${activity.homePreparation}", instructions: "${activity.instructions}", agenda: "${activity.agenda}"`).join("\n");
 
         const response = await this.core.getOpenAIManager().complete({
-            system: `Prohledej pole objektů s aktivitami a najdi všechna odpovídající pole a vrať to ve formátu UUID[]:\n${activitiesPrompt}`,
-            user: `Chci najít všechny aktivity, které odpovídají na dotaz: ${query}`
+            system: `Prohledej pole "activitiesPrompt" které obsahuje data aktivit a najdi relevantní věci, který se musí spojovat s variablem "query" a vrať to ve formátu UUID[]:\nactivitiesPrompt: ${activitiesPrompt}`,
+            user: `Chci najít všechny aktivity. Moje query: ${query}`
         });
         Logger.debug(Logger.Type.ActivitiesManager, `OpenAI response: ${response.message.content}`);
 

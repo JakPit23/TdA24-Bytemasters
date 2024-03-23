@@ -91,6 +91,10 @@ module.exports = class APIActivityRoute {
         this.router.post("/search", async (req, res, next) => {
             try {
                 const { query } = req.body;
+                if (!query) {
+                    throw APIError.MissingParameters("query");
+                }
+                
                 Logger.debug(Logger.Type.Webserver, `Searching for activities with query: ${query}`);
                 const results = await this.webserver.getCore().getActivitiesManager().searchForSameActivitiesWithOpenAI(query);
                 if (!results) {
