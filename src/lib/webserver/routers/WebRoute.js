@@ -20,6 +20,11 @@ module.exports = class WebRoute {
         this.router.get("/dashboard", this.webserver.middlewares["AuthMiddleware"].forceAuth, (req, res) => res.render("dashboard"));
         this.router.get("/activities", (req, res) => res.render("activities"));
 
+        this.router.get("/activity/:uuid", async (req, res) => {
+            const activity = await this.webserver.getCore().getActivitiesManager().getActivity({ uuid: req.params.uuid });
+            return res.render("activity", { activity });
+        });
+        
         this.router.get("/login", this.webserver.middlewares["AuthMiddleware"].fetchSession, (req, res) => {
             /** @type {import("../../types/user/User")} */
             const user = res.locals.user;
@@ -59,7 +64,5 @@ module.exports = class WebRoute {
 
             return res.render("admin");
         });
-
-        this.router.get("/activity", (req, res) => res.render("activity"));
     }
 };
