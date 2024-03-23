@@ -632,8 +632,6 @@ video {
 
 .mt-3 {
   margin-top: 0.75rem;
-<<<<<<< HEAD
-=======
 }
 
 .mt-4 {
@@ -642,11 +640,6 @@ video {
 
 .mr-3 {
   margin-right: 0.75rem;
->>>>>>> 0e378ba3e47486a322935dc09b3506585dc6d012
-}
-
-.mt-4 {
-  margin-top: 1rem;
 }
 
 .block {
@@ -679,10 +672,6 @@ video {
 
 .h-6 {
   height: 1.5rem;
-}
-
-.h-auto {
-  height: auto;
 }
 
 .min-h-\[100vh\] {
@@ -745,21 +734,10 @@ video {
 
 .list-decimal {
   list-style-type: decimal;
-<<<<<<< HEAD
-}
-
-.grid-cols-6 {
-  grid-template-columns: repeat(6, minmax(0, 1fr));
-}
-
-.grid-cols-4 {
-  grid-template-columns: repeat(4, minmax(0, 1fr));
 }
 
 .grid-cols-5 {
   grid-template-columns: repeat(5, minmax(0, 1fr));
-=======
->>>>>>> 0e378ba3e47486a322935dc09b3506585dc6d012
 }
 
 .flex-row {
@@ -920,6 +898,14 @@ video {
 
 .pt-4 {
   padding-top: 1rem;
+}
+
+.pb-4 {
+  padding-bottom: 1rem;
+}
+
+.pb-2 {
+  padding-bottom: 0.5rem;
 }
 
 .text-2xl {
