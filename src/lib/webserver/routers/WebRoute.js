@@ -21,28 +21,30 @@ module.exports = class WebRoute {
         this.router.get("/activities", (req, res) => res.render("activities"));
 
         this.router.get("/login", this.webserver.middlewares["AuthMiddleware"].fetchSession, (req, res) => {
-            if (res.locals.user) {
+            /** @type {import("../../types/user/User")} */
+            const user = res.locals.user;
+            if (user && user.type == UserType.Admin) {
                 return res.redirect("/dashboard");
             }
 
             res.render("login");
         });
 
-        this.router.get("/lecturer/:lecturerUUID", this.webserver.middlewares["AuthMiddleware"].fetchSession, async (req, res) => {
-            const lecturerUUID = req.params.lecturerUUID;
+        // this.router.get("/lecturer/:lecturerUUID", this.webserver.middlewares["AuthMiddleware"].fetchSession, async (req, res) => {
+        //     const lecturerUUID = req.params.lecturerUUID;
 
-            const lecturer = await this.webserver.getCore().getUserManager().getLecturer({ uuid: lecturerUUID });
-            if (!lecturer) {
-                return res.redirect("/");
-            }
+        //     const lecturer = await this.webserver.getCore().getUserManager().getLecturer({ uuid: lecturerUUID });
+        //     if (!lecturer) {
+        //         return res.redirect("/");
+        //     }
 
-            res.render("lecturer", { lecturer });
-        });
+        //     res.render("lecturer", { lecturer });
+        // });
 
-        this.router.get("/openai", async (req, res) => {
-            const response = !Utils.isDev ? (await this.webserver.getCore().getOpenAIManager().complete("Are cats beautiful?")).message.content : "dev mode :3";
-            return res.render("openai", { response });
-        });
+        // this.router.get("/openai", async (req, res) => {
+        //     const response = !Utils.isDev ? (await this.webserver.getCore().getOpenAIManager().complete("Are cats beautiful?")).message.content : "dev mode :3";
+        //     return res.render("openai", { response });
+        // });
 
         this.router.get("/admin", this.webserver.middlewares["AuthMiddleware"].fetchSession, (req, res) => {
             /** @type {import("../../types/user/User")} */

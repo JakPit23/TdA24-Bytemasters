@@ -18,12 +18,12 @@ module.exports = class APIAuthRoute {
     loadRoutes = () => {
         this.router.post("/login", async (req, res, next) => {
             try {
-                const { username, email, password } = req.body;
-                if (!((username || email) && password)) {
+                const { username, password } = req.body;
+                if (!(username && password)) {
                     throw APIError.InvalidCredentials;
                 }
 
-                const user = await this.webserver.getCore().getUserManager().getUser({ username, email });
+                const user = await this.webserver.getCore().getUserManager().getUser({ username });
                 if (!user) {
                     throw APIError.InvalidCredentials;
                 }
@@ -42,20 +42,6 @@ module.exports = class APIAuthRoute {
             }
         });
 
-        this.router.post("/register", async (req, res, next) => {
-            try {
-                const user = await this.webserver.getCore().getUserManager().createUser({
-                    type: UserType.Student,
-                    ...req.body
-                });
-
-                req.session.token = user.createSession();
-                return APIResponse.Ok.send(res);
-            } catch (error) {
-                return next(error);
-            }
-        });
-        
         this.router.post("/logout", this.webserver.middlewares["AuthMiddleware"].forceAuth, async (req, res, next) => {
             try {
                 if (!res.locals.user) {

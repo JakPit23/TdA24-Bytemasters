@@ -32,13 +32,5 @@ module.exports = class WebRoute {
                 return next(error);
             }
         });
-
-        this.router.get("/test", async (req, res, next) => {
-            try {
-                return APIResponse.Ok.send(res, { message: "Test successful" });
-            } catch (error) {
-                return next(error);
-            }
-        })
     }
 };

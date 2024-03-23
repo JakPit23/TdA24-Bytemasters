@@ -1,7 +1,6 @@
 const Logger = require("../Logger");
 const Utils = require("../Utils");
 const APIError = require("../types/APIError");
-const Lecturer = require("../types/user/Lecturer");
 const User = require("../types/user/User");
 const UserType = require("../types/user/UserType");
 
@@ -38,7 +37,7 @@ module.exports = class UserManager {
 
     /**
      * @private
-     * @param {import("../types/user/User") | import("../types/user/Lecturer")} user
+     * @param {import("../types/user/User")} user
      */
     _addToCache(user) {
         if (!(user instanceof User)) {
@@ -65,7 +64,7 @@ module.exports = class UserManager {
     /**
      * @private
      * @param {import("../types/DocTypes").UserIdentification} options 
-     * @returns {import("../types/user/User") | import("../types/user/Lecturer") | null}
+     * @returns {import("../types/user/User") | null}
      */
     _getFromCache = (options) => this._cache.find(data => data.uuid == options.uuid || data.username == options.username)
 
@@ -73,13 +72,7 @@ module.exports = class UserManager {
         const users = await this.core.getDatabase().query("SELECT * FROM `users`");
         Logger.debug(Logger.Type.UserManager, `Loaded &c${users.length}&r users from database`);
 
-        return Promise.all(users.map(data => {
-            if (data.type == UserType.Lecturer) {
-                return this.getLecturer({ uuid: data.uuid });
-            }
-
-            return this.getUser({ uuid: data.uuid });
-        }));
+        return Promise.all(users.map(data => this.getUser({ uuid: data.uuid })));
     }
 
     /**
@@ -102,64 +95,6 @@ module.exports = class UserManager {
             Logger.debug(Logger.Type.UserManager, `Loaded user &c${user.uuid}&r from database, caching...`);
         } else {
             Logger.debug(Logger.Type.UserManager, `Found user &c${user.uuid}&r in cache`);
-        }
-
-        return user;
-    }
-
-    /**
-     * @param {import("../types/DocTypes").UserIdentification} options
-     * @returns {Promise<import("../types/user/Lecturer") | null>}
-     */
-    async getLecturer(options = {}) {
-        let user = this._getFromCache(options);
-
-        if (!(user instanceof Lecturer)) {
-            user = await this.getUser(options);
-            if (!user) {
-                return null;
-            }
-
-            if (user.type != UserType.Lecturer) {
-                return null;
-            }
-
-            const data = await this.core.getDatabase().query("SELECT * FROM `lecturers` WHERE `uuid` = ?", [ user.uuid ]);
-            if (!Array.isArray(data) || data.length == 0) {
-                Logger.debug(Logger.Type.UserManager, `Lecturer data for user &c${user.uuid}&r not found`);
-                return null;
-            }
-    
-            const userData = {
-                ...user,
-                ...data[0],
-                contact: {
-                    emails: data[0].emails.split(","),
-                    telephone_numbers: data[0].telephone_numbers.split(",")
-                }
-            };
-
-            if (data[0].tags) {
-                userData.tags = await Promise.all(
-                    data[0].tags
-                        .split(",")
-                        .map(uuid => this.core.getTagManager().getTag({ uuid }))
-                    );
-            }
-
-            if (data[0].appointments) {
-                userData.appointments = await Promise.all(
-                    data[0].appointments
-                        .split(",")
-                        .map(async uuid => await this.core.getAppointmentManager().getAppointment({ uuid }))
-                    );
-            }
-            
-            user = new Lecturer(userData);
-            this._addToCache(user);
-            Logger.debug(Logger.Type.UserManager, `Loaded lecturer data for user &c${user.uuid}&r from database`);
-        } else {
-            Logger.debug(Logger.Type.UserManager, `Found lecturer &c${user.uuid}&r in cache`);
         }
 
         return user;
@@ -207,74 +142,6 @@ module.exports = class UserManager {
         this._addToCache(user);
     }
    
-    /**
-     * @private
-     * @param {import("../types/user/Lecturer")} user 
-     * @param {boolean} edit
-     */
-    async _saveLecturer(user, edit = false) {
-        if (!(user instanceof Lecturer)) {
-            throw APIError.InvalidValueType("user", "Lecturer");
-        }
-        
-        if (await this.getUser({ uuid: user.uuid, username: user.username, email: user.email }) && !edit) {
-            Logger.debug(Logger.Type.UserManager, `Not saving lecturer &c${user.uuid}&r because it &cexists&r in database and it's not an &cedit operation&r...`);
-            throw APIError.KeyAlreadyExists("user");
-        }
-
-        let tags = [];
-        if (user.tags) {
-            tags = await this.core.getTagManager().createTags(user.tags);
-        }
-        
-        await this.core.getAppointmentManager().saveAppointments(user.appointments);
-
-        if (edit) {
-            Logger.debug(Logger.Type.UserManager, `Updating lecturer data for &c${user.uuid}&r in database...`);
-            this.core.getDatabase().exec("UPDATE `lecturers` SET `title_before` = ?, `first_name` = ?, `middle_name` = ?, `last_name` = ?, `title_after` = ?, `picture_url` = ?, `location` = ?, `claim` = ?, `bio` = ?, `price_per_hour` = ?, `tags` = ?, `emails` = ?, `telephone_numbers` = ?, `appointments` = ? WHERE `uuid` = ?", [
-                user.title_before,
-                user.first_name,
-                user.middle_name,
-                user.last_name,
-                user.title_after,
-                user.picture_url,
-                user.location,
-                user.claim,
-                user.bio,
-                user.price_per_hour,
-                tags.map(tag => tag.uuid).join(","),
-                user.contact.emails.join(","),
-                user.contact.telephone_numbers.join(","),
-                user.appointments.map(appointment => appointment.uuid).join(","),
-                user.uuid
-            ]);
-
-            await this._saveUser(user, true);
-        } else {
-            Logger.debug(Logger.Type.UserManager, `Creating lecturer data for &c${user.uuid}&r in database...`);
-            this.core.getDatabase().exec("INSERT INTO `lecturers` (`uuid`, `title_before`, `first_name`, `middle_name`, `last_name`, `title_after`, `picture_url`, `location`, `claim`, `bio`, `price_per_hour`, `tags`, `emails`, `telephone_numbers`, `appointments`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", [
-                user.uuid,
-                user.title_before,
-                user.first_name,
-                user.middle_name,
-                user.last_name,
-                user.title_after,
-                user.picture_url,
-                user.location,
-                user.claim,
-                user.bio,
-                user.price_per_hour,
-                tags.map(tag => tag.uuid).join(","),
-                user.contact.emails.join(","),
-                user.contact.telephone_numbers.join(","),
-                user.appointments.map(appointment => appointment.uuid).join(",")
-            ]);
-
-            await this._saveUser(user);
-        }
-
-        this._addToCache(user);
-    }
 
     /**
      * @param {import("../types/DocTypes").UserData} data 
@@ -296,13 +163,7 @@ module.exports = class UserManager {
         data.createdAt = new Date().getTime();
         data.password = await User.hashPassword(data.password);
 
-        const user = data.type == UserType.Lecturer ? new Lecturer(data) : new User(data);
-
-        if (user instanceof Lecturer) {
-            await this._saveLecturer(user);
-            return user;
-        }
-
+        const user = new User(data);
         await this._saveUser(user);
         return user;
     }
@@ -335,13 +196,8 @@ module.exports = class UserManager {
             throw APIError.InvalidValueType("user", "User");
         }
 
+        user.edit(data);
         await this._saveUser(user, true);
-        
-        if (user instanceof Lecturer) {
-            user.edit(data);
-            await this._saveLecturer(user, true);
-        }
-
         return user;
     }
     

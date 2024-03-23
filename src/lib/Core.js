@@ -3,10 +3,7 @@ const path = require("path");
 const Logger = require("./Logger");
 const Database = require("./database/Database");
 const Webserver = require("./webserver/Webserver");
-const TagManager = require("./managers/TagManager");
-const EmailClient = require("./managers/EmailClient");
 const UserManager = require("./managers/UserManager");
-const AppointmentManager = require("./managers/AppointmentManager");
 const OpenAIManager = require("./managers/OpenAIManager");
 const ActivitiesManager = require("./managers/ActivitiesManager");
 
@@ -21,22 +18,16 @@ class Core {
         
         this.database = new Database();
         this.userManager = new UserManager(this);
-        this.tagManager = new TagManager(this);
-        this.appointmentManager = new AppointmentManager(this);
         this.activitiesManager = new ActivitiesManager(this);
-        this.emailClient = new EmailClient(this);
         this.openAIManager = new OpenAIManager(this);
         this.webserver = new Webserver(this);
     }
 
     getDatabase = () => this.database;
-    getWebserver = () => this.webserver;
     getUserManager = () => this.userManager;
-    getTagManager = () => this.tagManager;
-    getAppointmentManager = () => this.appointmentManager;
     getActivitiesManager = () => this.activitiesManager;
     getOpenAIManager = () => this.openAIManager;
-    getEmailClient = () => this.emailClient;
+    getWebserver = () => this.webserver;
 
     async shutdown() {
         Logger.info(Logger.Type.Core, "Shutdown in progress...");
