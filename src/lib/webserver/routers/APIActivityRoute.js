@@ -85,6 +85,15 @@ module.exports = class APIActivityRoute {
                     throw APIError.KeyNotFound("query");
                 }
 
+<<<<<<< HEAD
+=======
+                // // TODO: TEMPORARY!!!
+                // Logger.warn(Logger.Type.Webserver, "APIActivityRoute:99, TEMPORARY: Returning empty array")
+                // await new Promise(resolve => setTimeout(resolve, 1000));
+                // return res.status(200).json([]);
+                // // TODO: TEMPORARY!!!
+
+>>>>>>> cad91ec0dfacc0d93528819fff2ca9711f5446e8
                 Logger.debug(Logger.Type.Webserver, `Searching for activities with query: ${query}`);
                 // const results = await this.webserver.getCore().getActivitiesManager().searchForSameActivitiesWithOpenAI(query);
                 const results = await this.webserver.getCore().getActivitiesManager().searchForAcivity(query);

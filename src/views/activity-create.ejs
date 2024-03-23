@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="cs-cz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tvorba aktivity | Teacher Digital Agency</title>
+    <link rel="stylesheet" href="/public/lib/fontawesome/css/fontawesome.css">
+    <link rel="stylesheet" href="/public/lib/fontawesome/css/solid.css">
+    <link rel="stylesheet" href="/public/css/app.css">
+    <link rel="shortcut icon" href="/public/images/favicon.ico" type="image/x-icon">
+</head>
+<body>
+    <%- include('partials/navbar') %>
+    <%- include('partials/blobs') %>
+
+    <div data-loaderPage class="loader-page">
+        <div class="loader"></div>
+    </div>
+
+    <div class="h-24 block"></div>
+
+    <div class="w-full">
+        <div class="max-w-[1280px] mx-auto px-4">
+            <div class="flex flex-col w-full gap-4">
+                <h1 class="text-6xl text-black font-bold mx-auto">Tvorba aktivity</h1>
+
+                <form class="flex flex-col hidden w-9/12 mx-auto text-white-900 user-form" data-createActivity>
+                    <div class="bg-dark-900 shadow-md px-4 py-2">
+                        <h2 class="text-2xl mx-auto">Vytvořit novou aktivitu</h2>
+                        Název aktivity *:
+                        <br>
+                        <input data-activityName type="text" class="w-full user-input" required minlength="5" max="
+                        500">
+                        Popis aktivity:
+                        <br>
+                        <textarea data-description class="w-full user-input" required minlength="5" max="500"></textarea>
+                        Cíle aktivity *:
+                        <br>
+                        Cíle zapisujte za sebe a oddělujte je čárkou
+                        <br>
+                        <input type="text" class="w-full user-input" required minlength="5" max="500">
+                        Pro koho je aktivita určena *:
+                        <br>
+                        <select data-type class="w-full text-black-900">
+                            <option value="Group">Pro skupiny</option>
+                            <option value="Individual">Pro jednotlivce</option>
+                            <option value="All">Pro všchny</option>
+                        </select>
+                        Délka aktivity (v minutách) *:
+                        <br>
+                        <div class="flex flex-row gap-4">
+                            <input data-minLength type="number" class="w-1/2 user-input" required min="1" max="100">
+                            <input data-maxLength type="number" class="w-1/2 user-input" required min="1" max="100">
+                        </div>
+                        Doporučená věková skupina *:
+                        <div data-age class="flex flex-row gap-4 w-full">
+                            <!-- 3 checkboxes -->
+                            <input type="checkbox" class="w-1/6">
+                            1. stupeň ZŠ
+                            <input type="checkbox" class="w-1/6">
+                            2. stupeň ZŠ
+                            <input type="checkbox" class="w-1/6">
+                            SŠ
+                        </div>
+                        Potřebné pomůcky *:
+                        <br>
+                        Pomůcky zapisujte za sebe a oddělujte je čárkou
+                        <br>
+                        <input data-tools type="text" class="w-full user-input" required minlength="5" max="500">
+                        Příprava: *:
+                        <br>
+                        <div class="btn mb-4" data-addPrep>Přidat přípravu</div>
+                        <div data-prep class="flex flex-col gap-2"></div>
+                        <div class="btn mb-4" data-addInstr>Přidat instrukce</div>
+                        <div data-instr class="flex flex-col gap-2"></div>
+                        <div class="btn mb-4" data-addAgenda>Přidat agendu</div>
+                        <div data-agenda class="flex flex-col gap-2"></div>
+                        
+                        <!-- add links -->
+                        Odkazy:
+                        oddělujte čárkami
+                        <input type="text" class="user-input">
+
+                        Odkazy na obrázky:
+                        oddělujte čárkami
+                        <input type="text" class="user-input">
+                        
+                    </div>
+                </form>
+
+            </div>
+        </div>
+    </div>
+
+    <%- include('partials/footer')%>
+
+    <script src="/public/lib/js/jquery-3.7.1.min.js"></script>
+    <script src="/public/js/Application.js"></script>
+    <script>
+        const app = new Application();
+        app.hideLoader();
+    </script>
+</body>
+</html>
