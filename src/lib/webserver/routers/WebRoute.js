@@ -59,5 +59,7 @@ module.exports = class WebRoute {
 
             return res.render("admin");
         });
+
+        this.router.get("/activity", (req, res) => res.render("activity"));
     }
 };
