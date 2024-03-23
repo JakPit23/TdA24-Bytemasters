@@ -13,23 +13,23 @@ module.exports = class OpenAIManager {
     }
 
     /**
-     * @param {string} prompt
+     * @param {{ user: string, system: string }} prompts
      * @returns {Promise<string>}
      */
-    async complete(prompt) {
+    async complete(prompts) {
         const completion = await this.openai.chat.completions.create({
             messages: [
                 {
                     role: "system",
-                    content: "You are a helpful assistant."
+                    content: prompts.system
                 },
                 {
                     role: "user",
-                    content: prompt
+                    content: prompts.user
                 }
             ],
             model: "gpt-3.5-turbo",
-        })
+        });
 
         return completion.choices[0];
     }

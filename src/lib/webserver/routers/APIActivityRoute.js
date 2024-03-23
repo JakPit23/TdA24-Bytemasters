@@ -1,6 +1,7 @@
 const express = require("express");
 const APIResponse = require("../APIResponse");
 const APIError = require("../../types/APIError");
+const Logger = require("../../Logger");
 
 module.exports = class APIActivityRoute {
     /**
@@ -87,6 +88,22 @@ module.exports = class APIActivityRoute {
             }
         });
 
+        this.router.post("/search", async (req, res, next) => {
+            try {
+                const { query } = req.body;
+                Logger.debug(Logger.Type.Webserver, `Searching for activities with query: ${query}`);
+                const results = await this.webserver.getCore().getActivitiesManager().searchForSameActivitiesWithOpenAI(query);
+                if (!results) {
+                    return res.status(200).json([]);
+                }
+
+                const activities = (await this.webserver.getCore().getActivitiesManager().getActivities()).filter(activity => results.includes(activity.uuid));
+                return res.status(200).json(activities);
+            } catch (error) {
+                return next(error);
+            }
+        });
+
         this.router.post("/:uuid", async (req, res, next) => {
             try {
                 const { uuid } = req.params;
@@ -95,7 +112,7 @@ module.exports = class APIActivityRoute {
                 const activity = await this.webserver.getCore().getActivitiesManager().getActivity({ uuid });
                 await this.webserver.getCore().getActivitiesManager().editActivity(activity, data);
 
-                return APIResponse.Ok.send(res, activity); 
+                return APIResponse.Ok.send(res, activity);
             } catch (error) {
                 return next(error);
             }
