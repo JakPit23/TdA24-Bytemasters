@@ -719,8 +719,22 @@ video {
   width: 16.666667%;
 }
 
+.w-max {
+  width: -moz-max-content;
+  width: max-content;
+}
+
+.min-w-fit {
+  min-width: -moz-fit-content;
+  min-width: fit-content;
+}
+
 .max-w-\[1280px\] {
   max-width: 1280px;
+}
+
+.cursor-pointer {
+  cursor: pointer;
 }
 
 .grid-cols-1 {
@@ -854,6 +868,10 @@ video {
 
 .pt-12 {
   padding-top: 3rem;
+}
+
+.pr-2 {
+  padding-right: 0.5rem;
 }
 
 .text-2xl {
