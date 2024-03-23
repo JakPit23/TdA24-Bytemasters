@@ -3,7 +3,8 @@
     "Group": "Skupinová",
     "Individual": "Individuální"
 } %>
-
+<% startHours= 0
+startMinutes= 0 %>
 
 <!DOCTYPE html>
 <html lang="cs-cz">
@@ -52,32 +53,64 @@
                 <div class="flex flex-row gap-4">
                     <div class="shadow-md w-1/2 bg-dark-700 px-4 py-2">
                         <h3 class="text-2xl">Přípravná fáze</h3>
-                        <ul class="pretty-list">
+                        <ol class="list-decimal pl-4">
                             <% activity.homePreparation.forEach(step => { %>
                                 <li>
-                                    <%= step.title %>
-                                    <br/>
                                         <% if(step.warn) {%>
                                             <i class="fa-regular fa-triangle-exclamation text-sunglate-900"></i>
                                            <%= step.warn %>
-                                        <% } %>
+                                        <% } %>60step..
+                                        <br/>
+                                        <%= step.title %>
                                         <br>
                                         <% if(step.note) {%>
                                             <i class="fa-solid fa-notes text-skyblue-900"></i>
-                                            <%= step.note %>
+                                            <i><%= step.note %></i> 
                                         <% } %>
                                 </li>
                             <% }) %>
-                        </ul>
+                        </ol>
                     </div>
                     <div class="shadow-md w-1/2 bg-dark-700 px-4 py-2">
                         <h3 class="text-2xl">Minutovník</h3>
-                        <% activity.agenda.forEach(step => { %>
-                            <%=     step.title %>
-                       <% }) %>
+                        <ol class="list-decimal pl-4">
+                            <% activity.agenda.forEach(step => { %>
+                                <li>
+                                    <span class="font-bold"><%= startHours.toString().padStart(2, '0') %>:<%= startMinutes.toString().padStart(2, '0') %> - <%= Math.floor(startHours + step.duration / 60).toString().padStart(2, '0') %>:<%= (startMinutes + step.duration % 60).toString().padStart(2, '0') %></span> - <%= step.title %>
+                                    <% startHours = Math.floor(startHours + step.duration / 60) %>
+                                    <% startMinutes = startMinutes + step.duration % 60 %>
+                                </li>
+                           <% }) %>
+                        </ol>
                     </div>
                 </div>
-                <h2 class="text-3xl font-bold">Galerie</h2>
+                <div class="w-full shadow-md mt-4 bg-dark-700 px-4 py-2 mb-3">
+                    <h2 class="text-2xl">Průběh aktivity</h2>
+                    <ol class="list-decimal pl-4">
+                        <% activity.instructions.forEach(step => { %>
+                            <li>
+                                <% if(step.warn) {%>
+                                    <i class="fa-regular fa-triangle-exclamation text-sunglate-900"></i>
+                                    <%= step.warn %>
+                                <% } %>
+                                <br>
+                                <%= step.title %>
+                                <br/>
+                                <% if(step.note) {%>
+                                    <i class="fa-solid fa-notes text-skyblue-900"></i>
+                                    <i><%= step.note %></i>
+                                <% } %>
+                            </li>
+                        <% }) %>
+                    </ol>
+                </div>  
+                <h2 class="text-3xl font-bold">Užitečné odkazy</h2>
+                <ul>
+                    <% activity.links.forEach(link => { %>
+                        <li class="pl-4"><a href="<%= link.url %>" target="_blank"><%= link.title %></a></li>
+                    <% }) %>
+                </ul>
+                <h2 class="text-3xl font-bold mt-3">Galerie</h2>
                 <div class="grid gap-4">
                     <% activity.gallery.forEach(set => { %>
                         <div class="flex flex-col gap-4">
