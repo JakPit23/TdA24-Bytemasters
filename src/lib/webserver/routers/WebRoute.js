@@ -41,5 +41,7 @@ module.exports = class WebRoute {
             const response = !Utils.isDev ? (await this.webserver.getCore().getOpenAIManager().complete("Are cats beautiful?")).message.content : "dev mode :3";
             return res.render("openai", { response });
         });
+        this.router.get("/activities", (req, res) => res.render("activities"));
+        this.router.get("/admin", (req, res) => res.render("admin"));
     }
 };
