@@ -25,7 +25,7 @@ module.exports = class Activity {
             throw APIError.InvalidValueType("activityName", "string");
         }
 
-        if (!Utils.validateString(data.description)) {
+        if (data.description && !Utils.validateString(data.description)) {
             throw APIError.InvalidValueType("description", "string");
         }
 
@@ -45,53 +45,59 @@ module.exports = class Activity {
             throw APIError.InvalidValueType("lengthMax", "number");
         }
 
-        if (!Utils.validateArray(data.edLevel, "string")) {
+        if (data.edLevel && !Utils.validateArray(data.edLevel, "string")) {
             throw APIError.InvalidValueType("edLevel", "string[]");
         }
 
-        if (!Utils.validateArray(data.tools, "string")) {
+        if (data.tools && !Utils.validateArray(data.tools, "string")) {
             throw APIError.InvalidValueType("tools", "string[]");
         }
 
-        if (!Utils.validateArray(data.homePreparation, "object")) {
-            throw APIError.InvalidValueType("homePreparation", "object[]");
-        } else {
+        if (data.homePreparation) {
+            if (!Utils.validateArray(data.homePreparation, "object")) {
+                throw APIError.InvalidValueType("homePreparation", "object[]");
+            }
+            
             data.homePreparation.some((item, index) => {
                 if (!Utils.validateString(item.title)) {
                     throw APIError.InvalidValueType(`homePreparation[${index}].title`, "string");
                 }
 
-                if (!Utils.validateString(item.warn)) {
+                if (item.warn && !Utils.validateString(item.warn)) {
                     throw APIError.InvalidValueType(`homePreparation[${index}].warn`, "string");
                 }
 
-                if (!Utils.validateString(item.note)) {
+                if (item.note && !Utils.validateString(item.note)) {
                     throw APIError.InvalidValueType(`homePreparation[${index}].note`, "string");
                 }
             });
         }
 
-        if (!Utils.validateArray(data.instructions, "object")) {
-            throw APIError.InvalidValueType("instructions", "object[]");
-        } else {
+        if (data.instructions) {
+            if (!Utils.validateArray(data.instructions, "object")) {
+                throw APIError.InvalidValueType("instructions", "object[]");
+            }
+
             data.instructions.some((item, index) => {
                 if (!Utils.validateString(item.title)) {
                     throw APIError.InvalidValueType(`instructions[${index}].title`, "string");
                 }
 
-                if (!Utils.validateString(item.warn)) {
+                if (item.warn && !Utils.validateString(item.warn)) {
                     throw APIError.InvalidValueType(`instructions[${index}].warn`, "string");
                 }
 
-                if (!Utils.validateString(item.note)) {
+                if (item.note && !Utils.validateString(item.note)) {
                     throw APIError.InvalidValueType(`instructions[${index}].note`, "string");
                 }
             });
         }
 
-        if (!Utils.validateArray(data.agenda, "object")) {
-            throw APIError.InvalidValueType("agenda", "object[]");
-        } else {
+        if (data.agenda) {
+            if (!Utils.validateArray(data.agenda, "object")) {
+                throw APIError.InvalidValueType("agenda", "object[]");
+            }
+
             data.agenda.some((item, index) => {
                 if (!Utils.validateNumber(item.duration)) {
                     throw APIError.InvalidValueType(`agenda[${index}].duration`, "number");
@@ -101,29 +107,33 @@ module.exports = class Activity {
                     throw APIError.InvalidValueType(`agenda[${index}].title`, "string");
                 }
 
-                if (!Utils.validateString(item.description)) {
+                if (item.description && !Utils.validateString(item.description)) {
                     throw APIError.InvalidValueType(`agenda[${index}].description`, "string");
                 }
             });
         }
 
-        if (!Utils.validateArray(data.links, "object")) {
-            throw APIError.InvalidValueType("links", "object[]");
-        } else {
+        if (data.links) {
+            if (!Utils.validateArray(data.links, "object")) {
+                throw APIError.InvalidValueType("links", "object[]");
+            }
+    
             data.links.some((item, index) => {
                 if (!Utils.validateString(item.title)) {
                     throw APIError.InvalidValueType(`links[${index}].title`, "string");
                 }
 
-                if (!Utils.validateString(item.url)) {
+                if (item.url && !Utils.validateString(item.url)) {
                     throw APIError.InvalidValueType(`links[${index}].url`, "string");
                 }
             });
         }
 
-        if (!Utils.validateArray(data.gallery, "object")) {
-            throw APIError.InvalidValueType("gallery", "object[]");
-        } else {
+        if (data.gallery) {
+            if (!Utils.validateArray(data.gallery, "object")) {
+                throw APIError.InvalidValueType("gallery", "object[]");
+            }
+
             data.gallery.some((item, index) => {
                 if (!Utils.validateString(item.title)) {
                     throw APIError.InvalidValueType(`gallery[${index}].title`, "string");
@@ -134,12 +144,16 @@ module.exports = class Activity {
                 }
 
                 item.images.some((image, imageIndex) => {
-                    if (!Utils.validateString(image.lowRes)) {
+                    if (image.lowRes && !Utils.validateString(image.lowRes)) {
                         throw APIError.InvalidValueType(`gallery[${index}].images[${imageIndex}].lowRes`, "string");
                     }
 
-                    if (!Utils.validateString(image.highRes)) {
+                    if (image.highRes && !Utils.validateString(image.highRes)) {
                         throw APIError.InvalidValueType(`gallery[${index}].images[${imageIndex}].highRes`, "string");
+                    }
+
+                    if (!(image.lowRes || image.highRes)) {
+                        throw APIError.InvalidValueType(`gallery[${index}].images[${imageIndex}]["lowRes" or "highRes"]`, "string");
                     }
                 });
             });
