@@ -19,6 +19,7 @@ module.exports = class WebRoute {
         this.router.get("/contact", this.webserver.middlewares["AuthMiddleware"].fetchSession, (req, res) => res.render("contact"));
         this.router.get("/dashboard", this.webserver.middlewares["AuthMiddleware"].forceAuth, (req, res) => res.render("dashboard"));
         this.router.get("/activities", (req, res) => res.render("activities"));
+        this.router.get("/activity/create", (req, res) => res.render("activity-create"));
         this.router.get("/activity/edit", (req, res) => res.render("activity-edit"));
 
         this.router.get("/activity/:uuid", async (req, res) => {

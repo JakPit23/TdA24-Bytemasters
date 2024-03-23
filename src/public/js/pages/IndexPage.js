@@ -10,12 +10,6 @@ class Page {
 
         this.activitiesList = $("[data-activities]");
         this.searchBar = $("[data-searchInput]");
-        this.addPrep = $("[data-addPrep]");
-        this.prepForm = $("[data-prep]");
-        this.addInstr = $("[data-addInstr]");
-        this.instrForm = $("[data-instr]");
-        this.formBtn = $("[data-formBtn]");
-        this.form = $("[data-createActivity]");
 
         this.init();
     }
@@ -23,31 +17,9 @@ class Page {
     async init() {
         await this.loadActivities();
         this.searchBar.on("input", () => this.fetchSearch());   
-        this.formBtn.on("click", () => this.toggleForm())
-        this.addPrep.on("click", () => this.addPreparation());  
-        this.addInstr.on("click", () => this.addInstruction());
         this.app.hideLoader();
     }
 
-    toggleForm() {
-        console.log("Toggling form");
-        this.form.toggleClass("hidden");
-    }
-
-    addPreparation() { 
-        console.log("Adding preparation");
-        const preparation = $("<div>").addClass("flex flex-row gap-2").appendTo(this.prepForm);
-        $("<input>").attr("type", "text").attr("placeholder", "Název přípravy").addClass("user-input").appendTo(preparation);
-        $("<input>").attr("type", "text").attr("placeholder", "Varování").addClass("user-input").appendTo(preparation);
-        $("<input>").attr("type", "text").attr("placeholder", "Poznámka").addClass("user-input").appendTo(preparation);
-    }
-
-    addInstruction() {
-        const instruction = $("<div>").addClass("flex flex-row gap-2").appendTo(this.instrForm);
-        $("<input>").attr("type", "text").attr("placeholder", "Název instrukce").addClass("user-input").appendTo(instruction);
-        $("<input>").attr("type", "text").attr("placeholder", "Varování").addClass("user-input").appendTo(instruction);
-        $("<input>").attr("type", "text").attr("placeholder", "Poznámka").addClass("user-input").appendTo(instruction);
-    }
     async loadActivities(activities = null) {
         this.activitiesList.empty();
         if (!activities) {
