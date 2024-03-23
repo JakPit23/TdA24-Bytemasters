@@ -29,37 +29,34 @@ module.exports = class APIActivityRoute {
         this.router.get("/", async (req, res, next) => {
             try {
                 const { limit, before, after } = req.query;
-                let lecturers = (await this.webserver.getCore().getUserManager().getUsers())
-                    .filter(user => user.type == UserType.Lecturer)
-                    .map(lecturer => lecturer.toJSON());
-
-                if (!lecturers || lecturers.length == 0) {
+                let activities = (await this.webserver.getCore().getActivitiesManager().getActivities());
+                if (!activities || activities.length == 0) {
                     return res.status(200).json([]);
                 }
 
                 if (before) {
-                    const index = lecturers.findIndex(lecturer => lecturer.uuid == before);
+                    const index = activities.findIndex(activity => activity.uuid == before);
                     if (index == -1) {
-                        throw APIError.KeyNotFound("user");
+                        throw APIError.KeyNotFound("activity");
                     }
 
-                    lecturers = lecturers.slice(0, index);
+                    activities = activities.slice(0, index);
                 }
 
                 if (after) {
-                    const index = lecturers.findIndex(lecturer => lecturer.uuid == after);
+                    const index = activities.findIndex(activity => activity.uuid == after);
                     if (index == -1) {
-                        throw APIError.KeyNotFound("user");
+                        throw APIError.KeyNotFound("activity");
                     }
 
-                    lecturers = lecturers.slice(index + 1);
+                    activities = activities.slice(index + 1);
                 }
 
                 if (!isNaN(limit) && limit > 0) {
-                    lecturers = lecturers.slice(0, limit);
+                    activities = activities.slice(0, limit);
                 }
 
-                return res.status(200).json(lecturers);
+                return res.status(200).json(activities);
             } catch (error) {
                 return next(error);
             }

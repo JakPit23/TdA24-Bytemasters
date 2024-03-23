@@ -56,6 +56,7 @@
 /**
  * @typedef {object} ActivityData
  * @property {string} uuid
+ * @property {boolean} public
  * @property {string} activityName
  * @property {string} description
  * @property {string[]} objectives

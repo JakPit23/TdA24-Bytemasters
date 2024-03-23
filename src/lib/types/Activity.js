@@ -139,6 +139,7 @@ module.exports = class Activity {
         }
 
         this.uuid = data.uuid;
+        this.public = data.public;
         this.activityName = data.activityName;
         this.description = data.description;
         this.objectives = data.objectives;

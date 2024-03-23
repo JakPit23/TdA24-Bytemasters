@@ -50,6 +50,19 @@ module.exports = class ActivitiesManager {
      */
     _getFromCache = (options) => this._cache.find(data => data.uuid == options.uuid)
 
+    _parseActivity(data) {
+        if (Utils.validateNumber(data.public)) { data.public = Boolean(data.public) }
+        if (data.objectives) { data.objectives = JSON.parse(data.objectives) }
+        if (data.edLevel) { data.edLevel = JSON.parse(data.edLevel) }
+        if (data.tools) { data.tools = JSON.parse(data.tools) }
+        if (data.homePreparation) { data.homePreparation = JSON.parse(data.homePreparation) }
+        if (data.instructions) { data.instructions = JSON.parse(data.instructions) }
+        if (data.agenda) { data.agenda = JSON.parse(data.agenda) }
+        if (data.links) { data.links = JSON.parse(data.links) }
+        if (data.gallery) { data.gallery = JSON.parse(data.gallery) }
+        
+        return data;
+    }
     /**
      * @private
      * @param {import("../types/Activity")} activity
@@ -69,7 +82,7 @@ module.exports = class ActivitiesManager {
             Logger.debug(Logger.Type.ActivitiesManager, `Updating activity data for &c${activity.uuid}&r in database...`);
             this.core.getDatabase().exec("UPDATE `activities` SET `public` = $public, `activityName` = $activityName, `description` = $description, `objectives` = $objectives, `classStructure` = $classStructure, `lengthMin` = $lengthMin, `lengthMax` = $lengthMax, `edLevel` = $edLevel, `tools` = $tools, `homePreparation` = $homePreparation, `instructions` = $instructions, `agenda` = $agenda, `links` = $links, `gallery` = $gallery WHERE `uuid` = $uuid", {
                 uuid: activity.uuid,
-                public: activity.public,
+                public: activity.public ? 1 : 0,
                 activityName: activity.activityName,
                 description: activity.description,
                 objectives: JSON.stringify(activity.objectives),
@@ -88,7 +101,7 @@ module.exports = class ActivitiesManager {
             Logger.debug(Logger.Type.ActivitiesManager, `Creating activity data for &c${activity.uuid}&r in database...`);
             this.core.getDatabase().exec("INSERT INTO `activities` (`uuid`, `public`, `activityName`, `description`, `objectives`, `classStructure`, `lengthMin`, `lengthMax`, `edLevel`, `tools`, `homePreparation`, `instructions`, `agenda`, `links`, `gallery`) VALUES ($uuid, $public, $activityName, $description, $objectives, $classStructure, $lengthMin, $lengthMax, $edLevel, $tools, $homePreparation, $instructions, $agenda, $links, $gallery)", {
                 uuid: activity.uuid,
-                public: activity.public,
+                public: activity.public ? 1 : 0,
                 activityName: activity.activityName,
                 description: activity.description,
                 objectives: JSON.stringify(activity.objectives),
@@ -117,7 +130,7 @@ module.exports = class ActivitiesManager {
         const activities = await this.core.getDatabase().query("SELECT * FROM `activities`");
         Logger.debug(Logger.Type.ActivitiesManager, `Loaded &c${activities.length}&r activities from database`);
 
-        return activities.map(data => new Activity(data));
+        return activities.map(data => new Activity(this._parseActivity(data)));
     }
 
     /**
