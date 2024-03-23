@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="cs-cz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin | Teacher Digital Agency</title>
+    <link rel="stylesheet" href="/public/lib/fontawesome/css/fontawesome.css">
+    <link rel="stylesheet" href="/public/lib/fontawesome/css/solid.css">
+    <link rel="stylesheet" href="/public/css/app.css">
+    <link rel="shortcut icon" href="/public/images/favicon.ico" type="image/x-icon">
+</head>
+<body>
+    <%- include('partials/navbar') %>
+    <%- include('partials/blobs') %>
+
+    <div data-loaderPage class="loader-page">
+        <div class="loader"></div>
+    </div>
+
+    <div class="h-24 block"></div>
+    
+    <div class="w-full flex-row">
+        <div class="max-w-[1280px] mx-auto px-4">
+            <div class="flex flex-col items-start w-full pt-4 gap-4">
+                <div class="flex flex-col items-center gap-4 bg-black-200 shadow-lg rounded-md p-6 w-full">
+                    <div class="flex flex-col gap-2 md:flex-row w-full justify-between">
+                        <h1 class="text-4xl font-extrabold">Admin</h1>
+                        <div class="flex flex-col md:flex-row gap-2">
+                            <button data-logout class="btn btn-big">
+                                <i class="fa-solid fa-sign-out text-xl"></i>
+                                Odhlásit se
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <%- include('partials/footer') %>
+
+    <script src="/public/lib/js/jquery-3.7.1.min.js"></script>
+    <script src="/public/js/Application.js"></script>
+    <script src="/public/js/API.js"></script>
+
+    <script>
+        const app = new Application();
+        app.hideLoader();
+    </script>
+</body>
+</html>
