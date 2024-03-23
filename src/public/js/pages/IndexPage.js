@@ -5,6 +5,8 @@ class Page {
 
         this.activitiesList = $("[data-activities]");
         this.searchBar = $("[data-searchInput]");
+        this.formBtn = $("[data-formBtn]");
+        this.form = $("[data-createActivity]");
 
         this.init();
     }
@@ -12,8 +14,14 @@ class Page {
     async init() {
         await this.loadActivities();
         this.searchBar.on("input", () => this.fetchSearch());   
+        this.formBtn.on("click", () => this.toggleForm());  
         console.log("hiding loader");
         await this.app.hideLoader();
+    }
+
+    toggleForm() {
+        console.log("Toggling form");
+        this.form.toggleClass("hidden");
     }
 
     async loadActivities(activities = null) {
