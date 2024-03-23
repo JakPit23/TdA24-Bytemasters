@@ -80,7 +80,7 @@ module.exports = class ActivitiesManager {
 
         if (edit) {
             Logger.debug(Logger.Type.ActivitiesManager, `Updating activity data for &c${activity.uuid}&r in database...`);
-            this.core.getDatabase().exec("UPDATE `activities` SET `public` = $public, `activityName` = $activityName, `description` = $description, `objectives` = $objectives, `classStructure` = $classStructure, `lengthMin` = $lengthMin, `lengthMax` = $lengthMax, `edLevel` = $edLevel, `tools` = $tools, `homePreparation` = $homePreparation, `instructions` = $instructions, `agenda` = $agenda, `links` = $links, `gallery` = $gallery `shortDescription` = $shortDescription, `summary` = $summary WHERE `uuid` = $uuid", {
+            this.core.getDatabase().exec("UPDATE `activities` SET `public` = $public, `activityName` = $activityName, `description` = $description, `objectives` = $objectives, `classStructure` = $classStructure, `lengthMin` = $lengthMin, `lengthMax` = $lengthMax, `edLevel` = $edLevel, `tools` = $tools, `homePreparation` = $homePreparation, `instructions` = $instructions, `agenda` = $agenda, `links` = $links, `gallery` = $gallery, `shortDescription` = $shortDescription, `summary` = $summary WHERE `uuid` = $uuid", {
                 uuid: activity.uuid,
                 public: activity.public ? 1 : 0,
                 activityName: activity.activityName,
