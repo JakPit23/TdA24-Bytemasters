@@ -40,8 +40,38 @@
                         <br>
                         <textarea class="w-full bg-white-900 focus:outline-none text-dark-900 font-normal rounded-sm" required minlength="5" max="500"></textarea>
                         Cíle aktivity *:
+                        <br>
                         Cíle zapisujte za sebe a oddělujte je čárkou
                         <br>
+                        <input type="text" class="w-full bg-white-900 focus:outline-none text-dark-900 font-normal rounded-sm" required minlength="5" max="500">
+                        Pro koho je aktivita určena *:
+                        <br>
+                        <select class="w-full text-black-900">
+                            <option value="Group">Pro skupiny</option>
+                            <option value="Individual">Pro jednotlivce</option>
+                            <option value="All">Pro všchny</option>
+                        </select>
+                        Délka aktivity (v minutách) *:
+                        <br>
+                        <div class="flex flex-row gap-4">
+                            <input type="number" class="w-1/2 bg-white-900 focus:outline-none text-dark-900 font-normal rounded-sm" required min="1" max="100">
+                            <input type="number" class="w-1/2 bg-white-900 focus:outline-none text-dark-900 font-normal rounded-sm" required min="1" max="100">
+                        </div>
+                        Doporučená věková skupina *:
+                        <div class="flex flex-row gap-4 w-full">
+                            <!-- 3 checkboxes -->
+                            <input type="checkbox" class="w-1/6">
+                            1. stupeň ZŠ
+                            <input type="checkbox" class="w-1/6">
+                            2. stupeň ZŠ
+                            <input type="checkbox" class="w-1/6">
+                            SŠ
+                        </div>
+                        Potřebné pomůcky *:
+                        <br>
+                        Pomůcky zapisujte za sebe a oddělujte je čárkou
+                        <br>
+                        <input type="text" class="w-full bg-white-900 focus:outline-none text-dark-900 font-normal rounded-sm" required minlength="5" max="500">
                     </div>
                 </div>
             </div>
