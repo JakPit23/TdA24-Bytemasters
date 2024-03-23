@@ -17,10 +17,6 @@ module.exports = class User {
             throw APIError.InvalidValueType("usertype", "UserType");
         }
 
-        // if (!Utils.validateEmail(data.email) && data.type != UserType.Lecturer) {
-        //     throw APIError.InvalidValueType("email");
-        // }
-
         if (typeof data.username !== "string") {
             throw APIError.InvalidValueType("username", "string");
         }

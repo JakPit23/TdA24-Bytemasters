@@ -1,7 +1,7 @@
 const Logger = require("../../Logger");
 const UserSession = require("../../types/user/UserSession");
 
-module.exports = class LecturerMiddleware {
+module.exports = class AuthMiddleware {
     /**
      * @param {import("../Webserver")} webserver 
      */

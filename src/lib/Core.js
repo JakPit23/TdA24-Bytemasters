@@ -15,7 +15,7 @@ class Core {
             Logger.info(Logger.Type.Core, `Creating data directory`);
             fs.mkdirSync(path.resolve(__dirname, "../data"));
         }
-        
+
         this.database = new Database();
         this.userManager = new UserManager(this);
         this.activitiesManager = new ActivitiesManager(this);
