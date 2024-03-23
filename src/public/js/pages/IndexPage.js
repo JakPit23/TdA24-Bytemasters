@@ -1,4 +1,9 @@
 class Page {
+    activityType = {
+        "primarySchool": "1. stupeň ZŠ",
+        "secondarySchool": "2. stupeň ZŠ",
+        "highSchool": "Střední škola",
+    }
     constructor(app) {
         this.app = app;
         this.api = new API();
@@ -118,7 +123,14 @@ class Page {
 
         const activityDescription = $("<div>").addClass("flex flex-col").appendTo(activityBox);
         $("<h2>").text(data.activityName).addClass("font-bold text-2xl").appendTo(activityDescription);
+        console.log(data);
+        if(data.edLevel) {
+            data.edLevel.forEach(level => {
+                $("<p>").text(this.activityType[level]).appendTo(activityDescription).addClass("bg-sunglate-700 w-fit mb-3 mr-3 px-2 py-1 rounded");
+            });
+        }
 
+        $("<p>").text(Math.round(data.lengthMin / 60) + "-" + Math.round(data.lengthMax / 60) + " hodin").appendTo(activityDescription).addClass("font-bold w-fit mb-3 mr-3 px-2 py-1 rounded");
         if (data.shortDescription || data.description) {
             $("<p>").text(data.shortDescription || data.description).appendTo(activityDescription);
         } else {
