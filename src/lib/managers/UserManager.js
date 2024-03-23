@@ -219,7 +219,7 @@ module.exports = class UserManager {
         
         if (await this.getUser({ uuid: user.uuid, username: user.username, email: user.email }) && !edit) {
             Logger.debug(Logger.Type.UserManager, `Not saving lecturer &c${user.uuid}&r because it &cexists&r in database and it's not an &cedit operation&r...`);
-            throw APIError.KeyNotFound("user");
+            throw APIError.KeyAlreadyExists("user");
         }
 
         let tags = [];
