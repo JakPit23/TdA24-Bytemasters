@@ -25,6 +25,7 @@
                 <div class="flex flex-col items-center gap-4 bg-black-200 shadow-lg rounded-md p-6 w-full">
                     <div class="flex flex-col gap-2 md:flex-row w-full justify-between">
                         <h1 class="text-4xl font-extrabold">Admin</h1>
+                    
                         <div class="flex flex-col md:flex-row gap-2">
                             <button data-logout class="btn btn-big">
                                 <i class="fa-solid fa-sign-out text-xl"></i>
@@ -32,9 +33,24 @@
                             </button>
                         </div>
                     </div>
-                    <div class="btn btn-big">
-                        <p>Schvalování aktivit</p>
+
+                    <div class="flex flex-col items-center">
+                        <h1 class="text-3xl font-bold">Aktivity</h1>
+                        <p class="text-white-800 font-medium">Zde můžete spravovat aktivity</p>
                     </div>
+
+                    <div class="flex flex-col justify-between md:flex-row gap-2 w-full">
+                        <div class="flex-grow"></div>
+
+                        <button data-activityHistory class="btn btn-big">
+                            <i class="fa-solid fa-clock text-xl"></i>
+                            Historie aktivit
+                        </button>
+                    </div>
+
+                    <div data-loaderPage="activities" class="loader"></div>
+
+                    <div data-activities class="grid md:grid-cols-2 gap-4 w-full mb-4"></div>
                 </div>
             </div>
         </div>

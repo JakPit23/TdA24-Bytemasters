@@ -114,15 +114,13 @@ class Page {
                     return;
                 }
             });
-        } else {
-            // TODO: add blank placeholder ig?
         }
 
         const activityDescription = $("<div>").addClass("flex flex-col").appendTo(activityBox);
         $("<h2>").text(data.activityName).addClass("font-bold text-2xl").appendTo(activityDescription);
 
-        if (data.description) {
-            $("<p>").text(data.description).appendTo(activityDescription);
+        if (data.shortDescription || data.description) {
+            $("<p>").text(data.shortDescription || data.description).appendTo(activityDescription);
         } else {
             console.log(`[DEBUG] Activity ${data.uuid} has no description`);
         }

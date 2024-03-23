@@ -172,7 +172,7 @@ module.exports = class ActivitiesManager {
 
         try {
             const shortDescription = await this.core.getOpenAIManager().complete({
-                system: `Vytvoř krátký popis aktivity s názvem "activityName" a popiskem "description" a vrať ho do 3 vět a ve formátu string:\nactivityName: ${data.activityName}\ndescription: ${data.description}`,
+                system: `Vytvoř krátký popis aktivity s názvem "activityName" a popiskem "description" a vrať ho do 2 vět a ve formátu string:\nactivityName: ${data.activityName}\ndescription: ${data.description}`,
                 user: `Chci vytvořit novou aktivitu s názvem "${data.activityName}" a popiskem "${data.description}"`
             });
 

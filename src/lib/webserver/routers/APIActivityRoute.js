@@ -2,6 +2,7 @@ const express = require("express");
 const APIResponse = require("../APIResponse");
 const APIError = require("../../types/APIError");
 const Logger = require("../../Logger");
+const Utils = require("../../Utils");
 
 module.exports = class APIActivityRoute {
     /**
@@ -18,7 +19,7 @@ module.exports = class APIActivityRoute {
         this.router.post("/", async (req, res, next) => {
             try {
                 const data = req.body;
-                const activity = await this.webserver.getCore().getActivitiesManager().createActivity({ ...data, public: false });
+                const activity = await this.webserver.getCore().getActivitiesManager().createActivity({ ...data, uuid: Utils.newUUID(), public: false });
 
                 return APIResponse.Ok.send(res, activity);
             } catch (error) {

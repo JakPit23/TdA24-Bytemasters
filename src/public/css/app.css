@@ -720,6 +720,17 @@ video {
   max-width: 1280px;
 }
 
+<<<<<<< HEAD
+.flex-grow {
+  flex-grow: 1;
+}
+
+.cursor-pointer {
+  cursor: pointer;
+}
+
+=======
+>>>>>>> 2ddc09f4989e4c4fcfae19baef0c7ef02b4bb2cb
 .flex-row {
   flex-direction: row;
 }
@@ -945,8 +956,18 @@ video {
   color: rgba(116, 199, 211, 1);
 }
 
+<<<<<<< HEAD
+.text-gray-500 {
+  --tw-text-opacity: 1;
+  color: rgb(107 114 128 / var(--tw-text-opacity));
+}
+
+.text-white-800 {
+  color: rgba(255, 255, 255, 0.9);
+=======
 .text-prussianblue-900 {
   color: rgba(0, 56, 77, 1);
+>>>>>>> 2ddc09f4989e4c4fcfae19baef0c7ef02b4bb2cb
 }
 
 .shadow-lg {
@@ -959,6 +980,10 @@ video {
   --tw-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
   --tw-shadow-colored: 0 4px 6px -1px var(--tw-shadow-color), 0 2px 4px -2px var(--tw-shadow-color);
   box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+}
+
+.filter {
+  filter: var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow);
 }
 
 .transition {
@@ -2031,6 +2056,10 @@ li {
 @media (min-width: 768px) {
   .md\:grid-cols-3 {
     grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .md\:grid-cols-2 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
   .md\:flex-row {
