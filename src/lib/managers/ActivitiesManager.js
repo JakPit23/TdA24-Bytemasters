@@ -185,7 +185,6 @@ module.exports = class ActivitiesManager {
             Logger.warn(Logger.Type.ActivitiesManager, `Failed to generate short description for activity &c${data.uuid}&r: ${error.message}`);
         }
 
-        console.log("data:", data)
         const activity = new Activity(data);
         await this._saveActivity(activity);
         Logger.debug(Logger.Type.ActivitiesManager, `Created new activity &c${activity.uuid}&r, caching...`);
