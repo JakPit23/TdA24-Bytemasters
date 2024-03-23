@@ -35,9 +35,11 @@ class Page {
                 console.log(`[DEBUG] UUID of the last activity: ${lastActivityUUID}`);
                 fetchOptions["after"] = lastActivityUUID;
             }
-         
+
             activities = await this.api.getActivities(fetchOptions);
         }
+
+        this.app.hideLoader("[data-loaderPage='activities']");
 
         if (activities.length == 0) {
             $("<h1>").text("Žádné aktivity nebyly nalezeny").addClass("col-span-3 mx-auto text-3xl font-bold").appendTo(this.activitiesList);
@@ -53,7 +55,7 @@ class Page {
             return;
         }
 
-        this.app.showLoader("[data-loader]");
+        this.app.showLoader("[data-loaderPage='activities']");
         const search = this.searchBar.val();
         if (!search || search.length == 0) {
             console.log("[DEBUG] Search is empty, loading all activities");
