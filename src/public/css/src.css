@@ -542,3 +542,9 @@ li {
         @apply h-32 w-32 mr-4;  
     }
 }
+
+.pretty-list {
+    /* circle with numbers */
+    list-style-type: circle;
+    padding-left: 16px;
+}

@@ -25,7 +25,6 @@ class Page {
 
     async loadActivities(activities = null) {
         this.activitiesList.empty();
-
         if (!activities) {
             console.log("[DEBUG] Activities are null, fetching...");
             const fetchOptions = { limit: 25 };
@@ -37,6 +36,7 @@ class Page {
             }
          
             activities = await this.api.getActivities(fetchOptions);
+            console.log(activities);
         }
 
         if (activities.length == 0) {
