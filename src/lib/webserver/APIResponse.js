@@ -25,7 +25,7 @@ module.exports = class APIResponse {
     static InvalidCredentials = new APIResponse({ statusCode: 400, code: 400, error: { type: "InvalidCredentials" } });
     
     static KeyAlreadyExists = (key) => new APIResponse({ statusCode: 400, code: 400, error: { type: "KeyAlreadyExists", key } });
-    static KeyNotFound = (key) => new APIResponse({ statusCode: 404, code: 404, error: { type: "KeyNotFound", key } });
+    static KeyNotFound = (key) => new APIResponse({ statusCode: 400, code: 400, error: { type: "KeyNotFound", key } });
     static KeyNotDeleted = (key) => new APIResponse({ statusCode: 500, code: 500, error: { type: "KeyNotDeleted", key } });
 
     static InvalidValueType = (value) => new APIResponse({ statusCode: 400, code: 400, error: { type: "InvalidValueType", value } });
