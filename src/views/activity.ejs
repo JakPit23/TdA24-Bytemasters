@@ -1,3 +1,10 @@
+<% activityType = {
+    "All": "Všechny",
+    "Group": "Skupinová",
+    "Individual": "Individuální"
+} %>
+
+
 <!DOCTYPE html>
 <html lang="cs-cz">
 <head>
@@ -19,15 +26,42 @@
 
     <div class="w-full">
         <div class="max-w-[1280px] mx-auto px-4">
-            <div class="flex flex-col w-full pt-24 pb-16 justify-between bg-dark-700 px-4">
+            <div class="flex flex-col w-full pt-12 pb-16 justify-between bg-dark-700 px-4">
                 <h1 class="text-4xl font-bold mx-auto"><%= activity.activityName %></h1>
                 <div class="flex flex-row gap-4 mx-auto">
                     <p>Odhadovaná doba trvání: <%= Math.round(activity.lengthMin / 60)%> - <%= Math.round(activity.lengthMax / 60) %> hodin</p>
-                    <p>Skupinová aktivita: <span class="font-bold"><%= activity.classStructure == "All" || activity.classStructure == "Group" ? "Ano" : "Ne" %></span></p>
+                    <p>Typ aktivity: <span class="font-bold"><%= activityType[activity.classStructure] %></span></p>
                 </div>
                 <h2 class="text-3xl font-bold">O čem aktivita je a co si při ní vyzkoušíte?</h2>
                 <p><%= activity.activityName %> je <%= activity.description %></p>
-
+                <p>Cílem této aktivity je: </p>
+                <ul>
+                    <% activity.objectives.forEach(objective => { %>
+                        <li class="pl-4"><%= objective %></li>
+                    <% }) %>
+                </ul>
+                <h2 class="text-3xl font-bold">Co budete potřebovat</h2>
+                <div class="flex flex-row">
+                    <ul>
+                        <% activity.tools.forEach(tool => { %>
+                            <li class="pl-4"><%= tool %></li>
+                        <% }) %>
+                    </ul>
+                </div>
+                <h2 class="text-3xl font-bold">Galerie</h2>
+                <div class="grid gap-4">
+                    <% activity.gallery.forEach(set => { %>
+                        <div class="flex flex-col gap-4">
+                            <h3 class="text-2xl font-semibold"><%= set.title %></h3>
+                            <% set.images.forEach(image => { %>
+                                <img src="<%= image.lowRes %>" alt="<%= set.title %>" class="w-32">
+                                <%= image.on('click', function() { 
+                                    
+                                 }) %>
+                            <% }) %>    
+                        </div>
+                    <% }) %>
+                </div>
             </div>
         </div>
     </div>

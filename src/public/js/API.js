@@ -172,44 +172,16 @@ class API {
     /**
      * @returns {Promise<object>}
      */
-    getUser = () => this._call({
-        url: `/api/user/@me`,
-        method: "GET",
-        type: "json"
-    })
-
-    /**
-     * @returns {Promise<object>}
-     */
-    addUserSettings = (data) => this._call({
-        url: `/api/user/@me`,
-        method: "PATCH",
-        type: "json",
-        body: data
-    })
-
-    /**
-     * @returns {Promise<object>}
-     */
-    getUserAppointmentsICS = () => this._call({
-        url: `/api/user/@me/appointments`,
-        method: "GET",
-        responseType: "blob"
-    })
-
-    /**
-     * @param {string} uuid 
-     * @returns {Promise<object>}
-     */
-    deleteAppointment = (uuid) => this._call({
-        url: `/api/user/appointment/${uuid}`,
-        method: "DELETE",
-        type: "json"
-    })
-
     getActivities = () => this._call({
         url: `/api/activity`,
         method: "GET",
         type: "json"
+    })
+
+    searchActivities = (search) => this._call({
+        url: `/api/activity/search`,
+        method: "POST",
+        type: "json",
+        body: { search }
     })
 }

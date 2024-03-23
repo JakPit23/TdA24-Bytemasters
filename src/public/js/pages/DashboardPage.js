@@ -10,7 +10,6 @@ class Page {
 
 
     async init() {
-        this.user = (await this.api.getUser()).user;
 
         this.logoutButton.on("click", this.authLogout.bind(this));
        
@@ -19,7 +18,7 @@ class Page {
     async authLogout() {
         try {
             this.logoutButton.prop("disabled", true);
-
+            console.log("Logging out");
             await this.api.authLogout();
             window.location.href = "/";
         } catch (error) {

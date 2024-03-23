@@ -26,7 +26,7 @@ class Page {
         try {
             await this.api.authLogin({ username, password });
 
-           /*  setTimeout(() => window.location.href = "/dashboard", 1000); */
+            setTimeout(() => window.location.href = "/dashboard", 1000);
             loginButton.prop('disabled', true).addClass("btn-success").text("Úspěšně přihlášeno");
         } catch (error) {
             loginButton.prop("disabled", true).addClass("!btn-error").text(error.displayMessage);
