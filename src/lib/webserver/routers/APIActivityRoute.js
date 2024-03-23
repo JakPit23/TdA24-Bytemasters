@@ -19,7 +19,7 @@ module.exports = class APIActivityRoute {
         this.router.post("/", async (req, res, next) => {
             try {
                 const data = req.body;
-                const activity = await this.webserver.getCore().getActivitiesManager().createActivity({ ...data, uuid: Utils.newUUID(), public: false });
+                const activity = await this.webserver.getCore().getActivitiesManager().createActivity({ ...data, public: false });
 
                 return APIResponse.Ok.send(res, activity);
             } catch (error) {
@@ -85,20 +85,16 @@ module.exports = class APIActivityRoute {
                     throw APIError.KeyNotFound("query");
                 }
 
-                // TODO: TEMPORARY!!!
-                Logger.warn(Logger.Type.Webserver, "APIActivityRoute:99, TEMPORARY: Returning empty array")
-                await new Promise(resolve => setTimeout(resolve, 1000));
-                return res.status(200).json([]);
-                // TODO: TEMPORARY!!!
-
                 Logger.debug(Logger.Type.Webserver, `Searching for activities with query: ${query}`);
-                const results = await this.webserver.getCore().getActivitiesManager().searchForSameActivitiesWithOpenAI(query);
+                // const results = await this.webserver.getCore().getActivitiesManager().searchForSameActivitiesWithOpenAI(query);
+                const results = await this.webserver.getCore().getActivitiesManager().searchForAcivity(query);
                 if (!results) {
                     return res.status(200).json([]);
                 }
 
-                const activities = (await this.webserver.getCore().getActivitiesManager().getActivities()).filter(activity => results.includes(activity.uuid));
-                return res.status(200).json(activities);
+                // const activities = (await this.webserver.getCore().getActivitiesManager().getActivities()).filter(activity => results.includes(activity.uuid));
+                // return res.status(200).json(activities);
+                return res.status(200).json(results);
             } catch (error) {
                 return next(error);
             }

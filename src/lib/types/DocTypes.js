@@ -31,6 +31,7 @@
  * @property {Array<{title: string, url: string}>} links
  * @property {Array<{title: string, images: Array<{lowRes: string, highRes: string}>}>} gallery
  * @property {string} shortDescription
+ * @property {string} summary
  */
 
 module.exports = {

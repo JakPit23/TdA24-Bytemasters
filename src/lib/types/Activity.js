@@ -9,6 +9,7 @@ module.exports = class Activity {
         this.parseData(data);
 
         this.shortDescription = data.shortDescription;
+        this.summary = data.summary;
     }
     
     /**
