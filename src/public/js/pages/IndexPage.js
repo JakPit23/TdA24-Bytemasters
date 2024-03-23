@@ -94,8 +94,6 @@ class Page {
                     return;
                 }
             });
-        } else {
-            // TODO: add blank placeholder ig?
         }
 
         const activityDescription = $("<div>").addClass("flex flex-col").appendTo(activityBox);
