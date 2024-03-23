@@ -6,6 +6,13 @@ module.exports = class Activity {
      * @param {import("./DocTypes").ActivityData} data 
      */
     constructor(data) {
+        this.parseData(data);
+    }
+    
+    /**
+     * @param {import("./DocTypes").ActivityData} data 
+     */
+    parseData(data) {
         if (!Utils.validateUUID(data.uuid)) {
             throw APIError.InvalidValueType("uuid", "UUIDv4");
         }
@@ -153,5 +160,9 @@ module.exports = class Activity {
         this.agenda = data.agenda;
         this.links = data.links;
         this.gallery = data.gallery;
+    }
+
+    edit(data) {
+        this.parseData({ ...this, ...data });
     }
 }

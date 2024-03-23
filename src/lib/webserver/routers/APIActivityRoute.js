@@ -1,7 +1,6 @@
 const express = require("express");
 const APIResponse = require("../APIResponse");
 const APIError = require("../../types/APIError");
-const UserType = require("../../types/user/UserType");
 
 module.exports = class APIActivityRoute {
     /**
@@ -15,7 +14,7 @@ module.exports = class APIActivityRoute {
     }
 
     loadRoutes = () => {
-        this.router.post("/", this.webserver.middlewares["APIAuthMiddleware"].run, async (req, res, next) => {
+        this.router.post("/", async (req, res, next) => {
             try {
                 const data = req.body;
                 const activity = await this.webserver.getCore().getActivitiesManager().createActivity({ ...data, public: false });
@@ -65,38 +64,58 @@ module.exports = class APIActivityRoute {
         this.router.get("/:uuid", async (req, res, next) => {
             try {
                 const { uuid } = req.params;
-                const lecturer = await this.webserver.getCore().getUserManager().getLecturer({ uuid });
+                const activity = await this.webserver.getCore().getActivitiesManager().getActivity({ uuid });
     
-                if (!lecturer) {
-                    throw APIError.KeyNotFound("user");
+                if (!activity) {
+                    throw APIError.KeyNotFound("activity");
                 }
     
-                return APIResponse.Ok.send(res, lecturer.toJSON());
+                return APIResponse.Ok.send(res, activity);
             } catch (error) {
                 return next(error);
             }
         });
 
-        this.router.delete("/:uuid", this.webserver.middlewares["APIAuthMiddleware"].run, async (req, res, next) => {
+        this.router.delete("/:uuid", async (req, res, next) => {
             try {
                 const { uuid } = req.params;
                 
-                await this.webserver.getCore().getUserManager().deleteUser({ uuid });
+                await this.webserver.getCore().getActivitiesManager().deleteActivity({ uuid });
                 return APIResponse.Ok.send(res);
             } catch (error) {
                 return next(error);
             }
         });
 
-        this.router.put("/:uuid", this.webserver.middlewares["APIAuthMiddleware"].run, async (req, res, next) => {
+        this.router.post("/:uuid", async (req, res, next) => {
             try {
                 const { uuid } = req.params;
                 const data = req.body;
                 
-                const lecturer = await this.webserver.getCore().getUserManager().getLecturer({ uuid });
-                await this.webserver.getCore().getUserManager().editUser(lecturer, data);
+                const activity = await this.webserver.getCore().getActivitiesManager().getActivity({ uuid });
+                await this.webserver.getCore().getActivitiesManager().editActivity(activity, data);
 
-                return APIResponse.Ok.send(res, lecturer.toJSON()); 
+                return APIResponse.Ok.send(res, activity); 
+            } catch (error) {
+                return next(error);
+            }
+        });
+        
+        // TODO: mby :3
+        this.router.put("/:uuid", async (req, res, next) => {
+            try {
+                const { uuid } = req.params;
+                const data = req.body;
+                
+                // const activity = await this.webserver.getCore().getActivitiesManager().getActivity({ uuid });
+                // console.log("activity before edit:", activity);
+                // await this.webserver.getCore().getActivitiesManager().editActivity(activity, data);
+                // console.log("activity edited:", activity);
+
+                // return APIResponse.Ok.send(res, activity); 
+                return APIResponse.Ok.send(res, {
+                    status: "TODO :3"
+                }); 
             } catch (error) {
                 return next(error);
             }

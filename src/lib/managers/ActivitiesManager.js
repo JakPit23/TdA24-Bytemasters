@@ -148,7 +148,7 @@ module.exports = class ActivitiesManager {
                 return null;
             }
 
-            activity = new Activity(data[0]);
+            activity = new Activity(this._parseActivity(data[0]));
             this._addToCache(activity);
             Logger.debug(Logger.Type.ActivitiesManager, `Loaded activity &c${activity.uuid}&r from database, caching...`);
         } else {
