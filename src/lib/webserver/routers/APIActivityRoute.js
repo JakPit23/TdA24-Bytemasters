@@ -30,7 +30,7 @@ module.exports = class APIActivityRoute {
         this.router.get("/", async (req, res, next) => {
             try {
                 const { limit, before, after } = req.query;
-                let activities = (await this.webserver.getCore().getActivitiesManager().getActivities());
+                let activities = (await this.webserver.getCore().getActivitiesManager().getActivities()).filter(activity => activity.public);
                 if (!activities || activities.length == 0) {
                     return res.status(200).json([]);
                 }
@@ -71,7 +71,11 @@ module.exports = class APIActivityRoute {
                 if (!activity) {
                     throw APIError.KeyNotFound("activity");
                 }
-    
+   
+                if (!activity.public) {
+                    return res.status(403).json({ error: "This activity is private" });
+                }
+
                 return APIResponse.Ok.send(res, activity);
             } catch (error) {
                 return next(error);
