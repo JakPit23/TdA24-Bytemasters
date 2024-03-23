@@ -80,19 +80,19 @@ p {
         @apply bg-sunglate-600 cursor-not-allowed;
     }
 
-    &.btn-green {
-        @apply bg-green-500;
+    &.btn-success {
+        @apply bg-skyblue-800;
     
         &:hover {
-            @apply bg-green-400;
+            @apply bg-skyblue-900;
         }
     
         &:disabled {
-            @apply bg-green-600;
+            @apply bg-skyblue-700;
         }
     }
 
-    &.btn-red {
+    &.btn-error {
         @apply bg-red-500;
     
         &:hover {

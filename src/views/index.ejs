@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Teacher Digital Agency</title>
+    <title>Metodická knihovna aktivit | Teacher Digital Agency</title>
     <link rel="stylesheet" href="/public/lib/fontawesome/css/fontawesome.css">
     <link rel="stylesheet" href="/public/lib/fontawesome/css/solid.css">
     <link rel="stylesheet" href="/public/css/app.css">
@@ -16,101 +16,17 @@
     <div data-loaderPage class="loader-page">
         <div class="loader"></div>
     </div>
-    
+
     <div class="w-full">
         <div class="max-w-[1280px] mx-auto px-4">
-            <div class="flex flex-col items-center w-full pt-32 pb-16 gap-32 md:gap-64">
-                <div class="flex flex-col items-left md:items-center justify-center gap-8 w-full h-[50vh]">
-                    <h1 class="font-black text-6xl uppercase text-left">Teacher Digital Agency</h1>
-                    <p class="text-lg md:text-xl text-left md:text-center max-w-3xl">Naší snahou je propojit klienty s příslušnými učiteli. V naší databázi odborníků může každý najít to, co potřebuje. Vaše vzdělání je pro nás na prvním místě.</p>
-                    <div><a class="btn btn-xl" href="#lecturers">To chci!</a></div>
+            <div class="flex flex-col items-center w-full pt-24 pb-16 gap-4">
+                <h1 class="text-4xl font-semibold">AMOS</h1>
+                <div class="flex flex-row w-full px-2 py-4 bg-black-200 rounded-md">
+                    <i class="fa-solid fa-search h-6 mx-2 text-xl text-white-900"></i>
+                    <input data-searchInput class="w-full bg-transparent focus:outline-none text-white-900 font-normal" type="search" placeholder="">
                 </div>
-                
-                <div class="showcase-container flex flex-col items-start gap-16 md:gap-48 w-3/4">
-                    <div class="showcase">
-                        <div class="showcase-content">
-                            <h1>Zkušenost</h1>
-                            <p>Setkejte se s vysoce kvalifikovanými lektory, kteří přinesou bohaté zkušenosti do vašeho vzdělávacího prostoru.</p>
-                        </div>
-
-                        <div class="showcase-image">
-                            <img src="/public/images/icons/idea.svg">
-                        </div>
-                    </div>
-
-                    <div class="showcase">
-                        <div class="showcase-content">
-                            <h1>Rychlost</h1>
-                            <p>Garantujeme rychlé informace o změnách v lektorském týmu a dalších důležitých parametrech. S námi budete vždy v obraze.</p>
-                        </div>
+                <div data-activities class="grid md:grid-cols-2 gap-4 w-full mb-4">
                     
-                        <div class="showcase-image">
-                            <img src="/public/images/icons/conversation.svg">
-                        </div>
-                    </div>
-
-                    <div class="showcase">
-                        <div class="showcase-content">
-                            <h1>Flexibilita</h1>
-                            <p>Našli jste ideálního lektora, ale bydlí moc daleko od vás? Nezoufejte a domluvte si online hodiny. Většina lektorů s tím nebude mít problém.</p>
-                        </div>
-
-                        <div class="showcase-image">
-                            <img src="/public/images/icons/computer.svg">
-                        </div>
-                    </div>
-                </div>
-
-                <div class="flex flex-col items-center justify-center gap-8 w-full">
-                    <h1 class="font-black text-4xl">Najděte svého lektora</h1>
-                    
-                    <div class="flex flex-row w-full gap-2">
-                        <div class="flex flex-row w-full px-2 py-4 bg-black-200 rounded-md">
-                            <i class="fa-solid fa-search h-6 mx-2 text-xl text-white-900"></i>
-                            <input data-searchInput class="w-full bg-transparent focus:outline-none text-white-900 font-normal" type="search" placeholder="">
-                        </div>
-        
-                        <div data-filterButton class="flex flex-row min-w-fit px-2 py-4 bg-black-200 rounded-md cursor-pointer">
-                            <i class="fa-solid fa-filter h-6 mx-2 text-xl text-white-900"></i>
-                            <p class="w-full font-bold pr-2">Filtry</p>
-                        </div>
-                    </div>
-
-                    <div data-filterBox class="bg-black-200 flex flex-col p-6 w-full rounded gap-4 !hidden">
-                        <div class="flex">
-                            <i class="fa-solid fa-filter h-8 mx-2 text-3xl text-white-900"></i>
-                            <h1 class="text-2xl font-bold">Filtry</h1>
-                        </div>
-                   
-                        <div class="flex flex-row gap-2">
-                            <h1 class="text-xl font-bold">Cena za hodinu:</h1>
-                        
-                            <input data-filterPrice-minInput class="price-input" type="number" value="">
-                            <p class="text-xl font-bold">-</p>
-                            <input data-filterPrice-maxInput class="price-input" type="number" value="">
-                        </div>
-                        
-                        <div>
-                            <h1 class="text-xl font-bold">Lokace:</h1>
-
-                            <div data-filterLocations class="flex flex-wrap"></div>
-                        </div>
-                    
-                        <div>
-                            <h1 class="text-xl font-bold">Tagy:</h1>
-                            <div data-filterTags class="flex flex-wrap">
-                            </div>
-                        </div>
-                    </div>
-        
-                    <div id="lecturers" class="flex flex-col items-center justify-center w-full">
-                        <div data-lecturers class="grid md:grid-cols-2 gap-4 w-full mb-4"></div>
-                        
-                        <p data-noResults style="display: none" class="text-white text-2xl">Nenašli jsme žádné lektory</p>
-                        <div data-loaderLecturers>
-                            <div class="loader"></div>
-                        </div>
-                    </div>
                 </div>
             </div>
         </div>
@@ -119,9 +35,9 @@
     <%- include('partials/footer') %>
 
     <script src="/public/lib/js/jquery-3.7.1.min.js"></script>
-    <script src="/public/js/pages/IndexPage.js"></script>
-    <script src="/public/js/API.js"></script>
     <script src="/public/js/Application.js"></script>
+    <script src="/public/js/API.js"></script>
+    <script src="/public/js/pages/ActivityPage.js"></script>
 
     <script>
         const app = new Application();
