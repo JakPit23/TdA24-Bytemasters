@@ -21,16 +21,19 @@
         <div class="max-w-[1280px] mx-auto px-4">
             <div class="flex flex-col items-center w-full pt-24 pb-16 gap-4">
                 <h1 class="text-6xl font-semibold">AMOS</h1>
+
                 <div class="flex flex-row w-full gap-2">
                     <div class="flex flex-row w-full px-2 py-4 bg-black-200 rounded-md">
                         <i class="fa-solid fa-search h-6 mx-2 text-xl text-white-900"></i>
                         <input data-searchInput class="w-full bg-transparent focus:outline-none text-white-900 font-normal" type="search" placeholder="">
                     </div>
-                    <div class="btn" data-formBtn>Nová aktivita</div>
+
+                    <div data-formBtn class="btn btn-sunglate flex flex-row justify-center items-center min-w-fit">
+                        <i class="fa-solid fa-plus h-6 mx-2 text-xl text-white-900"></i>
+                        <p class="w-full font-bold pr-2">Přidat aktivitu</p>
+                    </div>
                 </div>
-                <div data-activities class="grid md:grid-cols-3 gap-4 w-full mb-4">
-                    
-                </div>
+
                 <div class="flex flex-col hidden w-9/12 text-white-900" data-createActivity>
                     <div class="bg-dark-900 shadow-md px-4 py-2">
                         <h2 class="text-2xl mx-auto">Vytvořit novou aktivitu</h2>
@@ -76,6 +79,8 @@
                         <input type="text" class="w-full bg-white-900 focus:outline-none text-dark-900 font-normal rounded-sm" required minlength="5" max="500">
                     </div>
                 </div>
+
+                <div data-activities class="grid md:grid-cols-3 gap-4 w-full mb-4"></div>
             </div>
         </div>
     </div>
