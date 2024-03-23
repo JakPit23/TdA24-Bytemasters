@@ -1,10 +1,19 @@
 class Page {
+    activityType = {
+        "primarySchool": "1. stupeň ZŠ",
+        "secondarySchool": "2. stupeň ZŠ",
+        "highSchool": "Střední škola",
+    }
     constructor(app) {
         this.app = app;
         this.api = new API();
 
         this.activitiesList = $("[data-activities]");
         this.searchBar = $("[data-searchInput]");
+        this.addPrep = $("[data-addPrep]");
+        this.prepForm = $("[data-prep]");
+        this.addInstr = $("[data-addInstr]");
+        this.instrForm = $("[data-instr]");
         this.formBtn = $("[data-formBtn]");
         this.form = $("[data-createActivity]");
 
@@ -14,7 +23,9 @@ class Page {
     async init() {
         await this.loadActivities();
         this.searchBar.on("input", () => this.fetchSearch());   
-        this.formBtn.on("click", () => this.toggleForm());  
+        this.formBtn.on("click", () => this.toggleForm())
+        this.addPrep.on("click", () => this.addPreparation());  
+        this.addInstr.on("click", () => this.addInstruction());
         this.app.hideLoader();
     }
 
@@ -23,6 +34,20 @@ class Page {
         this.form.toggleClass("hidden");
     }
 
+    addPreparation() { 
+        console.log("Adding preparation");
+        const preparation = $("<div>").addClass("flex flex-row gap-2").appendTo(this.prepForm);
+        $("<input>").attr("type", "text").attr("placeholder", "Název přípravy").addClass("user-input").appendTo(preparation);
+        $("<input>").attr("type", "text").attr("placeholder", "Varování").addClass("user-input").appendTo(preparation);
+        $("<input>").attr("type", "text").attr("placeholder", "Poznámka").addClass("user-input").appendTo(preparation);
+    }
+
+    addInstruction() {
+        const instruction = $("<div>").addClass("flex flex-row gap-2").appendTo(this.instrForm);
+        $("<input>").attr("type", "text").attr("placeholder", "Název instrukce").addClass("user-input").appendTo(instruction);
+        $("<input>").attr("type", "text").attr("placeholder", "Varování").addClass("user-input").appendTo(instruction);
+        $("<input>").attr("type", "text").attr("placeholder", "Poznámka").addClass("user-input").appendTo(instruction);
+    }
     async loadActivities(activities = null) {
         this.activitiesList.empty();
         if (!activities) {
@@ -98,7 +123,14 @@ class Page {
 
         const activityDescription = $("<div>").addClass("flex flex-col").appendTo(activityBox);
         $("<h2>").text(data.activityName).addClass("font-bold text-2xl").appendTo(activityDescription);
+        console.log(data);
+        if(data.edLevel) {
+            data.edLevel.forEach(level => {
+                $("<p>").text(this.activityType[level]).appendTo(activityDescription).addClass("bg-sunglate-700 w-fit mb-3 mr-3 px-2 py-1 rounded");
+            });
+        }
 
+        $("<p>").text(Math.round(data.lengthMin / 60) + "-" + Math.round(data.lengthMax / 60) + " hodin").appendTo(activityDescription).addClass("font-bold w-fit mb-3 mr-3 px-2 py-1 rounded");
         if (data.shortDescription || data.description) {
             $("<p>").text(data.shortDescription || data.description).appendTo(activityDescription);
         } else {
