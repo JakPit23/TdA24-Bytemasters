@@ -30,6 +30,7 @@
  * @property {Array<{duration: number, title: string, description: string}>} agenda
  * @property {Array<{title: string, url: string}>} links
  * @property {Array<{title: string, images: Array<{lowRes: string, highRes: string}>}>} gallery
+ * @property {string} shortDescription
  */
 
 module.exports = {

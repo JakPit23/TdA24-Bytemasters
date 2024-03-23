@@ -720,10 +720,6 @@ video {
   max-width: 1280px;
 }
 
-.list-decimal {
-  list-style-type: decimal;
-}
-
 .flex-row {
   flex-direction: row;
 }
@@ -938,6 +934,19 @@ video {
 
 .text-white-900 {
   color: rgba(255, 255, 255, 1);
+}
+
+.text-red-500 {
+  --tw-text-opacity: 1;
+  color: rgb(239 68 68 / var(--tw-text-opacity));
+}
+
+.text-skyblue-900 {
+  color: rgba(116, 199, 211, 1);
+}
+
+.text-prussianblue-900 {
+  color: rgba(0, 56, 77, 1);
 }
 
 .shadow-lg {

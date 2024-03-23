@@ -15,7 +15,7 @@ class Page {
         await this.loadActivities();
         this.searchBar.on("input", () => this.fetchSearch());   
         this.formBtn.on("click", () => this.toggleForm());  
-        await this.app.hideLoader();
+        this.app.hideLoader();
     }
 
     toggleForm() {

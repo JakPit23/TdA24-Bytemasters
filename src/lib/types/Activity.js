@@ -7,6 +7,8 @@ module.exports = class Activity {
      */
     constructor(data) {
         this.parseData(data);
+
+        this.shortDescription = data.shortDescription;
     }
     
     /**
