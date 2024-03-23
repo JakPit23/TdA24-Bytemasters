@@ -20,7 +20,7 @@ startMinutes= 0 %>
 <body>
     <%- include('partials/navbar') %>
     <%- include('partials/blobs') %>
-
+    
     <div data-loaderPage class="loader-page">
         <div class="loader"></div>
     </div>
@@ -28,12 +28,13 @@ startMinutes= 0 %>
     <div class="w-full">
         <div class="max-w-[1280px] mx-auto px-4">
             <div class="flex flex-col w-full pt-12 pb-16 justify-between bg-dark-700 px-4">
-                <h1 class="text-4xl font-bold mx-auto border-b-2 border-skyblue-900"><%= activity.activityName %></h1>
-                <div class="flex flex-row gap-4 mx-auto">
+                <h1 class="text-4xl font-bold mx-auto pb-2 border-b-2 border-skyblue-900"><%= activity.activityName %></h1>
+                <div class="flex flex-row gap-4 mx-auto" data-info>
                     <p>Odhadovaná doba trvání: <%= Math.round(activity.lengthMin / 60)%> - <%= Math.round(activity.lengthMax / 60) %> hodin</p>
                     <p>Typ aktivity: <span class="font-bold"><%= activityType[activity.classStructure] %></span></p>
+                    <p data-approve class="block font-bold btn">Schválit</p>
                 </div>
-                <h2 class="text-3xl font-bold">O čem aktivita je a co si při ní vyzkoušíte?</h2>
+                <h2 class="text-3xl font-bold border-b-2 border-skyblue-900">O čem aktivita je a co si při ní vyzkoušíte?</h2>
                 <p><%= activity.activityName %> je <%= activity.description %></p>
                 <p>Cílem této aktivity je: </p>
                 <ul>
@@ -41,7 +42,7 @@ startMinutes= 0 %>
                         <li class="pl-4"><%= objective %></li>
                     <% }) %>
                 </ul>
-                <h2 class="text-3xl font-bold">Co budete potřebovat</h2>
+                <h2 class="text-3xl font-bold border-b-2 border-skyblue-900">Co budete potřebovat</h2>
                 <div class="flex flex-row">
                     <ul>
                         <% activity.tools.forEach(tool => { %>
@@ -72,7 +73,7 @@ startMinutes= 0 %>
                         </ol>
                     </div>
                     <div class="shadow-md w-1/2 bg-dark-700 px-4 py-2">
-                        <h3 class="text-2xl">Minutovník</h3>
+                        <h3 class="text-2xl border-b-2 border-skyblue-900">Minutovník</h3>
                         <ol class="list-decimal pl-4">
                             <% activity.agenda.forEach(step => { %>
                                 <li>
@@ -137,11 +138,12 @@ startMinutes= 0 %>
 
     <script src="/public/lib/js/jquery-3.7.1.min.js"></script>
     <script src="/public/js/Application.js"></script>
+    <script src="/public/js/pages/DetailPage.js"></script>
     <script src="/public/js/API.js"></script>
 
     <script>
         const app = new Application();
-        app.hideLoader();
+        const page = new Page(app);
     </script>
 </body>
 </html>

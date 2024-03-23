@@ -152,4 +152,13 @@ class API {
         type: "json",
         body: { query }
     })
+
+    approveActivity = (id) => this._call({
+        url: `/api/activity/${id}`,
+        method: "POST",
+        type: "json",
+        body: {
+            public: true
+        }
+    })
 }
