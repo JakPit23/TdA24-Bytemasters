@@ -3,6 +3,7 @@ const APIResponse = require("../APIResponse");
 const APIError = require("../../types/APIError");
 const Logger = require("../../Logger");
 const Utils = require("../../Utils");
+const UserType = require("../../types/user/UserType");
 
 module.exports = class APIActivityRoute {
     /**
@@ -27,10 +28,12 @@ module.exports = class APIActivityRoute {
             }
         });
 
-        this.router.get("/", async (req, res, next) => {
+        this.router.get("/", this.webserver.middlewares["AuthMiddleware"].fetchSession, async (req, res, next) => {
             try {
                 const { limit, before, after } = req.query;
-                let activities = (await this.webserver.getCore().getActivitiesManager().getActivities()).filter(activity => activity.public);
+                let activities = (await this.webserver.getCore().getActivitiesManager().getActivities())
+                    .filter(activity => res.locals.user && res.locals.user.type == UserType.Admin || activity.public);
+
                 if (!activities || activities.length == 0) {
                     return res.status(200).json([]);
                 }
