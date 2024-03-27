@@ -1,4 +1,9 @@
 # Tour de App 2024 - ByteMasters
+Toto je archiv a záloha hlavního repozitáře.
+
+**Odesílání e-mailů přes Outlook je aktuálně nedostupné**
+- poskytovatel blokoval e-mailovou adresu a byla vyhodnocena jako nepotřebná
+
 
 ![Screenshot Header](/screenshots/screenshot_header.png)
 ![Screenshot Lecturers](/screenshots/screenshot_lecturers.png)
